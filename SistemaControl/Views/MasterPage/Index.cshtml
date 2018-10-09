@@ -1,0 +1,100 @@
+﻿@*@{
+        Layout = null;
+    }
+
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Index</title>
+    </head>
+    <body>
+        <div>
+        </div>
+    </body>
+    </html>*@
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Content/js/script.js"></script>
+<link href="@Url.Content("~/Content/css/style.css")" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" type="image/png" href="~/Content/img/icon.ico" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<div class="title">Menú Principal</div>
+<div id="page-content-wrapper" align="center">
+    <div class="container-fluid">
+        <div>
+            <img src="~/Content/img/Courthouse.png" />
+            <h1>Procesos Servicios Juridícos</h1>
+            <h2>Sistema de Control Juridíco</h2>
+        </div>
+    </div>
+</div>
+<div class="widgettablet">
+    <table class="table">
+
+    </table>
+
+    <div class="widget">
+        <div class="title">
+            Mis casos
+        </div>
+        <table class="table">
+
+            <tr>
+                <th align="center">
+                    Mis Casos
+                </th>
+
+                <th align="center">
+                    Descripción
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    Caso Número 1
+                </td>
+
+                <td>
+                    Denuncia hacia la Municipalidad por una acera en mal estado
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    Caso Número 2
+                </td>
+
+                <td>
+                    Rótulo en vía Publica en Mal estado
+                </td>
+
+            </tr>
+        </table>
+
+
+
+        <a href="@Url.Action("Ayuda","MasterPage")">Ir a Ayuda</a>
+
+    </div>
+</div>
+<script>
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+    for (i = 0; i < dropdown.length; i++) {
+        dropdown[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var dropdownContent = this.nextElementSibling;
+            if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+            } else {
+                dropdownContent.style.display = "block";
+            }
+        });
+    }
+
+</script>

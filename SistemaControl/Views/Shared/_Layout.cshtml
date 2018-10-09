@@ -1,43 +1,90 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <meta name="viewport" content="width=device-width" />
+    <link rel="shortcut icon" type="image/png" href="~/Content/img/icon.ico" />
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <title>SISTEMA DE CONTROL JURIDICO</title>
+    <link href="~/Content/css/style.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Nombre de aplicación", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
-                </ul>
-            </div>
+
+    <div class="header">
+        <div class="logo">
+            <span> SCJ</span>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
-        </footer>
-    </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    <div class="side-nav">
+        <div class="logo">
+            <img src="~/Content/img/muni.gif" />
+
+        </div>
+        <nav>
+            <ul class="btn">
+                <li>
+                    <span><i class="fa fa-home"></i></span>
+                    <span>@Html.ActionLink("Menú Principal", "Index", "MasterPage")</span>
+                </li>
+            </ul>
+            <ul id="collapse in" class="dropdown-btn">
+                <li>
+                    <span><i class="fa fa-archive"></i></span>
+                    <span>Documentos</span>
+                </li>
+            </ul>
+            <ul>
+                <li>
+
+                    <span>@Html.ActionLink("Oficios", "Index", "Documento")</span>
+                </li>
+                <li>
+                    <span>@Html.ActionLink("Expedientes", "Index", "DocumentoExpediente")</span>
+                </li>
+            </ul>
+            <ul class="dropdown-btn">
+                <li>
+                    <span><i class="fa fa-user"></i></span>
+                    <span>Personas</span>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <a href="@Url.Action("Index","Personas")">Jurídicas</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index","PersonaFisica")">Fisicas</a>
+                </li>
+            </ul>
+            <ul class="dropdown-btn">
+                <li>
+                    <span><i class="fa fa-balance-scale"></i></span>
+                    <span>Procesos</span>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <a href="@Url.Action("Index","Caso")">Administrativos</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index","CasoJudicial")">Judiciales</a>
+                </li>
+            </ul>
+            <ul class="btn">
+                <li>
+                    <span><i class="fa fa-question-circle"></i></span>
+                    <span>@Html.ActionLink("Ayuda", "Ayuda","MasterPage")</span>
+                    @*<span><i class="fa fa-question-circle"></i></span>
+                    <a href="@Url.Action("Index","Ayuda")">Ayuda</a>*@
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="main-content">
+        @RenderBody()
+    </div>
 </body>
 </html>

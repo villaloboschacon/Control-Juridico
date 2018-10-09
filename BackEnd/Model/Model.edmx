@@ -1,0 +1,1488 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SCJ_BDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Adjuntos">
+          <Key>
+            <PropertyRef Name="idAdjuntos" />
+          </Key>
+          <Property Name="idAdjuntos" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idDocumento" Type="int" Nullable="false" />
+          <Property Name="tipoReferencia" Type="int" Nullable="false" />
+          <Property Name="ruta" Type="ntext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BitacoraCasos">
+          <Key>
+            <PropertyRef Name="idBitacora" />
+          </Key>
+          <Property Name="idBitacora" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="tipoMovimiento" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+          <Property Name="idCaso" Type="int" Nullable="false" />
+          <Property Name="idPersona" Type="int" Nullable="false" />
+          <Property Name="usuario" Type="int" Nullable="false" />
+          <Property Name="idEstado" Type="int" Nullable="false" />
+          <Property Name="tipoLitigante" Type="int" Nullable="false" />
+          <Property Name="numeroCaso" Type="int" Nullable="false" />
+          <Property Name="materia" Type="varchar" MaxLength="100" />
+          <Property Name="descripcion" Type="varchar" MaxLength="750" />
+          <Property Name="observacion" Type="varchar" MaxLength="750" />
+          <Property Name="observacionBitacora" Type="varchar" MaxLength="750" />
+        </EntityType>
+        <EntityType Name="BitacoraDestinatarios">
+          <Key>
+            <PropertyRef Name="idBitacora" />
+          </Key>
+          <Property Name="idBitacora" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="tipoMovimiento" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+          <Property Name="idDestinatario" Type="int" Nullable="false" />
+          <Property Name="idDocumento" Type="int" Nullable="false" />
+          <Property Name="idTipoDestino" Type="int" Nullable="false" />
+          <Property Name="numeroDestinatario" Type="int" Nullable="false" />
+          <Property Name="observacion" Type="varchar" MaxLength="750" />
+          <Property Name="observacionBitacora" Type="varchar" MaxLength="750" />
+        </EntityType>
+        <EntityType Name="BitacoraDocumentos">
+          <Key>
+            <PropertyRef Name="idBitacora" />
+          </Key>
+          <Property Name="idBitacora" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="tipoMovimiento" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+          <Property Name="idDocumento" Type="int" Nullable="false" />
+          <Property Name="idTipo" Type="int" Nullable="false" />
+          <Property Name="idOrigen" Type="int" Nullable="false" />
+          <Property Name="tipoOrigen" Type="int" Nullable="false" />
+          <Property Name="idEstado" Type="int" />
+          <Property Name="idReferencia" Type="bigint" />
+          <Property Name="numeroDocumento" Type="varchar" MaxLength="100" />
+          <Property Name="numeroIngreso" Type="varchar" MaxLength="50" />
+          <Property Name="fechaDocumento" Type="date" Nullable="false" />
+          <Property Name="asunto" Type="varchar" MaxLength="150" />
+          <Property Name="descripcion" Type="varchar" MaxLength="750" />
+          <Property Name="ubicacion" Type="varchar" MaxLength="500" />
+          <Property Name="observacion" Type="varchar" MaxLength="750" />
+          <Property Name="observacionBitacora" Type="varchar" MaxLength="750" />
+        </EntityType>
+        <EntityType Name="BitacoraPersonas">
+          <Key>
+            <PropertyRef Name="idBitacora" />
+          </Key>
+          <Property Name="idBitacora" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="tipoMovimiento" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+          <Property Name="idPersona" Type="int" Nullable="false" />
+          <Property Name="idTipo" Type="int" Nullable="false" />
+          <Property Name="cedula" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="nombreCompleto" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="RepresentanteSocial" Type="varchar" MaxLength="150" />
+          <Property Name="RepresentanteLegal" Type="varchar" MaxLength="150" />
+          <Property Name="correo" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="observacion" Type="varchar" MaxLength="750" />
+          <Property Name="observacionBitacora" Type="varchar" MaxLength="750" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="CasoDocumento">
+          <Key>
+            <PropertyRef Name="idCaso" />
+            <PropertyRef Name="idDocumento" />
+          </Key>
+          <Property Name="idCaso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idDocumento" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Casos">
+          <Key>
+            <PropertyRef Name="idCaso" />
+          </Key>
+          <Property Name="idCaso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idPersona" Type="int" Nullable="false" />
+          <Property Name="idTipo" Type="int" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="idEstado" Type="int" Nullable="false" />
+          <Property Name="tipoLitigante" Type="int" Nullable="false" />
+          <Property Name="numeroCaso" Type="int" Nullable="false" />
+          <Property Name="materia" Type="varchar" MaxLength="100" />
+          <Property Name="descripcion" Type="varchar" MaxLength="750" />
+          <Property Name="observacion" Type="varchar" MaxLength="750" />
+        </EntityType>
+        <EntityType Name="Destinatarios">
+          <Key>
+            <PropertyRef Name="idDestinatario" />
+          </Key>
+          <Property Name="idDestinatario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idDocumento" Type="int" Nullable="false" />
+          <Property Name="idTipoDestino" Type="int" Nullable="false" />
+          <Property Name="numeroDestinatario" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Documentos">
+          <Key>
+            <PropertyRef Name="idDocumento" />
+          </Key>
+          <Property Name="idDocumento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idTipo" Type="int" Nullable="false" />
+          <Property Name="idOrigen" Type="int" Nullable="false" />
+          <Property Name="tipoOrigen" Type="int" Nullable="false" />
+          <Property Name="idEstado" Type="int" />
+          <Property Name="idReferencia" Type="bigint" />
+          <Property Name="numeroDocumento" Type="varchar" MaxLength="100" />
+          <Property Name="numeroIngreso" Type="varchar" MaxLength="50" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="asunto" Type="varchar" MaxLength="150" />
+          <Property Name="descripcion" Type="varchar" MaxLength="750" />
+          <Property Name="ubicacion" Type="varchar" MaxLength="500" />
+          <Property Name="observacion" Type="varchar" MaxLength="750" />
+        </EntityType>
+        <EntityType Name="Personas">
+          <Key>
+            <PropertyRef Name="idPersona" />
+          </Key>
+          <Property Name="idPersona" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idTipo" Type="int" Nullable="false" />
+          <Property Name="cedula" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="nombreCompleto" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="RepresentanteSocial" Type="varchar" MaxLength="150" />
+          <Property Name="RepresentanteLegal" Type="varchar" MaxLength="150" />
+          <Property Name="correo" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="observacion" Type="varchar" MaxLength="750" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="idRol" />
+          </Key>
+          <Property Name="idRol" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TablaGeneral">
+          <Key>
+            <PropertyRef Name="idTablaGeneral" />
+          </Key>
+          <Property Name="idTablaGeneral" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tabla" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="campo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="UsuarioRol">
+          <Key>
+            <PropertyRef Name="idUsuario" />
+            <PropertyRef Name="idRol" />
+          </Key>
+          <Property Name="idUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idRol" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="idUsuario" />
+          </Key>
+          <Property Name="idUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idEstado" Type="int" Nullable="false" />
+          <Property Name="usuario" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Adjunto_Documentos">
+          <End Role="Documentos" Type="Self.Documentos" Multiplicity="1" />
+          <End Role="Adjuntos" Type="Self.Adjuntos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Documentos">
+              <PropertyRef Name="idDocumento" />
+            </Principal>
+            <Dependent Role="Adjuntos">
+              <PropertyRef Name="idDocumento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Adjunto_TipoReferencia">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Adjuntos" Type="Self.Adjuntos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Adjuntos">
+              <PropertyRef Name="tipoReferencia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraCasos_TipoMovimiento">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="BitacoraCasos" Type="Self.BitacoraCasos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="BitacoraCasos">
+              <PropertyRef Name="tipoMovimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraCasos_Usuario">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="BitacoraCasos" Type="Self.BitacoraCasos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="BitacoraCasos">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraDestinatarios_TipoMovimiento">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="BitacoraDestinatarios" Type="Self.BitacoraDestinatarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="BitacoraDestinatarios">
+              <PropertyRef Name="tipoMovimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraDestunatarios_Usuario">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="BitacoraDestinatarios" Type="Self.BitacoraDestinatarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="BitacoraDestinatarios">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraDocumentos_TipoMovimiento">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="BitacoraDocumentos" Type="Self.BitacoraDocumentos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="BitacoraDocumentos">
+              <PropertyRef Name="tipoMovimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraDocumentos_Usuario">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="BitacoraDocumentos" Type="Self.BitacoraDocumentos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="BitacoraDocumentos">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraPersonas_TipoMovimiento">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="BitacoraPersonas" Type="Self.BitacoraPersonas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="BitacoraPersonas">
+              <PropertyRef Name="tipoMovimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraPersonas_Usuario">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="BitacoraPersonas" Type="Self.BitacoraPersonas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="BitacoraPersonas">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Caso_Estado">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Casos" Type="Self.Casos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Casos">
+              <PropertyRef Name="idEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Caso_Persona">
+          <End Role="Personas" Type="Self.Personas" Multiplicity="1" />
+          <End Role="Casos" Type="Self.Casos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personas">
+              <PropertyRef Name="idPersona" />
+            </Principal>
+            <Dependent Role="Casos">
+              <PropertyRef Name="idPersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Caso_Tipo">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Casos" Type="Self.Casos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Casos">
+              <PropertyRef Name="idTipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Caso_TipoLitigante">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Casos" Type="Self.Casos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Casos">
+              <PropertyRef Name="tipoLitigante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Caso_Usuario">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="Casos" Type="Self.Casos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="Casos">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CasoDocumento_Caso">
+          <End Role="Casos" Type="Self.Casos" Multiplicity="1" />
+          <End Role="CasoDocumento" Type="Self.CasoDocumento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Casos">
+              <PropertyRef Name="idCaso" />
+            </Principal>
+            <Dependent Role="CasoDocumento">
+              <PropertyRef Name="idCaso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CasoDocumento_Documento">
+          <End Role="Documentos" Type="Self.Documentos" Multiplicity="1" />
+          <End Role="CasoDocumento" Type="Self.CasoDocumento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Documentos">
+              <PropertyRef Name="idDocumento" />
+            </Principal>
+            <Dependent Role="CasoDocumento">
+              <PropertyRef Name="idDocumento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CasoDocumento_TipoDestino">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Destinatarios" Type="Self.Destinatarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Destinatarios">
+              <PropertyRef Name="idTipoDestino" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Destinatario_Documento">
+          <End Role="Documentos" Type="Self.Documentos" Multiplicity="1" />
+          <End Role="Destinatarios" Type="Self.Destinatarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Documentos">
+              <PropertyRef Name="idDocumento" />
+            </Principal>
+            <Dependent Role="Destinatarios">
+              <PropertyRef Name="idDocumento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documento_Estado">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="0..1" />
+          <End Role="Documentos" Type="Self.Documentos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Documentos">
+              <PropertyRef Name="idEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documento_Origen">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Documentos" Type="Self.Documentos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Documentos">
+              <PropertyRef Name="idOrigen" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documento_TipoDocumento">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Documentos" Type="Self.Documentos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Documentos">
+              <PropertyRef Name="idTipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documento_TipoOrigen">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Documentos" Type="Self.Documentos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Documentos">
+              <PropertyRef Name="tipoOrigen" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persona_TipoPersona">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Personas">
+              <PropertyRef Name="idTipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_Estado">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="idEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioRol_Rol">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="UsuarioRol" Type="Self.UsuarioRol" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="idRol" />
+            </Principal>
+            <Dependent Role="UsuarioRol">
+              <PropertyRef Name="idRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioRol_Usuario">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="UsuarioRol" Type="Self.UsuarioRol" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="UsuarioRol">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SCJ_BDModelStoreContainer">
+          <EntitySet Name="Adjuntos" EntityType="Self.Adjuntos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BitacoraCasos" EntityType="Self.BitacoraCasos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BitacoraDestinatarios" EntityType="Self.BitacoraDestinatarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BitacoraDocumentos" EntityType="Self.BitacoraDocumentos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BitacoraPersonas" EntityType="Self.BitacoraPersonas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Casos" EntityType="Self.Casos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Destinatarios" EntityType="Self.Destinatarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Documentos" EntityType="Self.Documentos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Personas" EntityType="Self.Personas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TablaGeneral" EntityType="Self.TablaGeneral" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CasoDocumento" EntityType="Self.CasoDocumento" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CasoDocumento].[idCaso] AS [idCaso], 
+    [CasoDocumento].[idDocumento] AS [idDocumento]
+    FROM [dbo].[CasoDocumento] AS [CasoDocumento]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="UsuarioRol" EntityType="Self.UsuarioRol" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UsuarioRol].[idUsuario] AS [idUsuario], 
+    [UsuarioRol].[idRol] AS [idRol]
+    FROM [dbo].[UsuarioRol] AS [UsuarioRol]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Adjunto_Documentos" Association="Self.FK_Adjunto_Documentos">
+            <End Role="Documentos" EntitySet="Documentos" />
+            <End Role="Adjuntos" EntitySet="Adjuntos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Adjunto_TipoReferencia" Association="Self.FK_Adjunto_TipoReferencia">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="Adjuntos" EntitySet="Adjuntos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraCasos_TipoMovimiento" Association="Self.FK_BitacoraCasos_TipoMovimiento">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="BitacoraCasos" EntitySet="BitacoraCasos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraCasos_Usuario" Association="Self.FK_BitacoraCasos_Usuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="BitacoraCasos" EntitySet="BitacoraCasos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraDestinatarios_TipoMovimiento" Association="Self.FK_BitacoraDestinatarios_TipoMovimiento">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="BitacoraDestinatarios" EntitySet="BitacoraDestinatarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraDestunatarios_Usuario" Association="Self.FK_BitacoraDestunatarios_Usuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="BitacoraDestinatarios" EntitySet="BitacoraDestinatarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraDocumentos_TipoMovimiento" Association="Self.FK_BitacoraDocumentos_TipoMovimiento">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="BitacoraDocumentos" EntitySet="BitacoraDocumentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraDocumentos_Usuario" Association="Self.FK_BitacoraDocumentos_Usuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="BitacoraDocumentos" EntitySet="BitacoraDocumentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraPersonas_TipoMovimiento" Association="Self.FK_BitacoraPersonas_TipoMovimiento">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="BitacoraPersonas" EntitySet="BitacoraPersonas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraPersonas_Usuario" Association="Self.FK_BitacoraPersonas_Usuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="BitacoraPersonas" EntitySet="BitacoraPersonas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Caso_Estado" Association="Self.FK_Caso_Estado">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="Casos" EntitySet="Casos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Caso_Persona" Association="Self.FK_Caso_Persona">
+            <End Role="Personas" EntitySet="Personas" />
+            <End Role="Casos" EntitySet="Casos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Caso_Tipo" Association="Self.FK_Caso_Tipo">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="Casos" EntitySet="Casos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Caso_TipoLitigante" Association="Self.FK_Caso_TipoLitigante">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="Casos" EntitySet="Casos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Caso_Usuario" Association="Self.FK_Caso_Usuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Casos" EntitySet="Casos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CasoDocumento_Caso" Association="Self.FK_CasoDocumento_Caso">
+            <End Role="Casos" EntitySet="Casos" />
+            <End Role="CasoDocumento" EntitySet="CasoDocumento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CasoDocumento_Documento" Association="Self.FK_CasoDocumento_Documento">
+            <End Role="Documentos" EntitySet="Documentos" />
+            <End Role="CasoDocumento" EntitySet="CasoDocumento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CasoDocumento_TipoDestino" Association="Self.FK_CasoDocumento_TipoDestino">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="Destinatarios" EntitySet="Destinatarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Destinatario_Documento" Association="Self.FK_Destinatario_Documento">
+            <End Role="Documentos" EntitySet="Documentos" />
+            <End Role="Destinatarios" EntitySet="Destinatarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documento_Estado" Association="Self.FK_Documento_Estado">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="Documentos" EntitySet="Documentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documento_Origen" Association="Self.FK_Documento_Origen">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="Documentos" EntitySet="Documentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documento_TipoDocumento" Association="Self.FK_Documento_TipoDocumento">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="Documentos" EntitySet="Documentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documento_TipoOrigen" Association="Self.FK_Documento_TipoOrigen">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="Documentos" EntitySet="Documentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persona_TipoPersona" Association="Self.FK_Persona_TipoPersona">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="Personas" EntitySet="Personas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_Estado" Association="Self.FK_Usuario_Estado">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioRol_Rol" Association="Self.FK_UsuarioRol_Rol">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UsuarioRol" EntitySet="UsuarioRol" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioRol_Usuario" Association="Self.FK_UsuarioRol_Usuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="UsuarioRol" EntitySet="UsuarioRol" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SCJ_BDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Adjunto">
+          <Key>
+            <PropertyRef Name="idAdjuntos" />
+          </Key>
+          <Property Name="idAdjuntos" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idDocumento" Type="Int32" Nullable="false" />
+          <Property Name="tipoReferencia" Type="Int32" Nullable="false" />
+          <Property Name="ruta" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Documento" Relationship="Self.FK_Adjunto_Documentos" FromRole="Adjuntos" ToRole="Documentos" />
+          <NavigationProperty Name="TablaGeneral" Relationship="Self.FK_Adjunto_TipoReferencia" FromRole="Adjuntos" ToRole="TablaGeneral" />
+        </EntityType>
+        <EntityType Name="BitacoraCaso">
+          <Key>
+            <PropertyRef Name="idBitacora" />
+          </Key>
+          <Property Name="idBitacora" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="tipoMovimiento" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="idCaso" Type="Int32" Nullable="false" />
+          <Property Name="idPersona" Type="Int32" Nullable="false" />
+          <Property Name="usuario" Type="Int32" Nullable="false" />
+          <Property Name="idEstado" Type="Int32" Nullable="false" />
+          <Property Name="tipoLitigante" Type="Int32" Nullable="false" />
+          <Property Name="numeroCaso" Type="Int32" Nullable="false" />
+          <Property Name="materia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <Property Name="observacion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <Property Name="observacionBitacora" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TablaGeneral" Relationship="Self.FK_BitacoraCasos_TipoMovimiento" FromRole="BitacoraCasos" ToRole="TablaGeneral" />
+          <NavigationProperty Name="Usuario1" Relationship="Self.FK_BitacoraCasos_Usuario" FromRole="BitacoraCasos" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="BitacoraDestinatario">
+          <Key>
+            <PropertyRef Name="idBitacora" />
+          </Key>
+          <Property Name="idBitacora" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="tipoMovimiento" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="idDestinatario" Type="Int32" Nullable="false" />
+          <Property Name="idDocumento" Type="Int32" Nullable="false" />
+          <Property Name="idTipoDestino" Type="Int32" Nullable="false" />
+          <Property Name="numeroDestinatario" Type="Int32" Nullable="false" />
+          <Property Name="observacion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <Property Name="observacionBitacora" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TablaGeneral" Relationship="Self.FK_BitacoraDestinatarios_TipoMovimiento" FromRole="BitacoraDestinatarios" ToRole="TablaGeneral" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_BitacoraDestunatarios_Usuario" FromRole="BitacoraDestinatarios" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="BitacoraDocumento">
+          <Key>
+            <PropertyRef Name="idBitacora" />
+          </Key>
+          <Property Name="idBitacora" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="tipoMovimiento" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="idDocumento" Type="Int32" Nullable="false" />
+          <Property Name="idTipo" Type="Int32" Nullable="false" />
+          <Property Name="idOrigen" Type="Int32" Nullable="false" />
+          <Property Name="tipoOrigen" Type="Int32" Nullable="false" />
+          <Property Name="idEstado" Type="Int32" />
+          <Property Name="idReferencia" Type="Int64" />
+          <Property Name="numeroDocumento" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="numeroIngreso" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fechaDocumento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="asunto" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <Property Name="ubicacion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="observacion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <Property Name="observacionBitacora" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TablaGeneral" Relationship="Self.FK_BitacoraDocumentos_TipoMovimiento" FromRole="BitacoraDocumentos" ToRole="TablaGeneral" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_BitacoraDocumentos_Usuario" FromRole="BitacoraDocumentos" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="BitacoraPersona">
+          <Key>
+            <PropertyRef Name="idBitacora" />
+          </Key>
+          <Property Name="idBitacora" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="tipoMovimiento" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="idPersona" Type="Int32" Nullable="false" />
+          <Property Name="idTipo" Type="Int32" Nullable="false" />
+          <Property Name="cedula" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombreCompleto" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RepresentanteSocial" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="RepresentanteLegal" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="correo" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="observacion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <Property Name="observacionBitacora" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TablaGeneral" Relationship="Self.FK_BitacoraPersonas_TipoMovimiento" FromRole="BitacoraPersonas" ToRole="TablaGeneral" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_BitacoraPersonas_Usuario" FromRole="BitacoraPersonas" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Caso">
+          <Key>
+            <PropertyRef Name="idCaso" />
+          </Key>
+          <Property Name="idCaso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idPersona" Type="Int32" Nullable="false" />
+          <Property Name="idTipo" Type="Int32" Nullable="false" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="idEstado" Type="Int32" Nullable="false" />
+          <Property Name="tipoLitigante" Type="Int32" Nullable="false" />
+          <Property Name="numeroCaso" Type="Int32" Nullable="false" />
+          <Property Name="materia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <Property Name="observacion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TablaGeneral" Relationship="Self.FK_Caso_Estado" FromRole="Casos" ToRole="TablaGeneral" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK_Caso_Persona" FromRole="Casos" ToRole="Personas" />
+          <NavigationProperty Name="TablaGeneral1" Relationship="Self.FK_Caso_Tipo" FromRole="Casos" ToRole="TablaGeneral" />
+          <NavigationProperty Name="TablaGeneral2" Relationship="Self.FK_Caso_TipoLitigante" FromRole="Casos" ToRole="TablaGeneral" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Caso_Usuario" FromRole="Casos" ToRole="Usuarios" />
+          <NavigationProperty Name="Documentos" Relationship="Self.CasoDocumento" FromRole="Casos" ToRole="Documentos" />
+        </EntityType>
+        <EntityType Name="Destinatario">
+          <Key>
+            <PropertyRef Name="idDestinatario" />
+          </Key>
+          <Property Name="idDestinatario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idDocumento" Type="Int32" Nullable="false" />
+          <Property Name="idTipoDestino" Type="Int32" Nullable="false" />
+          <Property Name="numeroDestinatario" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TablaGeneral" Relationship="Self.FK_CasoDocumento_TipoDestino" FromRole="Destinatarios" ToRole="TablaGeneral" />
+          <NavigationProperty Name="Documento" Relationship="Self.FK_Destinatario_Documento" FromRole="Destinatarios" ToRole="Documentos" />
+        </EntityType>
+        <EntityType Name="Documento">
+          <Key>
+            <PropertyRef Name="idDocumento" />
+          </Key>
+          <Property Name="idDocumento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTipo" Type="Int32" Nullable="false" />
+          <Property Name="idOrigen" Type="Int32" Nullable="false" />
+          <Property Name="tipoOrigen" Type="Int32" Nullable="false" />
+          <Property Name="idEstado" Type="Int32" />
+          <Property Name="idReferencia" Type="Int64" />
+          <Property Name="numeroDocumento" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="numeroIngreso" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="asunto" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <Property Name="ubicacion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="observacion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Adjuntos" Relationship="Self.FK_Adjunto_Documentos" FromRole="Documentos" ToRole="Adjuntos" />
+          <NavigationProperty Name="Destinatarios" Relationship="Self.FK_Destinatario_Documento" FromRole="Documentos" ToRole="Destinatarios" />
+          <NavigationProperty Name="TablaGeneral" Relationship="Self.FK_Documento_Estado" FromRole="Documentos" ToRole="TablaGeneral" />
+          <NavigationProperty Name="TablaGeneral1" Relationship="Self.FK_Documento_Origen" FromRole="Documentos" ToRole="TablaGeneral" />
+          <NavigationProperty Name="TablaGeneral2" Relationship="Self.FK_Documento_TipoDocumento" FromRole="Documentos" ToRole="TablaGeneral" />
+          <NavigationProperty Name="TablaGeneral3" Relationship="Self.FK_Documento_TipoOrigen" FromRole="Documentos" ToRole="TablaGeneral" />
+          <NavigationProperty Name="Casos" Relationship="Self.CasoDocumento" FromRole="Documentos" ToRole="Casos" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="idPersona" />
+          </Key>
+          <Property Name="idPersona" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTipo" Type="Int32" Nullable="false" />
+          <Property Name="cedula" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombreCompleto" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RepresentanteSocial" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="RepresentanteLegal" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="correo" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="observacion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Casos" Relationship="Self.FK_Caso_Persona" FromRole="Personas" ToRole="Casos" />
+          <NavigationProperty Name="TablaGeneral" Relationship="Self.FK_Persona_TipoPersona" FromRole="Personas" ToRole="TablaGeneral" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="idRol" />
+          </Key>
+          <Property Name="idRol" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.UsuarioRol" FromRole="Roles" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="TablaGeneral">
+          <Key>
+            <PropertyRef Name="idTablaGeneral" />
+          </Key>
+          <Property Name="idTablaGeneral" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tabla" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="campo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Adjuntos" Relationship="Self.FK_Adjunto_TipoReferencia" FromRole="TablaGeneral" ToRole="Adjuntos" />
+          <NavigationProperty Name="BitacoraCasos" Relationship="Self.FK_BitacoraCasos_TipoMovimiento" FromRole="TablaGeneral" ToRole="BitacoraCasos" />
+          <NavigationProperty Name="BitacoraDestinatarios" Relationship="Self.FK_BitacoraDestinatarios_TipoMovimiento" FromRole="TablaGeneral" ToRole="BitacoraDestinatarios" />
+          <NavigationProperty Name="BitacoraDocumentos" Relationship="Self.FK_BitacoraDocumentos_TipoMovimiento" FromRole="TablaGeneral" ToRole="BitacoraDocumentos" />
+          <NavigationProperty Name="BitacoraPersonas" Relationship="Self.FK_BitacoraPersonas_TipoMovimiento" FromRole="TablaGeneral" ToRole="BitacoraPersonas" />
+          <NavigationProperty Name="Casos" Relationship="Self.FK_Caso_Estado" FromRole="TablaGeneral" ToRole="Casos" />
+          <NavigationProperty Name="Casos1" Relationship="Self.FK_Caso_Tipo" FromRole="TablaGeneral" ToRole="Casos" />
+          <NavigationProperty Name="Casos2" Relationship="Self.FK_Caso_TipoLitigante" FromRole="TablaGeneral" ToRole="Casos" />
+          <NavigationProperty Name="Destinatarios" Relationship="Self.FK_CasoDocumento_TipoDestino" FromRole="TablaGeneral" ToRole="Destinatarios" />
+          <NavigationProperty Name="Documentos" Relationship="Self.FK_Documento_Estado" FromRole="TablaGeneral" ToRole="Documentos" />
+          <NavigationProperty Name="Documentos1" Relationship="Self.FK_Documento_Origen" FromRole="TablaGeneral" ToRole="Documentos" />
+          <NavigationProperty Name="Documentos2" Relationship="Self.FK_Documento_TipoDocumento" FromRole="TablaGeneral" ToRole="Documentos" />
+          <NavigationProperty Name="Documentos3" Relationship="Self.FK_Documento_TipoOrigen" FromRole="TablaGeneral" ToRole="Documentos" />
+          <NavigationProperty Name="Personas" Relationship="Self.FK_Persona_TipoPersona" FromRole="TablaGeneral" ToRole="Personas" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuario_Estado" FromRole="TablaGeneral" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="idUsuario" />
+          </Key>
+          <Property Name="idUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idEstado" Type="Int32" Nullable="false" />
+          <Property Name="usuario1" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="BitacoraCasos" Relationship="Self.FK_BitacoraCasos_Usuario" FromRole="Usuarios" ToRole="BitacoraCasos" />
+          <NavigationProperty Name="BitacoraDestinatarios" Relationship="Self.FK_BitacoraDestunatarios_Usuario" FromRole="Usuarios" ToRole="BitacoraDestinatarios" />
+          <NavigationProperty Name="BitacoraDocumentos" Relationship="Self.FK_BitacoraDocumentos_Usuario" FromRole="Usuarios" ToRole="BitacoraDocumentos" />
+          <NavigationProperty Name="BitacoraPersonas" Relationship="Self.FK_BitacoraPersonas_Usuario" FromRole="Usuarios" ToRole="BitacoraPersonas" />
+          <NavigationProperty Name="Casos" Relationship="Self.FK_Caso_Usuario" FromRole="Usuarios" ToRole="Casos" />
+          <NavigationProperty Name="TablaGeneral" Relationship="Self.FK_Usuario_Estado" FromRole="Usuarios" ToRole="TablaGeneral" />
+          <NavigationProperty Name="Roles" Relationship="Self.UsuarioRol" FromRole="Usuarios" ToRole="Roles" />
+        </EntityType>
+        <Association Name="FK_Adjunto_Documentos">
+          <End Role="Documentos" Type="Self.Documento" Multiplicity="1" />
+          <End Role="Adjuntos" Type="Self.Adjunto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Documentos">
+              <PropertyRef Name="idDocumento" />
+            </Principal>
+            <Dependent Role="Adjuntos">
+              <PropertyRef Name="idDocumento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Adjunto_TipoReferencia">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Adjuntos" Type="Self.Adjunto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Adjuntos">
+              <PropertyRef Name="tipoReferencia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraCasos_TipoMovimiento">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="BitacoraCasos" Type="Self.BitacoraCaso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="BitacoraCasos">
+              <PropertyRef Name="tipoMovimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraCasos_Usuario">
+          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="BitacoraCasos" Type="Self.BitacoraCaso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="BitacoraCasos">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraDestinatarios_TipoMovimiento">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="BitacoraDestinatarios" Type="Self.BitacoraDestinatario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="BitacoraDestinatarios">
+              <PropertyRef Name="tipoMovimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraDestunatarios_Usuario">
+          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="BitacoraDestinatarios" Type="Self.BitacoraDestinatario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="BitacoraDestinatarios">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraDocumentos_TipoMovimiento">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="BitacoraDocumentos" Type="Self.BitacoraDocumento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="BitacoraDocumentos">
+              <PropertyRef Name="tipoMovimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraDocumentos_Usuario">
+          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="BitacoraDocumentos" Type="Self.BitacoraDocumento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="BitacoraDocumentos">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraPersonas_TipoMovimiento">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="BitacoraPersonas" Type="Self.BitacoraPersona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="BitacoraPersonas">
+              <PropertyRef Name="tipoMovimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BitacoraPersonas_Usuario">
+          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="BitacoraPersonas" Type="Self.BitacoraPersona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="BitacoraPersonas">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Caso_Estado">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Casos" Type="Self.Caso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Casos">
+              <PropertyRef Name="idEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Caso_Persona">
+          <End Role="Personas" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Casos" Type="Self.Caso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personas">
+              <PropertyRef Name="idPersona" />
+            </Principal>
+            <Dependent Role="Casos">
+              <PropertyRef Name="idPersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Caso_Tipo">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Casos" Type="Self.Caso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Casos">
+              <PropertyRef Name="idTipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Caso_TipoLitigante">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Casos" Type="Self.Caso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Casos">
+              <PropertyRef Name="tipoLitigante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Caso_Usuario">
+          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Casos" Type="Self.Caso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="Casos">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CasoDocumento_TipoDestino">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Destinatarios" Type="Self.Destinatario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Destinatarios">
+              <PropertyRef Name="idTipoDestino" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Destinatario_Documento">
+          <End Role="Documentos" Type="Self.Documento" Multiplicity="1" />
+          <End Role="Destinatarios" Type="Self.Destinatario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Documentos">
+              <PropertyRef Name="idDocumento" />
+            </Principal>
+            <Dependent Role="Destinatarios">
+              <PropertyRef Name="idDocumento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documento_Estado">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="0..1" />
+          <End Role="Documentos" Type="Self.Documento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Documentos">
+              <PropertyRef Name="idEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documento_Origen">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Documentos" Type="Self.Documento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Documentos">
+              <PropertyRef Name="idOrigen" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documento_TipoDocumento">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Documentos" Type="Self.Documento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Documentos">
+              <PropertyRef Name="idTipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documento_TipoOrigen">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Documentos" Type="Self.Documento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Documentos">
+              <PropertyRef Name="tipoOrigen" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persona_TipoPersona">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Personas" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Personas">
+              <PropertyRef Name="idTipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_Estado">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
+          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="idEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CasoDocumento">
+          <End Role="Casos" Type="Self.Caso" Multiplicity="*" />
+          <End Role="Documentos" Type="Self.Documento" Multiplicity="*" />
+        </Association>
+        <Association Name="UsuarioRol">
+          <End Role="Roles" Type="Self.Role" Multiplicity="*" />
+          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="SCJ_BDEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Adjuntos" EntityType="Self.Adjunto" />
+          <EntitySet Name="BitacoraCasos" EntityType="Self.BitacoraCaso" />
+          <EntitySet Name="BitacoraDestinatarios" EntityType="Self.BitacoraDestinatario" />
+          <EntitySet Name="BitacoraDocumentos" EntityType="Self.BitacoraDocumento" />
+          <EntitySet Name="BitacoraPersonas" EntityType="Self.BitacoraPersona" />
+          <EntitySet Name="Casos" EntityType="Self.Caso" />
+          <EntitySet Name="Destinatarios" EntityType="Self.Destinatario" />
+          <EntitySet Name="Documentos" EntityType="Self.Documento" />
+          <EntitySet Name="Personas" EntityType="Self.Persona" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="TablaGenerals" EntityType="Self.TablaGeneral" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK_Adjunto_Documentos" Association="Self.FK_Adjunto_Documentos">
+            <End Role="Documentos" EntitySet="Documentos" />
+            <End Role="Adjuntos" EntitySet="Adjuntos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Adjunto_TipoReferencia" Association="Self.FK_Adjunto_TipoReferencia">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="Adjuntos" EntitySet="Adjuntos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraCasos_TipoMovimiento" Association="Self.FK_BitacoraCasos_TipoMovimiento">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="BitacoraCasos" EntitySet="BitacoraCasos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraCasos_Usuario" Association="Self.FK_BitacoraCasos_Usuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="BitacoraCasos" EntitySet="BitacoraCasos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraDestinatarios_TipoMovimiento" Association="Self.FK_BitacoraDestinatarios_TipoMovimiento">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="BitacoraDestinatarios" EntitySet="BitacoraDestinatarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraDestunatarios_Usuario" Association="Self.FK_BitacoraDestunatarios_Usuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="BitacoraDestinatarios" EntitySet="BitacoraDestinatarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraDocumentos_TipoMovimiento" Association="Self.FK_BitacoraDocumentos_TipoMovimiento">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="BitacoraDocumentos" EntitySet="BitacoraDocumentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraDocumentos_Usuario" Association="Self.FK_BitacoraDocumentos_Usuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="BitacoraDocumentos" EntitySet="BitacoraDocumentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraPersonas_TipoMovimiento" Association="Self.FK_BitacoraPersonas_TipoMovimiento">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="BitacoraPersonas" EntitySet="BitacoraPersonas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BitacoraPersonas_Usuario" Association="Self.FK_BitacoraPersonas_Usuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="BitacoraPersonas" EntitySet="BitacoraPersonas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Caso_Estado" Association="Self.FK_Caso_Estado">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="Casos" EntitySet="Casos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Caso_Persona" Association="Self.FK_Caso_Persona">
+            <End Role="Personas" EntitySet="Personas" />
+            <End Role="Casos" EntitySet="Casos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Caso_Tipo" Association="Self.FK_Caso_Tipo">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="Casos" EntitySet="Casos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Caso_TipoLitigante" Association="Self.FK_Caso_TipoLitigante">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="Casos" EntitySet="Casos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Caso_Usuario" Association="Self.FK_Caso_Usuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Casos" EntitySet="Casos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CasoDocumento_TipoDestino" Association="Self.FK_CasoDocumento_TipoDestino">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="Destinatarios" EntitySet="Destinatarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Destinatario_Documento" Association="Self.FK_Destinatario_Documento">
+            <End Role="Documentos" EntitySet="Documentos" />
+            <End Role="Destinatarios" EntitySet="Destinatarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documento_Estado" Association="Self.FK_Documento_Estado">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="Documentos" EntitySet="Documentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documento_Origen" Association="Self.FK_Documento_Origen">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="Documentos" EntitySet="Documentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documento_TipoDocumento" Association="Self.FK_Documento_TipoDocumento">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="Documentos" EntitySet="Documentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documento_TipoOrigen" Association="Self.FK_Documento_TipoOrigen">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="Documentos" EntitySet="Documentos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persona_TipoPersona" Association="Self.FK_Persona_TipoPersona">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="Personas" EntitySet="Personas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_Estado" Association="Self.FK_Usuario_Estado">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="CasoDocumento" Association="Self.CasoDocumento">
+            <End Role="Casos" EntitySet="Casos" />
+            <End Role="Documentos" EntitySet="Documentos" />
+          </AssociationSet>
+          <AssociationSet Name="UsuarioRol" Association="Self.UsuarioRol">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SCJ_BDModelStoreContainer" CdmEntityContainer="SCJ_BDEntities">
+          <EntitySetMapping Name="Adjuntos">
+            <EntityTypeMapping TypeName="SCJ_BDModel.Adjunto">
+              <MappingFragment StoreEntitySet="Adjuntos">
+                <ScalarProperty Name="idAdjuntos" ColumnName="idAdjuntos" />
+                <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
+                <ScalarProperty Name="tipoReferencia" ColumnName="tipoReferencia" />
+                <ScalarProperty Name="ruta" ColumnName="ruta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BitacoraCasos">
+            <EntityTypeMapping TypeName="SCJ_BDModel.BitacoraCaso">
+              <MappingFragment StoreEntitySet="BitacoraCasos">
+                <ScalarProperty Name="idBitacora" ColumnName="idBitacora" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="tipoMovimiento" ColumnName="tipoMovimiento" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="idCaso" ColumnName="idCaso" />
+                <ScalarProperty Name="idPersona" ColumnName="idPersona" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+                <ScalarProperty Name="tipoLitigante" ColumnName="tipoLitigante" />
+                <ScalarProperty Name="numeroCaso" ColumnName="numeroCaso" />
+                <ScalarProperty Name="materia" ColumnName="materia" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+                <ScalarProperty Name="observacionBitacora" ColumnName="observacionBitacora" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BitacoraDestinatarios">
+            <EntityTypeMapping TypeName="SCJ_BDModel.BitacoraDestinatario">
+              <MappingFragment StoreEntitySet="BitacoraDestinatarios">
+                <ScalarProperty Name="idBitacora" ColumnName="idBitacora" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="tipoMovimiento" ColumnName="tipoMovimiento" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="idDestinatario" ColumnName="idDestinatario" />
+                <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
+                <ScalarProperty Name="idTipoDestino" ColumnName="idTipoDestino" />
+                <ScalarProperty Name="numeroDestinatario" ColumnName="numeroDestinatario" />
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+                <ScalarProperty Name="observacionBitacora" ColumnName="observacionBitacora" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BitacoraDocumentos">
+            <EntityTypeMapping TypeName="SCJ_BDModel.BitacoraDocumento">
+              <MappingFragment StoreEntitySet="BitacoraDocumentos">
+                <ScalarProperty Name="idBitacora" ColumnName="idBitacora" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="tipoMovimiento" ColumnName="tipoMovimiento" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
+                <ScalarProperty Name="idTipo" ColumnName="idTipo" />
+                <ScalarProperty Name="idOrigen" ColumnName="idOrigen" />
+                <ScalarProperty Name="tipoOrigen" ColumnName="tipoOrigen" />
+                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+                <ScalarProperty Name="idReferencia" ColumnName="idReferencia" />
+                <ScalarProperty Name="numeroDocumento" ColumnName="numeroDocumento" />
+                <ScalarProperty Name="numeroIngreso" ColumnName="numeroIngreso" />
+                <ScalarProperty Name="fechaDocumento" ColumnName="fechaDocumento" />
+                <ScalarProperty Name="asunto" ColumnName="asunto" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="ubicacion" ColumnName="ubicacion" />
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+                <ScalarProperty Name="observacionBitacora" ColumnName="observacionBitacora" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BitacoraPersonas">
+            <EntityTypeMapping TypeName="SCJ_BDModel.BitacoraPersona">
+              <MappingFragment StoreEntitySet="BitacoraPersonas">
+                <ScalarProperty Name="idBitacora" ColumnName="idBitacora" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="tipoMovimiento" ColumnName="tipoMovimiento" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="idPersona" ColumnName="idPersona" />
+                <ScalarProperty Name="idTipo" ColumnName="idTipo" />
+                <ScalarProperty Name="cedula" ColumnName="cedula" />
+                <ScalarProperty Name="nombreCompleto" ColumnName="nombreCompleto" />
+                <ScalarProperty Name="RepresentanteSocial" ColumnName="RepresentanteSocial" />
+                <ScalarProperty Name="RepresentanteLegal" ColumnName="RepresentanteLegal" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+                <ScalarProperty Name="observacionBitacora" ColumnName="observacionBitacora" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Casos">
+            <EntityTypeMapping TypeName="SCJ_BDModel.Caso">
+              <MappingFragment StoreEntitySet="Casos">
+                <ScalarProperty Name="idCaso" ColumnName="idCaso" />
+                <ScalarProperty Name="idPersona" ColumnName="idPersona" />
+                <ScalarProperty Name="idTipo" ColumnName="idTipo" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+                <ScalarProperty Name="tipoLitigante" ColumnName="tipoLitigante" />
+                <ScalarProperty Name="numeroCaso" ColumnName="numeroCaso" />
+                <ScalarProperty Name="materia" ColumnName="materia" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Destinatarios">
+            <EntityTypeMapping TypeName="SCJ_BDModel.Destinatario">
+              <MappingFragment StoreEntitySet="Destinatarios">
+                <ScalarProperty Name="idDestinatario" ColumnName="idDestinatario" />
+                <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
+                <ScalarProperty Name="idTipoDestino" ColumnName="idTipoDestino" />
+                <ScalarProperty Name="numeroDestinatario" ColumnName="numeroDestinatario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Documentos">
+            <EntityTypeMapping TypeName="SCJ_BDModel.Documento">
+              <MappingFragment StoreEntitySet="Documentos">
+                <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
+                <ScalarProperty Name="idTipo" ColumnName="idTipo" />
+                <ScalarProperty Name="idOrigen" ColumnName="idOrigen" />
+                <ScalarProperty Name="tipoOrigen" ColumnName="tipoOrigen" />
+                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+                <ScalarProperty Name="idReferencia" ColumnName="idReferencia" />
+                <ScalarProperty Name="numeroDocumento" ColumnName="numeroDocumento" />
+                <ScalarProperty Name="numeroIngreso" ColumnName="numeroIngreso" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="asunto" ColumnName="asunto" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="ubicacion" ColumnName="ubicacion" />
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Personas">
+            <EntityTypeMapping TypeName="SCJ_BDModel.Persona">
+              <MappingFragment StoreEntitySet="Personas">
+                <ScalarProperty Name="idPersona" ColumnName="idPersona" />
+                <ScalarProperty Name="idTipo" ColumnName="idTipo" />
+                <ScalarProperty Name="cedula" ColumnName="cedula" />
+                <ScalarProperty Name="nombreCompleto" ColumnName="nombreCompleto" />
+                <ScalarProperty Name="RepresentanteSocial" ColumnName="RepresentanteSocial" />
+                <ScalarProperty Name="RepresentanteLegal" ColumnName="RepresentanteLegal" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="SCJ_BDModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="idRol" ColumnName="idRol" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TablaGenerals">
+            <EntityTypeMapping TypeName="SCJ_BDModel.TablaGeneral">
+              <MappingFragment StoreEntitySet="TablaGeneral">
+                <ScalarProperty Name="idTablaGeneral" ColumnName="idTablaGeneral" />
+                <ScalarProperty Name="tabla" ColumnName="tabla" />
+                <ScalarProperty Name="campo" ColumnName="campo" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="SCJ_BDModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+                <ScalarProperty Name="usuario1" ColumnName="usuario" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CasoDocumento" TypeName="SCJ_BDModel.CasoDocumento" StoreEntitySet="CasoDocumento">
+            <EndProperty Name="Casos">
+              <ScalarProperty Name="idCaso" ColumnName="idCaso" />
+            </EndProperty>
+            <EndProperty Name="Documentos">
+              <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="UsuarioRol" TypeName="SCJ_BDModel.UsuarioRol" StoreEntitySet="UsuarioRol">
+            <EndProperty Name="Roles">
+              <ScalarProperty Name="idRol" ColumnName="idRol" />
+            </EndProperty>
+            <EndProperty Name="Usuarios">
+              <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

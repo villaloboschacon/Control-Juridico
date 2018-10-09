@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Content/js/script.js"></script>
+    <link href="@Url.Content("~/Content/css/style.css")" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" type="image/png" href="~/Content/img/icon.ico" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <title>Index</title>
+</head>
+<body>
+    <div class="title" align="center"> Centro de Ayuda</div>
+
+    <div class="widgettablet">
+        
+            <table class="table">
+                <tr class="title">
+                        <th>Preguntas</th>
+                        <th>Informacion</th>
+                </tr>
+
+                <tr>
+                    <td>¿Cómo agregar un Oficio?</td>
+                    <td><a href="#">Video</a> | <a href="#">Instrucciones</a> </td>
+                </tr>
+
+                <tr>
+                    <td>¿Cómo agregar un Expediente?</td>
+                    <td><a href="#">Video</a> | <a href="#">Instrucciones</a> </td>
+
+                </tr>
+                <tr>
+                    <td>¿Cómo agregar un Persona?</td>
+                    <td><a href="#">Video</a> | <a href="#">Instrucciones</a> </td>
+                </tr>
+                <tr>
+                    <td>¿Cómo agregar un Proceso?</td>
+                    <td><a href="#">Video</a> | <a href="#">Instrucciones</a> </td>
+
+                </tr>
+            </table>
+       
+
+        <a href="@Url.Action("About","MasterPage")">Acerca de SCJ </a>
+
+    </div>
+</body>
+</html>
