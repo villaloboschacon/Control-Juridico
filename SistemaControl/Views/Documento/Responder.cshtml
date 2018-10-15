@@ -1,0 +1,83 @@
+﻿@model BackEnd.Model.Documento
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title" id="exampleModalLabel">Respuesta a:</span>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div id="contenidoModal">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    int i = 0;
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.idDocumento)
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.numeroDocumento, "Documento Vinculado:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                                @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.idTipo, "Tipo de Documento:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.idTipo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.fecha, "Fecha:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.fecha, new { @type = "date", @class = "form-control datepicker" @*@Va,lue = Model.fecha.ToString("yyyy-MM-dd") *@})
+                                @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.asunto, "Asunto:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.asunto, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.asunto, "", new { @class = "text-danger" })
+                            </div>
+                        </div>  
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ubicacion, "Ubicación:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.observacion, 10, 62, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                }
+                <input type="file" name="elementName" multiple="multiple" />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Cerrar</a></button>
+            <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Guardar cambios</a></button>
+        </div>
+    </div>
+</div>
