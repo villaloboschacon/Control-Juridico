@@ -43,6 +43,21 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                @Html.LabelFor(model => model.tipoOrigen, "Tipo de origen:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("tipoOrigen", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.tipoOrigen, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.idOrigen, "Origen:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("idOrigen", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.idOrigen, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 @Html.LabelFor(model => model.fecha, "Fecha:", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.TextBoxFor(model => model.fecha, new { @type = "date", @class = "form-control datepicker"@*, @Value = Model.fecha.ToString("yyyy-MM-dd")*@})
@@ -82,14 +97,116 @@
                             </div>
                         </div>
                     }
-                    <input type="file" name="elementName" multiple="multiple" />
 
-                </div>
+                </div> 
+
+                <input type="file" name="elementName" multiple="multiple" />
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Cerrar</a></button>
+                    <a href="#" onclick=
+                       "Edit(@Html.DisplayFor(modelItem => modelItem.idDocumento),
+                               @Html.DisplayFor(modelItem => modelItem.idTipo), 
+                               @Html.DisplayFor(modelItem => modelItem.idOrigen),  
+                               @Html.DisplayFor(modelItem => modelItem.tipoOrigen),  
+                               @Html.DisplayFor(modelItem => modelItem.idEstado),                                                           
+                               @Html.DisplayFor(modelItem => modelItem.idReferencia),
+                               '@Html.DisplayFor(modelItem => modelItem.numeroDocumento)',
+                               @Html.DisplayFor(modelItem => modelItem.numeroIngreso),
+                               '@Html.DisplayFor(modelItem => modelItem.fecha)',
+                               '@Html.DisplayFor(modelItem => modelItem.asunto)',
+                               '@Html.DisplayFor(modelItem => modelItem.descripcion)',
+                               '@Html.DisplayFor(modelItem => modelItem.ubicacion)',
+                               '@Html.DisplayFor(modelItem => modelItem.observacion)')"
+                       class="btnEdit" data-id="@Html.DisplayFor(modelItem => modelItem.idDocumento)" data-toggle="modal" data-target="#editarModal" id="btnEdit">Editar</a>
+                    <button type="submit" class="btn btn-primary" onclick="Edit(@Html.DisplayFor(modelItem => modelItem.idDocumento),
+                               @Html.DisplayFor(modelItem => modelItem.idTipo), 
+                               @Html.DisplayFor(modelItem => modelItem.idOrigen),  
+                               @Html.DisplayFor(modelItem => modelItem.tipoOrigen),  
+                               @Html.DisplayFor(modelItem => modelItem.idEstado),                                                           
+                               @Html.DisplayFor(modelItem => modelItem.idReferencia),
+                               '@Html.DisplayFor(modelItem => modelItem.numeroDocumento)',
+                               @Html.DisplayFor(modelItem => modelItem.numeroIngreso),
+                               '@Html.DisplayFor(modelItem => modelItem.fecha)',
+                               '@Html.DisplayFor(modelItem => modelItem.asunto)',
+                               '@Html.DisplayFor(modelItem => modelItem.descripcion)',
+                               '@Html.DisplayFor(modelItem => modelItem.ubicacion)',
+                               '@Html.DisplayFor(modelItem => modelItem.observacion)')"
+                       class="btnEdit" data-id="@Html.DisplayFor(modelItem => modelItem.idDocumento)"><a style="color:white;" href="/Documento/Index">Cerrar</a></button>
                     <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Guardar cambios</a></button>
-
                 </div>
             </div>
         </div>
     </div>
+<script type="text/javascript">
+    function Edit(idDocumento, idTipo, idOrigen,tipoOrigen,idEstado, idReferencia, numeroDocumento, numeroIngreso, fecha, asunto, descripcion, ubicacion,observacion) {
+        var Documentos = {
+            idDocumento: idDocumento,
+            idTipo : idTipo,
+            idOrigen : idOrigen,
+            tipoOrigen : tipoOrigen,
+            idEstado : idEstado,
+            idReferencia : idReferencia,
+            numeroDocumento :numeroDocumento,
+            numeroIngreso : numeroIngreso,
+            fecha : fecha,
+            asunto : asunto,
+            descripcion : descripcion,
+            ubicacion : ubicacion,
+            observacion : observacion
+        };
+
+        var documento = JSON.stringify(Documentos);
+        console.log(documento);
+        var url = '@Url.Action("EditarDocumento")';
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            data: { 'documento': Documentos },
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (result) {
+                console.log(Documentos.numeroDocumento);
+                alert('sucess');
+                location.reload();
+            },
+            error: function (xhr) {
+                alert('error' + Documentos.numeroIngreso);
+                location.reload();
+            }
+        });
+    }
+
+
+        $(document).ready(function () {  
+        //Dropdownlist Selectedchange event  
+            $("#tipoOrigen").change(function () {  
+                $("#idOrigen").empty();  
+            $.ajax({  
+                type: 'POST',  
+                url: '@Url.Action("GetTipoOrigen")', // we are calling json method  
+   
+                dataType: 'json',  
+   
+                data: { id: $("#tipoOrigen").val() },   
+   
+                success: function (origins) {  
+   
+                    $.each(origins, function (i, state) {  
+                        $("#idOrigen").append('<option value="' + origins.Value + '">' +    
+                         state.Text + '</option>');                                                                                                     
+                    });  
+                },  
+                error: function (ex) {  
+                    alert('Failed to retrieve states.' + ex);  
+                }  
+            });  
+            return false;  
+        })  
+    });  
+    $(document).ready(function () {  
+        $("#idTipo").change(function () {
+            var a = $("#idTipo Option:Selected").text();
+            $("Oficio").text(a);
+    })  
+});  
+</script>

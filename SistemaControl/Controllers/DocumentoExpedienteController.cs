@@ -57,12 +57,6 @@ namespace SistemaControl.Controllers
                 PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, page, pageSize);
                 return View(model);
             }
-            //else if (option == "Fecha")
-            //{
-            //    List<Documento> listaDocumentos = documentoBll.Find(x => x.fecha == DateTime.TryParseExact(search, "yyyy-MM-dd HH:mm:ss,fff") && x.idDocumento == 5 || search == null).ToList();
-            //    PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, page, pageSize);
-            //    return View(model);
-            //}
             else
             {
                 ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");

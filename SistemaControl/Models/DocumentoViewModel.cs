@@ -35,7 +35,7 @@ namespace FrontEnd.Models
         [Required(ErrorMessage = "Debe digitar el numero de ingreso")]
         public string numeroIngreso { get; set; }
 
-        [Display(Name = "Fecha:")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public System.DateTime fecha { get; set; }
 

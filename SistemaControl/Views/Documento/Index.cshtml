@@ -6,10 +6,12 @@
 }
 @*SCRIPT PARA EL EDITOR DE TEXTO*@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="~/Content/js/site.js"></script>
+<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <link href="~/Content/css/style.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="~/Content/ckeditor2/ckeditor.js"></script>
+<script src="~/Content/js/site.js"></script>
 
 <div class="title">Oficios</div>
 
@@ -20,7 +22,8 @@
             <div class="title">
                 <span class="form-inline">
                     <i class="fa fa-search" aria-hidden="true"></i>
-                    @Html.TextBox("search") <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
+                    @Html.TextBox("search")
+                    <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
                 </span>
                 <div style="color:black; font-size:14px;">
                     <b> Opciones de busqueda: </b>
@@ -31,47 +34,68 @@
                 </div>
             </div>
         </div>
-
     }
     <table class="table table-bordered">
-        <tr class="trfirst">
-            <th>Número de oficio</th>
-            <th>Número de Ingreso</th>
-            <th>Fecha</th>
+        <tr>
+            <th>
+                @Html.ActionLink("Número de oficio", "Index", new { sortOrder = ViewBag.NumeroOficio })
+            </th>
+            <th>
+                @Html.ActionLink("Número de Ingreso", "Index", new { sortOrder = ViewBag.Ingreso })
+
+            </th>
+            <th>
+                @Html.ActionLink("Fecha", "Index", new { sortOrder = ViewBag.FechaDeIngreso })
+            </th>
             <th>Asunto</th>
             <th>Descripción</th>
             <th>Observación</th>
             <th></th>
         </tr>
-        @foreach (var item in Model)
+        @if (Model.Count() == 0)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.numeroDocumento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.numeroIngreso)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.fecha)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.asunto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.descripcion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.observacion)
-            </td>
-            <td>
-                <a href="#" onclick="Reply(@item.idDocumento)" id="btnEdit" class="btnEdit" data-value="@item.idDocumento" data-toggle="modal" data-target="#responderModal">Responder</a> |
-                <a href="#" onclick="Edit(@item.idDocumento)" class="btnEdit" data-id="@item.idDocumento" data-toggle="modal" data-target="#editarModal" id="btnEdit">Editar</a>
-            </td>
-        </tr>
+            <tr><td align="center" colspan="7">No hay registros que coincidan con la busqueda.</td></tr>
         }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.numeroDocumento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.numeroIngreso)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fecha)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.asunto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.observacion)
+                    </td>
+                    <td>
+                        <a href="#" onclick="Reply(@item.idDocumento)" id="btnEdit" class="btnEdit" data-value="@item.idDocumento" data-toggle="modal" data-target="#responderModal">Responder</a> |
+                        <a href="#" onclick="Edit(@item.idDocumento)" class="btnEdit" data-id="@item.idDocumento" data-toggle="modal" data-target="#editarModal" id="btnEdit">Editar</a>
+                    </td>
+                </tr>
+            }
+        }
+
+
+
+
     </table>
-    <div>    <a href="#" onclick="Crear()" class="btnEdit" data-toggle="modal" data-target="#crearModal" id="btnEdit">Crear oficio</a></div>
+    <div>
+        <a href="#" onclick="Crear()" class="btnEdit" data-toggle="modal" data-target="#crearModal" id="btnEdit">Crear oficio</a>
+    </div>
+    <br />
+
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
     Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount documentos
     <br />
@@ -85,6 +109,11 @@
 </div>
 
 <script>
+    $(document).ready(function () {
+        $('#cacas').autocomplete({
+            source: '@Url.Action("Search","Documento")'
+        });
+    });
     function Crear() {
         var url = '@Url.Action("Crear")';
         $.ajax({
