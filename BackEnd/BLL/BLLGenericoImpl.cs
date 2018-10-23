@@ -173,5 +173,25 @@ namespace BackEnd.BLL
                 return e.Message;
             }
         }
+        public bool Check(string idDocumento)
+        {
+            try
+            {
+                List<T> resultado;
+                using (unidad = new UnidadDeTrabajo<T>(new SCJ_BDEntities()))
+                {
+                    resultado = unidad.genericDAL.GetAll().ToList();
+                }
+                foreach(T entidad in resultado)
+                {
+                   
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

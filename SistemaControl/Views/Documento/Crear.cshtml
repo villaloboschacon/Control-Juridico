@@ -1,15 +1,30 @@
-﻿@model BackEnd.Model.Documento
+﻿@model SistemaControl.Models.DocumentoViewModel
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <span class="modal-title" id="exampleModalLabel">Crear oficio</span>
+            <span class="modal-title" id="exampleModalLabel" style="text-align:center;">Crear documento</span>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <div id="contenidoModal">
-                @using (Html.BeginForm())
+                @using (Html.BeginForm("CrearDocumento", "Documento"))
                 {
                     @Html.AntiForgeryToken()
                     int i = 0;
@@ -17,53 +32,83 @@
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         @Html.HiddenFor(model => model.idDocumento)
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.numeroDocumento, "Número de Oficio:", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.numeroIngreso, "Oficio:", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                <textarea id="text"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.numeroIngreso, "Número de Ingreso:", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.numeroIngreso, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.numeroIngreso, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.idTipo, "Tipo de Documento:", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control", onchange = "AdditionalsChanged()" })
+                                @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.idTipo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.numeroDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { @class = "form-control", placeholder = "MA-PSJ-#####-2018", autocomplete = "off", @id = "numeroDocumento" } })
+                                @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group" id="numIngreso">
+                            @Html.LabelFor(model => model.numeroIngreso, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.numeroIngreso, new { htmlAttributes = new { @class = "form-control", placeholder = "N.I.####-2018", autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.numeroIngreso, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.idEstado, "Estado", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("idEstado", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.idEstado, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.tipoOrigen, "Tipo de origen:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("tipoOrigen", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.tipoOrigen, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.tipoOrigen, "Origen:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("idOrigen", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.idOrigen, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.fecha, "Fecha:", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.TextBoxFor(model => model.fecha, new { @type = "date", @class = "form-control datepicker"@*, @Value = Model.fecha.ToString("yyyy-MM-dd")*@})
+                                @Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @class = "form-control", @Id = "datepicker" } })
                                 @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
                             </div>
                         </div>
+
                         <div class="form-group">
-                            @Html.LabelFor(model => model.asunto, "Asunto:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.asunto, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.asunto, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.asunto, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
                         <div class="form-group" id="Expediente">
-                            @Html.LabelFor(model => model.ubicacion, "Ubicación:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.ubicacion, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
@@ -71,65 +116,329 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.TextAreaFor(model => model.descripcion, 10, 52, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.observacion, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.TextAreaFor(model => model.observacion, 10, 62, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
-                }
-                
-                <div class="form-group">
-                    <div class="btn btn-primary">
-                        <input type="file" id="imageBrowes" multiple="multiple" />
+                    <div class="form-group">
+                        <div class="btn btn-primary">
+                            <div class="col-md-10">
+                            </div>
+                            <input type="file" id="imageBrowes" multiple="multiple" />
+                        </div>
+                        <div id="imgPreview" class="thumbnail" style="display:none">
+                            <img class="img-responsive" id="targetImg" />
+                            <div class="caption">
+                                <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
+                                <span id="description"></span>
+                            </div>
+                        </div>
+
                     </div>
-
-
-                    <div id="imgPreview" class="thumbnail" style="display:none">
-                        <img class="img-responsive" id="targetImg" />
-                        <div class="caption">
-                            <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
-                            <span id="description"></span>
+                    <div class="modal-footer">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Crear documento" class="btn btn-default" />
+                            <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Cerrar</a></button>
                         </div>
                     </div>
+                }
 
-                </div>
-                @*<div id="imgPreview2" class="thumbnail" style="display:none">
-            <img class="img-responsive" id="targetImg2" />
-            <div class="caption">
-                <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
-                <span id="description"></span>
-            </div>
-        </div>
-        <div class="preview-area"></div>
-        <div class="caption">
-            <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
-            <span id="description"></span>
-        </div>*@
-
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Cerrar</a></button>
-                    <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Guardar cambios</a></button>
-                </div>
             </div>
         </div>
     </div>
 </div>
-<script>
-    CKEDITOR.replace("text");
-</script>
-<script src="~/Scripts/jquery-3.3.1.min.js"></script>
-<script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#Expediente").hide();
+        initComponent();
+    });
+
+
+    //function initComponent() {
+    //    $('#fecha').datepicker({
+    //        dateFormat: 'dd-mm-yy',
+    //        changeMonth: true,
+    //        changeYear: true,
+    //        closeText: 'Cerrar',
+    //        minDate: "-40Y",
+    //        maxDate: "+1Y",
+    //        yearRange: '1910:2018',
+
+    //        prevText: '< Ant',
+    //        nextText: 'Sig >',
+    //        regional: 'es',
+    //        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    //        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+    //        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    //        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+    //        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+    //        weekHeader: 'Sm',
+    //    });
+    //    $('#fecha').datepicker({
+    //        dateFormat: 'dd-mm-yy',
+    //        changeMonth: true,
+    //        changeYear: true,
+    //        closeText: 'Cerrar',
+    //        minDate: "-40Y",
+    //        maxDate: "+4Y",
+    //        yearRange: '1980:2020',
+
+    //        prevText: '< Ant',
+    //        nextText: 'Sig >',
+    //        regional: 'es',
+    //        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    //        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+    //        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    //        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+    //        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+    //        weekHeader: 'Sm',
+    //    });
+
+    //    $('#fecha').datepicker({
+    //        dateFormat: 'dd-mm-yy',
+    //        changeMonth: true,
+    //        changeYear: true,
+    //        closeText: 'Cerrar',
+    //        minDate: "-40Y",
+    //        maxDate: "+10Y",
+    //        yearRange: '1980:2030',
+
+    //        prevText: '< Ant',
+    //        nextText: 'Sig >',
+    //        regional: 'es',
+    //        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    //        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+    //        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    //        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+    //        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+    //        weekHeader: 'Sm',
+
+
+    //    });
+
+    //};
+
+
+
+
+
+
+
+    $('#numeroDocumento').keydown(function (e) {
+        var key = e.key;
+        var code = e.keyCode;
+        var doc = $('#numeroDocumento').val();
+        var comTotal = /MA-PSJ-[0-9]{4}-2018|EXP-MA-[0-9]{4}$/;
+        var pat = /MA-PSJ-[0-9]{3}$/;
+        var expreg = /MA-PSJ-[0-9]{4}$/;
+
+        if (comTotal.test(doc) && code != 8 && code != 13&& code != 9) {
+            event.preventDefault();
+        }
+        else {
+            if ((code > 47 && code < 58) || /* numeric (0-9) (code > 64 && code < 91) || /* upper alpha (A-Z)*/ (code > 96 && code < 105))// lower alpha (a-z)
+            {
+                if ($('#idTipo').val() == "4")
+                {
+                    if (!doc.includes('EXP-MA-')) {
+                        $('#numeroDocumento').val('EXP-MA-');
+                    }
+                    else {
+                        $('#numeroDocumento').val(doc);
+                    }
+                }
+                else
+                {
+                    if (!doc.includes('MA-PSJ-')) {
+                        $('#numeroDocumento').val('MA-PSJ-');
+                    }
+                    else {
+                        $('#numeroDocumento').val(doc);
+                    }
+                }
+            }
+            else if (code == 8) {
+                var del = /2018$/;
+
+                if (del.test(doc)) {
+                    doc = doc.substring(0, doc.length - 5);
+                    $('#numeroDocumento').val(doc);
+                }
+                else {
+                    if (doc.length < 8) {
+
+                        if ($('#idTipo').val() == "4") {
+                            if (!doc.includes('EXP-MA-')) {
+                                $('#numeroDocumento').val('EXP-MA-');
+                            }
+                            else {
+                                $('#numeroDocumento').val(doc);
+                                event.preventDefault();
+                            }
+                        }
+                        else {
+                            if (!doc.includes('MA-PSJ-')) {
+                                $('#numeroDocumento').val('MA-PSJ-');
+                            }
+                            else if(doc.includes('MA-PSJ-') && key == 'Backspace') {
+                                $('#numeroDocumento').val('MA-PSJ-');
+                                event.preventDefault();
+                            }
+                        }
+                    }
+                }
+            }
+            else if ((code > 64 && code < 91)) {
+                swal("¡Carácter invalido!", 'solo se permiten caracteres numéricos.', "error");
+                event.preventDefault();
+            }
+            if (pat.test(doc)) {
+                if ((code > 47 && code < 58) || (code > 96 && code < 105)) {
+                    $('#numeroDocumento').val(doc + key + '-' + (new Date()).getFullYear());
+                    event.preventDefault();
+                }
+            }
+            else if (expreg.test(doc)) {
+
+                if (code != 8) {
+                    $('#numeroDocumento').val(doc + '-' + (new Date()).getFullYear());
+                    event.preventDefault();
+                }
+            }
+        }
+    }
+    );
+    $('#numeroIngreso').keypress(function (e) {
+        var key = e.key;
+        var code = e.keyCode;
+        var doc = $('#numeroIngreso').val();
+        var comTotal = /N.I.[0-9]{4}-2018$/;
+        var pat = /N.I.[0-9]{4}$/;
+        var expreg = /N.I.[0-9]{3}$/;
+        debugger;
+        if (comTotal.test(doc) && code != 8 && code != 13 && code != 9) {
+            event.preventDefault();
+        }
+        else {
+            if ((code > 47 && code < 58) || /* numeric (0-9) (code > 64 && code < 91) || /* upper alpha (A-Z)*/ (code > 96 && code < 105))// lower alpha (a-z)
+            {
+                if (!doc.includes('N.I.')) {
+
+                    $('#numeroIngreso').val('N.I.');
+                }
+                else {
+                    $('#numeroIngreso').val(doc);
+                }
+            }
+            else if (code == 8) {
+                var del = /2018$/;
+                debugger;
+                if (del.test(doc)) {
+                    doc = doc.substring(0, doc.length - 5);
+                    $('#numeroIngreso').val(doc);
+                }
+                else {
+                    if (doc.length < 5) {
+                        debugger;
+                        if (!doc.includes('N.I.')) {
+                            $('#numeroIngreso').val('N.I.');
+                        }
+                        else if (doc.includes('N.I.') && key == 'Backspace') {
+                            $('#numeroIngreso').val('N.I.');
+                            event.preventDefault();
+                        }
+                    }
+                }
+            }
+            else if ((code > 64 && code < 91)) {
+                swal("¡Carácter invalido!", 'solo se permiten caracteres numéricos.', "error");
+                event.preventDefault();
+            }
+            if (pat.test(doc)) {
+                if ((code > 47 && code < 58) || (code > 96 && code < 105)) {
+                    $('#numeroIngreso').val(doc + key + '-' + (new Date()).getFullYear());
+                    event.preventDefault();
+                }
+            }
+            else if (expreg.test(doc)) {
+                if (code != 8) {
+                    $('#numeroIngreso').val(doc + '-' + (new Date()).getFullYear());
+                    event.preventDefault();
+                }
+            }
+        }
+    }
+    );
+    $('#idTipo').change(function ()
+    {
+        if ($('#idTipo').val() == "4") {
+            $('#numeroDocumento').attr('placeholder', 'EXP-MA-####');
+            $('#Expediente').show();
+            $('#numIngreso').show();
+            $('#numeroDocumento').val('');
+        }
+        else if ($('#idTipo').val() == "3") {
+            $('#numeroDocumento').attr('placeholder', 'MA-PSJ-####-2018');
+            $('#Expediente').hide();
+            $('#numIngreso').show();
+            $('#numeroDocumento').val('');
+        }
+        else
+        {
+            $('#numeroDocumento').attr('placeholder', 'MA-PSJ-####-2018');
+            $('#numIngreso').hide();
+            $('#Expediente').hide();
+            $('#numeroDocumento').val('');
+        }
+    }
+    );
+
+$(document).ready(function () {
+//Dropdownlist Selectedchange event
+    $("#tipoOrigen").change(function () {
+        $("#idOrigen").empty();
+    $.ajax({
+        type: 'POST',
+        url: '@Url.Action("GetTipoOrigen")', // we are calling json method
+        dataType: 'json',
+        data: { id: $("#tipoOrigen").val() },
+        success: function (origins) {
+            var data = origins.Id;
+            var another = origins.Data;
+            console.log(another[0].Value);
+            $.each(another, function (i, state) {
+                $("#idOrigen").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                $('#idOrigen').val(state[0].Value);
+                console.log(state[0].Value);
+            });
+        },
+        error: function (ex) {
+            alert('Failed to retrieve states.' + ex);
+        }
+    });
+    return false;
+})
+    //$('#idOrigen').hide();
+    //$('#numeroIngreso').hide();
+    //$('#tipoOrigen').change(function () {
+    //    var URL = $('#GetTipoOrigen').data('GetTipoOrigen');
+    //    $.getJSON(URL + '/' + $('#tipoOrigen').val(), function (data) {
+    //        var items = '<option>Select a State</option>';
+    //        $.each(data, function (i, state) {
+    //            items += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+    //            // state.Value cannot contain ' character. We are OK because state.Value = cnt++;
+    //        });
+    //        $('#StatesID').html(items);
+    //        $('#idOrigen').show();
+    //    });
+    //});
+    //$('#idOrigen').change(function () {
+    //    $('#numeroIngreso').show();
+    //});
+});
 
     $(document).ready(function () {
 
@@ -188,10 +497,6 @@
 
     }
 
-
-    window.onload = function () {
-        $(".Expediente").hide();
-    }
     $(document).ready(function () {
         $("#idTipo").change(function () {
             var a = $("#idTipo Option:Selected").text();
@@ -214,19 +519,6 @@
                 });
             });
 
-
-            //alert($('[id=Expediente]').length);
-            //alert($('[id=Oficio]').length);
-            //$(".Expediente").hide();
-            //$(".Oficio").show();
-            //var elements = document.getElementsByTagName("Oficio");
-            //for (var i = 0, length = elements.length; i < length; i++) {
-            //        elements[i].style.display = 'none';
-            //}
-            //var elements = document.getElementsByTagName("Expediente");
-            //for (var i = 0, length = elements.length; i < length; i++) {
-            //    elements[i].style.display = '';
-            //}
         } else {
             $(document).ready(function () {
                 $.each($('#Oficio'), function () {
@@ -236,19 +528,6 @@
                     $("#Expediente").hide();
                 });
             });
-
-            //alert($('[id=Expediente]').length);
-            //alert($('[id=Oficio]').length);
-            //$(".Oficio").hide();
-            //$(".Expediente").show();
-            //var elements = document.getElementsByTagName("Oficio");
-            //for (var i = 0, length = elements.length; i < length; i++) {
-            //    elements[i].style.display = '';
-            //}
-            //var elements = document.getElementsByTagName("Expediente");
-            //for (var i = 0, length = elements.length; i < length; i++) {
-            //    elements[i].style.display = 'none';
-            //}
         }
     }
 </script>

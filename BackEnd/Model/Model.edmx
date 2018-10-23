@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SCJ_BDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SCJ_BDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Adjuntos">
           <Key>
             <PropertyRef Name="idAdjuntos" />
@@ -647,8 +647,7 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
             <End Role="UsuarioRol" EntitySet="UsuarioRol" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SCJ_BDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -798,7 +797,7 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <NavigationProperty Name="Adjuntos" Relationship="Self.FK_Adjunto_Documentos" FromRole="Documentos" ToRole="Adjuntos" />
           <NavigationProperty Name="Destinatarios" Relationship="Self.FK_Destinatario_Documento" FromRole="Documentos" ToRole="Destinatarios" />
           <NavigationProperty Name="TablaGeneral" Relationship="Self.FK_Documento_Estado" FromRole="Documentos" ToRole="TablaGeneral" />
-          <NavigationProperty Name="TablaGeneral1" Relationship="Self.FK_Documento_Origen" FromRole="Documentos" ToRole="TablaGeneral" />
+          <NavigationProperty Name="Origen" Relationship="Self.FK_Documento_Origen" FromRole="Documentos" ToRole="TablaGeneral" />
           <NavigationProperty Name="TablaGeneral2" Relationship="Self.FK_Documento_TipoDocumento" FromRole="Documentos" ToRole="TablaGeneral" />
           <NavigationProperty Name="TablaGeneral3" Relationship="Self.FK_Documento_TipoOrigen" FromRole="Documentos" ToRole="TablaGeneral" />
           <NavigationProperty Name="Casos" Relationship="Self.CasoDocumento" FromRole="Documentos" ToRole="Casos" />

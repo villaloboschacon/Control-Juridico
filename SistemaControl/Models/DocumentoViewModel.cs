@@ -1,42 +1,45 @@
-﻿using System;
+﻿using BackEnd.BLL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
-namespace FrontEnd.Models
+namespace SistemaControl.Models
 {
     public class DocumentoViewModel
     {
         [Key]
         public int idDocumento { get; set; }
 
-        [Display(Name = "Tipo Documento:")]
-        public int idTipo { get; set; }
-        public IEnumerable<TipoDocumento> tiposDocumentos { get; set; }
+        public int? idTipo { get; set; }
 
-        [Display(Name = "Origen:")]
-        public int idOrigen { get; set; }
-        public IEnumerable<Origen> origenes { get; set; }
+        public int? idOrigen { get; set; }
 
-        [Display(Name = "Tipo Origen:")]
-        public int tipoOrigen { get; set; }
-        public IEnumerable<TipoOrigen> tiposOrigenes { get; set; }
+        public int? tipoOrigen { get; set; }
 
-        [Display(Name = "Estado:")]
-        public int idEstado { get; set; }
-        public IEnumerable<Estado> estados { get; set; }
+        public int? idEstado { get; set; }
 
-        [Display(Name = "Número de Documento:")]
-        [Required(ErrorMessage = "Debe digitar el numero de documento")]
+        [RegularExpression(@"MA-PSJ-[0-9]{4}-2018|EXP-MA-[0-9]{4}$", ErrorMessage = "Formato incorrecto.")]
+        [Required(ErrorMessage = "*Debe digitar el número de documento.")]
+        [StringLength(17, MinimumLength = 11, ErrorMessage = "* El número de documento debe tener al menos 11 caracteres.")]
+        [Display(Name = "Número de Documento ")]
+        [Remote("ComprobarDocumento", "Documento")]
         public string numeroDocumento { get; set; }
 
-        [Display(Name = "Número de Ingreso:")]
-        [Required(ErrorMessage = "Debe digitar el numero de ingreso")]
+        [RegularExpression(@"N.I.[0-9]{4}-2018", ErrorMessage = "Formato incorrecto.")]
+        [Required(ErrorMessage = "*Debe digitar el número de ingreso.")]
+        [StringLength(14, MinimumLength = 13, ErrorMessage = "* El número de documento debe tener al menos 13 caracteres.")]
+        [Remote("ComprobarIngreso", "Documento")]
+        [Display(Name = "Número de Ingreso")]
         public string numeroIngreso { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        //[Range(typeof(DateTime), "10/19/2018", "10/30/2018",
+        //ErrorMessage = "El valor {0} debe estar {1} y {2}")]
         [DataType(DataType.Date)]
+        //public DateTime fecha { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime fecha { get; set; }
 
         [Display(Name = "Asunto:")]
@@ -50,30 +53,6 @@ namespace FrontEnd.Models
 
         [Display(Name = "Observación:")]
         public string observacion { get; set; }
-    }
 
-    public class TipoDocumento
-    {
-        public int Id { get; set; }
-        public String Name { get; set; }
     }
-
-    public class Origen
-    {
-        public int Id { get; set; }
-        public String Name { get; set; }
-    }
-
-    public class TipoOrigen
-    {
-        public int Id { get; set; }
-        public String Name { get; set; }
-    }
-
-    public class Estado
-    {
-        public int Id { get; set; }
-        public String Name { get; set; }
-    }
-
 }

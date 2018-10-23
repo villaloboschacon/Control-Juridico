@@ -4,16 +4,35 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link type="text/css" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
 @*SCRIPT PARA EL EDITOR DE TEXTO*@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></>
 <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <link href="~/Content/css/style.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="~/Content/ckeditor2/ckeditor.js"></script>
+@*<script src="~/Content/ckeditor2/ckeditor.js"></script>*@
 <script src="~/Content/js/site.js"></script>
+<script src="~/Content/js/CrearJS.js"></script>
 
-<div class="title">Oficios</div>
+
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+@*<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>*@
+
+
+
+
+
+
+
+
+
+<div class="title" style="text-align:center;">Oficios</div>
 
 <div class="container" style="margin-top:20px">
     @using (Html.BeginForm("Index", "Documento", FormMethod.Get))
@@ -42,10 +61,19 @@
             </th>
             <th>
                 @Html.ActionLink("Número de Ingreso", "Index", new { sortOrder = ViewBag.Ingreso })
-
             </th>
             <th>
                 @Html.ActionLink("Fecha", "Index", new { sortOrder = ViewBag.FechaDeIngreso })
+            </th>
+            <th>
+                Tipo de origen
+            </th>
+            <th>
+                Origen
+            </th>
+
+            <th>
+                Estado
             </th>
             <th>Asunto</th>
             <th>Descripción</th>
@@ -71,6 +99,15 @@
                         @Html.DisplayFor(modelItem => item.fecha)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.TablaGeneral.descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TablaGeneral2.descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TablaGeneral3.descripcion)
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.asunto)
                     </td>
                     <td>
@@ -86,13 +123,9 @@
                 </tr>
             }
         }
-
-
-
-
     </table>
     <div>
-        <a href="#" onclick="Crear()" class="btnEdit" data-toggle="modal" data-target="#crearModal" id="btnEdit">Crear oficio</a>
+        <a href="#" onclick="Crear()" class="btnEdit" data-toggle="modal" data-target="#crearModal" id="btnEdit">Crear documento</a>
     </div>
     <br />
 
@@ -107,13 +140,9 @@
 </div>
 <div id="responderModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="responderModal" aria-hidden="true" style="position: fixed">
 </div>
-
+<div id="crearValidate" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crearValidate" aria-hidden="true" style="position: fixed">
+</div>
 <script>
-    $(document).ready(function () {
-        $('#cacas').autocomplete({
-            source: '@Url.Action("Search","Documento")'
-        });
-    });
     function Crear() {
         var url = '@Url.Action("Crear")';
         $.ajax({
@@ -126,10 +155,11 @@
                 $("#crearModal").html(data);
             },
             error: function (xhr) {
-                alert('error');
+                alert('error bien gay');
             }
         });
     }
+
     function Edit(iddocumento) {
         var url = '@Url.Action("Editar")';
         var myId = iddocumento;

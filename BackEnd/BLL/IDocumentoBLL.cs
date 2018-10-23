@@ -11,5 +11,7 @@ namespace BackEnd.BLL
     {
         bool Agregar(Documento documento);
         bool Modificar(Documento documento);
+        bool SaveChanges();
+        bool Comprobar(string idDocumento,int opcion);
     }
 }

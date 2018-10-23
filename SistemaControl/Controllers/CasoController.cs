@@ -17,15 +17,18 @@ namespace SistemaControl.Controllers
         public CasoController()
         {
             usuarioBLL = new UsuarioBLLImpl();
-            tablaGeneralBLL = new TablaGeneralBLLImpl();
+
             casoBLL = new CasoBLLImpl();
 
         }
         public ActionResult Index(string option, string search, int page = 1, int pageSize = 4)
         {
+            tablaGeneralBLL = new TablaGeneralBLLImpl();
             if (option == "Materia")
             {
                 List<Caso> listacaso = casoBLL.Find(x => x.materia == search && x.idCaso == 3 || search == null).ToList();
+
+
                 PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
                 return View(model);
             }
@@ -59,12 +62,20 @@ namespace SistemaControl.Controllers
             //    PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, page, pageSize);
             //    return View(model);
             //}
-            else { 
-            
+            else {
+
+
+                
                 ViewBag.tipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos","tipoLitigio"), "idTablaGeneral", "descripcion");
                 ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
                 ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+
                 List<Caso> listacaso = casoBLL.Find(x => search == null && x.idTipo == 19).ToList();
+                foreach (Caso caso in listacaso)
+                {
+                    tablaGeneralBLL = new TablaGeneralBLLImpl();
+                    caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);                    
+                }
                 PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
                 List<Caso> documento = casoBLL.GetAll();
                 return View(model);

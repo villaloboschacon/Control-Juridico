@@ -11,7 +11,8 @@ namespace BackEnd.Model
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Documento
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,19 +22,24 @@ namespace BackEnd.Model
             this.Destinatarios = new HashSet<Destinatario>();
             this.Casos = new HashSet<Caso>();
         }
-    
+
         public int idDocumento { get; set; }
         public int idTipo { get; set; }
         public int idOrigen { get; set; }
         public int tipoOrigen { get; set; }
         public Nullable<int> idEstado { get; set; }
         public Nullable<long> idReferencia { get; set; }
+        [Required(ErrorMessage = "El campo para el número de documento es obligatorio.")]
         public string numeroDocumento { get; set; }
+        [Required(ErrorMessage = "El campo para el número de ingreso es obligatorio.")]
         public string numeroIngreso { get; set; }
         public System.DateTime fecha { get; set; }
+        [Required(ErrorMessage = "El campo para el asunto es obligatorio.")]
         public string asunto { get; set; }
+        [Required(ErrorMessage = "El campo para la descripción es obligatorio.")]
         public string descripcion { get; set; }
         public string ubicacion { get; set; }
+        [Required(ErrorMessage = "El campo para la observación es obligatorio.")]
         public string observacion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -41,7 +47,7 @@ namespace BackEnd.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Destinatario> Destinatarios { get; set; }
         public virtual TablaGeneral TablaGeneral { get; set; }
-        public virtual TablaGeneral TablaGeneral1 { get; set; }
+        public virtual TablaGeneral Origen { get; set; }
         public virtual TablaGeneral TablaGeneral2 { get; set; }
         public virtual TablaGeneral TablaGeneral3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
