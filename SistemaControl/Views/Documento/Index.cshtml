@@ -4,6 +4,10 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
 <link type="text/css" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
@@ -143,6 +147,9 @@
 <div id="crearValidate" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crearValidate" aria-hidden="true" style="position: fixed">
 </div>
 <script>
+    $("#crearModal").scroll(function () {
+
+    }); 
     function Crear() {
         var url = '@Url.Action("Crear")';
         $.ajax({

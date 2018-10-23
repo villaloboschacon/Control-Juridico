@@ -21,7 +21,7 @@ namespace SistemaControl.Models
 
         public int? idEstado { get; set; }
 
-        [RegularExpression(@"MA-PSJ-[0-9]{4}-2018|EXP-MA-[0-9]{4}$", ErrorMessage = "Formato incorrecto.")]
+        [RegularExpression(@"MA-[A-Z]{3}-[0-9]{4}-2018$|EXP-MA-[0-9]{4}$", ErrorMessage = "Formato incorrecto.")]
         [Required(ErrorMessage = "*Debe digitar el número de documento.")]
         [StringLength(17, MinimumLength = 11, ErrorMessage = "* El número de documento debe tener al menos 11 caracteres.")]
         [Display(Name = "Número de Documento ")]

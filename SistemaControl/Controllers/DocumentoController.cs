@@ -207,10 +207,10 @@ namespace SistemaControl.Controllers
             }
 
         }
-        public JsonResult ComprobarIngreso(string numeroDocumento)
+        public JsonResult ComprobarIngreso(string numeroIngreso)
         {
             documentoBll = new DocumentoBLLImpl();
-            if (documentoBll.Comprobar(numeroDocumento,2))
+            if (documentoBll.Comprobar(numeroIngreso, 2))
             {
                 return Json(true, JsonRequestBehavior.AllowGet);
             }

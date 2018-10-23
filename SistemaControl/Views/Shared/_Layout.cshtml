@@ -1,23 +1,22 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,minimal-ui">
     <meta name="description" content="Admin, Dashboard, Semantic-ui">
-
-    <link href="~/Content/dist1/semantic.min.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width" />
+
+    <title>SISTEMA DE CONTROL JURIDICO</title>
+    <link href="~/Content/dist1/semantic.min.css" rel="stylesheet" />
     <link rel="shortcut icon" type="image/png" href="~/Content/img/icon.ico" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+
     <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
-    <title>SISTEMA DE CONTROL JURIDICO</title>
-    <link href="~/Content/css/style.css" rel="stylesheet" />
 
-    @*<link href="~/Content/css/golgi.css" rel="stylesheet" />*@
     <style>
         .marginlefting {
             margin-left: 60px !important;
@@ -55,7 +54,6 @@
             padding-bottom: 3.9px !important;
         }
     </style>
-
 </head>
 <body>
     <div class="ui sidebar vertical left menu overlay visible" style="-webkit-transition-duration: 0.1s; overflow: visible !important;background-color:#233245; width:200px">
@@ -106,8 +104,6 @@
             <a href="~/MasterPage/Ayuda" style="color:white;font-size:18px; font-family:sans-serif;  border-bottom: 1px solid #000;" class="title item">
                 <span><i class="fa fa-question-circle"></i></span> Ayuda 
             </a>
-
-
         </div>
     </div>
     <div class="pusher">
@@ -156,12 +152,12 @@
 
         $('.ui.accordion').accordion({
             selector: {
-
             }
         });
     </script>
     <div class="main-content">
         @RenderBody()
+        <p>Date: <input type="text" id="datepicker"></p>
     </div>
 </body>
 </html>

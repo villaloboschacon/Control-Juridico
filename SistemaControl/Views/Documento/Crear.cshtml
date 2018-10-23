@@ -1,15 +1,20 @@
 ﻿@model SistemaControl.Models.DocumentoViewModel
-<script src="~/Scripts/jquery-3.3.1.js"></script>
-<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
-<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-
-
-<script src="~/Scripts/jquery-3.3.1.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+@*
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+
+*@
+
+
+
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -41,7 +46,21 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.tipoOrigen, "Tipo de origen:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("tipoOrigen", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.tipoOrigen, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.tipoOrigen, "Origen:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("idOrigen", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.idOrigen, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.numeroDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -68,29 +87,20 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.tipoOrigen, "Tipo de origen:", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownList("tipoOrigen", null, htmlAttributes: new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.tipoOrigen, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.tipoOrigen, "Origen:", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownList("idOrigen", null, htmlAttributes: new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.idOrigen, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
                             @Html.LabelFor(model => model.fecha, "Fecha:", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @class = "form-control", @Id = "datepicker" } })
+                                @Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @class = "form-control" } })
+
                                 @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
+                        <div class="form-group" id="Expediente">
+                            @Html.LabelFor(model => model.ubicacion, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.asunto, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
@@ -102,23 +112,15 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.TextAreaFor(model => model.descripcion, 5, 62, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="Expediente">
-                            @Html.LabelFor(model => model.ubicacion, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.observacion, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.TextAreaFor(model => model.observacion, 10, 62, new { @class = "form-control" })
+                                @Html.TextAreaFor(model => model.observacion, 10, 62, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -150,90 +152,127 @@
         </div>
     </div>
 </div>
+<style>
+    .modal-open .ui-datepicker-div {
+        position: sticky;
+        top: 80px !important;
+        right: 50px !important;
+    }
+</style>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $("#Expediente").hide();
-        initComponent();
+
+    $('#fecha').datepicker({
+        dateFormat: 'yy-mm-dd',
+        closeText: 'Cerrar',
+        minDate: "0",
+        maxDate: "0",
+        yearRange: '1910:2018',
+        language: "es",
+        container: '#contenidoModal',
+        beforeShow: function (input, inst) {
+            var calendar = inst.dpDiv;
+            setTimeout(function () {
+                calendar.position({
+                    my: 'center bottom',
+                    at: 'top',
+                    collision: 'none',
+                    of: input
+                });
+            }, 1);
+        }
+    }).on('changeDate', function (ev) {
+        $(this).blur();
     });
+    $(document).ready(function () {
+        if ($("#idOrigen").val() == "10")
+        {
+            $('#numeroDocumento').attr('placeholder', 'MA-PSI-####-2018');
+        }
+        $("#Expediente").hide();
+            $("#tipoOrigen").change(function () {
+                $("#idOrigen").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetTipoOrigen")', // we are calling json method
+                dataType: 'json',
+                data: { id: $("#tipoOrigen").val() },
+                success: function (origins) {
+                    var another = origins.Data;
+                    console.log(another[0].Value);
+                    $.each(another, function (i, state) {
+                        $("#idOrigen").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve states.' + ex);
+                }
+            });
+            return false;
+        })
+    });
+    $("#idOrigen").change(function ()
+    {
+        var nomenclatura;
+        if ($("#tipoOrigen").val() == "5")
+        {
+            if ($("#idOrigen").val() == "10")
+            {
+                nomenclatura = "PSI-";
+                $("#numeroDocumento").val('');
+                $('#numeroDocumento').attr('placeholder', 'MA-' + nomenclatura + '####-2018');
+            }
+            else
+            {
+                nomenclatura = "PRH-";
+                $("#numeroDocumento").val('');
+                $('#numeroDocumento').attr('placeholder', 'MA-' + nomenclatura + '####-2018');
+            }
+        }
+        else
+        {
+            nomenclatura = "PMM-";
+            $('#numeroDocumento').attr('placeholder', 'MA-' + nomenclatura + '####-2018');
+        }
+    }
+    );
+    $("#tipoOrigen").change(function () {
+        if ($("#tipoOrigen").val() == "6")
+        {
+            $("#numeroDocumento").val('');
+            $('#numeroDocumento').attr('placeholder', 'MA-PMM-####-2018');
+        }
+        else
+        {
+            $("#numeroDocumento").val('');
+            $('#numeroDocumento').attr('placeholder', 'MA-PSI-####-2018');
+        }
+    }
+    );
+    $('#numeroDocumento').keydown(function (e)
+    {
+        var nomenclatura;
+        if ($("#tipoOrigen").val()=="5")
+        {
+            if ($("#idOrigen").val() == "10")
+            {
+                nomenclatura = "PSI-";
+            }
+            else
+            {
+                nomenclatura = "PRH-";
+            }
+        }
+        else
+        {
+            nomenclatura = "PMM-";
+        }
 
-
-    //function initComponent() {
-    //    $('#fecha').datepicker({
-    //        dateFormat: 'dd-mm-yy',
-    //        changeMonth: true,
-    //        changeYear: true,
-    //        closeText: 'Cerrar',
-    //        minDate: "-40Y",
-    //        maxDate: "+1Y",
-    //        yearRange: '1910:2018',
-
-    //        prevText: '< Ant',
-    //        nextText: 'Sig >',
-    //        regional: 'es',
-    //        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-    //        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-    //        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-    //        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
-    //        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-    //        weekHeader: 'Sm',
-    //    });
-    //    $('#fecha').datepicker({
-    //        dateFormat: 'dd-mm-yy',
-    //        changeMonth: true,
-    //        changeYear: true,
-    //        closeText: 'Cerrar',
-    //        minDate: "-40Y",
-    //        maxDate: "+4Y",
-    //        yearRange: '1980:2020',
-
-    //        prevText: '< Ant',
-    //        nextText: 'Sig >',
-    //        regional: 'es',
-    //        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-    //        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-    //        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-    //        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
-    //        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-    //        weekHeader: 'Sm',
-    //    });
-
-    //    $('#fecha').datepicker({
-    //        dateFormat: 'dd-mm-yy',
-    //        changeMonth: true,
-    //        changeYear: true,
-    //        closeText: 'Cerrar',
-    //        minDate: "-40Y",
-    //        maxDate: "+10Y",
-    //        yearRange: '1980:2030',
-
-    //        prevText: '< Ant',
-    //        nextText: 'Sig >',
-    //        regional: 'es',
-    //        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-    //        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-    //        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-    //        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
-    //        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-    //        weekHeader: 'Sm',
-
-
-    //    });
-
-    //};
-
-
-
-
-
-
-
-    $('#numeroDocumento').keydown(function (e) {
         var key = e.key;
         var code = e.keyCode;
         var doc = $('#numeroDocumento').val();
-        var comTotal = /MA-PSJ-[0-9]{4}-2018|EXP-MA-[0-9]{4}$/;
-        var pat = /MA-PSJ-[0-9]{3}$/;
-        var expreg = /MA-PSJ-[0-9]{4}$/;
+        var comTotal = /MA-[A-Z]{3}-[0-9]{4}-2018$|EXP-MA-[0-9]{4}$/;
+        var pat = /MA-[A-Z]{3}-[0-9]{3}$/;
+        var expreg = /MA-[A-Z]{3}-[0-9]{4}$/;
 
         if (comTotal.test(doc) && code != 8 && code != 13&& code != 9) {
             event.preventDefault();
@@ -252,8 +291,8 @@
                 }
                 else
                 {
-                    if (!doc.includes('MA-PSJ-')) {
-                        $('#numeroDocumento').val('MA-PSJ-');
+                    if (!doc.includes('MA-' + nomenclatura)) {
+                        $('#numeroDocumento').val('MA-' + nomenclatura);
                     }
                     else {
                         $('#numeroDocumento').val(doc);
@@ -270,21 +309,27 @@
                 else {
                     if (doc.length < 8) {
 
-                        if ($('#idTipo').val() == "4") {
-                            if (!doc.includes('EXP-MA-')) {
+                        if ($('#idTipo').val() == "4")
+                        {
+                            if (!doc.includes('EXP-MA-'))
+                            {
                                 $('#numeroDocumento').val('EXP-MA-');
+                                event.preventDefault();
                             }
-                            else {
-                                $('#numeroDocumento').val(doc);
+                            else
+                            {
                                 event.preventDefault();
                             }
                         }
-                        else {
-                            if (!doc.includes('MA-PSJ-')) {
-                                $('#numeroDocumento').val('MA-PSJ-');
+                        else
+                        {
+                            if (!doc.includes('MA-' + nomenclatura))
+                            {
+                                $('#numeroDocumento').val('MA-' + nomenclatura);
+                                event.preventDefault();
                             }
-                            else if(doc.includes('MA-PSJ-') && key == 'Backspace') {
-                                $('#numeroDocumento').val('MA-PSJ-');
+                            else if (doc.includes('MA-' + nomenclatura))
+                            {
                                 event.preventDefault();
                             }
                         }
@@ -311,15 +356,16 @@
         }
     }
     );
-    $('#numeroIngreso').keypress(function (e) {
+    $('#numeroIngreso').keydown(function (e) {
         var key = e.key;
         var code = e.keyCode;
         var doc = $('#numeroIngreso').val();
         var comTotal = /N.I.[0-9]{4}-2018$/;
         var pat = /N.I.[0-9]{4}$/;
         var expreg = /N.I.[0-9]{3}$/;
-        debugger;
-        if (comTotal.test(doc) && code != 8 && code != 13 && code != 9) {
+        console.log(key);
+        if (comTotal.test(doc) && code != 8 && code != 13 && code != 9)
+        {
             event.preventDefault();
         }
         else {
@@ -335,16 +381,15 @@
             }
             else if (code == 8) {
                 var del = /2018$/;
-                debugger;
                 if (del.test(doc)) {
                     doc = doc.substring(0, doc.length - 5);
                     $('#numeroIngreso').val(doc);
                 }
                 else {
                     if (doc.length < 5) {
-                        debugger;
                         if (!doc.includes('N.I.')) {
                             $('#numeroIngreso').val('N.I.');
+                            event.preventDefault();
                         }
                         else if (doc.includes('N.I.') && key == 'Backspace') {
                             $('#numeroIngreso').val('N.I.');
@@ -353,19 +398,22 @@
                     }
                 }
             }
-            else if ((code > 64 && code < 91)) {
+            else if ((code > 64 && code < 91))
+            {
                 swal("¡Carácter invalido!", 'solo se permiten caracteres numéricos.', "error");
                 event.preventDefault();
             }
-            if (pat.test(doc)) {
+            if (pat.test(doc))
+            {
                 if ((code > 47 && code < 58) || (code > 96 && code < 105)) {
                     $('#numeroIngreso').val(doc + key + '-' + (new Date()).getFullYear());
                     event.preventDefault();
                 }
             }
-            else if (expreg.test(doc)) {
+            else if (expreg.test(doc))
+            {
                 if (code != 8) {
-                    $('#numeroIngreso').val(doc + '-' + (new Date()).getFullYear());
+                    $('#numeroIngreso').val(doc + key+'-' + (new Date()).getFullYear());
                     event.preventDefault();
                 }
             }
@@ -374,71 +422,47 @@
     );
     $('#idTipo').change(function ()
     {
-        if ($('#idTipo').val() == "4") {
+        var nomenclatura;
+        if ($("#tipoOrigen").val() == "5")
+        {
+            if ($("#idOrigen").val() == "10")
+            {
+                nomenclatura = "PSI-";
+            }
+            else {
+                nomenclatura = "PRH-";
+            }
+        }
+        else
+        {
+            nomenclatura = "PMM-";
+        }
+        if ($('#idTipo').val() == "4")
+        {
             $('#numeroDocumento').attr('placeholder', 'EXP-MA-####');
             $('#Expediente').show();
             $('#numIngreso').show();
             $('#numeroDocumento').val('');
+            $('#numeroIngreso').val('');
         }
-        else if ($('#idTipo').val() == "3") {
-            $('#numeroDocumento').attr('placeholder', 'MA-PSJ-####-2018');
+        else if ($('#idTipo').val() == "3")
+        {
+            $('#numeroDocumento').attr('placeholder', 'MA-' + nomenclatura + '####-2018');
             $('#Expediente').hide();
             $('#numIngreso').show();
             $('#numeroDocumento').val('');
+            $('#numeroIngreso').val('');
         }
         else
         {
-            $('#numeroDocumento').attr('placeholder', 'MA-PSJ-####-2018');
+            $('#numeroDocumento').attr('placeholder', 'MA-' + nomenclatura + '####-2018');
             $('#numIngreso').hide();
             $('#Expediente').hide();
             $('#numeroDocumento').val('');
+            $('#numeroIngreso').val('');
         }
     }
     );
-
-$(document).ready(function () {
-//Dropdownlist Selectedchange event
-    $("#tipoOrigen").change(function () {
-        $("#idOrigen").empty();
-    $.ajax({
-        type: 'POST',
-        url: '@Url.Action("GetTipoOrigen")', // we are calling json method
-        dataType: 'json',
-        data: { id: $("#tipoOrigen").val() },
-        success: function (origins) {
-            var data = origins.Id;
-            var another = origins.Data;
-            console.log(another[0].Value);
-            $.each(another, function (i, state) {
-                $("#idOrigen").append('<option value="' + state.Value + '">' + state.Text + '</option>');
-                $('#idOrigen').val(state[0].Value);
-                console.log(state[0].Value);
-            });
-        },
-        error: function (ex) {
-            alert('Failed to retrieve states.' + ex);
-        }
-    });
-    return false;
-})
-    //$('#idOrigen').hide();
-    //$('#numeroIngreso').hide();
-    //$('#tipoOrigen').change(function () {
-    //    var URL = $('#GetTipoOrigen').data('GetTipoOrigen');
-    //    $.getJSON(URL + '/' + $('#tipoOrigen').val(), function (data) {
-    //        var items = '<option>Select a State</option>';
-    //        $.each(data, function (i, state) {
-    //            items += "<option value='" + state.Value + "'>" + state.Text + "</option>";
-    //            // state.Value cannot contain ' character. We are OK because state.Value = cnt++;
-    //        });
-    //        $('#StatesID').html(items);
-    //        $('#idOrigen').show();
-    //    });
-    //});
-    //$('#idOrigen').change(function () {
-    //    $('#numeroIngreso').show();
-    //});
-});
 
     $(document).ready(function () {
 
@@ -462,8 +486,6 @@ $(document).ready(function () {
             }
         })
     });
-
-
     var ReadImage = function (file) {
 
         var reader = new FileReader;
@@ -488,46 +510,10 @@ $(document).ready(function () {
         }
 
     };
-
     var ClearPreview = function () {
         $("#imageBrowes").val('');
         $("#description").text('');
         $("#imgPreview").hide();
         $("#imgPreview2").hide();
-
-    }
-
-    $(document).ready(function () {
-        $("#idTipo").change(function () {
-            var a = $("#idTipo Option:Selected").text();
-            $("Oficio").text(a);
-        })
-    });
-    function AdditionalsChanged() {
-
-        var tipo = document.getElementById("idTipo");
-        idTipo = tipo.value;
-
-        if (idTipo == "4") {
-
-            $(document).ready(function () {
-                $.each($('#Expediente'), function () {
-                    $("#Expediente").show();
-                });
-                $.each($('#Oficio'), function () {
-                    $("#Oficio").hide();
-                });
-            });
-
-        } else {
-            $(document).ready(function () {
-                $.each($('#Oficio'), function () {
-                    $("#Oficio").show();
-                });
-                $.each($('#Expediente'), function () {
-                    $("#Expediente").hide();
-                });
-            });
-        }
-    }
+    };
 </script>
