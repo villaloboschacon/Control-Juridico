@@ -100,7 +100,7 @@
                         @Html.DisplayFor(modelItem => item.numeroIngreso)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.fecha)
+                        @Html.ValueFor(modelItem => item.fecha,"{0:dd/MM/yyyy}")
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.TablaGeneral.descripcion)
@@ -148,7 +148,15 @@
 </div>
 <script>
     $("#crearModal").scroll(function () {
-
+        
+        $("#fecha").click(function () {
+            if ($('#fecha').blur()) {
+                $("#ui-datepicker-div").show();
+                
+            }
+        });
+        
+        $("#ui-datepicker-div").hide();     
     }); 
     function Crear() {
         var url = '@Url.Action("Crear")';
@@ -162,7 +170,7 @@
                 $("#crearModal").html(data);
             },
             error: function (xhr) {
-                alert('error bien gay');
+                alert('Error a la hora de abrir el modal.');
             }
         });
     }

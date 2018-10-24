@@ -140,6 +140,7 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida 
           <Property Name="descripcion" Type="varchar" MaxLength="750" />
           <Property Name="ubicacion" Type="varchar" MaxLength="500" />
           <Property Name="observacion" Type="varchar" MaxLength="750" />
+          <Property Name="parte" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Personas">
           <Key>
@@ -801,6 +802,7 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <NavigationProperty Name="TablaGeneral2" Relationship="Self.FK_Documento_TipoDocumento" FromRole="Documentos" ToRole="TablaGeneral" />
           <NavigationProperty Name="TablaGeneral3" Relationship="Self.FK_Documento_TipoOrigen" FromRole="Documentos" ToRole="TablaGeneral" />
           <NavigationProperty Name="Casos" Relationship="Self.CasoDocumento" FromRole="Documentos" ToRole="Casos" />
+          <Property Name="parte" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Persona">
           <Key>
@@ -1387,6 +1389,7 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <EntitySetMapping Name="Documentos">
             <EntityTypeMapping TypeName="SCJ_BDModel.Documento">
               <MappingFragment StoreEntitySet="Documentos">
+                <ScalarProperty Name="parte" ColumnName="parte" />
                 <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
                 <ScalarProperty Name="idTipo" ColumnName="idTipo" />
                 <ScalarProperty Name="idOrigen" ColumnName="idOrigen" />
