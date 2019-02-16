@@ -42,7 +42,7 @@ namespace BackEnd.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Destinatario> Destinatarios { get; set; }
         public virtual TablaGeneral TablaGeneral { get; set; }
-        public virtual TablaGeneral Origen { get; set; }
+        public virtual TablaGeneral TablaGeneral1 { get; set; }
         public virtual TablaGeneral TablaGeneral2 { get; set; }
         public virtual TablaGeneral TablaGeneral3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

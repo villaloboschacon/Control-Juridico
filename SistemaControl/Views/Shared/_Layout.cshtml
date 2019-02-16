@@ -1,4 +1,50 @@
-﻿<!DOCTYPE html>
+﻿@*<!DOCTYPE html>
+    <html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Nombre de aplicación", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+            </footer>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    </body>
+    </html>*@
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -60,68 +106,74 @@
         <div class="item logo">
             <img style="display: block;margin: 0 auto; padding-bottom:10px;" src="~/Content/img/muni.gif" />
         </div>
-        <a href="~/MasterPage" style="color:white;font-size:18px; font-family:sans-serif; border-top: 1px solid #000; border-bottom: 1px solid #000;" class="title item">
-            <span><i class="fa fa-home"></i></span>Menu Principal 
+        <a href="~/Home/Index" style="color:white;font-size:18px; font-family:sans-serif; border-top: 1px solid #000; border-bottom: 1px solid #000;" class="title item">
+            <span><i class="fa fa-home"></i></span>Menu Principal
         </a>
-
+        @Html.ActionLink("Menú principal", "Index", "Home");
         <div class="ui accordion">
             <a style="color:white;font-size:18px;  border-bottom: 1px solid #000; font-family:sans-serif" class="title item">
                 <span><i class="fa fa-archive"></i></span> Documentos
             </a>
             <div class="content">
-                <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center; border-bottom: 1px solid #000;" href="~/Documento">
+                <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center; border-bottom: 1px solid #000;" href="~/Documento/Index">
                     Oficios
                 </a>
-                <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center; border-bottom: 1px solid #000;" href="~/DocumentoExpediente">
+                @Html.ActionLink("Oficio", "Index", "Documento");
+                <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center; border-bottom: 1px solid #000;" href="~/DocumentoExpediente/Index">
                     Expedientes
                 </a>
             </div>
 
             <a style="color:white;font-size:18px;  border-bottom: 1px solid #000; font-family:sans-serif;" class="title item">
-                <span><i class="fa fa-users"></i></span> Personas 
+                <span><i class="fa fa-users"></i></span> Personas
             </a>
             <div class="content">
-                <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center;  border-bottom: 1px solid #000;" href="~/PersonaFisica">
+                <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center;  border-bottom: 1px solid #000;" href="~/PersonaFisica/Index">
                     Fisicas
                 </a>
-                <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center;  border-bottom: 1px solid #000;" href="~/Persona">
+                <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center;  border-bottom: 1px solid #000;" href="~/Personas/Index">
                     Jurídicas
                 </a>
             </div>
 
             <a style="color:white;font-size:18px;  border-bottom: 1px solid #000; font-family:sans-serif;" class="title item">
-                <span><i class="fa fa-balance-scale"></i></span> Procesos 
+                <span><i class="fa fa-balance-scale"></i></span> Procesos
             </a>
             <div class="content">
-                <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center; border-bottom: 1px solid #000;" href="~/Caso">
+                <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center; border-bottom: 1px solid #000;" href="~/Caso/Index">
                     Administrativos
                 </a>
-                <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center; border-bottom: 1px solid #000;" href="~/CasoJudicial">
+                <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center; border-bottom: 1px solid #000;" href="~/CasoJudicial/Index">
                     Judiciales
                 </a>
             </div>
 
-            <a href="~/MasterPage/Ayuda" style="color:white;font-size:18px; font-family:sans-serif;  border-bottom: 1px solid #000;" class="title item">
-                <span><i class="fa fa-question-circle"></i></span> Ayuda 
+            <a href="~/Home/Ayuda" style="color:white;font-size:18px; font-family:sans-serif;  border-bottom: 1px solid #000;" class="title item">
+                <span><i class="fa fa-question-circle"></i></span> Ayuda
             </a>
         </div>
     </div>
     <div class="pusher">
         <div class="ui menu asd borderless" style="border-radius: 0!important; border: 0; margin-left: 200px; background-color:#35475e;-webkit-transition-duration: 0.1s;">
+
             @*<a class="item openbtn">
                     <i class="icon content"></i>
                 </a>*@
             @*<a class="item">
                     Messages
                 </a>*@
+
             <div class="right menu">
-                <div class="ui dropdown item" style="font-size:14px; background-color:#233245; color:white">
-                    <b>Usuario</b> <i class="user icon"></i>
-                    <div class="menu">
-                        <a class="item" href="~/MasterPage/Ayuda">Necesita Ayuda?</a>
-                        <a class="item" href="~/Login">Salir</a>
-                    </div>
-                </div>
+                @Html.Partial("_LoginPartial")
+                @*<div class="ui dropdown item" style="font-size:14px; background-color:#233245; color:white">
+
+                        <b>Usuario</b> <i class="user icon"></i>
+
+                        <div class="menu">
+                            <a class="item" href="~/MasterPage/Ayuda">Necesita Ayuda?</a>
+                            <a class="item" href="~/Login">Salir</a>
+                        </div>
+                    </div>*@
                 @*<div class="item">
                         <div class="ui primary button">Sign Up</div>
                     </div>*@

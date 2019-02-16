@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace SistemaControl.Controllers
 {
+    [Authorize]
     public class CrearDocumentoController : Controller
     {
         // GET: CrearDocumento

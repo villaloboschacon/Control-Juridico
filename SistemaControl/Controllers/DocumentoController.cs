@@ -10,6 +10,7 @@ using SistemaControl.Models;
 
 namespace SistemaControl.Controllers
 {
+    [Authorize]
     public class DocumentoController : Controller
     {
         private IDocumentoBLL documentoBll;
@@ -64,7 +65,7 @@ namespace SistemaControl.Controllers
             if (option == "Asunto")
             {
                 ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
-                List<Documento> listaDocumentos = documentoBll.Find(x => x.asunto == search && x.idTipo == 3 || search == null).ToList();
+                List<Documento> listaDocumentos = documentoBll.Find(x => x.asunto == search && x.idTipo == 3 || search == null && x.idTipo == 3).ToList();
                 PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
                 return View(model);
             }
@@ -74,7 +75,7 @@ namespace SistemaControl.Controllers
                 ViewBag.NumeroOficio = String.IsNullOrEmpty(sortOrder) ? "numerodocdes" : "";
                 ViewBag.Ingreso = sortOrder == "Ingreso" ? "IngresoDes" : "Ingreso";
                 ViewBag.FechaDeIngreso = sortOrder == "Fecha" ? "FechaDes" : "Fecha";
-                var documentos = from s in documentoBll.Find(x => search == null && x.idTipo == 3) select s;
+                var documentos = from s in documentoBll.Find(x => search == null && x.idTipo == 3 || x.idTipo == 23) select s;
 
                 switch (sortOrder)
                 {
@@ -101,12 +102,12 @@ namespace SistemaControl.Controllers
                 foreach (Documento documento in listaDocumentos)
                 {
                     tablaGeneralBLL = new TablaGeneralBLLImpl();
-                    documento.Origen = tablaGeneralBLL.Get(documento.idOrigen);
-                    documento.TablaGeneral = tablaGeneralBLL.Get(documento.tipoOrigen);
+                    documento.TablaGeneral = tablaGeneralBLL.Get(documento.idOrigen);
+                    documento.TablaGeneral3 = tablaGeneralBLL.Get(documento.tipoOrigen);
                     documento.TablaGeneral2 = tablaGeneralBLL.Get(documento.idOrigen);
                     if(documento.idEstado.HasValue){
                         int i = (int)(documento.idEstado);
-                        documento.TablaGeneral3 = tablaGeneralBLL.Get(i);
+                        documento.TablaGeneral1 = tablaGeneralBLL.Get(i);
                     }
                 }
                 PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
@@ -203,7 +204,7 @@ namespace SistemaControl.Controllers
             }
             else
             {
-                return Json("El número de documento no se encuentra disponible.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
             }
 
         }

@@ -8,6 +8,7 @@ using PagedList;
 using SistemaControl.Models;
 namespace SistemaControl.Controllers
 {
+    [Authorize]
     public class PersonasController : Controller
     {
         private IPersonasBLL personaBll;

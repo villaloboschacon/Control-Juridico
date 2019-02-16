@@ -11,7 +11,7 @@ namespace BackEnd.BLL
     public class PersonasBLLImpl:BLLGenericoImpl<Persona>, IPersonasBLL
     {
         private UnidadDeTrabajo<Persona> unidad;
-
+        
         public List<Persona> getModel()
         {
             try

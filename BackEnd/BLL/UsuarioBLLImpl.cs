@@ -29,5 +29,26 @@ namespace BackEnd.BLL
                 throw new NotImplementedException();
             }
         }
+        public Usuario getUsuario(string username)
+        {
+            try
+            {
+                List<Usuario> lista;
+                using (unidad = new UnidadDeTrabajo<Usuario>(new SCJ_BDEntities()))
+                {
+                    Expression<Func<Usuario, bool>> consulta = (d => d.idEstado.Equals(12));
+                    lista = unidad.genericDAL.Find(consulta).ToList();
+                }
+                if (lista.Count == 1)
+                {
+                    return lista[0];
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

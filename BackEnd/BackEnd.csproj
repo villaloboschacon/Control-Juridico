@@ -57,9 +57,11 @@
     <Compile Include="BLL\ICasoBLL.cs" />
     <Compile Include="BLL\IDocumentoBLL.cs" />
     <Compile Include="BLL\IPersonasBLL.cs" />
+    <Compile Include="BLL\IRolBLL.cs" />
     <Compile Include="BLL\ITablaGeneralBLL.cs" />
     <Compile Include="BLL\IUsuarioBLL.cs" />
     <Compile Include="BLL\PersonasBLLImpl.cs" />
+    <Compile Include="BLL\RolBLLImpl.cs" />
     <Compile Include="BLL\TablaGeneralBLLImpl.cs" />
     <Compile Include="BLL\UsuarioBLLImpl.cs" />
     <Compile Include="DAL\DALGenericoImpl.cs" />
@@ -110,6 +112,15 @@
     <Compile Include="Model\Role.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sp_helpdiagrams_Result.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sysdiagram.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\TablaGeneral.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -130,7 +141,8 @@
       <DependentUpon>Model.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
-    <None Include="Scripts\jquery-1.12.4.min.map" />
+    <None Include="Scripts\jquery-3.3.1.min.map" />
+    <None Include="Scripts\jquery-3.3.1.slim.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -188,9 +200,11 @@
       <DependentUpon>Model.edmx</DependentUpon>
       <LastGenOutput>Model.cs</LastGenOutput>
     </Content>
-    <Content Include="Scripts\jquery-1.12.4.intellisense.js" />
-    <Content Include="Scripts\jquery-1.12.4.js" />
-    <Content Include="Scripts\jquery-1.12.4.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
   </ItemGroup>

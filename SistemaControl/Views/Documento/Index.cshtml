@@ -57,6 +57,34 @@
                 </div>
             </div>
         </div>
+        <div class="widget" style="height:100px;">
+            <div class="row">
+                <div class="col-xs-8 col-xs-offset-2">
+                    <div class="input-group">
+                        <div class="input-group-btn search-panel">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                <span id="search_concept">Filtrar por:</span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="?option=Número de oficio">Número de oficio</a></li>
+                                <li><a href="?option=Número de Ingreso">Número de Ingreso</a></li>
+                                <li><a href="?option=Asunto">Asunto</a></li>
+                                <li><a href="?option=Fecha">Fecha </a></li>
+                                <li class="divider"></li>
+                                <li><a href="#all">Anything</a></li>
+                            </ul>
+                        </div>
+                        <input type="hidden" name="search_param" value="all" id="search_param">
+                        <input type="text" id="demo" class="form-control" name="x" placeholder="Search term...">
+                        <span class="input-group-btn">
+                            <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
+                            <button class="btn btn-default" name="submit" type="submit" value="Buscar" style="color:black; font-size:14px;"><span class="glyphicon glyphicon-search"></span></button>
+                            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
     <table class="table table-bordered">
         <tr>
@@ -100,7 +128,7 @@
                         @Html.DisplayFor(modelItem => item.numeroIngreso)
                     </td>
                     <td>
-                        @Html.ValueFor(modelItem => item.fecha,"{0:dd/MM/yyyy}")
+                        @Html.ValueFor(modelItem => item.fecha, "{0:dd/MM/yyyy}")
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.TablaGeneral.descripcion)
@@ -146,13 +174,13 @@
 </div>
 <div id="crearValidate" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crearValidate" aria-hidden="true" style="position: fixed">
 </div>
+
 <script>
     $("#crearModal").scroll(function () {
         
         $("#fecha").click(function () {
             if ($('#fecha').blur()) {
                 $("#ui-datepicker-div").show();
-                
             }
         });
         

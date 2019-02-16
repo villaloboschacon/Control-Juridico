@@ -21,9 +21,9 @@ namespace SistemaControl.Models
 
         public int? idEstado { get; set; }
 
-        [RegularExpression(@"MA-[A-Z]{3}-[0-9]{4}-2018$", ErrorMessage = "Formato incorrecto.")]
+        [RegularExpression(@"MA-[a-zñA-ZÑ]{1,6}-[0-9]{4}-2018$", ErrorMessage = "Formato incorrecto.")]
         [Required(ErrorMessage = "*Debe digitar el número de documento.")]
-        [StringLength(17, MinimumLength = 11, ErrorMessage = "El número de documento debe tener al menos 11 caracteres.")]
+        [StringLength(19, MinimumLength = 14, ErrorMessage = "El número de documento debe tener al menos 11 caracteres.")]
         [Display(Name = "Número de Documento ")]
         [Remote("ComprobarDocumento", "Documento")]
         public string numeroDocumento { get; set; }
@@ -41,21 +41,22 @@ namespace SistemaControl.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime fecha { get; set; }
 
-        [Display(Name = "Asunto:")]
+        [StringLength(150, ErrorMessage = "El asunto no puede sobrepasarse de 150 caracteres.")]
+        [Display(Name = "Asunto")]
         public string asunto { get; set; }
 
         [RegularExpression(@"EXP-AD-[a-zA-ZñÑ0-9]+-2018$", ErrorMessage = "Formato incorrecto.")]
         [StringLength(50, ErrorMessage = "El nombre del expediente no puede sobrepasar los 50 caracteres.")]
         [Display(Name = "Parte")]
         public string parte { get; set; }
-
-        [Display(Name = "Descripción:")]
+        [StringLength(750, ErrorMessage = "La descripción no puede sobrepasarse de 750 caracteres.")]
+        [Display(Name = "Descripción")]
         public string descripcion { get; set; }
-
-        [Display(Name = "Ubicación:")]
+        [StringLength(500,ErrorMessage = "La ubicación no puede sobrepasarse de 500 caracteres.")]
+        [Display(Name = "Ubicación")]
         public string ubicacion { get; set; }
-
-        [Display(Name = "Observación:")]
+        [StringLength(750, ErrorMessage = "La observación no puede sobrepasarse de 750 caracteres.")]
+        [Display(Name = "Observación")]
         public string observacion { get; set; }
 
     }

@@ -9,6 +9,7 @@ using PagedList;
 
 namespace SistemaControl.Controllers
 {
+    [Authorize]
     public class CasoController : Controller
     {
         private ICasoBLL casoBLL;

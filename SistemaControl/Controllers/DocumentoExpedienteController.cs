@@ -10,6 +10,7 @@ using SistemaControl.Models;
 
 namespace SistemaControl.Controllers
 {
+    [Authorize]
     public class DocumentoExpedienteController : Controller
     {
         private IDocumentoBLL documentoBll;

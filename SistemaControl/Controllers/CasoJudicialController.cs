@@ -8,6 +8,8 @@ using PagedList;
 
 namespace SistemaControl.Controllers
 {
+
+    [Authorize]
     public class CasoJudicialController : Controller
     {
         // GET: CasoJudicial

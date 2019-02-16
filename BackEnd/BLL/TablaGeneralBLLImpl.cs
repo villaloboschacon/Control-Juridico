@@ -30,5 +30,47 @@ namespace BackEnd.BLL
                 throw new NotImplementedException();
             }
         }
+        public TablaGeneral getTablaGeneral(string tabla, string campo)
+        {
+            try
+            {
+                List<TablaGeneral> lista;
+                using (unidad = new UnidadDeTrabajo<TablaGeneral>(new SCJ_BDEntities()))
+                {
+                    Expression<Func<TablaGeneral, bool>> consulta = (d => d.tabla.Equals(tabla) && d.campo.Equals(campo));
+                    lista = unidad.genericDAL.Find(consulta).ToList();
+                }
+                if (lista.Count == 1)
+                {
+                    return lista[0];
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                throw new NotImplementedException();
+            }
+        }
+        public TablaGeneral getIdTablaGeneral(string tabla, string campo, string descripcion)
+        {
+            try
+            {
+                List<TablaGeneral> lista;
+                using (unidad = new UnidadDeTrabajo<TablaGeneral>(new SCJ_BDEntities()))
+                {
+                    Expression<Func<TablaGeneral, bool>> consulta = (d => d.tabla.Equals(tabla) && d.campo.Equals(campo) && d.descripcion.Equals(descripcion));
+                    lista = unidad.genericDAL.Find(consulta).ToList();
+                }
+                if (lista.Count == 1)
+                {
+                    return lista[0];
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

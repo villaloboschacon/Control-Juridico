@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web.Mvc;
 namespace SistemaControl.Controllers
 {
+    [Authorize]
     public class PersonaFisicaController : Controller
     {
         private IPersonasBLL personaBll;
