@@ -8,7 +8,6 @@ using PagedList;
 using SistemaControl.Models;
 namespace SistemaControl.Controllers
 {
-    [Authorize]
     public class PersonasController : Controller
     {
         private IPersonasBLL personaBll;
@@ -18,9 +17,9 @@ namespace SistemaControl.Controllers
             tablaGeneralBLL = new TablaGeneralBLLImpl();
             personaBll = new PersonasBLLImpl();
         }
-        public ActionResult Index(string option, string search, int page = 1, int pageSize = 8)
+        public ActionResult Index(string option, string search, int page = 1, int pageSize = 4)
         {
-            
+
             if (option == "Nombre")
             {
                 ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
@@ -35,7 +34,7 @@ namespace SistemaControl.Controllers
                 PagedList<Persona> model = new PagedList<Persona>(listapersona, page, pageSize);
                 return View(model);
             }
-            else if(option == "Representante legal")
+            else if (option == "Representante legal")
             {
                 ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
                 List<Persona> listapersona = personaBll.Find(x => x.RepresentanteLegal == search && x.idTipo == 2 || search == null).ToList();
@@ -49,10 +48,17 @@ namespace SistemaControl.Controllers
                 PagedList<Persona> model = new PagedList<Persona>(listapersona, page, pageSize);
                 return View(model);
             }
+            else if (option == "Observación")
+            {
+                ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
+                List<Persona> listapersona = personaBll.Find(x => x.RepresentanteSocial == search && x.idTipo == 2 || search == null).ToList();
+                PagedList<Persona> model = new PagedList<Persona>(listapersona, page, pageSize);
+                return View(model);
+            }
             else
             {
                 ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
-                List<Persona> listapersona = personaBll.Find(x => x.cedula == search && x.idTipo==2|| x.nombreCompleto == search && x.idTipo == 2 || x.idPersona.ToString() == search && x.idTipo == 2 || x.idTipo.ToString() == search && x.idTipo == 2 || search == null && x.idTipo == 2).ToList();
+                List<Persona> listapersona = personaBll.Find(x => x.cedula == search && x.idTipo == 2 || x.nombreCompleto == search && x.idTipo == 2 || x.idPersona.ToString() == search && x.idTipo == 2 || x.idTipo.ToString() == search && x.idTipo == 2 || search == null && x.idTipo == 2).ToList();
                 PagedList<Persona> model = new PagedList<Persona>(listapersona, page, pageSize);
                 return View(model);
             }
@@ -62,24 +68,24 @@ namespace SistemaControl.Controllers
         public ActionResult Agregar(Persona persona)
         {
             personaBll.Agregar(persona);
-            return RedirectToAction("Index", "Department");
+            return RedirectToAction("Index", "Personas");
         }
 
         public ActionResult Details(int id)
         {
             Persona persona = personaBll.Get(id);
-            return PartialView("Detalles",persona);
+            return PartialView("Detalles", persona);
         }
-        [HttpPost]
-        public ActionResult Index()
-        {
-            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Personas","tipo"), "idTablaGeneral", "descripcion");
-            List<Persona> listapersona = new List<Persona>();
-            Persona persona = personaBll.Get(2);
-            listapersona.Add(persona);
-            PagedList<Persona> model = new PagedList<Persona>(listapersona, 1, 4);
-            return View(model);
-        } 
+        //[HttpPost]
+        //public ActionResult Index()
+        //{
+        //    ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Personas","tipo"), "idTablaGeneral", "descripcion");
+        //    List<Persona> listapersona = new List<Persona>();
+        //    Persona persona = personaBll.Get(2);
+        //    listapersona.Add(persona);
+        //    PagedList<Persona> model = new PagedList<Persona>(listapersona, 1, 4);
+        //    return View(model);
+        //} 
         //public ActionResult MyAction()
         //{
         //    var model = new PersonasViewModel();

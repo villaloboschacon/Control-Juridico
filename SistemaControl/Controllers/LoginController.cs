@@ -7,6 +7,11 @@ using System;
 using System.Collections.Generic;
 using BackEnd.Model;
 using BackEnd.BLL;
+using System.Web.Security;
+using System.DirectoryServices.AccountManagement;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Threading.Tasks;
 
 namespace SistemaControl.Controllers
 {
@@ -14,6 +19,28 @@ namespace SistemaControl.Controllers
     {
         private IUsuarioBLL usuarioBLL;
         private ITablaGeneralBLL tablaGeneralBLL;
+        public bool crearRoles(string createRole)
+        {
+            string[] rolesArray;
+            try
+            {
+                if (Roles.RoleExists(createRole))
+                {
+                    return false;
+                }
+                else
+                {
+                    Roles.CreateRole(createRole);
+                    rolesArray = Roles.GetAllRoles();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
 
         [AllowAnonymous]
         public ActionResult Index()
@@ -29,38 +56,49 @@ namespace SistemaControl.Controllers
             {
                 return View(model);
             }
-
-            // usually this will be injected via DI. but creating this manually now for brevity
             IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
             var authService = new AdAuthenticationService(authenticationManager);
-
             var authenticationResult = authService.SignIn(model.Username, model.Password);
-            string nombre = User.Identity.Name;
+            string user;
             if (authenticationResult.IsSuccess)
             {
-                // we are in!            
+                user = authService.GetUsername(model.Username, model.Password);
+                string rolU;
+
                 try
                 {
-                    usuarioBLL = new UsuarioBLLImpl();
                     tablaGeneralBLL = new TablaGeneralBLLImpl();
+                    usuarioBLL = new UsuarioBLLImpl();
+                    rolU = String.Concat(usuarioBLL.gerRolForUser(usuarioBLL.getUsuario(user).nombre));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return View();
                 }
                 if (usuarioBLL.getUsuario(model.Username) == null)
                 {
                     Usuario usuario = new Usuario();
-                    usuario.idEstado = tablaGeneralBLL.getIdTablaGeneral("usuarios","estado","activo").idTablaGeneral; ;
-                    usuario.usuario1 = model.Username;
-                    usuario.nombre = User.Identity.Name;
+                    usuario.idEstado = tablaGeneralBLL.getIdTablaGeneral("usuarios", "estado", "activo").idTablaGeneral;
+                    usuario.nombre = model.Username;
+                    usuario.usuario1 = user;
                     usuarioBLL.Add(usuario);
+                }
+                if (rolU == "DBA")
+                {
+                    if (crearRoles("DBA"))
+                    {
+                        Roles.AddUserToRole(model.Username, "DBA");
+                    }
+                    
+                }
+                else if (rolU == "Abogado")
+                {
+                    
                 }
                 else
                 {
 
                 }
-
                 return RedirectToLocal(returnUrl);
             }
 

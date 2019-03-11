@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Microsoft.Owin.Security;
 using SistemaControl;
 using SistemaControl.App_Start;
+using BackEnd.Model;
 
 namespace SistemaControl.Models
 {
@@ -37,6 +38,31 @@ namespace SistemaControl.Models
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
+        ///
+        public UserPrincipal getUserPrincipal(string username, string password)
+        {
+            ContextType authenticationType = ContextType.Machine;
+            PrincipalContext principalContext = new PrincipalContext(authenticationType);
+            bool isAuthenticated = false;
+            UserPrincipal userPrincipal = null;
+            isAuthenticated = principalContext.ValidateCredentials(username, password, ContextOptions.Negotiate);
+            try
+            {
+                //isAuthenticated = principalContext.ValidateCredentials(username, password, ContextOptions.Negotiate);
+                if (isAuthenticated)
+                {
+                    userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                    return userPrincipal;
+                }
+            }
+            catch (Exception)
+            {
+                isAuthenticated = false;
+                userPrincipal = null;
+                return null;
+            }
+            return null;
+        }
         public AuthenticationResult SignIn(String username, String password)
         {
 #if DEBUG
@@ -97,7 +123,41 @@ namespace SistemaControl.Models
 
             return new AuthenticationResult();
         }
-
+        public string GetUsername(String username, String password)
+        {
+#if DEBUG
+            // authenticates against your local machine - for development time
+            //ContextType authenticationType = ContextType.Machine;
+#else
+            // authenticates against your Domain AD
+            ContextType authenticationType = ContextType.Domain;
+#endif
+            //Se usa Context.Domain cuando se utiliza el active
+            //ContextType authenticationType = ContextType.Domain;
+            //PrincipalContext principalContext = new PrincipalContext(authenticationType, "192.168.52.129", username, password);
+            //Se usa Context.Machine cuando se utiliza la cuenta de la PC.
+            //Se quitan los comentarios de abajo para poder usarlos y se comentan los dos de arriba.
+            ContextType authenticationType = ContextType.Machine;
+            PrincipalContext principalContext = new PrincipalContext(authenticationType);
+            bool isAuthenticated = false;
+            UserPrincipal userPrincipal = null;
+            isAuthenticated = principalContext.ValidateCredentials(username, password, ContextOptions.Negotiate);
+            try
+            {
+                //isAuthenticated = principalContext.ValidateCredentials(username, password, ContextOptions.Negotiate);
+                if (isAuthenticated)
+                {
+                    userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                }
+            }
+            catch (Exception)
+            {
+                isAuthenticated = false;
+                userPrincipal = null;
+            }
+            var identity = CreateIdentity(userPrincipal);
+            return identity.Name;
+        }
 
         private ClaimsIdentity CreateIdentity(UserPrincipal userPrincipal)
         {

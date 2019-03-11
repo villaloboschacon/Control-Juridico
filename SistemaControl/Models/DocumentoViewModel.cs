@@ -21,14 +21,14 @@ namespace SistemaControl.Models
 
         public int? idEstado { get; set; }
 
-        [RegularExpression(@"MA-[a-zñA-ZÑ]{1,6}-[0-9]{4}-2018$", ErrorMessage = "Formato incorrecto.")]
+        [RegularExpression(@"MA-[a-zñA-ZÑ]{1,6}-[0-9]{4}-2019$", ErrorMessage = "Formato incorrecto.")]
         [Required(ErrorMessage = "*Debe digitar el número de documento.")]
         [StringLength(19, MinimumLength = 14, ErrorMessage = "El número de documento debe tener al menos 11 caracteres.")]
         [Display(Name = "Número de Documento ")]
         [Remote("ComprobarDocumento", "Documento")]
         public string numeroDocumento { get; set; }
 
-        [RegularExpression(@"N.I.[0-9]{4}-2018", ErrorMessage = "Formato incorrecto.")]
+        [RegularExpression(@"N.I.[0-9]{4}-2019", ErrorMessage = "Formato incorrecto.")]
         [Required(ErrorMessage = "*Debe digitar el número de ingreso.")]
         [StringLength(14, MinimumLength = 13, ErrorMessage = "El número del documento debe tener al menos 13 caracteres.")]
         [Remote("ComprobarIngreso", "Documento")]
@@ -45,7 +45,7 @@ namespace SistemaControl.Models
         [Display(Name = "Asunto")]
         public string asunto { get; set; }
 
-        [RegularExpression(@"EXP-AD-[a-zA-ZñÑ0-9]+-2018$", ErrorMessage = "Formato incorrecto.")]
+        [RegularExpression(@"EXP-AD-[a-zA-ZñÑ0-9]+-2019$", ErrorMessage = "Formato incorrecto.")]
         [StringLength(50, ErrorMessage = "El nombre del expediente no puede sobrepasar los 50 caracteres.")]
         [Display(Name = "Parte")]
         public string parte { get; set; }

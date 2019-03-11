@@ -6,7 +6,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using BackEnd.Model;
 
 namespace BackEnd.BLL
 {
@@ -60,7 +59,7 @@ namespace BackEnd.BLL
                 }
                 return resultado;
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
                 return null;
@@ -78,7 +77,7 @@ namespace BackEnd.BLL
                 }
                 return resultado;
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
                 return null;
@@ -96,7 +95,7 @@ namespace BackEnd.BLL
                 }
                 return resultado;
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
                 return null;
@@ -131,7 +130,7 @@ namespace BackEnd.BLL
                 }
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
 
@@ -150,7 +149,7 @@ namespace BackEnd.BLL
                 return resultado;
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
                 return null;

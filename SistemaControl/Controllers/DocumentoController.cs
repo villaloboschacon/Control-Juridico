@@ -29,7 +29,7 @@ namespace SistemaControl.Controllers
                 documentoBll = new DocumentoBLLImpl();
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return View();
             }
@@ -127,7 +127,7 @@ namespace SistemaControl.Controllers
                 ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion");
                 return PartialView("Responder", documento);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return View();
             }
@@ -163,7 +163,40 @@ namespace SistemaControl.Controllers
             ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion");
             return PartialView("Crear", documento);
         }
+        public ActionResult Detalles(int id)
+        {
+            tablaGeneralBLL = new TablaGeneralBLLImpl();
+            documentoBll = new DocumentoBLLImpl();
+            Documento documento = documentoBll.Get(id);
+            DocumentoViewModel documentos = new DocumentoViewModel();
+            documentos.asunto = documento.asunto;
+            documentos.idDocumento = documento.idDocumento;
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+            ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion");
+            ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion");
+            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion");
+            return PartialView("Detalle", documentos);
 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DetallesDocumento(Documento documento)
+        {
+            tablaGeneralBLL = new TablaGeneralBLLImpl();
+            documentoBll = new DocumentoBLLImpl();
+            if (ModelState.IsValid)
+            {
+                documentoBll.Modificar(documento);
+                documentoBll.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion");
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+            ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion");
+            ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion");
+            return PartialView("Detalle", documento);
+
+        }
         public ActionResult Editar(int id)
         {
             tablaGeneralBLL = new TablaGeneralBLLImpl();
@@ -232,7 +265,7 @@ namespace SistemaControl.Controllers
                 ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion");
                 return PartialView("Add");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return View();
             }
@@ -257,7 +290,7 @@ namespace SistemaControl.Controllers
                         break;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 
             }

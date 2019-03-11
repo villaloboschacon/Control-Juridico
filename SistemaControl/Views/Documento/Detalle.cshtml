@@ -1,0 +1,192 @@
+﻿@model SistemaControl.Models.DocumentoViewModel
+
+@Scripts.Render("~/bundles/jqueryval")
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title" id="exampleModalLabel">Detalle de oficio</span>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div id="contenidoModal">
+                @using (Html.BeginForm("EditarDocumento", "Documento"))
+                {
+                    @Html.AntiForgeryToken()
+                    int i = 0;
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.idDocumento)
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <button class="btn btn-default" id="buttomEdit">Editar</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.numeroDocumento, "Número de Oficio:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { text = "me come el coño.", @class = "form-control", @disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    @*<textarea id="text"></textarea>
+        <script>
+            CKEDITOR.replace("text");
+        </script>*@
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.numeroIngreso, "Número de Ingreso:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.numeroIngreso, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.numeroIngreso, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.idTipo, "Tipo de Documento:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.idTipo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.idEstado, "Estado de Documento:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("idEstado", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.idEstado, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.tipoOrigen, "Tipo de origen:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("tipoOrigen", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.tipoOrigen, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.idOrigen, "Origen:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("idOrigen", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.idOrigen, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.fecha, "Fecha:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.fecha, new { @type = "date", @class = "form-control datepicker", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.asunto, "Asunto:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.asunto, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.asunto, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ubicacion, "Ubicación:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.observacion, 10, 62, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                    <input type="file" name="elementName" multiple="multiple" />
+                    <div class="modal-footer">
+                        <input class="btn btn-default" type="submit" value="Guardar cambios" />
+                    </div>
+                }
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $valueDetailsEdit = false;
+    $('#buttomEdit').click(function () {
+        if ($valueDetailsEdit == false) {
+            $("#numeroDocumento").removeAttr('disabled');
+            $("#idTipo").removeAttr('disabled');
+            $("#idOrigen").removeAttr('disabled');
+            $("#fecha").removeAttr('disabled');
+            $("#idEstado").removeAttr('disabled');
+            $("#numeroIngreso").removeAttr('disabled');
+            $("#tipoOrigen").removeAttr('disabled');
+            $("#observacion").removeAttr('disabled');
+            $("#descripcion").removeAttr('disabled');
+            $("#ubicacion").removeAttr('disabled');
+            $("#asunto").removeAttr('disabled');
+            $valueDetailsEdit = true;
+            var text = document.getElementById('buttomEdit').firstChild;
+            text.data = text.data == "Editar" ? "Bloquear" : "Editar";
+            event.preventDefault();
+        }
+        else {
+            $("#numeroDocumento").attr('disabled','disabled');
+            $("#idTipo").attr('disabled', 'disabled');
+            $("#idOrigen").attr('disabled', 'disabled');
+            $("#fecha").attr('disabled', 'disabled');
+            $("#idEstado").attr('disabled', 'disabled');
+            $("#numeroIngreso").attr('disabled', 'disabled');
+            $("#tipoOrigen").attr('disabled', 'disabled');
+            $("#observacion").attr('disabled', 'disabled');
+            $("#descripcion").attr('disabled', 'disabled');
+            $("#ubicacion").attr('disabled', 'disabled');
+            $("#asunto").attr('disabled', 'disabled');
+            var text = document.getElementById('buttomEdit').firstChild;
+            text.data = text.data == "Editar" ? "Bloquear" : "Editar";
+            $valueDetailsEdit = false;
+            event.preventDefault();
+        }
+
+        event.preventDefault();
+    });
+    $(document).ready(function () {
+    //Dropdownlist Selectedchange event
+        $("#tipoOrigen").change(function () {
+            $("#idOrigen").empty();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetTipoOrigen")', // we are calling json method
+
+            dataType: 'json',
+
+            data: { id: $("#tipoOrigen").val() },
+
+            success: function (origins) {
+
+                $.each(origins, function (i, state) {
+                    $("#idOrigen").append('<option value="' + origins.Value + '">' +
+                        state.Text + '</option>');
+                });
+            },
+            error: function (ex) {
+                alert('Failed to retrieve states.' + ex);
+            }
+        });
+        return false;
+    })
+});
+</script>

@@ -8,8 +8,10 @@ namespace BackEnd.BLL
 {
     public interface IPersonasBLL:IBLLGenerico<Persona>
     {
-        List<Persona> ConsultaPorNombre(string nombre);
+        List<Persona> Consulta(int idTipo);
         bool Agregar(Persona persona);
         bool Modificar(Persona persona);
+        bool Comprobar(string idPersona, int opcion);
+        bool SaveChanges();
     }
 }

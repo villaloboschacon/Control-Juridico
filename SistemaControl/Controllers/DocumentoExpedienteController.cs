@@ -19,7 +19,6 @@ namespace SistemaControl.Controllers
         {
             tablaGeneralBLL = new TablaGeneralBLLImpl();
             documentoBll = new DocumentoBLLImpl();
-
         }
         public ActionResult Index(string option, string search, int page = 1, int pageSize = 4)
         {

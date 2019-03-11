@@ -25,5 +25,10 @@ namespace BackEnd.DAL
         {
             context.Dispose();
         }
+        //public int spGetIdRol(int idUsuario)
+        //{
+        //    return context.getIdRolUsuario(idUsuario);
+            
+        //}
     }
 }

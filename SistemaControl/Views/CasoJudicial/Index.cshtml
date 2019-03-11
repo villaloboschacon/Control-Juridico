@@ -84,212 +84,183 @@
         }
     </table>
     <br />
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position: fixed">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="modal-title" id="exampleModalLabel">Editar proceso</span>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div id="contenidoModal">
-                        @using (Html.BeginForm())
-                        {
-                            @Html.AntiForgeryToken()
-                            int i = 0;
-                            <div class="form-horizontal">
-                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                @Html.HiddenFor(model => model[i].idCaso)
-
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].idPersona, "Persona:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model[i].idPersona, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model[i].idPersona, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].idUsuario, "Abogados", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownList("idUsuario", null, htmlAttributes: new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model[i].idUsuario, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].idTipo, "Estado:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model[i].idTipo, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].tipoLitigante, "Tipo de litigante:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownList("tipoLitigante", null, htmlAttributes: new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model[i].tipoLitigante, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].numeroCaso, "Numero de proceso:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model[i].numeroCaso, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model[i].numeroCaso, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model[i].descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model[i].descripcion, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].materia, "Materia:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model[i].materia, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model[i].materia, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.TextAreaFor(model => model[i].descripcion, 10, 62, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model[i].descripcion, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.TextAreaFor(model => model[i].observacion, 10, 62, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model[i].observacion, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                        <input type="file" name="elementName" multiple="multiple" />
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary"><a style="color:white;" href="/CasoJudicial/Index">Cerrar</a></button>
-                    <button type="button" class="btn btn-primary"><a style="color:white;" href="/CasoJudicial/Index">Guardar cambios</a></button>
-                </div>
-            </div>
-        </div>
+    <div>
+        <a href="#" id="btnEdit" class="btnEdit" onclick="Crear()" data-toggle="modal" data-target="#crearModal">Agregar proceso</a>
     </div>
 
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
-    Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount documentos
-    <div>
-        <button type="button" class="btn btn-primary"><a href="#" id="btnEdit" style="color:white;" class="btnEdit" data-value="@Model[0].idCaso" data-toggle="modal" data-target="#modalAgregar">Agregar proceso</a></button>
-    </div>
+    Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount procesos
 
 
-    <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position: absolute">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="modal-title" id="exampleModalLabel">Agregar nuevo proceso</span>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div id="contenidoModal">
-                        @using (Html.BeginForm())
-                        {
-                            @Html.AntiForgeryToken()
-                            int i = 0;
-                            <div class="form-horizontal">
-                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                @Html.HiddenFor(model => model[i].idCaso)
 
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].idPersona, "Persona:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model[i].idPersona, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model[i].idPersona, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].idUsuario, "Abogados", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownList("idUsuario", null, htmlAttributes: new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model[i].idUsuario, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].idTipo, "Estado:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model[i].idTipo, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].tipoLitigante, "Tipo de litigante:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownList("tipoLitigante", null, htmlAttributes: new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model[i].tipoLitigante, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+    @*<div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position: absolute">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="modal-title" id="exampleModalLabel">Agregar nuevo proceso</span>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="contenidoModal">
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+                                int i = 0;
+                                <div class="form-horizontal">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model[i].idCaso)
 
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].numeroCaso, "Numero de proceso:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model[i].numeroCaso, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model[i].numeroCaso, "", new { @class = "text-danger" })
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model[i].idPersona, "Persona:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model[i].idPersona, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model[i].idPersona, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model[i].idUsuario, "Abogados", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.DropDownList("idUsuario", null, htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model[i].idUsuario, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model[i].idTipo, "Estado:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model[i].idTipo, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model[i].tipoLitigante, "Tipo de litigante:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.DropDownList("tipoLitigante", null, htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model[i].tipoLitigante, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
 
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model[i].descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model[i].descripcion, "", new { @class = "text-danger" })
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model[i].numeroCaso, "Numero de proceso:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model[i].numeroCaso, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model[i].numeroCaso, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].materia, "Materia:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model[i].materia, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model[i].materia, "", new { @class = "text-danger" })
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model[i].descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model[i].descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model[i].descripcion, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.TextAreaFor(model => model[i].descripcion, 10, 62, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model[i].descripcion, "", new { @class = "text-danger" })
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model[i].materia, "Materia:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model[i].materia, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model[i].materia, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model[i].observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.TextAreaFor(model => model[i].observacion, 10, 62, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model[i].observacion, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                        <input type="file" name="elementName" multiple="multiple" />
 
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model[i].descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.TextAreaFor(model => model[i].descripcion, 10, 62, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model[i].descripcion, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model[i].observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.TextAreaFor(model => model[i].observacion, 10, 62, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model[i].observacion, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <input type="file" name="elementName" multiple="multiple" />
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary"><a style="color:white;" href="/Caso/Index">Cerrar</a></button>
+                        <button type="button" class="btn btn-primary"><a style="color:white;" href="/Caso/Index">Guardar cambios</a></button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary"><a style="color:white;" href="/CasoJudicial/Index">Cerrar</a></button>
-                    <button type="button" class="btn btn-primary"><a style="color:white;" href="/CasoJudicial/Index">Guardar cambios</a></button>
-                </div>
             </div>
-        </div>
-    </div>
+        </div>*@
 </div>
+
+<div id="editarModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editarModal" aria-hidden="true" style="position: fixed"></div>
+<div id="crearModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crearModal" aria-hidden="true" style="position: fixed"></div>
+
+<script>
+
+    function Crear() {
+        var url = '@Url.Action("Crear")';
+        console.log(url);
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#crearModal").html(data);
+            },
+            error: function (xhr) {
+                alert('Error a la hora de abrir el modal.');
+            }
+        });
+    }
+
+    function Edit(idcaso) {
+        var url = '@Url.Action("Editar")';
+        var myId = idcaso;
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            data: {
+                'id': idcaso
+            },
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+
+                $("#editarModal").html(data);
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+    $(function () {
+        // Initialize numeric spinner input boxes
+        //$(".numeric-spinner").spinedit();
+        // Initialize modal dialog
+        // attach modal-container bootstrap attributes to links with .modal-link class.
+        // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
+        $('body').on('click', '.modal-link', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#modal-container');
+            $(this).attr('data-toggle', 'modal');
+        });
+        // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#modal-container').modal('hide');
+        });
+        //clear modal cache, so that new content can be loaded
+        $('#modal-container').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+        $('#CancelModal').on('click', function () {
+            return false;
+        });
+    });
+</script>

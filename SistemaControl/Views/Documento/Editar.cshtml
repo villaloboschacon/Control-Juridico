@@ -1,4 +1,4 @@
-﻿@model BackEnd.Model.Documento
+﻿@model SistemaControl.Models.DocumentoViewModel
 
 @Scripts.Render("~/bundles/jqueryval")
 <div class="modal-dialog" role="document">
@@ -10,7 +10,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <div id="contenidoModal">
+            <div id="1">
                 @using (Html.BeginForm("EditarDocumento", "Documento"))
                 {
                     @Html.AntiForgeryToken()
@@ -26,10 +26,6 @@
                                 @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        @*<textarea id="text"></textarea>
-                            <script>
-                                CKEDITOR.replace("text");
-                            </script>*@
                         <div class="form-group">
                             @Html.LabelFor(model => model.numeroIngreso, "Número de Ingreso:", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
@@ -110,9 +106,6 @@
                         <input type="submit" value="Save" />
                     </div>
                 }
-
-
-
 
             </div>
         </div>

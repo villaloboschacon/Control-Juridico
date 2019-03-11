@@ -1,33 +1,20 @@
 ﻿@if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("Logoff", "Login", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    using (Html.BeginForm("Logoff", "Login", FormMethod.Post, new { id = "logoutForm"/*, @class = "navbar-right" */}))
     {
         @Html.AntiForgeryToken()
-        <div class="pusher">
-            <div class="ui menu asd borderless" style="border-radius: 0!important; border: 0; margin-left: 200px; background-color:#35475e;-webkit-transition-duration: 0.1s;">
-                <div class="right menu">
-                    <div class="ui dropdown item" style="font-size:14px; background-color:#233245; color:white">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">@User.Identity.Name<span class="caret"></span></a> <i class="user icon"></i>
-                        <div class="menu">
-                            <a class="item" href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión.</a>
-                            <hr />
-                            <a class="item" href="~/Home/About">Acerca SCJ</a>
-                        </div>
-                    </div>
-                </div>
+        <div class="ui dropdown item" style="color:white;">
+            @User.Identity.Name <i class="dropdown icon"></i>
+            <div class="menu">
+                <a class="item" href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión.</a>
+                <a class="item" href="~/Home/About">Acerca SCJ</a>
             </div>
         </div>
     }
 }
 else
 {
-    <div class="pusher">
-        <div class="ui menu asd borderless" style="border-radius: 0!important; border: 0; margin-left: 200px; background-color:#35475e;-webkit-transition-duration: 0.1s;">
-            <div class="right menu">
-                <div class="ui dropdown item" style="font-size:14px; background-color:#233245; color:white">
-                    <a>@Html.ActionLink("Iniciar sesión", "Index", "Login", null, new { id = "loginLink" })</a> <i class="user icon"></i>
-                </div>
-            </div>
-        </div>
+    <div class="ui dropdown item">
+        <a>@Html.ActionLink("Iniciar sesión", "Index", "Login", null, new { id = "loginLink" })</a> <i class="user icon"></i>
     </div>
 }
