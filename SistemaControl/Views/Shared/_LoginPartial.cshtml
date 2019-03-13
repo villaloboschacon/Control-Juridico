@@ -1,0 +1,20 @@
+﻿@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("Logoff", "Login", FormMethod.Post, new { id = "logoutForm"/*, @class = "navbar-right" */}))
+    {
+        @Html.AntiForgeryToken()
+        <div class="ui dropdown item" style="color:white;">
+            @User.Identity.Name <i class="dropdown icon"></i>
+            <div class="menu">
+                <a class="item" href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión.</a>
+                <a class="item" href="~/Home/About">Acerca SCJ</a>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="ui dropdown item">
+        <a>@Html.ActionLink("Iniciar sesión", "Index", "Login", null, new { id = "loginLink" })</a> <i class="user icon"></i>
+    </div>
+}

@@ -35,6 +35,7 @@ namespace BackEnd.Model
         public string descripcion { get; set; }
         public string ubicacion { get; set; }
         public string observacion { get; set; }
+        public string parte { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Adjunto> Adjuntos { get; set; }

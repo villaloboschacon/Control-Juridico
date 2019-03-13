@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BackEnd.Model;
 using System.Data.Entity;
+
 namespace BackEnd.DAL
 {
     public class DALGenericoImpl<TEntity> : IDALGenerico<TEntity> where TEntity : class
@@ -15,7 +16,6 @@ namespace BackEnd.DAL
         {
             Context = context;
         }
-
 
         public void Add(TEntity entity)
         {
@@ -134,5 +134,6 @@ namespace BackEnd.DAL
                 throw;
             }
         }
+
     }
 }

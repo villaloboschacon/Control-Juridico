@@ -1,72 +1,114 @@
-﻿
+﻿@model SistemaControl.Models.LoginViewModel
+
 @{
+    /**/
+    ViewBag.Title = "Iniciar sesión";
     Layout = null;
 }
 
-<!DOCTYPE html>
+<link href="~/Content/Login/loginstyle.css" rel="stylesheet" />
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+<script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
+<script src="~/Content/Login/loginindex.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<meta charset="UTF-8">
+<title>Iniciar sesión</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript"></script>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Inicio de sesión</title>
-    <link href="~/Content/css/loginstyle.css" rel="stylesheet" />
-</head>
-<body>
+<script src="~/Content/js/loginindex.js"></script>
+<link href="~/Content/css/loginstyle.css" rel="stylesheet" />
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Nunito:400,300,700'>
 
-    <div class="limiter">
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-        <div class="container-login100" @*style="background-image: url('../../Content/img/municipalidad.jpg');*@ ">
-            <div>
-                @*<img src="~/Content/img/avatar.png" />*@
-            </div> <div class="wrap-login100">
-                <form class="login100-form validate-form">
-
-                    <span class="login100-form-logo">
-                    </span>
-
-                    <span class="login100-form-title p-b-34 p-t-27">
-
-                    </span>
-
-                    <div class="wrap-input100 validate-input" data-validate="Enter username">
-                        <input class="input100" type="text" name="username" placeholder="Usuario">
-                        <span class="focus-input100" data-placeholder=""></span>
+    <div class="container">
+        <div class="form-container flip">
+            <form class="login-form">
+                <h3 class="title">Iniciar sesión</h3>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", placeholder = "Usuario" } })
+                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
                     </div>
-
-                    <div class="wrap-input100 validate-input" data-validate="Enter password">
-                        <input class="input100" type="password" name="pass" placeholder="Contraseña">
-                        <span class="focus-input100" data-placeholder=""></span>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Contraseña" } })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                     </div>
+                </div>
 
-                    <div class="contact100-form-checkbox">
-                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-                        <label class="label-checkbox100" for="ckb1">
-                            Recordar usuario
-                        </label>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Iniciar sesión" class="btn btn-default" />
                     </div>
-
-                    <div class="container-login100-form-btn">
-                        <button class="login100-form-btn">
-                            <a href="/MasterPage">
-                                Iniciar sesión
-                            </a>
-                        </button>
-                    </div>
-
-                    <div class="text-center p-t-90">
-                        <a class="txt1" href="#">
-                            ¿Olvidó su contraseña?
-                        </a>
-                    </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 
+}
+@*<!DOCTYPE html>
+    <html lang="en">
 
-    <div id="dropDownSelect1"></div>
-</body>
-</html>
+    <head>
 
 
 
+    </head>
+
+    <body>
+
+        <div class="container">
+            <div class="form-container flip">
+                <form class="login-form">
+                    @*<h3 class="title">Iniciar sesión</h3>*@
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@*<div class="form-group">
+        @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+@*<div class="form-group">
+        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+
+@*<div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Log in" class="btn btn-default" />
+        </div>
+    </div>*@
+@*
+    <div class="form-group" id="password">
+        <input type="password" class="form-input" tooltip-class="password-tooltip" placeholder="Password"></input>
+        <span class="tooltip password-tooltip">What's your password?</span>
+    </div>
+    <div class="form-group">
+        <button onclick="clickListener();" class="login-button">Login</button>
+        <input class="remember-checkbox" type="checkbox"></input>
+        <p class="remember-p">Remember me</p>
+    </div>*@
+@*    </form>
+            </div>
+        </div>
+        <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+        <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
+        <script src="~/Content/Login/loginindex.js"></script>
+
+
+
+
+    </body>
+
+    </html>*@

@@ -1,356 +1,395 @@
 ﻿@model PagedList.IPagedList<BackEnd.Model.Documento>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using PagedList.Mvc;
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
-<script src="~/Content/js/site.js"></script>
+<link type="text/css" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+@*SCRIPT PARA EL EDITOR DE TEXTO*@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <link href="~/Content/css/style.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+@*<script src="~/Content/ckeditor2/ckeditor.js"></script>*@
+<script src="~/Content/js/site.js"></script>
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+@*<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>*@
+
+@*<script src="~/Content/js/site.js"></script>
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
 <div class="title">Oficios</div>
 <div class="container" style="margin-top:20px">
+
     @using (Html.BeginForm("Index", "Documento", FormMethod.Get))
     {
         <div class="widget" style="height:100px;">
             <div class="title">
                 <span class="form-inline">
                     <i class="fa fa-search" aria-hidden="true"></i>
-                    @Html.TextBox("search") <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
+                    @Html.TextBox("search")
+                    <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
                 </span>
-
                 <div style="color:black; font-size:14px;">
                     <b> Opciones de busqueda: </b>
                     @Html.RadioButton("option", "Número de oficio") <text>Número de oficio</text>
                     @Html.RadioButton("option", "Número de Ingreso") <text> Número de Ingreso </text>
                     @Html.RadioButton("option", "Asunto") <text>Asunto</text>
                     @Html.RadioButton("option", "Fecha") <text>Fecha </text>
-
                 </div>
             </div>
         </div>
-
+        @*<div class="widget" style="height:100px;">
+                <div class="row">
+                    <div class="col-xs-8 col-xs-offset-2">
+                        <div class="input-group">
+                            <div class="input-group-btn search-panel">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    <span id="search_concept">Filtrar por:</span> <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="?option=Número de oficio">Número de oficio</a></li>
+                                    <li><a href="?option=Número de Ingreso">Número de Ingreso</a></li>
+                                    <li><a href="?option=Asunto">Asunto</a></li>
+                                    <li><a href="?option=Fecha">Fecha </a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#all">Anything</a></li>
+                                </ul>
+                            </div>
+                            <input type="hidden" name="search_param" value="all" id="search_param">
+                            <input type="text" id="demo" class="form-control" name="x" placeholder="Search term...">
+                            <span class="input-group-btn">
+                                <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
+                                <button class="btn btn-default" name="submit" type="submit" value="Buscar" style="color:black; font-size:14px;"><span class="glyphicon glyphicon-search"></span></button>
+                                <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
     }
-        <table class="table table-bordered">
-            <tr class="trfirst">
-                <th>Número de oficio</th>
-                <th>Número de Ingreso</th>
-                <th>Fecha</th>
-                <th>Asunto</th>
-                <th>Descripción</th>
-                <th>Ubicación</th>
-                <th>Observación</th>
-                <th></th>
-            </tr>
-            @if (Model.Count() == 0)
+    <table class="table table-bordered" id="table_documentos">
+        <tr>
+            <th>
+                @Html.ActionLink("Número de oficio", "Index", new { sortOrder = ViewBag.NumeroOficio })
+            </th>
+            <th>
+                @Html.ActionLink("Número de Ingreso", "Index", new { sortOrder = ViewBag.Ingreso })
+            </th>
+            <th>
+                @Html.ActionLink("Fecha", "Index", new { sortOrder = ViewBag.FechaDeIngreso })
+            </th>
+            <th>
+                Tipo de origen
+            </th>
+            <th>
+                Origen
+            </th>
+
+            <th>
+                Estado
+            </th>
+        </tr>
+        @if (Model.Count() == 0)
+        {
+            <tr><td align="center" colspan="7">No hay registros que coincidan con la busqueda.</td></tr>
+        }
+        else
+        {
+            foreach (var item in Model)
             {
                 <tr>
-                    <td align="center" colspan="8">No se encontraron coincidencias</td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.idDocumento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.numeroDocumento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.numeroIngreso)
+                    </td>
+                    <td>
+                        @Html.ValueFor(modelItem => item.fecha, "{0:dd/MM/yyyy}")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TablaGeneral3.descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TablaGeneral.descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TablaGeneral1.descripcion)
+                    </td>
                 </tr>
             }
-            else
-            {
-                for (int i = 0; i < Model.Count(); i++)
-                {
-                    <tr>
-                        <td>@Model[i].numeroDocumento</td>
-                        <td>@Model[i].numeroIngreso</td>
-                        <td>@Model[i].fecha</td>
-                        <td>@Model[i].asunto</td>
-                        <td>@Model[i].descripcion</td>
-                        <td>@Model[i].ubicacion</td>
-                        <td>@Model[i].observacion</td>
-                        <td><a href="#" id="btnEdit" class="btnEdit" data-value="@Model[i].idDocumento" data-toggle="modal" data-target="#exampleModal">Editar</a> | <a href="#" id="btnEdit" class="btnEdit" data-value="@Model[i].idDocumento" data-toggle="modal" data-target="#modalReply">Contestar</a></td>
-                    </tr>
-
-                }
-            }
-        </table>
-        <br />
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position: fixed">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <span class="modal-title" id="exampleModalLabel">Editar oficio</span>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="contenidoModal">
-                            @using (Html.BeginForm())
-                            {
-                                @Html.AntiForgeryToken()
-                                int i = 0;
-                                <div class="form-horizontal">
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                    @Html.HiddenFor(model => model[i].idDocumento)
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].numeroDocumento, "Número de Oficio:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].numeroDocumento, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].numeroDocumento, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].numeroIngreso, "Número de Ingreso:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].numeroIngreso, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].numeroIngreso, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].idTipo, "Tipo de Documento:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model[i].idTipo, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].fecha, "Fecha:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.TextBoxFor(model => model[i].fecha, new { @type = "date", @class = "form-control datepicker", @Value = Model[i].fecha.ToString("yyyy-MM-dd") })
-                                            @Html.ValidationMessageFor(model => model[i].fecha, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].asunto, "Asunto:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].asunto, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].asunto, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].descripcion, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].ubicacion, "Ubicación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].ubicacion, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].ubicacion, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.TextAreaFor(model => model[i].observacion, 10, 62, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model[i].observacion, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                            <input type="file" name="elementName" multiple="multiple" />
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Cerrar</a></button>
-                        <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Guardar cambios</a></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
-        Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount documentos
-        <div>
-            <button type="button" class="btn btn-primary"><a href="#" id="btnEdit" style="color:white;" class="btnEdit" data-value="@Model[0].idDocumento" data-toggle="modal" data-target="#modalAgregar">Agregar oficio</a></button>
-        </div>
-
-
-        <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position: absolute">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <span class="modal-title" id="exampleModalLabel">Agregar nuevo documento</span>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="contenidoModal">
-                            @using (Html.BeginForm())
-                            {
-                                @Html.AntiForgeryToken()
-                                int i = 0;
-                                <div class="form-horizontal">
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                    @Html.HiddenFor(Model => Model[i].idDocumento)
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].numeroDocumento, "Número de Documento:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].numeroDocumento, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].numeroDocumento, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].numeroIngreso, "Número de Ingreso:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].numeroIngreso, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].numeroIngreso, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].idTipo, "Tipo de Documento:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model[i].idTipo, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].fecha, "Fecha:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.TextBoxFor(model => model[i].fecha, new { @type = "date", @class = "form-control datepicker", @Value = Model[i].fecha.ToString("yyyy-MM-dd") })
-                                            @Html.ValidationMessageFor(model => model[i].fecha, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].asunto, "Asunto:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].asunto, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].asunto, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].descripcion, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].ubicacion, "Ubicación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].ubicacion, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].ubicacion, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.TextAreaFor(model => model[i].observacion, 10, 62, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model[i].observacion, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                            <input type="file" name="elementName" multiple="multiple" />
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Cerrar</a></button>
-                        <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Guardar cambios</a></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="modal fade" id="modalReply" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position: absolute">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <span class="modal-title" id="exampleModalLabel">Respuesta a:</span>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="contenidoModal">
-                            @using (Html.BeginForm())
-                            {
-                                @Html.AntiForgeryToken()
-                                int i = 0;
-                                <div class="form-horizontal">
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                    @Html.HiddenFor(Model => Model[i].idDocumento)
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].numeroDocumento, "Documento Vinculado:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].numeroDocumento, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
-                                            @Html.ValidationMessageFor(model => model[i].numeroDocumento, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].idTipo, "Tipo de Documento:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
-                                            @Html.ValidationMessageFor(model => model[i].idTipo, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].fecha, "Fecha:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.TextBoxFor(model => model[i].fecha, new { @type = "date", @class = "form-control datepicker", @Value = Model[i].fecha.ToString("yyyy-MM-dd") })
-                                            @Html.ValidationMessageFor(model => model[i].fecha, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].asunto, "Asunto:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].asunto, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].asunto, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].descripcion, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].ubicacion, "Ubicación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].ubicacion, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].ubicacion, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.TextAreaFor(model => model[i].observacion, 10, 62, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model[i].observacion, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                            <input type="file" name="elementName" multiple="multiple" />
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Cerrar</a></button>
-                        <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Guardar cambios</a></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-
+        }
+    </table>
+    <div>
+        <a href="#" onclick="Crear()" class="btnEdit" data-toggle="modal" data-target="#crearModal" id="btnEdit">Crear documento</a>
+        @*<a href="#" onclick="Reference()" class="btnEdit" data-toggle="modal" data-target="#referenciaModal" id="btnEdit">Ref documento</a>*@
     </div>
+    <br />
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
+    Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount documentos
+    <br />
+</div>
+
+<div id="editarModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editarModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+<div id="crearModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crearModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+<div id="responderModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="responderModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+<div id="detalleModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detalleModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+<div id="referenciaModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="referenciaModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+
+
+<div id="contextMenu" class="dropdown clearfix">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+        <li>
+            <a tabindex="-1" href="#" onclick="Details(getInd())" data-value="getInd()" data-toggle="modal" data-target="#detalleModal">Ver detalles</a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a tabindex="-1" href="#" onclick="Reply(getInd())" data-value="getInd()" data-toggle="modal" data-target="#responderModal">Responder</a>
+        </li>
+        <li>
+            <a tabindex="-1" href="#" onclick="Edit(getInd())" data-value="getInd()" data-toggle="modal" data-target="#editarModal">Editar</a>
+        </li>
+        <li>
+            <a tabindex="-1" href="#" onclick="Reference()" data-toggle="modal" data-target="#referenciaModal">Ver referencias</a>
+        </li>
+        <li>
+            <a tabindex="-1" href="#">Eliminar</a>
+        </li>
+    </ul>
+</div>
+<style>
+    #contextMenu {
+        position: absolute;
+        display: none;
+        background: lightblue;
+    }
+
+    .wrap {
+        width: 90%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    table {
+        border: 1px solid rgba(221, 221, 221, 1);
+    }
+
+    tr:nth-child(even) {
+        background: #F5F5F5
+    }
+
+    tr {
+        position: relative;
+    }
+
+        tr:hover {
+            background: #c9e8f7;
+            position: relative;
+        }
+</style>
+
+
+<script>
+    $('#crearModal').on('hidden', function () {
+        debugger;
+        alert('sssss');
+        $(this).data('modal', null);
+    });
+
+    $("#crearModal").on('hidden.bs.modal', function () {
+        debugger;
+        $(this).data('bs.modal', null);
+    });
+
+    var ind = 0;
+    $(this).mousedown(function (e) {
+        if (e.which == 2) {
+            alert('jaja');
+            var rows = $('tr', table_documentos);
+            ind = rows.eq($(this).index()).find("td:first").text();
+            console(ind);
+            return rows.eq($(this).index()).find("td:first").text();
+        }
+    });
+    $('#table_documentos').click(function () {
+        $(this).addClass('highlight').siblings().removeClass('highlight');
+        //do your stuff, you can use $(this) to get current cell
+    });
+
+    $('#table_documentos').find('tr').click(function (e) {
+        var rows = $('tr', table_documentos);
+        ind = rows.eq($(this).index()).find("td:first").text();
+
+        return rows.eq($(this).index()).find("td:first").text();
+    });
+    $vars = 0;
+    $(function () {
+        var $contextMenu = $("#contextMenu");
+        $("body").on("contextmenu", "table tr", function (e) {
+            var rows = $('tr', table_documentos);
+            ind = rows.eq($(this).index()).find("td:first").text();
+            ind = ind.replace(/ /g, "");
+            ind = ind.replace(/\s+/g, "");
+            console.log(ind);
+            $vars = ind;
+            $contextMenu.css({
+                display: "block",
+                left: e.pageX,
+                top: e.pageY
+            });
+            return false;
+        });
+        $('html').click(function () {
+            $contextMenu.hide();
+        });
+    });
+    function getInd() {
+        console.log($vars);
+        return $vars;
+    };
+
+
+    $("#crearModal").scroll(function () {
+
+        $("#fecha").click(function () {
+            if ($('#fecha').blur()) {
+                $("#ui-datepicker-div").show();
+            }
+        });
+
+        $("#ui-datepicker-div").hide();
+    });
+    function Crear() {
+        var url = '@Url.Action("Crear")';
+
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#crearModal").html(data);
+            },
+            error: function (xhr) {
+                alert('Error a la hora de abrir el modal.');
+            }
+        });
+    }
+
+    function Edit(iddocumento) {
+        var url = '@Url.Action("Editar")';
+        var myId = iddocumento;
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            data: {
+                'id': iddocumento
+            },
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#editarModal").html(data);
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    }
+        function Details(iddocumento) {
+        var url = '@Url.Action("Detalles")';
+        var myId = iddocumento;
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            data: {
+                'id': iddocumento
+            },
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#detalleModal").html(data);
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    }
+    function Reply(iddocumento) {
+        var url = '@Url.Action("Responder")';
+        var myId = iddocumento;
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            data: {
+                'id': iddocumento
+            },
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#responderModal").html(data);
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    }
+    function Reference() {
+    var url = '@Url.Action("Referencias")';
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#responderModal").html(data);
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    }
+    $(function () {
+        $('body').on('click', '.modal-link', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#modal-container');
+            $(this).attr('data-toggle', 'modal');
+        });
+        // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#modal-container').modal('hide');
+        });
+        //clear modal cache, so that new content can be loaded
+        $('#modal-container').on('hidden.bs.modal', function () {
+            $('#detalleModal').modal('dispose');
+            $(this).removeData('bs.modal');
+        });
+        $('#CancelModal').on('click', function () {
+            return false;
+        });
+    });
+</script>

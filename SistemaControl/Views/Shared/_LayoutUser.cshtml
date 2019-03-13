@@ -1,0 +1,321 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,minimal-ui">
+    <meta name="description" content="Admin, Dashboard, Semantic-ui">
+    <meta name="viewport" content="width=device-width" />
+
+    <title>SISTEMA DE CONTROL JURIDICO</title>
+    <link href="~/Content/dist1/semantic.min.css" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/png" href="~/Content/img/icon.ico" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <style>
+        .marginlefting {
+            margin-left: 60px !important;
+        }
+
+        .displaynone {
+            display: none !important;
+        }
+
+        .displayblock {
+            display: block !important;
+        }
+
+        .sidebar .item i {
+            font-size: 24px;
+            margin-top: -5px !important;
+        }
+
+        .logo {
+            height: 48px !important;
+            padding: 10px !important;
+        }
+
+            .logo img {
+                width: 15% !important;
+                height: 38px !important;
+            }
+
+        .title.item {
+            padding: .92857143em 1.14285714em !important;
+        }
+
+        .dropdown .menu .header {
+            padding-top: 3.9px !important;
+            padding-bottom: 3.9px !important;
+        }
+    </style>
+</head>
+<body>
+    @*<div class="ui sidebar vertical left menu overlay visible" style="-webkit-transition-duration: 0.1s; overflow: visible !important;background-color:#233245; width:200px">
+            <div class="item logo">
+                <img style="display: block;margin: 0 auto; padding-bottom:10px;" src="~/Content/img/muni.gif" />
+            </div>
+            <a href="~/Home/Index" style="color:white;font-size:18px; font-family:sans-serif; border-top: 1px solid #000; border-bottom: 1px solid #000;" class="title item">
+                <span><i class="fa fa-home"></i></span>Menu Principal
+            </a>
+            <div class="ui accordion">
+                <a style="color:white;font-size:18px;  border-bottom: 1px solid #000; font-family:sans-serif" class="title item">
+                    <span><i class="fa fa-archive"></i></span> Documentos
+                </a>
+                <div class="content">
+                    <a class="item" href="~/Documento/Index">
+                        Oficios
+                    </a>
+                    <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center; border-bottom: 1px solid #000;" href="~/DocumentoExpediente/Index">
+                        Expedientes
+                    </a>
+                </div>
+
+                <a style="color:white;font-size:18px;  border-bottom: 1px solid #000; font-family:sans-serif;" class="title item">
+                    <span><i class="fa fa-users"></i></span> Personas
+                </a>
+                <div class="content">
+                    <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center;  border-bottom: 1px solid #000;" href="~/PersonaFisica/Index">
+                        Fisicas
+                    </a>
+                    <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center;  border-bottom: 1px solid #000;" href="~/Personas/Index">
+                        Jurídicas
+                    </a>
+                </div>
+
+                <a style="color:white;font-size:18px;  border-bottom: 1px solid #000; font-family:sans-serif;" class="title item">
+                    <span><i class="fa fa-balance-scale"></i></span> Procesos
+                </a>
+                <div class="content">
+                    <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center; border-bottom: 1px solid #000;" href="~/Caso/Index">
+                        Administrativos
+                    </a>
+                    <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center; border-bottom: 1px solid #000;" href="~/CasoJudicial/Index">
+                        Judiciales
+                    </a>
+                </div>
+
+                <a href="~/Home/Ayuda" style="color:white;font-size:18px; font-family:sans-serif;  border-bottom: 1px solid #000;" class="title item">
+                    <span><i class="fa fa-question-circle"></i></span> Ayuda
+                </a>
+            </div>
+
+        </div>*@
+    <div class="ui sidebar vertical left menu overlay visible" style="-webkit-transition-duration: 0.1s; overflow: visible !important;background:#233245;">
+        <div class="item logo">
+            <img src="https://image.flaticon.com/icons/svg/866/866218.svg" /><img src="https://image.flaticon.com/icons/svg/866/866218.svg" style="display: none" />
+        </div>
+        <div class="ui accordion" style="border:1px;font-size:14px;color:white;">
+            <a class="item" href="~/Home/Index" >
+                <span style="color:white;"><i class="fa fa-home"></i></span><b style="color:white;" >Menú principal</b>
+            </a>
+            @*<a class="title item">
+                Documentos  <i class="dropdown icon"></i>
+            </a>
+            <div class="content">
+                <a class="item" href="~/Documento/Index">
+                    Oficios
+                </a>
+                <a class="item" href="/DocumentoExpediente/Index">
+                    Expedientes
+                </a>
+            </div>*@
+
+            <div class="title item">
+                <i class="dropdown icon"></i> Procesos
+            </div>
+            <div class="content">
+                <a class="item" href="~/Caso/Index">
+                    Administrativos
+                </a>
+                <a class="item" href="/CasoJudicial/Index">
+                    Judiciales
+                </a>
+            </div>
+            <div class="title item">
+                <i class="dropdown icon"></i> Personas
+            </div>
+            <div class="content">
+                <a class="item" href="sidebar.html">
+                    Sidebar
+                </a>
+                <a class="item" href="menu.html">
+                    Nav
+                </a>
+            </div>
+            <div class="title item">
+                <i class="dropdown icon"></i> Ayuda
+            </div>
+            @*<div class="content">
+                <a class="item" href="accordion.html">
+                    Acerca de SCJ
+                </a>
+                <a class="item" href="breadcrumb.html">
+                    Ayuda
+                </a>
+            </div>*@
+        </div>
+        <div class="ui dropdown item displaynone">
+            <z>Dashboard</z>
+            <i class="icon demo-icon heart icon-heart"></i>
+
+            <div class="menu">
+                <div class="header">
+                    Dashboard
+                </div>
+                <div class="ui divider"></div>
+                <a class="item" href="dashboard.html">
+                    Dashboard
+                </a>
+            </div>
+        </div>
+        <div class="ui dropdown item displaynone">
+            <z>Layout</z>
+            <i class="icon demo-icon world icon-globe"></i>
+
+            <div class="menu">
+                <div class="header">
+                    Layout
+                </div>
+                <div class="ui divider"></div>
+                <a class="item" href="inbox.html">
+                    Inbox
+                </a>
+                <a class="item" href="mail.html">
+                    Mailbox
+                </a>
+                <a class="item" href="chat.html">
+                    Chat
+                </a>
+                <a class="item" href="contacts.html">
+                    Contacts
+                </a>
+                <a class="item" href="photoeditor.html">
+                    Photo Editor
+                </a>
+                <a class="item" href="calendar.html">
+                    Calendar
+                </a>
+                <a class="item" href="filter.html">
+                    Filter
+                </a>
+                <a class="item" href="todo.html">
+                    Todo
+                </a>
+            </div>
+        </div>
+        <div class="ui dropdown item displaynone">
+            <z>Pages</z>
+            <i class="icon demo-icon  icon-params alarm"></i>
+
+            <div class="menu">
+                <div class="header">
+                    Layouts
+                </div>
+                <div class="ui divider"></div>
+                <a class="item" href="sidebar.html">
+                    Sidebar
+                </a>
+                <a class="item" href="menu.html">
+                    Nav
+                </a>
+                <a class="item" href="animatedicon.html">
+                    Animated Icon
+                </a>
+                <a class="item" href="box.html">
+                    Box
+                </a>
+                <a class="item" href="cards.html">
+                    Cards
+                </a>
+                <a class="item" href="color.html">
+                    Colors
+                </a>
+                <a class="item" href="comment.html">
+                    Comment
+                </a>
+                <a class="item" href="embed.html">
+                    Embed
+                </a>
+                <a class="item" href="faq.html">
+                    Faq
+                </a>
+                <a class="item" href="feed.html">
+                    Feed
+                </a>
+                <a class="item" href="gallery.html">
+                    Gallery
+                </a>
+                <a class="item" href="grid.html">
+                    Grid
+                </a>
+                <a class="item" href="header.html">
+                    Header
+                </a>
+                <a class="item" href="timeline.html">
+                    Timeline
+                </a>
+                <a class="item" href="message.html">
+                    Message
+                </a>
+                <a class="item" href="price.html">
+                    Price
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="pusher">
+        <div class="ui menu asd borderless" style="background:#233245;font-size:14px;border-radius: 0!important; border: 0; margin-left: 200px; -webkit-transition-duration: 0.1s;">
+            @*<a class="item openbtn">
+                    <i class="icon content"></i>
+                </a>
+                <a class="item">
+                    Messages
+                </a>*@
+            <div class="right menu">
+                @Html.Partial("_LoginPartial");
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Content/js/jquery-3.1.0.js"></script>
+    @*<script src="js/jquery-3.1.0.js"></script>*@
+    <script src="~/Content/dist1/semantic.min.js"></script>
+    @*<script src="dist/semantic.min.js"></script>*@
+    <script>
+        $(".openbtn").on("click", function () {
+            $(".ui.sidebar").toggleClass("very thin icon");
+            $(".asd").toggleClass("marginlefting");
+            $(".sidebar z").toggleClass("displaynone");
+            $(".ui.accordion").toggleClass("displaynone");
+            $(".ui.dropdown.item.displaynone").toggleClass("displayblock");
+
+            $(".logo").find('img').toggle();
+
+        })
+        $(".ui.dropdown").dropdown({
+            allowCategorySelection: true,
+            transition: "fade up",
+            context: 'sidebar',
+            on: "hover"
+        });
+
+        $('.ui.accordion').accordion({
+            selector: {
+            }
+        });
+    </script>
+    <div class="main-content">
+        @RenderBody()
+    </div>
+    <style>
+
+    </style>
+</body>
+
+</html>

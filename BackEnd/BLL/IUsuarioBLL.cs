@@ -10,5 +10,7 @@ namespace BackEnd.BLL
     public interface IUsuarioBLL : IBLLGenerico<Usuario>
     {      
         List<Usuario> Consulta();
+        Usuario getUsuario(string username);
+        string[] gerRolForUser(string userName);
     }
 }
