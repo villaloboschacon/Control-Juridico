@@ -104,6 +104,15 @@ namespace SistemaControl.Controllers
                         documento.TablaGeneral1 = tablaGeneralBLL.Get(i);
                     }
                 }
+                //var m = documentoBll.listaSalidas();
+                //var m0 = documentoBll.listaEntradas();
+                //var m1 = documentoBll.consultaNumeroIngreso();
+                //var m2 = documentoBll.generaNumIngreso();
+                //var m3 = documentoBll.consultaNumeroIngreso();
+                //var z = documentoBll.getNomenclatura("Servicios Informaticos");
+
+
+
                 PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
                 return View(model);
             }
@@ -127,6 +136,7 @@ namespace SistemaControl.Controllers
                 documentoBll.SaveChanges();
                 return RedirectToAction("Index");
             }
+            
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion", documento.idTipo);
             ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion", documento.tipoOrigen);
             ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion", documento.idOrigen);
@@ -213,6 +223,7 @@ namespace SistemaControl.Controllers
             }
             if (ModelState.IsValid)
             {
+                documentoBll.generaNumIngreso();
                 documentoBll.Modificar(documento);
                 documentoBll.SaveChanges();
                 return RedirectToAction("Index");
@@ -285,6 +296,10 @@ namespace SistemaControl.Controllers
                 return View();
             }
             DocumentoViewModel documentoVista = new DocumentoViewModel();
+
+            documentoVista.fecha = DateTime.Now;
+            documentoVista.numeroDocumento = getNumeroDocumento(documentoVista);
+
             documentoVista.idTipo = tablaGeneralBLL.getIdTablaGeneral("Documentos","tipo","Oficio");
             documentoVista.idOrigen = tablaGeneralBLL.getIdTablaGeneral("Documentos", "idOrigen", "Servicios jurídicos");
             documentoVista.tipoOrigen = tablaGeneralBLL.getIdTablaGeneral("Documentos", "tipoOrigen", "Departamento Interno");
@@ -298,6 +313,33 @@ namespace SistemaControl.Controllers
             return PartialView("Responder", documentoVista);
 
         }
+
+        public string getNumeroDocumento(DocumentoViewModel documento)
+        {
+            string numeroDocumento = (documentoBll.consultaNumeroIngreso() + 1).ToString();
+            if (numeroDocumento.Length == 1)
+            {
+                numeroDocumento = "000" + numeroDocumento;
+            }
+            else
+            {
+                if (numeroDocumento.Length == 2)
+                {
+                    numeroDocumento = "00" + numeroDocumento;
+                }
+                else
+                {
+                    if (numeroDocumento.Length == 3)
+                    {
+                        numeroDocumento = "0" + numeroDocumento;
+                    }
+                }
+            }
+
+            return documento.numeroDocumento = "MA-" + "PSJ-" + numeroDocumento + "-" + documento.fecha.Year;
+        }
+
+
         public JsonResult ComprobarDocumento(string numeroDocumento)
         {
             try

@@ -89,8 +89,8 @@
           <Property Name="observacion" Type="varchar" MaxLength="750" />
           <Property Name="observacionBitacora" Type="varchar" MaxLength="750" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SCJ_BD.dbo.CasoDocumento' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CasoDocumento">
           <Key>
             <PropertyRef Name="idCaso" />
@@ -180,9 +180,10 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida 
           <Property Name="tabla" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="campo" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="nomenclatura" Type="varchar" MaxLength="20" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UsuarioRol">
           <Key>
             <PropertyRef Name="idUsuario" />
@@ -525,12 +526,16 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           </ReferentialConstraint>
         </Association>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="getNomenclatura" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
           <Parameter Name="version" Type="int" Mode="In" />
           <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
         </Function>
+        <Function Name="sp_ConsultaNumerodeIngreso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
@@ -541,6 +546,7 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_GeneraNumerodeIngreso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_getRolesForUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="userName" Type="varchar" Mode="In" />
         </Function>
@@ -552,6 +558,8 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_listaEntradas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_listaSalidas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
@@ -905,6 +913,7 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <NavigationProperty Name="Documentos3" Relationship="Self.FK_Documento_TipoOrigen" FromRole="TablaGeneral" ToRole="Documentos" />
           <NavigationProperty Name="Personas" Relationship="Self.FK_Persona_TipoPersona" FromRole="TablaGeneral" ToRole="Personas" />
           <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuario_Estado" FromRole="TablaGeneral" ToRole="Usuarios" />
+          <Property Name="nomenclatura" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
@@ -1356,6 +1365,13 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <FunctionImport Name="sp_getRolesForUser" ReturnType="Collection(String)">
           <Parameter Name="userName" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_listaEntradas" ReturnType="Collection(SCJ_BD.sp_listaEntradas_Result)" />
+          <FunctionImport Name="sp_listaSalidas" ReturnType="Collection(SCJ_BD.sp_listaSalidas_Result)" />
+          <FunctionImport Name="sp_GeneraNumerodeIngreso" ReturnType="Collection(Int64)" />
+          <FunctionImport Name="sp_ConsultaNumerodeIngreso" ReturnType="Collection(Int64)" />
+          <FunctionImport Name="getNomenclatura" ReturnType="Collection(String)">
+            <Parameter Name="nombre" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1370,6 +1386,38 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
         </ComplexType>
         <ComplexType Name="geIdRol" >
           <Property Type="Int32" Name="idRol" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_listaEntradas_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="true" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_listaSalidas_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="true" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1548,6 +1596,7 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <EntitySetMapping Name="TablaGenerals">
             <EntityTypeMapping TypeName="SCJ_BD.TablaGeneral">
               <MappingFragment StoreEntitySet="TablaGeneral">
+                <ScalarProperty Name="nomenclatura" ColumnName="nomenclatura" />
                 <ScalarProperty Name="idTablaGeneral" ColumnName="idTablaGeneral" />
                 <ScalarProperty Name="tabla" ColumnName="tabla" />
                 <ScalarProperty Name="campo" ColumnName="campo" />
@@ -1606,6 +1655,49 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="SCJ_BD.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="SCJ_BD.Store.sp_upgraddiagrams" />
           <FunctionImportMapping FunctionImportName="sp_getRolesForUser" FunctionName="SCJ_BD.Store.sp_getRolesForUser" />
+          <FunctionImportMapping FunctionImportName="sp_listaEntradas" FunctionName="SCJ_BD.Store.sp_listaEntradas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SCJ_BD.sp_listaEntradas_Result">
+                <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
+                <ScalarProperty Name="idTipo" ColumnName="idTipo" />
+                <ScalarProperty Name="idOrigen" ColumnName="idOrigen" />
+                <ScalarProperty Name="tipoOrigen" ColumnName="tipoOrigen" />
+                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+                <ScalarProperty Name="idReferencia" ColumnName="idReferencia" />
+                <ScalarProperty Name="numeroDocumento" ColumnName="numeroDocumento" />
+                <ScalarProperty Name="numeroIngreso" ColumnName="numeroIngreso" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="asunto" ColumnName="asunto" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="ubicacion" ColumnName="ubicacion" />
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+                <ScalarProperty Name="parte" ColumnName="parte" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_listaSalidas" FunctionName="SCJ_BD.Store.sp_listaSalidas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SCJ_BD.sp_listaSalidas_Result">
+                <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
+                <ScalarProperty Name="idTipo" ColumnName="idTipo" />
+                <ScalarProperty Name="idOrigen" ColumnName="idOrigen" />
+                <ScalarProperty Name="tipoOrigen" ColumnName="tipoOrigen" />
+                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+                <ScalarProperty Name="idReferencia" ColumnName="idReferencia" />
+                <ScalarProperty Name="numeroDocumento" ColumnName="numeroDocumento" />
+                <ScalarProperty Name="numeroIngreso" ColumnName="numeroIngreso" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="asunto" ColumnName="asunto" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="ubicacion" ColumnName="ubicacion" />
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+                <ScalarProperty Name="parte" ColumnName="parte" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GeneraNumerodeIngreso" FunctionName="SCJ_BD.Store.sp_GeneraNumerodeIngreso" />
+          <FunctionImportMapping FunctionImportName="sp_ConsultaNumerodeIngreso" FunctionName="SCJ_BD.Store.sp_ConsultaNumerodeIngreso" />
+          <FunctionImportMapping FunctionImportName="getNomenclatura" FunctionName="SCJ_BD.Store.getNomenclatura" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -13,18 +13,9 @@ namespace BackEnd.Model
 {
 
 using System;
-    using System.Collections.Generic;
     
-public partial class BitacoraDocumento
+public partial class sp_listaSalidas_Result
 {
-
-    public int idBitacora { get; set; }
-
-    public int idUsuario { get; set; }
-
-    public int tipoMovimiento { get; set; }
-
-    public System.DateTime fecha { get; set; }
 
     public int idDocumento { get; set; }
 
@@ -42,7 +33,7 @@ public partial class BitacoraDocumento
 
     public string numeroIngreso { get; set; }
 
-    public System.DateTime fechaDocumento { get; set; }
+    public System.DateTime fecha { get; set; }
 
     public string asunto { get; set; }
 
@@ -52,13 +43,7 @@ public partial class BitacoraDocumento
 
     public string observacion { get; set; }
 
-    public string observacionBitacora { get; set; }
-
-
-
-    public virtual TablaGeneral TablaGeneral { get; set; }
-
-    public virtual Usuario Usuario { get; set; }
+    public string parte { get; set; }
 
 }
 

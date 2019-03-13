@@ -12,6 +12,7 @@ namespace BackEnd.BLL
     public class DocumentoBLLImpl : BLLGenericoImpl<Documento>, IDocumentoBLL
     {
         private UnidadDeTrabajo<Documento> unidad;
+        private SCJ_BDEntities context;
 
         public bool Agregar(Documento documento)
         {
@@ -44,7 +45,7 @@ namespace BackEnd.BLL
                         Expression<Func<Documento, bool>> consulta = (d => d.numeroDocumento.Equals(validar));
                         lista = unidad.genericDAL.Find(consulta).ToList();
                     }
-                    if(lista.Count() == 0)
+                    if (lista.Count() == 0)
                     {
                         return true;
                     }
@@ -74,6 +75,80 @@ namespace BackEnd.BLL
             catch (Exception)
             {
                 throw new NotImplementedException();
+            }
+        }
+
+        public List<sp_listaSalidas_Result> listaSalidas()
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_listaSalidas().ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+
+                    return null;
+                }
+
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+        }
+
+        public List<sp_listaEntradas_Result> listaEntradas()
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_listaEntradas().ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+
+                    return null;
+                }
+
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+        }
+
+        public Nullable<long> consultaNumeroIngreso()
+        {
+            using (context = new SCJ_BDEntities())
+            {
+               var result = this.context.sp_ConsultaNumerodeIngreso().FirstOrDefault();
+               return result;
+            }
+            
+        }
+
+        public Nullable<long> generaNumIngreso()
+        { 
+            using (context = new SCJ_BDEntities())
+             {
+                 var result = this.context.sp_GeneraNumerodeIngreso().FirstOrDefault();
+                 return result;
+             }
+        }
+
+        public string getNomenclatura(string nombreDept)
+        {
+            using (context = new SCJ_BDEntities())
+            {
+                var result = this.context.getNomenclatura(nombreDept).FirstOrDefault();
+                return result;
             }
         }
     }
