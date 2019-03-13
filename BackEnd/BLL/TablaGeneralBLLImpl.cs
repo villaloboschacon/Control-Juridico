@@ -51,7 +51,7 @@ namespace BackEnd.BLL
                 throw new NotImplementedException();
             }
         }
-        public TablaGeneral getIdTablaGeneral(string tabla, string campo, string descripcion)
+        public int getIdTablaGeneral(string tabla, string campo, string descripcion)
         {
             try
             {
@@ -63,9 +63,9 @@ namespace BackEnd.BLL
                 }
                 if (lista.Count == 1)
                 {
-                    return lista[0];
+                    return lista[0].idTablaGeneral;
                 }
-                return null;
+                return -1;
             }
             catch (Exception)
             {

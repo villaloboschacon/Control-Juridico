@@ -11,6 +11,6 @@ namespace BackEnd.BLL
     {
         List<TablaGeneral> Consulta(string tabla,string campo);
         TablaGeneral getTablaGeneral(string tabla, string campo);
-        TablaGeneral getIdTablaGeneral(string tabla, string campo, string descripcion);
+        int getIdTablaGeneral(string tabla, string campo, string descripcion);
     }
 }

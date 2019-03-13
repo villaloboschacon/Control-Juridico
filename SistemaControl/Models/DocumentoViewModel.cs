@@ -1,4 +1,5 @@
 ﻿using BackEnd.BLL;
+using BackEnd.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,23 +22,24 @@ namespace SistemaControl.Models
 
         public int? idEstado { get; set; }
 
-        [RegularExpression(@"MA-[a-zñA-ZÑ]{1,6}-[0-9]{4}-2019$", ErrorMessage = "Formato incorrecto.")]
+        public int idReferencia { get; set; }
+
+        public string idReferenciaView { get; set; }
+
+        [RegularExpression(@"(MA-[a-zñA-ZÑ]{1,6}-[0-9]{4}-\b20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])\b)$", ErrorMessage = "Formato incorrecto. MA-*SIGLAS DEL DEPARTAMENTO*-*CUATRO NÚMEROS*-*AÑO ACTUAL*. \n Ejemplo:MA-PSI-5463-2019.")]
         [Required(ErrorMessage = "*Debe digitar el número de documento.")]
         [StringLength(19, MinimumLength = 14, ErrorMessage = "El número de documento debe tener al menos 11 caracteres.")]
         [Display(Name = "Número de Documento ")]
         [Remote("ComprobarDocumento", "Documento")]
         public string numeroDocumento { get; set; }
 
-        [RegularExpression(@"N.I.[0-9]{4}-2019", ErrorMessage = "Formato incorrecto.")]
+        [RegularExpression("N.I.[0-9]{4}-20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])$", ErrorMessage = "Formato incorrecto. N.I.-*CUATRO NÚMEROS*-*AÑO ACTUAL*. \n Ejemplo:N.I.3571-2019.")]
         [Required(ErrorMessage = "*Debe digitar el número de ingreso.")]
         [StringLength(14, MinimumLength = 13, ErrorMessage = "El número del documento debe tener al menos 13 caracteres.")]
         [Remote("ComprobarIngreso", "Documento")]
         [Display(Name = "Número de Ingreso")]
         public string numeroIngreso { get; set; }
 
-        //[Range(typeof(DateTime), "10/19/2018", "10/30/2018",
-        //ErrorMessage = "El valor {0} debe estar {1} y {2}")]
-        //public DateTime fecha { get; set; }
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime fecha { get; set; }
 
@@ -45,7 +47,7 @@ namespace SistemaControl.Models
         [Display(Name = "Asunto")]
         public string asunto { get; set; }
 
-        [RegularExpression(@"EXP-AD-[a-zA-ZñÑ0-9]+-2019$", ErrorMessage = "Formato incorrecto.")]
+        [RegularExpression(@"EXP-AD-[a-zA-ZñÑ0-9]+-20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])$", ErrorMessage = "Formato incorrecto. EXP-AD-*NOMBRE DE LA PERSONAS*-*AÑO ACTUAL*.\nEjemplo:EXP-AD-MIGUELSANCHEZFERNANDEZ-2019.")]
         [StringLength(50, ErrorMessage = "El nombre del expediente no puede sobrepasar los 50 caracteres.")]
         [Display(Name = "Parte")]
         public string parte { get; set; }
@@ -59,5 +61,23 @@ namespace SistemaControl.Models
         [Display(Name = "Observación")]
         public string observacion { get; set; }
 
+        public static explicit operator DocumentoViewModel(Documento v)
+        {
+            DocumentoViewModel view = new DocumentoViewModel();
+            view.asunto = v.asunto;
+            view.descripcion = v.descripcion;
+            view.fecha = v.fecha;
+            view.idDocumento = v.idDocumento;
+            view.idEstado = v.idEstado;
+            view.idOrigen = v.idOrigen;
+            view.idTipo = v.idTipo;
+            view.numeroDocumento = v.numeroDocumento;
+            view.numeroIngreso = v.numeroIngreso;
+            view.observacion = v.observacion;
+            view.parte = v.parte;
+            view.tipoOrigen = v.tipoOrigen;
+            view.ubicacion = v.ubicacion;
+            return view;
+        }
     }
 }

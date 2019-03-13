@@ -19,7 +19,6 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 @*<script src="~/Content/ckeditor2/ckeditor.js"></script>*@
 <script src="~/Content/js/site.js"></script>
-<script src="~/Content/js/CrearJS.js"></script>
 
 <script src="~/Scripts/jquery-3.3.1.js"></script>
 <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
@@ -100,16 +99,6 @@
             <th>
                 Estado
             </th>
-            @*<th>
-                    Asunto
-                </th>
-                <th>
-                    Descripción
-                </th>
-                <th>
-                    Observación
-                </th>*@
-            @*<th></th>*@
         </tr>
         @if (Model.Count() == 0)
         {
@@ -141,25 +130,13 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.TablaGeneral1.descripcion)
                     </td>
-                    @*<td>
-                            @Html.DisplayFor(modelItem => item.asunto)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.descripcion)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.observacion)
-                        </td>*@
-                    @*<td>
-                            <a href="#" onclick="Reply(@item.idDocumento)" id="btnEdit" class="btnEdit" data-value="@item.idDocumento" data-toggle="modal" data-target="#responderModal">Responder</a> |
-                            <a href="#" onclick="Edit(@item.idDocumento)" class="btnEdit" data-id="@item.idDocumento" data-toggle="modal" data-target="#editarModal" id="btnEdit">Editar</a>
-                        </td>*@
                 </tr>
             }
         }
     </table>
     <div>
         <a href="#" onclick="Crear()" class="btnEdit" data-toggle="modal" data-target="#crearModal" id="btnEdit">Crear documento</a>
+        @*<a href="#" onclick="Reference()" class="btnEdit" data-toggle="modal" data-target="#referenciaModal" id="btnEdit">Ref documento</a>*@
     </div>
     <br />
 
@@ -176,7 +153,8 @@
 </div>
 <div id="detalleModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detalleModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
 </div>
-
+<div id="referenciaModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="referenciaModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
 
 
 <div id="contextMenu" class="dropdown clearfix">
@@ -192,10 +170,11 @@
             <a tabindex="-1" href="#" onclick="Edit(getInd())" data-value="getInd()" data-toggle="modal" data-target="#editarModal">Editar</a>
         </li>
         <li>
+            <a tabindex="-1" href="#" onclick="Reference()" data-toggle="modal" data-target="#referenciaModal">Ver referencias</a>
+        </li>
+        <li>
             <a tabindex="-1" href="#">Eliminar</a>
         </li>
-
-
     </ul>
 </div>
 <style>
@@ -241,20 +220,7 @@
         debugger;
         $(this).data('bs.modal', null);
     });
-    $(document).ready(function () {
-        //var table = $('#table_documentos').data();
 
-        //$('#table_documentos tbody').on('click', 'tr', function () {
-        //    $(this).toggleClass('selected');
-        //});
-        //$('#table_documentos tr').click(function () {
-        //    var href = $(this).find("a").attr("href");
-        //    if (href) {
-        //        window.location = href;
-        //    }
-        //});
-
-    });
     var ind = 0;
     $(this).mousedown(function (e) {
         if (e.which == 2) {
@@ -273,13 +239,6 @@
     $('#table_documentos').find('tr').click(function (e) {
         var rows = $('tr', table_documentos);
         ind = rows.eq($(this).index()).find("td:first").text();
-        //alert(ind);
-        //if (e.which == 3) {
-        //    alert('es 2'+ind);
-        //}
-        //else {
-        //    alert('es otro'+ind);
-        //}
 
         return rows.eq($(this).index()).find("td:first").text();
     });
@@ -398,14 +357,23 @@
             }
         });
     }
-</script>
-<script type="text/javascript">
+    function Reference() {
+    var url = '@Url.Action("Referencias")';
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#responderModal").html(data);
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    }
     $(function () {
-        // Initialize numeric spinner input boxes
-        //$(".numeric-spinner").spinedit();
-        // Initialize modal dialog
-        // attach modal-container bootstrap attributes to links with .modal-link class.
-        // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
         $('body').on('click', '.modal-link', function (e) {
             e.preventDefault();
             $(this).attr('data-target', '#modal-container');

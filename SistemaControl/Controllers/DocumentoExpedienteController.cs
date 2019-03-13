@@ -78,6 +78,36 @@ namespace SistemaControl.Controllers
             Documento documento = documentoBll.Get(id);
             return PartialView("Detalles", documento);
         }
+        public ActionResult Crear()
+        {
+            tablaGeneralBLL = new TablaGeneralBLLImpl();
+            documentoBll = new DocumentoBLLImpl();
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+            ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion");
+            ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion");
+            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion");
+            DocumentoViewModel documento = new DocumentoViewModel();
+            documento.fecha = DateTime.Now;
+            return PartialView("Crear", documento);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CrearDocumento(Documento documento)
+        {
+            tablaGeneralBLL = new TablaGeneralBLLImpl();
+            documentoBll = new DocumentoBLLImpl();
+            if (ModelState.IsValid)
+            {
+                documentoBll.Agregar(documento);
+                documentoBll.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion");
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+            ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion");
+            ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion");
+            return PartialView("Crear", documento);
+        }
 
     }
 }

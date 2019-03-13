@@ -943,6 +943,8 @@
     <Content Include="Views\PersonaFisica\Crear.cshtml" />
     <Content Include="Views\CasoJudicial\Crear.cshtml" />
     <Content Include="Views\CasoJudicial\Editar.cshtml" />
+    <Content Include="Views\DocumentoExpediente\Crear.cshtml" />
+    <Content Include="Views\Documento\Referencias.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

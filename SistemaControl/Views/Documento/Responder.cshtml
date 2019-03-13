@@ -1,83 +1,409 @@
-﻿@model BackEnd.Model.Documento
+﻿@model SistemaControl.Models.DocumentoViewModel
+@*Scripts para validaciones y mensajes de alerta*@
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@*--Espacio de scripts cerrado--*@
 <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <span class="modal-title" id="exampleModalLabel">Respuesta a:</span>
+            <span class="modal-title" id="replyModal">Respuesta a:</span>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <div id="contenidoModal">
-                @using (Html.BeginForm())
+                @using (Html.BeginForm("ResponderDocumento", "Documento"))
                 {
                     @Html.AntiForgeryToken()
-                    int i = 0;
-                    <div class="form-horizontal">
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        @Html.HiddenFor(model => model.idDocumento)
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.numeroDocumento, "Documento Vinculado:", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
-                                @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
-                            </div>
+                <div class="form-horizontal" id="parent">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.idDocumento)
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.idReferenciaView, "Documento Vinculado:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.idReferenciaView, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.idReferenciaView, "", new { @class = "text-danger" })
                         </div>
+                    </div>
+                    <div  id="novisible">
+
+
+
                         <div class="form-group">
                             @Html.LabelFor(model => model.idTipo, "Tipo de Documento:", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                                @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.idTipo, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(model => model.fecha, "Fecha:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.idOrigen, "idOrigen", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.TextBoxFor(model => model.fecha, new { @type = "date", @class = "form-control datepicker" @*@Va,lue = Model.fecha.ToString("yyyy-MM-dd") *@})
-                                @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
+                                @Html.DropDownList("idOrigen", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.idOrigen, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
                         <div class="form-group">
-                            @Html.LabelFor(model => model.asunto, "Asunto:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.tipoOrigen, "tipoOrigen", htmlAttributes: new { @class = "control -label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.asunto, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.asunto, "", new { @class = "text-danger" })
-                            </div>
-                        </div>  
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+                                @Html.DropDownList("tipoOrigen", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.tipoOrigen, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
                         <div class="form-group">
-                            @Html.LabelFor(model => model.ubicacion, "Ubicación:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.idEstado, "idEstado", htmlAttributes: new { @class = "control -label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
+                                @Html.DropDownList("idEstado", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.idEstado, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
                         <div class="form-group">
-                            @Html.LabelFor(model => model.observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.idReferencia, "idReferencia", htmlAttributes: new { @class = "control -label col-md-2" })
                             <div class="col-md-10">
-                                @Html.TextAreaFor(model => model.observacion, 10, 62, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.idReferencia, new { htmlAttributes = new { text = "me come el coño.", @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.idReferencia, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.numeroDocumento, "Número de Oficio:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { text = "me come el coño.", @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.fecha, "Fecha:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.fecha, new { @type = "date", @class = "form-control datepicker" @*@Va,lue = Model.fecha.ToString("yyyy-MM-dd") *@})
+                            @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.asunto, "Asunto:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.asunto, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.asunto, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ubicacion, "Ubicación:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.observacion, 10, 62, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                    <div class="modal-footer">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Responder documento" class="btn btn-default" />
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
                 }
-                <input type="file" name="elementName" multiple="multiple" />
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Cerrar</a></button>
-            <button type="button" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Guardar cambios</a></button>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    //Variables.
+    var nomneclatura = "";
+    //Metodos
+    $(document).ready(function () {
+        tipoOrigen
+        $("#novisible").hide();
+        $("#tipoOrigen").hide();
+        $("#idEstado").hide();
+        $("#idReferencia").hide();
+        $("#idTipo").hide();
+        $("#numeroDocumento").attr('maxlength', '19');
+        $("#numeroIngreso").attr('maxlength', '13');
+        onChangeId();
+        //changeIdOrigen($("#tipoOrigen").val(), $("#idOrigen").val());
+    });
+
+    //Cambiar los combos cuando se cambia el tipo de origen
+    $("#tipoOrigen").change(function () {
+        $("#idOrigen").empty();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetTipoOrigen")',
+            dataType: 'json',
+            data: { id: $("#tipoOrigen").val() },
+            success: function (origins) {
+                var another = origins.Data;
+                console.log(another[0].Value);
+                $.each(another, function (i, state) {
+                    $("#idOrigen").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                    onChangeId();
+                });
+            },
+            error: function (ex) {
+                alert('Error al recuperar los datos.' + ex);
+            }
+        });
+        return false;
+    });
+    //Actualiza la variable nomenclatura
+    //function changeIdOrigen(tipoOrigen, idOrigen) {
+    //    if (tipoOrigen == "5") {
+    //        switch (idOrigen) {
+    //            case "10": nomenclatura = "PSI-";
+    //                break;
+    //            case "11": nomenclatura = "PRH-";
+    //                break;
+    //            case "24": nomenclatura = "AAM-";
+    //                break;
+    //            case "25": nomenclatura = "SAAM-";
+    //                break;
+    //            case "26": nomenclatura = "AAAA-";
+    //                break;
+    //            case "27": nomenclatura = "SAT-";
+    //                break;
+    //            case "28": nomenclatura = "A-";
+    //                break;
+    //            case "29": nomenclatura = "AAP-";
+    //                break;
+    //            case "30": nomenclatura = "AAPRT-";
+    //                break;
+    //            case "31": nomenclatura = "AAS-";
+    //                break;
+    //            case "32": nomenclatura = "PAM-";
+    //                break;
+    //            case "33": nomenclatura = "ALCM-";
+    //                break;
+    //            case "34": nomenclatura = "AAI-";
+    //                break;
+    //            case "35": nomenclatura = "AI-";
+    //                break;
+    //            case "36": nomenclatura = "ABI-";
+    //                break;
+    //            case "37": nomenclatura = "ABM-";
+    //                break;
+    //            case "38": nomenclatura = "ACE-";
+    //                break;
+    //            case "39": nomenclatura = "ACM-";
+    //                break;
+    //            case "40": nomenclatura = "CMEA-";
+    //                break;
+    //            case "41": nomenclatura = "PCD-";
+    //                break;
+    //            case "42": nomenclatura = "CM-";
+    //                break;
+    //            case "43": nomenclatura = "SC-";
+    //                break;
+    //            case "44": nomenclatura = "AAAACC-";
+    //                break;
+    //            case "45": nomenclatura = "PCS-";
+    //                break;
+    //            case "46": nomenclatura = "ACC-";
+    //                break;
+    //            case "47": nomenclatura = "PCFU-";
+    //                break;
+    //            case "48": nomenclatura = "SCI-";
+    //                break;
+    //            case "49": nomenclatura = "SCP-";
+    //                break;
+    //            case "50": nomenclatura = "ADM-";
+    //                break;
+    //            case "51": nomenclatura = "AD-";
+    //                break;
+    //            case "52": nomenclatura = "SDC-";
+    //                break;
+    //            case "53": nomenclatura = "ADCDR-";
+    //                break;
+    //            case "54": nomenclatura = "PDO-";
+    //                break;
+    //            case "55": nomenclatura = "PDS-";
+    //                break;
+    //            case "56": nomenclatura = "PDSCEC-";
+    //                break;
+    //            case "57": nomenclatura = "DGP-";
+    //                break;
+    //            case "58": nomenclatura = "SGA-";
+    //                break;
+    //            case "59": nomenclatura = "AGC-";
+    //                break;
+    //            case "60": nomenclatura = "AGIRS-";
+    //                break;
+    //            case "61": nomenclatura = "SGV-";
+    //                break;
+    //            case "62": nomenclatura = "PH-";
+    //                break;
+    //            case "63": nomenclatura = "PHM-";
+    //                break;
+    //            case "64": nomenclatura = "AIM-";
+    //                break;
+    //            case "65": nomenclatura = "SIS-";
+    //                break;
+    //            case "66": nomenclatura = "AJCA-";
+    //                break;
+    //            case "67": nomenclatura = "ALV-";
+    //                break;
+    //            case "68": nomenclatura = "AMPZV-";
+    //                break;
+    //            case "69": nomenclatura = "AM-";
+    //                break;
+    //            case "70": nomenclatura = "SOIP-";
+    //                break;
+    //            case "71": nomenclatura = "AOM-";
+    //                break;
+    //            case "72": nomenclatura = "APC-";
+    //                break;
+    //            case "73": nomenclatura = "AP-";
+    //                break;
+    //            case "74": nomenclatura = "PPCI-";
+    //                break;
+    //            case "75": nomenclatura = "PP-";
+    //                break;
+    //            case "76": nomenclatura = "SPU-";
+    //                break;
+    //            case "77": nomenclatura = "APG-";
+    //                break;
+    //            case "78": nomenclatura = "PRE-";
+    //                break;
+    //            case "79": nomenclatura = "SP-";
+    //                break;
+    //            case "80": nomenclatura = "SO-";
+    //                break;
+    //            case "81": nomenclatura = "SM-";
+    //                break;
+    //            case "82": nomenclatura = "PSMCV-";
+    //                break;
+    //            case "83": nomenclatura = "SPSA-";
+    //                break;
+    //            case "84": nomenclatura = "SSA-";
+    //                break;
+    //            case "85": nomenclatura = "PSJ-";
+    //                break;
+    //            case "86": nomenclatura = "SSISC-";
+    //                break;
+    //            case "87": nomenclatura = "SSISCT-";
+    //                break;
+    //            case "88": nomenclatura = "TM-";
+    //                break;
+    //            case "89": nomenclatura = "ST-";
+    //                break;
+    //            case "90": nomenclatura = "VA-";
+    //                break;
+    //            default: nomenclatura = "PMM-";
+    //                break;
+    //        }
+    //    }
+    //    else {
+    //        nomenclatura = "PMM-";
+    //    }
+    //}
+    //$("#idOrigen").change(function () {
+    //    onChangeId();
+    //});
+    //Limpia el campo del numero de documento y pone el placeholder dependiento del origen.
+    function onChangeId() {
+        //console.log($("#idTipo").val()+'vergeuerp');
+        //changeIdOrigen($("#tipoOrigen").val(), $("#idOrigen").val());
+        $('#numeroDocumento').val('');
+        $('#numeroDocumento').attr('placeholder', 'MA-PSJ-####-2019');
+    };
+    //Cuando se pone el click escribe la nomenclatura
+    $("#numeroDocumento").click(function () {
+        $('#numeroDocumento').val('MA-PSJ-');
+    });
+    //Maneja el campo del numero de documento
+    $("#numeroDocumento").keydown(function (e) {
+        var reg = /(MA-PSJ-[0-9]{4}-\b20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])\b)$/;
+        var regPrev = /(MA-PSJ-[0-9]{4})/;
+        var numDoc = $('#numeroDocumento').val();
+        console.log(e.keyCode);
+        console.log(e.key);
+        if (reg.test(numDoc)) {
+            console.log('Entró.');
+            if (e.key == 'Backspace') {
+                console.log('Mas.');
+                $('#numeroDocumento').val(numDoc.slice(0, -6));
+                event.preventDefault();
+            }
+            else {
+                event.preventDefault();
+            }
+        }
+        else {
+            if (e.key != 1 && e.key != 2 && e.key != 3 && e.key != 4 && e.key != 5 && e.key != 6 && e.key != 7 && e.key != 8 && e.key != 9 && e.key != 0 && e.key != 'Backspace' && e.keyCode != 32) {
+                event.preventDefault();
+            }
+            else {
+
+                if ((e.key == 'Backspace' && $('#numeroDocumento').val() == 'MA-PSJ-') || e.keyCode == 32) {
+                    event.preventDefault();
+                }
+            }
+            if (regPrev.test(numDoc + e.key)) {
+                console.log(123);
+                $('#numeroDocumento').val(numDoc + e.key + '-2019');
+                event.preventDefault();
+            }
+        }
+
+    });
+    //Cuando se pone el click escribe las iniciales
+    //$("#numeroIngreso").click(function () {
+    //    $('#numeroIngreso').val('N.I.');
+    //});
+    //Maneja el campo del numero de ingreso
+    //$("#numeroIngreso").keydown(function (e) {
+    //    var reg = /(N.I.[0-9]{4}-\b20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])\b)$/;
+    //    var regPrev = /N.I.[0-9]{4}/;
+    //    var numDoc = $('#numeroIngreso').val();
+    //    console.log(e.keyCode);
+    //    console.log(e.key);
+    //    if (reg.test(numDoc)) {
+    //        console.log('Entró.');
+    //        if (e.key == 'Backspace') {
+    //            $('#numeroIngreso').val(numDoc.slice(0, -6));
+    //            event.preventDefault();
+    //        }
+    //        else {
+    //            event.preventDefault();
+    //        }
+
+    //    }
+    //    else {
+    //        if (e.key != 1 && e.key != 2 && e.key != 3 && e.key != 4 && e.key != 5 && e.key != 6 && e.key != 7 && e.key != 8 && e.key != 9 && e.key != 0 && e.key != 'Backspace' && e.keyCode != 32) {
+    //            event.preventDefault();
+    //        }
+    //        else {
+
+    //            if ((e.key == 'Backspace' && $('#numeroIngreso').val() == 'N.I.') || e.keyCode == 32) {
+    //                event.preventDefault();
+    //            }
+    //        }
+    //        if (regPrev.test(numDoc + e.key)) {
+    //            console.log(123);
+    //            $('#numeroIngreso').val(numDoc + e.key + '-2019');
+    //            event.preventDefault();
+    //        }
+    //    }
+
+    //});
+
+</script>
