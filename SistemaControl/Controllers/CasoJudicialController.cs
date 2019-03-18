@@ -188,10 +188,10 @@ namespace SistemaControl.Controllers
             return PartialView("Editar", caso);
         }
 
-        public JsonResult ComprobarCaso(int numeroCaso)
+        public JsonResult ComprobarCaso(string numeroCaso,string idCaso)
         {
             casoBLL = new CasoBLLImpl();
-            if (casoBLL.Comprobar(numeroCaso))
+            if (casoBLL.Comprobar(numeroCaso,idCaso))
             {
                 return Json(true, JsonRequestBehavior.AllowGet);
             }

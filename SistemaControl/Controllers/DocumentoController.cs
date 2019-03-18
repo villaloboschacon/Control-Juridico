@@ -503,7 +503,6 @@ namespace SistemaControl.Controllers
                 
             }
             return this.Json(new { Id = "idOrigen",Reg="OIJ" ,Data = ViewBag.idOrigen }, JsonRequestBehavior.AllowGet);
-
         }
         
     }
