@@ -28,6 +28,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception ex)
             {
+                ex = new Exception();
                 return View();
             }
             ViewBag.CurrentSort = sortOrder;

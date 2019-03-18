@@ -89,8 +89,8 @@
           <Property Name="observacion" Type="varchar" MaxLength="750" />
           <Property Name="observacionBitacora" Type="varchar" MaxLength="750" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SCJ_BD.dbo.CasoDocumento' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="CasoDocumento">
           <Key>
             <PropertyRef Name="idCaso" />
@@ -182,8 +182,8 @@ warning 6002: The table/view 'SCJ_BD.dbo.CasoDocumento' does not have a primary 
           <Property Name="descripcion" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="nomenclatura" Type="varchar" MaxLength="20" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="UsuarioRol">
           <Key>
             <PropertyRef Name="idUsuario" />
@@ -1365,13 +1365,13 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <FunctionImport Name="sp_getRolesForUser" ReturnType="Collection(String)">
           <Parameter Name="userName" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="sp_listaEntradas" ReturnType="Collection(SCJ_BD.sp_listaEntradas_Result)" />
-          <FunctionImport Name="sp_listaSalidas" ReturnType="Collection(SCJ_BD.sp_listaSalidas_Result)" />
-          <FunctionImport Name="sp_GeneraNumerodeIngreso" ReturnType="Collection(Int64)" />
+          <FunctionImport Name="sp_listaEntradas" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)" />
+          <FunctionImport Name="sp_listaSalidas" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)" />
           <FunctionImport Name="sp_ConsultaNumerodeIngreso" ReturnType="Collection(Int64)" />
           <FunctionImport Name="getNomenclatura" ReturnType="Collection(String)">
-            <Parameter Name="nombre" Mode="In" Type="String" />
+          <Parameter Name="nombre" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_GeneraNumerodeIngreso" ReturnType="Collection(Int64)" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1656,48 +1656,12 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="SCJ_BD.Store.sp_upgraddiagrams" />
           <FunctionImportMapping FunctionImportName="sp_getRolesForUser" FunctionName="SCJ_BD.Store.sp_getRolesForUser" />
           <FunctionImportMapping FunctionImportName="sp_listaEntradas" FunctionName="SCJ_BD.Store.sp_listaEntradas">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SCJ_BD.sp_listaEntradas_Result">
-                <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
-                <ScalarProperty Name="idTipo" ColumnName="idTipo" />
-                <ScalarProperty Name="idOrigen" ColumnName="idOrigen" />
-                <ScalarProperty Name="tipoOrigen" ColumnName="tipoOrigen" />
-                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
-                <ScalarProperty Name="idReferencia" ColumnName="idReferencia" />
-                <ScalarProperty Name="numeroDocumento" ColumnName="numeroDocumento" />
-                <ScalarProperty Name="numeroIngreso" ColumnName="numeroIngreso" />
-                <ScalarProperty Name="fecha" ColumnName="fecha" />
-                <ScalarProperty Name="asunto" ColumnName="asunto" />
-                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
-                <ScalarProperty Name="ubicacion" ColumnName="ubicacion" />
-                <ScalarProperty Name="observacion" ColumnName="observacion" />
-                <ScalarProperty Name="parte" ColumnName="parte" />
-              </ComplexTypeMapping>
-            </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_listaSalidas" FunctionName="SCJ_BD.Store.sp_listaSalidas">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SCJ_BD.sp_listaSalidas_Result">
-                <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
-                <ScalarProperty Name="idTipo" ColumnName="idTipo" />
-                <ScalarProperty Name="idOrigen" ColumnName="idOrigen" />
-                <ScalarProperty Name="tipoOrigen" ColumnName="tipoOrigen" />
-                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
-                <ScalarProperty Name="idReferencia" ColumnName="idReferencia" />
-                <ScalarProperty Name="numeroDocumento" ColumnName="numeroDocumento" />
-                <ScalarProperty Name="numeroIngreso" ColumnName="numeroIngreso" />
-                <ScalarProperty Name="fecha" ColumnName="fecha" />
-                <ScalarProperty Name="asunto" ColumnName="asunto" />
-                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
-                <ScalarProperty Name="ubicacion" ColumnName="ubicacion" />
-                <ScalarProperty Name="observacion" ColumnName="observacion" />
-                <ScalarProperty Name="parte" ColumnName="parte" />
-              </ComplexTypeMapping>
-            </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_GeneraNumerodeIngreso" FunctionName="SCJ_BD.Store.sp_GeneraNumerodeIngreso" />
           <FunctionImportMapping FunctionImportName="sp_ConsultaNumerodeIngreso" FunctionName="SCJ_BD.Store.sp_ConsultaNumerodeIngreso" />
           <FunctionImportMapping FunctionImportName="getNomenclatura" FunctionName="SCJ_BD.Store.getNomenclatura" />
+          <FunctionImportMapping FunctionImportName="sp_GeneraNumerodeIngreso" FunctionName="SCJ_BD.Store.sp_GeneraNumerodeIngreso" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

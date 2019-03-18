@@ -1,32 +1,21 @@
 ﻿@model SistemaControl.Models.DocumentoViewModel
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
-<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+@*Scripts para validaciones y mensajes de alerta*@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-@*
-    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script src="~/Scripts/jquery-3.3.1.js"></script>
-*@
-<style>
-</style>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
+@*--Espacio de scripts cerrado--*@
 <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <span class="modal-title" id="exampleModalLabel" style="text-align:center;">Crear documento</span>
-            <button type="button" onclick="closeModal" data-dismiss="modal" aria-label="Close">
-                <span href="/Documento/Index" aria-hidden="true">&times;</span>
+            <span class="modal-title" id="createModal" style="text-align:center;">Crear documento</span>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <div id="contenidoModal">
-                @using (Html.BeginForm("CrearDocumento", "Documento"))
+                
+                @using (Html.BeginForm("CrearDocumento", "DocumentoExpediente"))
                 {
                     @Html.AntiForgeryToken()
                     <div class="form-horizontal" id="parent">
@@ -37,23 +26,23 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.idTipo, "Tipo de Documento", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.DropDownList("idTipo", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.idTipo, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" id="tipoOrigenes">
                             @Html.LabelFor(model => model.tipoOrigen, "Tipo de origen", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("tipoOrigen", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.DropDownList("tipoOrigen", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.tipoOrigen, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" id="origenes">
                             @Html.LabelFor(model => model.idOrigen, "Origen", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("idOrigen", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.DropDownList("idOrigen", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.idOrigen, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -65,15 +54,16 @@
                                 @Html.ValidationMessageFor(model => model.parte, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="numerosDocumentos">
                             @Html.LabelFor(model => model.numeroDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { @class = "form-control", placeholder = "MA-PSI-#####-2018", autocomplete = "off", @id = "numeroDocumento" } })
+                                @*, placeholder = "MA-PSI-#####-2018", autocomplete = "off"*@
+                                @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { @class = "form-control", @id = "numeroDocumento" } })
                                 @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
-                        <div class="form-group" id="numIngreso">
+                        <div class="form-group" id="numerosIngresos">
                             @Html.LabelFor(model => model.numeroIngreso, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.numeroIngreso, new { htmlAttributes = new { @class = "form-control", placeholder = "N.I.####-2018", autocomplete = "off" } })
@@ -82,7 +72,7 @@
                         </div>
 
 
-                        <div class="form-group">
+                        <div class="form-group" id="idEstados">
                             @Html.LabelFor(model => model.idEstado, "Estado", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.DropDownList("idEstado", null, htmlAttributes: new { @class = "form-control" })
@@ -90,7 +80,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" id="fechas">
                             @Html.LabelFor(model => model.fecha, "Fecha", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @class = "form-control" } })
@@ -98,14 +88,14 @@
                                 @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="form-group" id="Expediente">
+                        <div class="form-group" id="ubicaciones">
                             @Html.LabelFor(model => model.ubicacion, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", placeholder = "La ubicación física del documento." } })
                                 @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="asuntos">
                             @Html.LabelFor(model => model.asunto, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.asunto, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", placeholder = "Asunto" } })
@@ -113,7 +103,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" id="descripciones">
                             @Html.LabelFor(model => model.descripcion, htmlAttributes: new { @class = "control-label col-md-2", placeholder = "Descripción breve del documento." })
                             <div class="col-md-10">
                                 @Html.TextAreaFor(model => model.descripcion, 5, 62, new { @class = "form-control", @style = "resize: vertical;min-height: 100px;" })
@@ -121,33 +111,40 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" id="observaciones">
                             @Html.LabelFor(model => model.observacion, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.TextAreaFor(model => model.observacion, 10, 62, new { @class = "form-control", @style = "resize: vertical;min-height: 200px;" })
                                 @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="btn btn-primary">
+                        <div class="form-group" id="file">
+                            <label class="control-label col-md-2">Adjuntar archivos:</label>
                             <div class="col-md-10">
-                            </div>
-                            <input type="file" id="imageBrowes" multiple="multiple" />
-                        </div>
-                        <div id="imgPreview" class="thumbnail" style="display:none">
-                            <img class="img-responsive" id="targetImg" />
-                            <div class="caption">
-                                <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
-                                <span id="description"></span>
+                                <input class="form-control" type="file" name="elementName" multiple="multiple" />
                             </div>
                         </div>
-
                     </div>
+                    @*<div class="form-group">
+                            <div class="btn btn-primary">
+                                <div class="col-md-10">
+                                </div>
+                                <input type="file" id="imageBrowes" multiple="multiple" />
+                            </div>
+                            <div id="imgPreview" class="thumbnail" style="display:none">
+                                <img class="img-responsive" id="targetImg" />
+                                <div class="caption">
+                                    <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
+                                    <span id="description"></span>
+                                </div>
+                            </div>
+
+                        </div>*@
+
                     <div class="modal-footer">
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Crear documento" class="btn btn-default" />
-                            <button type="button" onclick="closeModal()" class="btn btn-primary"><a style="color:white;" href="/Documento/Index">Cerrar</a></button>
+                            <input type="submit" id="CrearBoton" value="Crear documento" class="btn btn-default" />
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
                 }
@@ -210,34 +207,138 @@
     //Variables.
     var nomneclatura = "";
     //Metodos
-    $(document).ready(function () {
+    $(document).ready(function ()
+    {
         $("#numeroDocumento").attr('maxlength', '19');
         $("#numeroIngreso").attr('maxlength', '13');
         changeIdOrigen($("#tipoOrigen").val(), $("#idOrigen").val());
+        hideexpediente();
+        $("#numerosIngresos").hide();
+        $("#CrearBoton").hide();
+        $("#origenes").hide();
+        $("#tipoOrigenes").hide();
+        hideall();
+    });
+
+    $("#idTipo").change(function ()
+    {
+        if ($("#idTipo").val() == "")
+        {
+            hideall();
+            hideexpediente();
+            $("#origenes").hide();
+            $("#tipoOrigenes").hide();
+            $("#CrearBoton").hide();
+            $("#tipoOrigen").get(0).selectedIndex = 0;
+            $("#idOrigen").get(0).selectedIndex = 0;
+            $("#numerosIngresos").hide();
+        }
+        else
+        {
+            if ($("#idOrigen").val() != "" && $("#idOrigen").val() != null)
+            {
+                if ($("#idTipo").val() == 3)
+                {
+                    showoficio();
+                    $("#numerosIngresos").show();
+                }
+                else if ($("#idTipo").val() == 23)
+                {
+                    showoficiosin();
+                }
+                else
+                {
+                    showexpediente();
+                    $("#numerosIngresos").show();
+                }
+            }
+            $('#tipoOrigenes').show();
+        }
+
+    });
+
+    $("#tipoOrigen").change(function () {
+        if ($("#tipoOrigen").val() == "") {
+            hideall();
+            hideexpediente();
+            $("#origenes").hide();
+            $("#CrearBoton").hide();
+            $("#idOrigen").get(0).selectedIndex = 0;
+            $("#numerosIngresos").hide();
+        }
+        else {
+            $("#origenes").show();
+        }
+
+    });
+
+    $("#idOrigen").change(function () {
+        if ($("#idOrigen").val() == "") {
+            hideall();
+            hideexpediente();
+            $("#CrearBoton").hide();
+            $("#numerosIngresos").hide();
+        }
+        else {
+            showall();
+            var valIdTipo = $("#idTipo").val();
+            if (valIdTipo == 3) {
+                showoficio();
+                $("#numerosIngresos").show();
+            }
+            else if (valIdTipo == 23) {
+                showoficiosin();
+            }
+            else {
+                showexpediente();
+                $("#numerosIngresos").show();
+            }
+            $("#CrearBoton").show();
+        }
+
+    });
+    function showoficio() {
+        hideexpediente();
+    }
+    function hideexpediente() {
         $("#Expediente").hide();
         $("#partes").hide();
-    });
-        //Cambiar los combos cuando se cambia el tipo de origen
-    $("#idTipo").change(function () {
-        var valIdTipo = $("#idTipo").val();
-        if (valIdTipo == 3) {
+    }
+    function showexpediente() {
+        if ($("#idOrigen").val() == "") {
             $("#Expediente").hide();
             $("#partes").hide();
-            $("#numIngreso").show();
-        }
-        else if (valIdTipo == 23) {
-            $("#Expediente").hide();
-            $("#partes").hide();
-            $("#numIngreso").hide();
         }
         else {
             $("#Expediente").show();
             $("#partes").show();
-            $("#numIngreso").show();
         }
-    });
+    }
 
-
+    function showoficiosin() {
+        hideexpediente();
+        $("#numerosIngresos").hide();
+    }
+    function hideall() {
+        $("#ubicaciones").hide();
+        $("#numerosDocumentos").hide();
+        $("#idEstados").hide();
+        $("#fechas").hide();
+        $("#asuntos").hide();
+        $("#descripciones").hide();
+        $("#observaciones").hide();
+        $("#file").hide();
+    }
+    function showall() {
+        $("#ubicaciones").show();
+        $("#numerosDocumentos").show();
+        $("#idEstados").show();
+        $("#fechas").show();
+        $("#asuntos").show();
+        $("#descripciones").show();
+        $("#observaciones").show();
+        $("#file").show();
+    }
     $('#fecha').datepicker({
         dateFormat: 'yy-mm-dd',
         closeText: 'Cerrar',
@@ -280,7 +381,6 @@
         console.log(e.keyCode);
         console.log(e.key);
         if (reg.test(part)) {
-            console.log('Entró.');
             if (e.key == 'Backspace') {
                 console.log('Mas.');
                 $('#parte').val(part.slice(0, -6));
@@ -312,24 +412,28 @@
     //Cambiar los combos cuando se cambia el tipo de origen
     $("#tipoOrigen").change(function () {
         $("#idOrigen").empty();
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("GetTipoOrigen")',
-            dataType: 'json',
-            data: { id: $("#tipoOrigen").val() },
-            success: function (origins) {
-                var another = origins.Data;
-                console.log(another[0].Value);
-                $.each(another, function (i, state) {
-                    $("#idOrigen").append('<option value="' + state.Value + '">' + state.Text + '</option>');
-                    onChangeId();
-                });
-            },
-            error: function (ex) {
-                alert('Failed to retrieve states.' + ex);
+        if ($("#tipoOrigen").val() != "" && $("#tipoOrigen").val() != null) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetTipoOrigen")',
+                dataType: 'json',
+                data: { id: $("#tipoOrigen").val() },
+                success: function (origins) {
+                    var another = origins.Data;
+                    $("#idOrigen").append('<option value="">Seleccione una opción.</option>');
+                    $.each(another, function (i, state) {
+                        $("#idOrigen").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                        onChangeId();
+                    });
+                },
+                error: function (ex) {
+                    alert('Seleccione una opción válida.' + ex);
+                }
             }
-        });
-        return false;
+
+            );
+            return false;
+        }
     });
     //Actualiza la variable nomenclatura
     function changeIdOrigen(tipoOrigen, idOrigen) {

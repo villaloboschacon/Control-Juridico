@@ -37,6 +37,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception ex)
             {
+                ex = new Exception();
                 return false;
             }
 

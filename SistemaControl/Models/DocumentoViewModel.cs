@@ -14,10 +14,11 @@ namespace SistemaControl.Models
         [Key]
         public int idDocumento { get; set; }
 
+        [Required(ErrorMessage = "Country Required.")]
         public int? idTipo { get; set; }
-
+        [Required(ErrorMessage = "Country Required.")]
         public int? idOrigen { get; set; }
-
+        [Required(ErrorMessage = "Country Required.")]
         public int? tipoOrigen { get; set; }
 
         public int? idEstado { get; set; }
@@ -30,13 +31,13 @@ namespace SistemaControl.Models
         [Required(ErrorMessage = "*Debe digitar el número de documento.")]
         [StringLength(19, MinimumLength = 14, ErrorMessage = "El número de documento debe tener al menos 11 caracteres.")]
         [Display(Name = "Número de Documento ")]
-        [Remote("ComprobarDocumento", "Documento")]
+        [Remote("ComprobarDocumento", "Documento",AdditionalFields = "idDocumento")]
         public string numeroDocumento { get; set; }
 
         [RegularExpression("N.I.[0-9]{4}-20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])$", ErrorMessage = "Formato incorrecto. N.I.-*CUATRO NÚMEROS*-*AÑO ACTUAL*. \n Ejemplo:N.I.3571-2019.")]
         [Required(ErrorMessage = "*Debe digitar el número de ingreso.")]
         [StringLength(14, MinimumLength = 13, ErrorMessage = "El número del documento debe tener al menos 13 caracteres.")]
-        [Remote("ComprobarIngreso", "Documento")]
+        [Remote("ComprobarIngreso", "Documento", AdditionalFields = "idDocumento")]
         [Display(Name = "Número de Ingreso")]
         public string numeroIngreso { get; set; }
 

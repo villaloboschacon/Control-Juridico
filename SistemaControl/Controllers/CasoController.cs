@@ -9,7 +9,6 @@ using SistemaControl.Models;
 
 namespace SistemaControl.Controllers
 {
-    [Authorize]
     public class CasoController : Controller
     {
         private ICasoBLL casoBLL;
@@ -198,6 +197,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception ex)
             {
+                ex = new Exception();
                 return View();
             }
         }
@@ -228,6 +228,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception ex)
             {
+                ex = new Exception();
             }
             return this.Json(new { Id = "idPersona", Reg = "Supermercado", Data = ViewBag.idPersona }, JsonRequestBehavior.AllowGet);
 

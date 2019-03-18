@@ -63,35 +63,81 @@ namespace SistemaControl.Controllers
                 return View(model);
             }
         }
+        public ActionResult Crear()
+        {
+            tablaGeneralBLL = new TablaGeneralBLLImpl();
+            personaBll = new PersonasBLLImpl();
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
+            PersonasViewModel persona = new PersonasViewModel();
+            return PartialView("Crear", persona);
+        }
 
         [HttpPost]
-        public ActionResult Agregar(Persona persona)
+        [ValidateAntiForgeryToken]
+        public ActionResult CrearPersona(Persona persona)
         {
-            personaBll.Agregar(persona);
-            return RedirectToAction("Index", "Personas");
+            tablaGeneralBLL = new TablaGeneralBLLImpl();
+            personaBll = new PersonasBLLImpl();
+            if (ModelState.IsValid)
+            {
+                personaBll.Agregar(persona);
+                personaBll.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
+            return PartialView("Crear", persona);
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Editar(int id)
         {
+            tablaGeneralBLL = new TablaGeneralBLLImpl();
+            personaBll = new PersonasBLLImpl();
             Persona persona = personaBll.Get(id);
-            return PartialView("Detalles", persona);
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
+            return PartialView("Editar", persona);
         }
-        //[HttpPost]
-        //public ActionResult Index()
-        //{
-        //    ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Personas","tipo"), "idTablaGeneral", "descripcion");
-        //    List<Persona> listapersona = new List<Persona>();
-        //    Persona persona = personaBll.Get(2);
-        //    listapersona.Add(persona);
-        //    PagedList<Persona> model = new PagedList<Persona>(listapersona, 1, 4);
-        //    return View(model);
-        //} 
-        //public ActionResult MyAction()
-        //{
-        //    var model = new PersonasViewModel();
-        //    model.PersonaIdTemplate = new SelectList(tablaGeneralBLL.Consulta("personas"), "idTipo", "descripcion", 1);
-        //    return View(model);
-        //}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditarPersona(Persona persona)
+        {
+            tablaGeneralBLL = new TablaGeneralBLLImpl();
+            personaBll = new PersonasBLLImpl();
+            if (ModelState.IsValid)
+            {
+                personaBll.Modificar(persona);
+                personaBll.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
+            return PartialView("Editar", persona);
+        }
+
+        public JsonResult ComprobarCedula(string cedula)
+        {
+            personaBll = new PersonasBLLImpl();
+            if (personaBll.Comprobar(cedula, 1))
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("El número de cédula no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult ComprobarNombreCompleto(string nom)
+        {
+            personaBll = new PersonasBLLImpl();
+            if (personaBll.Comprobar(nom, 2))
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("El nombre de la persona no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+            }
+        }
 
     }
 }

@@ -25,8 +25,9 @@ namespace BackEnd.BLL
                 }
                 return lista;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                e = new Exception();
                 throw new NotImplementedException();
             }
         }

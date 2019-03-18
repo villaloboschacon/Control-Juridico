@@ -14,11 +14,9 @@
                 @using (Html.BeginForm("EditarDocumento", "Documento"))
                 {
                     @Html.AntiForgeryToken()
-                    int i = 0;
                     <div class="form-horizontal">
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         @Html.HiddenFor(model => model.idDocumento)
-
                         <div class="form-group">
                             <div class="col-md-10">
                                 <button class="btn btn-default" id="buttomEdit">Editar</button>
@@ -161,6 +159,7 @@
     });
     $(document).ready(function () {
     //Dropdownlist Selectedchange event
+
         $("#tipoOrigen").change(function () {
             $("#idOrigen").empty();
         $.ajax({

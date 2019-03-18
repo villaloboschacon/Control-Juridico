@@ -33,8 +33,17 @@ namespace BackEnd.BLL
                 return true;
             }
         }
-        public bool Comprobar(string validar, int opcion)
+        public bool Comprobar(string numeroDocumento, int opcion,string idDocumento)
         {
+            int id = 0;
+            try
+            {
+                id = Int32.Parse(idDocumento);
+            }
+            catch (Exception)
+            {
+
+            }
             try
             {
                 List<Documento> lista;
@@ -42,43 +51,61 @@ namespace BackEnd.BLL
                 {
                     using (unidad = new UnidadDeTrabajo<Documento>(new SCJ_BDEntities()))
                     {
-                        Expression<Func<Documento, bool>> consulta = (d => d.numeroDocumento.Equals(validar));
+                        Expression<Func<Documento, bool>> consulta = (d => d.numeroDocumento.Equals(numeroDocumento) && d.idDocumento.Equals(id));
                         lista = unidad.genericDAL.Find(consulta).ToList();
-                    }
-                    if (lista.Count() == 0)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
+                        if (lista.Count() == 1)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            consulta = (d => d.numeroDocumento.Equals(numeroDocumento));
+                            lista = unidad.genericDAL.Find(consulta).ToList();
+                            if (lista.Count() == 0)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
                     }
                 }
                 else
                 {
                     using (unidad = new UnidadDeTrabajo<Documento>(new SCJ_BDEntities()))
                     {
-                        Expression<Func<Documento, bool>> consulta = (d => d.numeroIngreso.Equals(validar));
+                        Expression<Func<Documento, bool>> consulta = (d => d.numeroIngreso.Equals(numeroDocumento) && d.idDocumento.Equals(id));
                         lista = unidad.genericDAL.Find(consulta).ToList();
-                    }
-                    if (lista.Count() == 0)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
+                        if (lista.Count() == 1)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            consulta = (d => d.numeroIngreso.Equals(numeroDocumento));
+                            lista = unidad.genericDAL.Find(consulta).ToList();
+                            if (lista.Count() == 0)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
                     }
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new NotImplementedException();
             }
         }
 
-        public List<sp_listaSalidas_Result> listaSalidas()
+        public List<Documento> listaSalidas()
         {
             try
             {
@@ -101,7 +128,7 @@ namespace BackEnd.BLL
             }
         }
 
-        public List<sp_listaEntradas_Result> listaEntradas()
+        public List<Documento> listaEntradas()
         {
             try
             {
@@ -112,7 +139,6 @@ namespace BackEnd.BLL
                     {
                         return result;
                     }
-
                     return null;
                 }
 

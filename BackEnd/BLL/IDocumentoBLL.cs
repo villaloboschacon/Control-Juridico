@@ -12,9 +12,9 @@ namespace BackEnd.BLL
         bool Agregar(Documento documento);
         bool Modificar(Documento documento);
         bool SaveChanges();
-        bool Comprobar(string idDocumento,int opcion);
-        List<sp_listaSalidas_Result> listaSalidas();
-        List<sp_listaEntradas_Result> listaEntradas();
+        bool Comprobar(string numeroDocumento,int opcion,string idDocumento);
+        List<Documento> listaSalidas();
+        List<Documento> listaEntradas();
         Nullable<long> consultaNumeroIngreso();
         Nullable<long> generaNumIngreso();
         string getNomenclatura(string nombreDept);
