@@ -11,45 +11,44 @@ namespace BackEnd.BLL
     public class PersonasBLLImpl:BLLGenericoImpl<Persona>, IPersonasBLL
     {
         private UnidadDeTrabajo<Persona> unidad;
-        public bool Comprobar(string validar, int opcion)
+        public bool Comprobar(string cedula, string idPersona)
         {
+            int id = 0;
+            try
+            {
+                id = Int32.Parse(idPersona);
+            }
+            catch (Exception)
+            {
+
+            }
             try
             {
                 List<Persona> lista;
-                if (opcion == 1)
-                {
                     using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
                     {
-                        Expression<Func<Persona, bool>> consulta = (d => d.cedula.Equals(validar));
+                        Expression<Func<Persona, bool>> consulta = (d => d.cedula.Equals(cedula) && d.idPersona.Equals(id));
                         lista = unidad.genericDAL.Find(consulta).ToList();
+                        if (lista.Count() == 1)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            consulta = (d => d.cedula.Equals(cedula));
+                            lista = unidad.genericDAL.Find(consulta).ToList();
+                            if (lista.Count() == 0)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
                     }
-                    if (lista.Count == 0)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
-                    {
-                        Expression<Func<Persona, bool>> consulta = (d => d.nombreCompleto.Equals(validar));
-                        lista = unidad.genericDAL.Find(consulta).ToList();
-                    }
-                    if (lista.Count() == 0)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new NotImplementedException();
             }

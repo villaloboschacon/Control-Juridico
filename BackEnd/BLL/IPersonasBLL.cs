@@ -11,7 +11,7 @@ namespace BackEnd.BLL
         List<Persona> Consulta(int idTipo);
         bool Agregar(Persona persona);
         bool Modificar(Persona persona);
-        bool Comprobar(string idPersona, int opcion);
+        bool Comprobar(string cedula, string idPersona);
         bool SaveChanges();
     }
 }

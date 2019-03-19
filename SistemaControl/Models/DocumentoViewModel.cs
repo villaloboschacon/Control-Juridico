@@ -37,7 +37,6 @@ namespace SistemaControl.Models
         [RegularExpression("N.I.[0-9]{4}-20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])$", ErrorMessage = "Formato incorrecto. N.I.-*CUATRO NÚMEROS*-*AÑO ACTUAL*. \n Ejemplo:N.I.3571-2019.")]
         [Required(ErrorMessage = "*Debe digitar el número de ingreso.")]
         [StringLength(14, MinimumLength = 13, ErrorMessage = "El número del documento debe tener al menos 13 caracteres.")]
-        [Remote("ComprobarIngreso", "Documento", AdditionalFields = "idDocumento")]
         [Display(Name = "Número de Ingreso")]
         public string numeroIngreso { get; set; }
 

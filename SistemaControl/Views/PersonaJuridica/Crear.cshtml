@@ -1,32 +1,29 @@
-﻿@model SistemaControl.Models.PersonasViewModel
+﻿@model SistemaControl.Models.PersonaViewModel
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
-<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+@*Scripts para validaciones y mensajes de alerta*@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@*--Espacio de scripts cerrado--*@
 
 <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <span class="modal-title" id="exampleModalLabel" style="text-align:center;">Crear Persona</span>
+            <span class="modal-title" id="createModal" style="text-align:center;">Crear Persona</span>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <div id="contenidoModal">
-                @using (Html.BeginForm("CrearPersona", "PersonaFisica"))
+                @using (Html.BeginForm("CrearPersona", "PersonaJuridica"))
                 {
                     @Html.AntiForgeryToken()
                     <div class="form-horizontal" id="parent">
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         @Html.HiddenFor(model => model.idPersona)
+
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.idTipo, "Tipo de Persona", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -36,39 +33,39 @@
                             </div>
                         </div>
 
-                        <div class="form-group" id="cedula">
+                        <div class="form-group" id="div_cedula">
                             @Html.LabelFor(model => model.cedula, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.cedula, new { htmlAttributes = new { @class = "form-control", placeholder = "#########" } })
+                                @Html.EditorFor(model => model.cedula, new { htmlAttributes = new { @class = "form-control", placeholder = "201230456" } })
                                 @Html.ValidationMessageFor(model => model.cedula, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
-                        <div class="form-group" id="nombre">
+                        <div class="form-group" id="div_nombre">
                             @Html.LabelFor(model => model.nombreCompleto, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.nombreCompleto, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre completo." } })
+                                @Html.EditorFor(model => model.nombreCompleto, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre completo" } })
                                 @Html.ValidationMessageFor(model => model.nombreCompleto, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
-                        <div class="form-group" id="perJ">
+                        <div class="form-group" id="div_representanteSocial">
                             @Html.LabelFor(model => model.representanteSocial, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.representanteSocial, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre completo." } })
+                                @Html.EditorFor(model => model.representanteSocial, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre completo" } })
                                 @Html.ValidationMessageFor(model => model.representanteSocial, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
-                        <div class="form-group" id="personJ">
+                        <div class="form-group" id="div_representanteLegal">
                             @Html.LabelFor(model => model.representanteLegal, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.representanteLegal, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre completo." } })
+                                @Html.EditorFor(model => model.representanteLegal, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre completo" } })
                                 @Html.ValidationMessageFor(model => model.representanteLegal, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
-                        <div class="form-group" id="correo">
+                        <div class="form-group" id="div_correo">
                             @Html.LabelFor(model => model.correo, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.correo, new { htmlAttributes = new { @class = "form-control", placeholder = "ejemplo@gmail.com/ejemplo@outlook.com" } })
@@ -82,89 +79,139 @@
                                 @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                    </div> @*form-horizontal*@
+
+                    </div>
+                    @*<div class="form-group">
+                            <div class="btn btn-primary">
+                                <div class="col-md-10">
+                                </div>
+                                <input type="file" id="imageBrowes" multiple="multiple" />
+                            </div>
+                            <div id="imgPreview" class="thumbnail" style="display:none">
+                                <img class="img-responsive" id="targetImg" />
+                                <div class="caption">
+                                    <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
+                                    <span id="description"></span>
+                                </div>
+                            </div>
+
+                        </div>*@
 
                     <div class="modal-footer">
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" id="CrearBoton" value="Crear persona" class="btn btn-default" />
-                            <button type="button" class="btn btn-default"><a style="color:black;" href="/PersonaFisica/Index">Cerrar</a></button>
+                            <input type="submit" id="CrearBoton" value="Crear Persona" class="btn btn-default" />
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
                 }
-            </div> @*ContenidoModal*@
-        </div> @*modal-body*@
-    </div> @*modal-content*@
-</div> @*modal-dialog*@
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $("#perJ").hide();
-        $("#personJ").hide();
+        $("#nombreCompleto").attr('maxlength', '50');
+        $("#cedula").attr('maxlength', '15');
+        $("#div_representanteSocial").hide();
+        $("#div_representanteLegal").hide();
+
     });
 
     $('#idTipo').change(function () {
         if ($('#idTipo').val() == "1") {
-            $('#perJ').hide();
-            $('#personJ').hide();
+            $('#div_representanteSocial').hide();
+            $('#div_representanteLegal').hide();
             $('#representanteLegal').val('');
             $('#representanteSocial').val('');
         } else if ($('#idTipo').val() == "2") {
-            $('#perJ').show();
-            $('#personJ').show();
+            $('#div_representanteSocial').show();
+            $('#div_representanteLegal').show();
         }
     });
 
     //Los nombres no poseen caracteres numericos o puntos, llaves, entre otras
-    $('#nombre').keydown(function (e){
-        var key = e.key;
-        var code = e.keyCode;
+    $('#nombreCompleto').keypress(function (e) {
+        var key = e.keyCode || e.which;
 
-        if (code == 16 && code >= 48 && code <= 57) { //Numeros abajo de los F
-            swal("¡Carácter inválido!", 'No se permiten caracteres numéricos.', "error");
-            event.preventDefault();
-        } else if (code >= 96 && code <= 222) { // Numeros de la calculadora, +,-,*,/, llaves, comillas
-            swal("¡Carácter inválido!", 'No se permiten caracteres numéricos.', "error");
-            event.preventDefault();
+        teclado = String.fromCharCode(key).toLowerCase();
+
+        letras = "qwertyuiopasdfghjklñzxcvbnm&-*/() ";
+
+        especiales = "8-37-38-46-164";
+
+        teclado_especial = false;
+
+        for (var i in especiales) {
+            if (key == especiales[i]) {
+                teclado_especial = true;
+                break;
+            }
+        }
+
+        if (letras.indexOf(teclado) == -1 && !teclado_especial) {
+            return false;
         }
     });
 
     $('#cedula').keydown(function (e) {
-        var key = e.key;
-        var code = e.keyCode;
-
-        if (code >= 65 && code <= 90) {
-            swal("¡Carácter inválido!", 'No se permiten caracteres.', "error");
-            event.preventDefault();
-        } else if (code >= 106 && code <= 222) {
-            swal("¡Carácter inválido!", 'No se permiten caracteres especiales.', "error");
+        if (e.key != 1 && e.key != 2 && e.key != 3 && e.key != 4 && e.key != 5 && e.key != 6 && e.key != 7 && e.key != 8 && e.key != 9 && e.key != 0 && e.key != 'Backspace' && e.keyCode != 32) {
             event.preventDefault();
         }
     });
 
-    $('#perJ').keydown(function (e) {
-        var key = e.key;
-        var code = e.keyCode;
+    $('#representanteSocial').keypress(function (e) {
+        var key = e.keyCode || e.which;
 
-        if (code >= 48 && code <= 57) { //Numeros abajo de los F
-            swal("¡Carácter inválido!", 'No se permiten caracteres numéricos.', "error");
-            event.preventDefault();
-        } else if (code >= 96 && code <= 222) { // Numeros de la calculadora, +,-,*,/, llaves, comillas
-            swal("¡Carácter inválido!", 'No se permiten caracteres especiales.', "error");
-            event.preventDefault();
+        teclado = String.fromCharCode(key).toLowerCase();
+
+        letras = "qwertyuiopasdfghjklñzxcvbnm&-*/() ";
+
+        especiales = "8-37-38-46-164";
+
+        teclado_especial = false;
+
+        for (var i in especiales) {
+            if (key == especiales[i]) {
+                teclado_especial = true;
+                break;
+            }
+        }
+
+        if (letras.indexOf(teclado) == -1 && !teclado_especial) {
+            return false;
+        }
+
+    });
+
+    $('#representanteLegal').keypress(function (e) {
+        var key = e.keyCode || e.which;
+
+        teclado = String.fromCharCode(key).toLowerCase();
+
+        letras = "qwertyuiopasdfghjklñzxcvbnm&-*/() ";
+
+        especiales = "8-37-38-46-164";
+
+        teclado_especial = false;
+
+        for (var i in especiales) {
+            if (key == especiales[i]) {
+                teclado_especial = true;
+                break;
+            }
+        }
+
+        if (letras.indexOf(teclado) == -1 && !teclado_especial) {
+            return false;
         }
     });
 
-    $('#personJ').keydown(function (e) {
-        var key = e.key;
-        var code = e.keyCode;
 
-        if (code >= 48 && code <= 57) { //Numeros abajo de los F
-            swal("¡Carácter inválido!", 'No se permiten caracteres numéricos.', "error");
-            event.preventDefault();
-        } else if (code >= 96 && code <= 222) { // Numeros de la calculadora, +,-,*,/, llaves, comillas
-            swal("¡Carácter inválido!", 'No se permiten caracteres especiales.', "error");
-            event.preventDefault();
-        }
-    });
+
+
 </script>

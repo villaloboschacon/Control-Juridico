@@ -11,7 +11,7 @@
         </div>
         <div class="modal-body">
             <div id="contenidoModal">
-                @using (Html.BeginForm("EditarPersona", "PersonaFisica"))
+                @using (Html.BeginForm("EditarPersona", "PersonaJuridica"))
                 {
                     @Html.AntiForgeryToken()
                     <div class="form-horizontal">
@@ -89,13 +89,12 @@
 </div>
 <script>
     $(document).ready(function () {
-        $('#juridica').hide();
+        $("#nombreCompleto").attr('maxlength', '50');
+        $("#cedula").attr('maxlength', '15');
     });
     $('#idTipo').change(function () {
         if ($('#idTipo').val() == "1") {
             $('#juridica').hide();
-            $('#representanteLegal').val('');
-            $('#representanteSocial').val('');
         }
         else if ($('#idTipo').val() == "2") {
             $('#juridica').show();

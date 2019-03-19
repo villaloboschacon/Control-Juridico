@@ -5,6 +5,7 @@
 }
 
 @using PagedList.Mvc;
+<a href="~/Views/PersonaFisica/Index.cshtml"></a>
 
 <script src="~/Content/js/site.js"></script>
 <link href="~/Content/css/style.css" rel="stylesheet" />
@@ -98,7 +99,7 @@
     <br />
 
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
-    Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount personas
+    @*Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount personas*@
 
 </div>
 <div id="editarModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editarModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
@@ -228,7 +229,6 @@
 
     function Edit(idpersona) {
         var url = '@Url.Action("Editar")';
-        alert(idpersona);
         var myId = idpersona;
         $.ajax({
             url: url,
