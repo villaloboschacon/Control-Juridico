@@ -36,7 +36,7 @@
                     <div class="form-group" id="div_cedula">
                         @Html.LabelFor(model => model.cedula, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.cedula, new { htmlAttributes = new { @class = "form-control", placeholder = "201230456" } })
+                            @Html.EditorFor(model => model.cedula, new { htmlAttributes = new { @class = "form-control", placeholder = "ejemplo:201230456" } })
                             @Html.ValidationMessageFor(model => model.cedula, "", new { @class = "text-danger" })
                         </div>
                     </div>
