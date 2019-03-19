@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using BackEnd.Model;
 
 namespace SistemaControl.Models
 {
@@ -12,9 +13,9 @@ namespace SistemaControl.Models
         [Key]
         public int idCaso { get; set; }
 
-        public int? idPersona { get; set; }
+        public int idTipo { get; set; }
 
-        public int? idTipo { get; set; }
+        public int? idPersona { get; set; }
 
         public int? idUsuario { get; set; }
 
@@ -23,9 +24,9 @@ namespace SistemaControl.Models
         public int? tipoLitigante { get; set; }
 
         [Required(ErrorMessage = "*Debe de digitar el número de documento.")]
-        [Remote("ComprobarCaso", "Caso")]
+        [Remote("ComprobarCaso", "Caso", AdditionalFields = "idCaso")]
         [Display(Name = "Número de Caso")]
-        public string numeroCaso { get; set; }
+        public int numeroCaso { get; set; }
 
         [Required(ErrorMessage = "*Debe de digitar la materia del proceso.")]
         [Display(Name = "Materia")]
@@ -38,5 +39,21 @@ namespace SistemaControl.Models
         [StringLength(750, ErrorMessage = "La observación no puede sobrepasarse de 750 caracteres.")]
         [Display(Name = "Observación")]
         public string observacion { get; set; }
+
+        public static explicit operator CasoViewModel(Caso v)
+        {
+            CasoViewModel casoViewModel = new CasoViewModel();
+            casoViewModel.idCaso = v.idCaso;
+            casoViewModel.idEstado = v.idEstado;
+            casoViewModel.idPersona = v.idPersona;
+            casoViewModel.idTipo = v.idTipo;
+            casoViewModel.idUsuario = v.idUsuario;
+            casoViewModel.materia = v.materia;
+            casoViewModel.numeroCaso = v.numeroCaso;
+            casoViewModel.observacion = v.observacion;
+            casoViewModel.tipoLitigante = v.tipoLitigante;
+            casoViewModel.descripcion = v.descripcion;
+            return casoViewModel;
+        }
     }
 }

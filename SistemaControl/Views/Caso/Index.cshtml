@@ -116,14 +116,12 @@
             }
         }
     </table>
-    <br />
-
     <div>
         <a href="#" id="btnEdit" class="btnEdit" onclick="Crear()" data-toggle="modal" data-target="#crearModal">Crear proceso</a>
     </div>
-
+    <br />
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
-    Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount procesos
+    @*Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount procesos*@
     @*<td><a href="#" id="btnEdit" class="btnEdit" onclick="Edit(@item.idCaso)" data-id="@item.idCaso" data-toggle="modal" data-target="#editarModal">Editar</a></td>*@
 
 </div>
@@ -204,7 +202,7 @@
     });
 
     $('#table_casos').find('tr').click(function (e) {
-        var rows = $('tr', table_documentos);
+        var rows = $('tr', table_casos);
         ind = rows.eq($(this).index()).find("td:first").text();
 
         return rows.eq($(this).index()).find("td:first").text();

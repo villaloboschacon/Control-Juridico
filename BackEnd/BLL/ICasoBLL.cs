@@ -12,6 +12,6 @@ namespace BackEnd.BLL
         bool Agregar(Caso caso);
         bool Modificar(Caso caso);
         bool SaveChanges();
-        bool Comprobar(int idDocumento);
+        bool Comprobar(string idCaso,string numeroCaso);
     }
 }

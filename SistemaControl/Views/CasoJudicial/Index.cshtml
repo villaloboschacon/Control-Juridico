@@ -1,16 +1,38 @@
 ﻿@model PagedList.IPagedList<BackEnd.Model.Caso>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<head>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-@using PagedList.Mvc;
-<script src="~/Content/js/site.js"></script>
-<link href="~/Content/css/style.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <link type="text/css" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    @*SCRIPT PARA EL EDITOR DE TEXTO*@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></>
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    @*<script src="~/Content/ckeditor2/ckeditor.js"></script>*@
+    <script src="~/Content/js/site.js"></script>
+
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    @*<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>*@
+
+    @*<script src="~/Content/js/site.js"></script>
+        <link href="~/Content/css/style.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
+
+</head>
 <div class="title">Proceso Judicial</div>
 <div class="container" style="margin-top:20px">
-    @using (Html.BeginForm("Index", "Documentos", FormMethod.Get))
+    @using (Html.BeginForm("Index", "Caso", FormMethod.Get))
     {
         @*<div>
                 @Html.TextBox("search") <input type="submit" name="submit" value="Buscar" />
@@ -18,17 +40,16 @@
             <div>
                 <b> Opciones de busqueda: </b>
                 @Html.RadioButton("option", "Persona") <text>Persona </text>
-                @Html.RadioButton("option", "Materia") <text>Materia </text>
-                @Html.RadioButton("option", "Numero de caso") <text>Numero de caso </text>
-                @Html.RadioButton("option", "Tipo de litigante") <text>Tipo de litigante </text>
                 @Html.RadioButton("option", "Estado") <text>Estado</text>
+                @Html.RadioButton("option", "Numero de proceso") <text>Numero de proceso</text>
+                @Html.RadioButton("option", "Materia") <text>Materia</text>
 
             </div>*@
         <div class="widget" style="height:100px;">
             <div class="title">
                 <span class="form-inline">
                     <i class="fa fa-search" aria-hidden="true"></i>
-                    @Html.TextBox("search")  <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
+                    @Html.TextBox("search") <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
                 </span>
 
                 <div style="color:black; font-size:14px;">
@@ -38,24 +59,23 @@
                     @Html.RadioButton("option", "Número de proceso") <text>Número de proceso</text>
                     @Html.RadioButton("option", "Estado") <text>Estado </text>
                     @Html.RadioButton("option", "Materia") <text>Materia </text>
-                    @Html.RadioButton("option", "Tipo de litigante") <text>Tipo de litigante </text>
 
                 </div>
             </div>
         </div>
     }
 
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="table_casos">
         <tr>
-            <th>Persona</th>
+            <th>
+                @Html.ActionLink("Número de proceso", "Index", new { sortOrder = ViewBag.NumeroCaso })
+            </th>
             <th>Abogado</th>
-            <th>Estado</th>
-            <th>Tipo de litigante</th>
-            <th>Número de proceso</th>
             <th>Materia</th>
-            <th>Descripción</th>
-            <th>Observación</th>
-            <th></th>
+            <th>Persona</th>
+            <th>Tipo de Proceso</th>
+            <th>Tipo de Litigio</th>
+            <th>Estado</th>
         </tr>
         @if (Model.Count() == 0)
         {
@@ -65,143 +85,155 @@
         }
         else
         {
-            for (int i = 0; i < Model.Count(); i++)
+            foreach (var item in Model)
             {
                 <tr>
-                    <td>@Model[i].idPersona</td>
-                    <td>@Model[i].idUsuario</td>
-                    <td>@Model[i].idEstado</td>
-                    <td>@Model[i].tipoLitigante</td>
-                    <td>@Model[i].numeroCaso</td>
-                    <td>@Model[i].materia</td>
-                    <td>@Model[i].descripcion</td>
-                    <td>@Model[i].observacion</td>
-                    <td><a href="#" id="btnEdit" class="btnEdit" data-value="@Model[i].idCaso" data-toggle="modal" data-target="#exampleModal">Editar</a></td>
-
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.idCaso)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.numeroCaso)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Usuario.nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.materia)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Persona.nombreCompleto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TablaGeneral1.descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TablaGeneral2.descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TablaGeneral.descripcion)
+                    </td>
                 </tr>
-
             }
         }
     </table>
-    <br />
     <div>
-        <a href="#" id="btnEdit" class="btnEdit" onclick="Crear()" data-toggle="modal" data-target="#crearModal">Agregar proceso</a>
+        <a href="#" id="btnEdit" class="btnEdit" onclick="Crear()" data-toggle="modal" data-target="#crearModal">Crear proceso</a>
     </div>
-
+    <br />
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
-    Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount procesos
+    @*Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount procesos*@
+    @*<td><a href="#" id="btnEdit" class="btnEdit" onclick="Edit(@item.idCaso)" data-id="@item.idCaso" data-toggle="modal" data-target="#editarModal">Editar</a></td>*@
 
-
-
-    @*<div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position: absolute">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <span class="modal-title" id="exampleModalLabel">Agregar nuevo proceso</span>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="contenidoModal">
-                            @using (Html.BeginForm())
-                            {
-                                @Html.AntiForgeryToken()
-                                int i = 0;
-                                <div class="form-horizontal">
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                    @Html.HiddenFor(model => model[i].idCaso)
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].idPersona, "Persona:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].idPersona, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].idPersona, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].idUsuario, "Abogados", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.DropDownList("idUsuario", null, htmlAttributes: new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model[i].idUsuario, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].idTipo, "Estado:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model[i].idTipo, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].tipoLitigante, "Tipo de litigante:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.DropDownList("tipoLitigante", null, htmlAttributes: new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model[i].tipoLitigante, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].numeroCaso, "Numero de proceso:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].numeroCaso, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].numeroCaso, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].descripcion, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].materia, "Materia:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].materia, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].materia, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.TextAreaFor(model => model[i].descripcion, 10, 62, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model[i].descripcion, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.TextAreaFor(model => model[i].observacion, 10, 62, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model[i].observacion, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                            <input type="file" name="elementName" multiple="multiple" />
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary"><a style="color:white;" href="/Caso/Index">Cerrar</a></button>
-                        <button type="button" class="btn btn-primary"><a style="color:white;" href="/Caso/Index">Guardar cambios</a></button>
-                    </div>
-                </div>
-            </div>
-        </div>*@
 </div>
 
-<div id="editarModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editarModal" aria-hidden="true" style="position: fixed"></div>
-<div id="crearModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crearModal" aria-hidden="true" style="position: fixed"></div>
+<div id="editarModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editarModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+<div id="crearModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crearModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+<div id="detalleModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detalleModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+
+<div id="contextMenu" class="dropdown clearfix">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+        <li>
+            <a tabindex="-1" href="#" onclick="Details(getInd())" data-value="getInd()" data-toggle="modal" data-target="#detalleModal">Ver detalles</a>
+        </li>
+        <li class="divider"></li>
+        @*<li>
+                <a tabindex="-1" href="#" onclick="Reply(getInd())" data-value="getInd()" data-toggle="modal" data-target="#responderModal">Responder</a>
+            </li>*@
+        <li>
+            <a tabindex="-1" href="#" onclick="Edit(getInd())" data-value="getInd()" data-toggle="modal" data-target="#editarModal">Editar</a>
+        </li>
+        @*<li>
+                <a tabindex="-1" href="#" onclick="Reference()" data-toggle="modal" data-target="#referenciaModal">Ver referencias</a>
+            </li>*@
+        <li>
+            <a tabindex="-1" href="#">Eliminar</a>
+        </li>
+    </ul>
+</div>
+<style>
+    #contextMenu {
+        position: absolute;
+        display: none;
+        background: lightblue;
+        z-index: 1000;
+    }
+
+    .wrap {
+        width: 90%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    table {
+        border: 1px solid rgba(221, 221, 221, 1);
+    }
+
+    tr:nth-child(even) {
+        background: #F5F5F5
+    }
+
+    tr {
+        position: relative;
+    }
+
+        tr:hover {
+            background: #c9e8f7;
+            position: relative;
+        }
+</style>
 
 <script>
+    var ind = 0;
+    $(this).mousedown(function (e) {
+        if (e.which == 2) {
+            alert('jaja');
+            var rows = $('tr', table_casos);
+            ind = rows.eq($(this).index()).find("td:first").text();
+            console(ind);
+            return rows.eq($(this).index()).find("td:first").text();
+        }
+    });
+    $('#table_casos').click(function () {
+        $(this).addClass('highlight').siblings().removeClass('highlight');
+        //do your stuff, you can use $(this) to get current cell
+    });
 
+    $('#table_casos').find('tr').click(function (e) {
+        var rows = $('tr', table_casos);
+        ind = rows.eq($(this).index()).find("td:first").text();
+
+        return rows.eq($(this).index()).find("td:first").text();
+    });
+    $vars = 0;
+    $(function () {
+        var $contextMenu = $("#contextMenu");
+        $("body").on("contextmenu", "table tr", function (e) {
+            var rows = $('tr', table_casos);
+            ind = rows.eq($(this).index()).find("td:first").text();
+            ind = ind.replace(/ /g, "");
+            ind = ind.replace(/\s+/g, "");
+            console.log(ind);
+            $vars = ind;
+            $contextMenu.css({
+                display: "block",
+                left: e.pageX,
+                top: e.pageY
+            });
+            return false;
+        });
+        $('html').click(function () {
+            $contextMenu.hide();
+        });
+    });
+    function getInd() {
+        console.log($vars);
+        return $vars;
+    };
     function Crear() {
         var url = '@Url.Action("Crear")';
-        console.log(url);
         $.ajax({
             url: url,
             datatype: "json",
