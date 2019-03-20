@@ -9,7 +9,6 @@ using SistemaControl.Models;
 
 namespace SistemaControl.Controllers
 {
-    [Authorize]
     public class CasoController : Controller
     {
         private ICasoBLL casoBLL;
@@ -19,19 +18,24 @@ namespace SistemaControl.Controllers
 
         public CasoController()
         {
-            usuarioBLL = new UsuarioBLLImpl();
-
-            casoBLL = new CasoBLLImpl();
 
         }
         public ActionResult Index(string option, string search, int page = 1, int pageSize = 4)
         {
-            tablaGeneralBLL = new TablaGeneralBLLImpl();
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                casoBLL = new CasoBLLImpl();
+                personaBLL = new PersonasBLLImpl();
+                usuarioBLL = new UsuarioBLLImpl();
+            }
+            catch (Exception ex)
+            {
+
+            }
             if (option == "Materia")
             {
                 List<Caso> listacaso = casoBLL.Find(x => x.materia == search && x.idCaso == 3 || search == null).ToList();
-
-
                 PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
                 return View(model);
             }
@@ -59,26 +63,14 @@ namespace SistemaControl.Controllers
                 PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
                 return View(model);
             }
-            //else if (option == "Fecha")
-            //{
-            //    List<Documento> listaDocumentos = documentoBll.Find(x => x.fecha == DateTime.TryParseExact(search, "yyyy-MM-dd HH:mm:ss,fff") && x.idDocumento == 5 || search == null).ToList();
-            //    PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, page, pageSize);
-            //    return View(model);
-            //}
             else {
-
-
-                
+ 
                 ViewBag.tipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos","tipoLitigio"), "idTablaGeneral", "descripcion");
                 ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
                 ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
-
                 List<Caso> listacaso = casoBLL.Find(x => search == null && x.idTipo == 19).ToList();
                 foreach (Caso caso in listacaso)
                 {
-                    tablaGeneralBLL = new TablaGeneralBLLImpl();
-                    personaBLL = new PersonasBLLImpl();
-                    usuarioBLL = new UsuarioBLLImpl();
                     caso.Persona = personaBLL.Get(caso.idPersona);
                     caso.Usuario = usuarioBLL.Get(caso.idUsuario);
                     caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
@@ -92,11 +84,17 @@ namespace SistemaControl.Controllers
         }
         public ActionResult Crear()
         {
-            tablaGeneralBLL = new TablaGeneralBLLImpl();
-            casoBLL = new CasoBLLImpl();
-            personaBLL = new PersonasBLLImpl();
-            usuarioBLL = new UsuarioBLLImpl();
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                casoBLL = new CasoBLLImpl();
+                personaBLL = new PersonasBLLImpl();
+                usuarioBLL = new UsuarioBLLImpl();
+            }
+            catch(Exception ex)
+            {
 
+            }
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
             ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
             ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
@@ -110,10 +108,17 @@ namespace SistemaControl.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CrearCaso(Caso caso)
         {
-            tablaGeneralBLL = new TablaGeneralBLLImpl();
-            casoBLL = new CasoBLLImpl();
-            personaBLL = new PersonasBLLImpl();
-            usuarioBLL = new UsuarioBLLImpl();
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                casoBLL = new CasoBLLImpl();
+                personaBLL = new PersonasBLLImpl();
+                usuarioBLL = new UsuarioBLLImpl();
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             if (ModelState.IsValid)
             {
@@ -131,11 +136,19 @@ namespace SistemaControl.Controllers
 
         public ActionResult Editar(int id)
         {
-            tablaGeneralBLL = new TablaGeneralBLLImpl();
-            casoBLL = new CasoBLLImpl();
-            personaBLL = new PersonasBLLImpl();
-            usuarioBLL = new UsuarioBLLImpl();
-            Caso caso = casoBLL.Get(id);
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                casoBLL = new CasoBLLImpl();
+                personaBLL = new PersonasBLLImpl();
+                usuarioBLL = new UsuarioBLLImpl();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            CasoViewModel caso = (CasoViewModel)casoBLL.Get(id);
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
             ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
             ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
@@ -148,11 +161,17 @@ namespace SistemaControl.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditarCaso(Caso caso)
         {
-            tablaGeneralBLL = new TablaGeneralBLLImpl();
-            casoBLL = new CasoBLLImpl();
-            personaBLL = new PersonasBLLImpl();
-            usuarioBLL = new UsuarioBLLImpl();
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                casoBLL = new CasoBLLImpl();
+                personaBLL = new PersonasBLLImpl();
+                usuarioBLL = new UsuarioBLLImpl();
+            }
+            catch (Exception ex)
+            {
 
+            }
             if (ModelState.IsValid)
             {
                 casoBLL.Modificar(caso);
@@ -164,13 +183,20 @@ namespace SistemaControl.Controllers
             ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
             ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
             ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
-            return PartialView("Editar", caso);
+            return PartialView("Editar", (CasoViewModel)caso);
         }
 
-        public JsonResult ComprobarCaso(int numeroCaso)
+        public JsonResult ComprobarCaso(string numeroCaso,string idCaso)
         {
-            casoBLL = new CasoBLLImpl();
-            if (casoBLL.Comprobar(numeroCaso))
+            try
+            {
+                casoBLL = new CasoBLLImpl();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            if (casoBLL.Comprobar(numeroCaso,idCaso))
             {
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
@@ -179,29 +205,6 @@ namespace SistemaControl.Controllers
                 return Json("El número de caso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
             }
         }
-
-        public ActionResult Add()
-        {
-            try
-            {
-                tablaGeneralBLL = new TablaGeneralBLLImpl();
-                casoBLL = new CasoBLLImpl();
-                personaBLL = new PersonasBLLImpl();
-                usuarioBLL = new UsuarioBLLImpl();
-
-                ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
-                ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
-                ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
-                ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
-                ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
-                return PartialView("Add");
-            }
-            catch (Exception ex)
-            {
-                return View();
-            }
-        }
-
         [HttpPost]
         public JsonResult GetTipoPersona(int id)
         {
@@ -228,6 +231,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception ex)
             {
+                ex = new Exception();
             }
             return this.Json(new { Id = "idPersona", Reg = "Supermercado", Data = ViewBag.idPersona }, JsonRequestBehavior.AllowGet);
 

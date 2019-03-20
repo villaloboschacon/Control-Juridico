@@ -3,31 +3,28 @@
 @{
     ViewBag.Title = "Index";
 }
+<head>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-
-<link type="text/css" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
-<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
-@*SCRIPT PARA EL EDITOR DE TEXTO*@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></>
-<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-<link href="~/Content/css/style.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-@*<script src="~/Content/ckeditor2/ckeditor.js"></script>*@
-<script src="~/Content/js/site.js"></script>
-
-<script src="~/Scripts/jquery-3.3.1.js"></script>
-<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
-<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-@*<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>*@
-
-@*<script src="~/Content/js/site.js"></script>
+    <link type="text/css" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    @*SCRIPT PARA EL EDITOR DE TEXTO*@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></>
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
     <link href="~/Content/css/style.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    @*<script src="~/Content/ckeditor2/ckeditor.js"></script>*@
+    <script src="~/Content/js/site.js"></script>
+
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+</head>
 <div class="title">Oficios</div>
 <div class="container" style="margin-top:20px">
 
@@ -37,7 +34,7 @@
             <div class="title">
                 <span class="form-inline">
                     <i class="fa fa-search" aria-hidden="true"></i>
-                    @Html.TextBox("search")
+                    @Html.TextBox("Buscar")
                     <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
                 </span>
                 <div style="color:black; font-size:14px;">
@@ -141,7 +138,7 @@
     <br />
 
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
-    Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount documentos
+    @*Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount documentos*@
     <br />
 </div>
 
@@ -169,9 +166,9 @@
         <li>
             <a tabindex="-1" href="#" onclick="Edit(getInd())" data-value="getInd()" data-toggle="modal" data-target="#editarModal">Editar</a>
         </li>
-        <li>
+        @*<li>
             <a tabindex="-1" href="#" onclick="Reference()" data-toggle="modal" data-target="#referenciaModal">Ver referencias</a>
-        </li>
+        </li>*@
         <li>
             <a tabindex="-1" href="#">Eliminar</a>
         </li>
@@ -182,6 +179,7 @@
         position: absolute;
         display: none;
         background: lightblue;
+        z-index: 1000;
     }
 
     .wrap {

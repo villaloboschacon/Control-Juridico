@@ -161,5 +161,44 @@ namespace BackEnd.Model
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("sp_getRolesForUser", userNameParameter);
         }
+    
+        public virtual ObjectResult<Documento> sp_listaEntradas()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaEntradas");
+        }
+    
+        public virtual ObjectResult<Documento> sp_listaEntradas(MergeOption mergeOption)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaEntradas", mergeOption);
+        }
+    
+        public virtual ObjectResult<Documento> sp_listaSalidas()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaSalidas");
+        }
+    
+        public virtual ObjectResult<Documento> sp_listaSalidas(MergeOption mergeOption)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaSalidas", mergeOption);
+        }
+    
+        public virtual ObjectResult<Nullable<long>> sp_ConsultaNumerodeIngreso()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("sp_ConsultaNumerodeIngreso");
+        }
+    
+        public virtual ObjectResult<string> getNomenclatura(string nombre)
+        {
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("nombre", nombre) :
+                new ObjectParameter("nombre", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("getNomenclatura", nombreParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<long>> sp_GeneraNumerodeIngreso()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("sp_GeneraNumerodeIngreso");
+        }
     }
 }

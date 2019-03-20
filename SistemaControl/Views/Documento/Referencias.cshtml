@@ -1,33 +1,633 @@
-﻿@*bootstrap*@
+﻿@model PagedList.IPagedList<BackEnd.Model.Documento>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</head>
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-@*fin bootstap*@
-
-
-
-
-
-@*Scripts para validaciones y mensajes de alerta*@
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-@*--Espacio de scripts cerrado--*@
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="modal-title" id="ediatModal">Editar oficio</span>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div id="contenidoModal">
-                    Vmos a cer
+<!------ Include the above in your HEAD tag ---------->
+<div class="container" style="padding-left:100px;">
+    <div class="page-header">
+        <h1>Oficios<span class="pull-right label label-default"></span></h1>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel with-nav-tabs panel-default">
+                <div class="panel-heading">
+                    <ul class="nav nav-tabs">
+                        <li>
+                            <a id="Mytest1" onclick="getDivId(this.id)" href="/Documento/TablaDocumentos" data-target="#contacts" class="media_node active span" id="contacts_tab" data-toggle="tabajax" rel="tooltip" typeDoc="1" value="@Model.PageNumber"> Entradas </a>
+                        </li>
+                        <li><a onclick="getDivId(this.id)" href="/Documento/TablaDocumentos" data-target="#friends_list" class="media_node span" id="friends_list_tab" data-toggle="tabajax" rel="tooltip" typeDoc="2"> Salidas</a></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="contacts"></div>
+                        <div class="tab-pane" id="friends_list"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<br />
+
+<div id="editarModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editarModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+<div id="crearModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crearModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+<div id="responderModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="responderModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+<div id="detalleModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detalleModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+<div id="referenciaModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="referenciaModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+
+
+
+<div id="contextMenu" class="dropdown clearfix">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+        <li>
+            <a tabindex="-1" href="#" onclick="Details(getInd())" data-value="getInd()" data-toggle="modal" data-target="#detalleModal">Ver detalles</a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a tabindex="-1" href="#" onclick="Reply(getInd())" data-value="getInd()" data-toggle="modal" data-target="#responderModal">Responder</a>
+        </li>
+        <li>
+            <a tabindex="-1" href="#" onclick="Edit(getInd())" data-value="getInd()" data-toggle="modal" data-target="#editarModal">Editar</a>
+        </li>
+        <li>
+            <a tabindex="-1" href="#" onclick="Reference()" data-toggle="modal" data-target="#referenciaModal">Ver referencias</a>
+        </li>
+        <li>
+            <a tabindex="-1" href="#">Eliminar</a>
+        </li>
+    </ul>
+</div>
+<style>
+    #contextMenu {
+        position: absolute;
+        display: none;
+        background: lightblue;
+        z-index: 1000;
+    }
+
+    .wrap {
+        width: 90%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    table {
+        border: 1px solid rgba(221, 221, 221, 1);
+    }
+
+    tr:nth-child(even) {
+        background: #F5F5F5
+    }
+
+    tr {
+        position: relative;
+    }
+
+        tr:hover {
+            background: #c9e8f7;
+            position: relative;
+        }
+</style>
+<style>
+
+    .panel.with-nav-tabs .panel-heading {
+        padding: 5px 5px 0 5px;
+    }
+
+    .panel.with-nav-tabs .nav-tabs {
+        border-bottom: none;
+    }
+
+    .panel.with-nav-tabs .nav-justified {
+        margin-bottom: -1px;
+    }
+    /********************************************************************/
+    /*** PANEL DEFAULT ***/
+    .with-nav-tabs.panel-default .nav-tabs > li > a,
+    .with-nav-tabs.panel-default .nav-tabs > li > a:hover,
+    .with-nav-tabs.panel-default .nav-tabs > li > a:focus {
+        color: #777;
+    }
+
+        .with-nav-tabs.panel-default .nav-tabs > .open > a,
+        .with-nav-tabs.panel-default .nav-tabs > .open > a:hover,
+        .with-nav-tabs.panel-default .nav-tabs > .open > a:focus,
+        .with-nav-tabs.panel-default .nav-tabs > li > a:hover,
+        .with-nav-tabs.panel-default .nav-tabs > li > a:focus {
+            color: #777;
+            background-color: #ddd;
+            border-color: transparent;
+        }
+
+    .with-nav-tabs.panel-default .nav-tabs > li.active > a,
+    .with-nav-tabs.panel-default .nav-tabs > li.active > a:hover,
+    .with-nav-tabs.panel-default .nav-tabs > li.active > a:focus {
+        color: #555;
+        background-color: #fff;
+        border-color: #ddd;
+        border-bottom-color: transparent;
+    }
+
+    .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu {
+        background-color: #f5f5f5;
+        border-color: #ddd;
+    }
+
+        .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a {
+            color: #777;
+        }
+
+            .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+            .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+                background-color: #ddd;
+            }
+
+        .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+        .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+        .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+            color: #fff;
+            background-color: #555;
+        }
+    /********************************************************************/
+    /*** PANEL PRIMARY ***/
+    .with-nav-tabs.panel-primary .nav-tabs > li > a,
+    .with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
+    .with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
+        color: #fff;
+    }
+
+        .with-nav-tabs.panel-primary .nav-tabs > .open > a,
+        .with-nav-tabs.panel-primary .nav-tabs > .open > a:hover,
+        .with-nav-tabs.panel-primary .nav-tabs > .open > a:focus,
+        .with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
+        .with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
+            color: #fff;
+            background-color: #3071a9;
+            border-color: transparent;
+        }
+
+    .with-nav-tabs.panel-primary .nav-tabs > li.active > a,
+    .with-nav-tabs.panel-primary .nav-tabs > li.active > a:hover,
+    .with-nav-tabs.panel-primary .nav-tabs > li.active > a:focus {
+        color: #428bca;
+        background-color: #fff;
+        border-color: #428bca;
+        border-bottom-color: transparent;
+    }
+
+    .with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu {
+        background-color: #428bca;
+        border-color: #3071a9;
+    }
+
+        .with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a {
+            color: #fff;
+        }
+
+            .with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+            .with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+                background-color: #3071a9;
+            }
+
+        .with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+        .with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+        .with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+            background-color: #4a9fe9;
+        }
+    /********************************************************************/
+    /*** PANEL SUCCESS ***/
+    .with-nav-tabs.panel-success .nav-tabs > li > a,
+    .with-nav-tabs.panel-success .nav-tabs > li > a:hover,
+    .with-nav-tabs.panel-success .nav-tabs > li > a:focus {
+        color: #3c763d;
+    }
+
+        .with-nav-tabs.panel-success .nav-tabs > .open > a,
+        .with-nav-tabs.panel-success .nav-tabs > .open > a:hover,
+        .with-nav-tabs.panel-success .nav-tabs > .open > a:focus,
+        .with-nav-tabs.panel-success .nav-tabs > li > a:hover,
+        .with-nav-tabs.panel-success .nav-tabs > li > a:focus {
+            color: #3c763d;
+            background-color: #d6e9c6;
+            border-color: transparent;
+        }
+
+    .with-nav-tabs.panel-success .nav-tabs > li.active > a,
+    .with-nav-tabs.panel-success .nav-tabs > li.active > a:hover,
+    .with-nav-tabs.panel-success .nav-tabs > li.active > a:focus {
+        color: #3c763d;
+        background-color: #fff;
+        border-color: #d6e9c6;
+        border-bottom-color: transparent;
+    }
+
+    .with-nav-tabs.panel-success .nav-tabs > li.dropdown .dropdown-menu {
+        background-color: #dff0d8;
+        border-color: #d6e9c6;
+    }
+
+        .with-nav-tabs.panel-success .nav-tabs > li.dropdown .dropdown-menu > li > a {
+            color: #3c763d;
+        }
+
+            .with-nav-tabs.panel-success .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+            .with-nav-tabs.panel-success .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+                background-color: #d6e9c6;
+            }
+
+        .with-nav-tabs.panel-success .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+        .with-nav-tabs.panel-success .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+        .with-nav-tabs.panel-success .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+            color: #fff;
+            background-color: #3c763d;
+        }
+    /********************************************************************/
+    /*** PANEL INFO ***/
+    .with-nav-tabs.panel-info .nav-tabs > li > a,
+    .with-nav-tabs.panel-info .nav-tabs > li > a:hover,
+    .with-nav-tabs.panel-info .nav-tabs > li > a:focus {
+        color: #31708f;
+    }
+
+        .with-nav-tabs.panel-info .nav-tabs > .open > a,
+        .with-nav-tabs.panel-info .nav-tabs > .open > a:hover,
+        .with-nav-tabs.panel-info .nav-tabs > .open > a:focus,
+        .with-nav-tabs.panel-info .nav-tabs > li > a:hover,
+        .with-nav-tabs.panel-info .nav-tabs > li > a:focus {
+            color: #31708f;
+            background-color: #bce8f1;
+            border-color: transparent;
+        }
+
+    .with-nav-tabs.panel-info .nav-tabs > li.active > a,
+    .with-nav-tabs.panel-info .nav-tabs > li.active > a:hover,
+    .with-nav-tabs.panel-info .nav-tabs > li.active > a:focus {
+        color: #31708f;
+        background-color: #fff;
+        border-color: #bce8f1;
+        border-bottom-color: transparent;
+    }
+
+    .with-nav-tabs.panel-info .nav-tabs > li.dropdown .dropdown-menu {
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+    }
+
+        .with-nav-tabs.panel-info .nav-tabs > li.dropdown .dropdown-menu > li > a {
+            color: #31708f;
+        }
+
+            .with-nav-tabs.panel-info .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+            .with-nav-tabs.panel-info .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+                background-color: #bce8f1;
+            }
+
+        .with-nav-tabs.panel-info .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+        .with-nav-tabs.panel-info .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+        .with-nav-tabs.panel-info .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+            color: #fff;
+            background-color: #31708f;
+        }
+    /********************************************************************/
+    /*** PANEL WARNING ***/
+    .with-nav-tabs.panel-warning .nav-tabs > li > a,
+    .with-nav-tabs.panel-warning .nav-tabs > li > a:hover,
+    .with-nav-tabs.panel-warning .nav-tabs > li > a:focus {
+        color: #8a6d3b;
+    }
+
+        .with-nav-tabs.panel-warning .nav-tabs > .open > a,
+        .with-nav-tabs.panel-warning .nav-tabs > .open > a:hover,
+        .with-nav-tabs.panel-warning .nav-tabs > .open > a:focus,
+        .with-nav-tabs.panel-warning .nav-tabs > li > a:hover,
+        .with-nav-tabs.panel-warning .nav-tabs > li > a:focus {
+            color: #8a6d3b;
+            background-color: #faebcc;
+            border-color: transparent;
+        }
+
+    .with-nav-tabs.panel-warning .nav-tabs > li.active > a,
+    .with-nav-tabs.panel-warning .nav-tabs > li.active > a:hover,
+    .with-nav-tabs.panel-warning .nav-tabs > li.active > a:focus {
+        color: #8a6d3b;
+        background-color: #fff;
+        border-color: #faebcc;
+        border-bottom-color: transparent;
+    }
+
+    .with-nav-tabs.panel-warning .nav-tabs > li.dropdown .dropdown-menu {
+        background-color: #fcf8e3;
+        border-color: #faebcc;
+    }
+
+        .with-nav-tabs.panel-warning .nav-tabs > li.dropdown .dropdown-menu > li > a {
+            color: #8a6d3b;
+        }
+
+            .with-nav-tabs.panel-warning .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+            .with-nav-tabs.panel-warning .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+                background-color: #faebcc;
+            }
+
+        .with-nav-tabs.panel-warning .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+        .with-nav-tabs.panel-warning .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+        .with-nav-tabs.panel-warning .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+            color: #fff;
+            background-color: #8a6d3b;
+        }
+    /********************************************************************/
+    /*** PANEL DANGER ***/
+    .with-nav-tabs.panel-danger .nav-tabs > li > a,
+    .with-nav-tabs.panel-danger .nav-tabs > li > a:hover,
+    .with-nav-tabs.panel-danger .nav-tabs > li > a:focus {
+        color: #a94442;
+    }
+
+        .with-nav-tabs.panel-danger .nav-tabs > .open > a,
+        .with-nav-tabs.panel-danger .nav-tabs > .open > a:hover,
+        .with-nav-tabs.panel-danger .nav-tabs > .open > a:focus,
+        .with-nav-tabs.panel-danger .nav-tabs > li > a:hover,
+        .with-nav-tabs.panel-danger .nav-tabs > li > a:focus {
+            color: #a94442;
+            background-color: #ebccd1;
+            border-color: transparent;
+        }
+
+    .with-nav-tabs.panel-danger .nav-tabs > li.active > a,
+    .with-nav-tabs.panel-danger .nav-tabs > li.active > a:hover,
+    .with-nav-tabs.panel-danger .nav-tabs > li.active > a:focus {
+        color: #a94442;
+        background-color: #fff;
+        border-color: #ebccd1;
+        border-bottom-color: transparent;
+    }
+
+    .with-nav-tabs.panel-danger .nav-tabs > li.dropdown .dropdown-menu {
+        background-color: #f2dede; /* bg color */
+        border-color: #ebccd1; /* border color */
+    }
+
+        .with-nav-tabs.panel-danger .nav-tabs > li.dropdown .dropdown-menu > li > a {
+            color: #a94442; /* normal text color */
+        }
+
+            .with-nav-tabs.panel-danger .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+            .with-nav-tabs.panel-danger .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+                background-color: #ebccd1; /* hover bg color */
+            }
+
+        .with-nav-tabs.panel-danger .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+        .with-nav-tabs.panel-danger .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+        .with-nav-tabs.panel-danger .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+            color: #fff; /* active text color */
+            background-color: #a94442; /* active bg color */
+        }
+</style>
+<script>
+    var status = '';
+    function getDivId(element) {
+        status = element;
+    }
+    function GetElementInsideContainer(containerID, childID) {
+        var div2 = document.getElementById(containerID);
+        for (i = j = 0; i < div2.childNodes.length; i++)
+            if (div2.childNodes[i].nodeName == childID) {
+                j++;
+                var input = div2.childNodes[i];
+                alert('This is edit' + j + ': ' + input);
+            }
+    }
+    $('#document').ready(function () {
+        
+        if (GetElementInsideContainer('table_documentos', 'numeroDocumento')) {
+            $('#Mytest1').click();
+            alert('treu');
+        }
+        else {
+            $('#friends_list_tab').click();
+            alert('false');
+        }
+        //$('#Mytest1').click();
+    });
+    $('.status').click(function (event) {
+        var status = $(this).attr('id');
+    });
+    $('[data-toggle="tabajax"]').click(function (e) {
+        var salent;
+        var page = $('#Mytest1').attr('value');
+        if (status == '') {
+            alert('Usaron el paginator.');
+            page = 1;
+            status = '';
+        }
+        else {
+            alert('No usaron el paginator.');
+            page = 1;
+        } 
+        if (this.id == 'Mytest1') {
+            salent = 1;
+        }
+        else {
+            salent = 2;
+        }
+        var $this = $(this),
+            loadurl = $this.attr('href'),
+            targ = $this.attr('data-target');
+
+        $.get(loadurl, { page: page, salent:salent}, function (data) {
+            $(targ).html(data);
+        });
+
+        $this.tab('show');
+        return false;
+    });
+
+</script>
+<script>
+
+    var ind = 0;
+    $(this).mousedown(function (e) {
+        if (e.which == 2) {
+            var rows = $('tr', table_documentos);
+            ind = rows.eq($(this).index()).find("td:first").text();
+            console(ind);
+            return rows.eq($(this).index()).find("td:first").text();
+        }
+    });
+    $('#table_documentos').click(function () {
+        $(this).addClass('highlight').siblings().removeClass('highlight');
+        //do your stuff, you can use $(this) to get current cell
+    });
+
+    $('#table_documentos').find('tr').click(function (e) {
+        var rows = $('tr', table_documentos);
+        ind = rows.eq($(this).index()).find("td:first").text();
+        return rows.eq($(this).index()).find("td:first").text();
+    });
+    $vars = 0;
+    $(function () {
+        var $contextMenu = $("#contextMenu");
+        $("body").on("contextmenu", "table tr", function (e) {
+            var rows = $('tr', table_documentos);
+            ind = rows.eq($(this).index()).find("td:first").text();
+            ind = ind.replace(/ /g, "");
+            ind = ind.replace(/\s+/g, "");
+            $vars = ind;
+            $contextMenu.css({
+                display: "block",
+                left: e.pageX,
+                top: e.pageY
+            });
+            return false;
+        });
+        $('html').click(function () {
+            console.log('Se cerró.');
+            $contextMenu.hide();
+        });
+    });
+    function getInd() {
+        console.log($vars);
+        return $vars;
+    };
+
+
+    $("#crearModal").scroll(function () {
+
+        $("#fecha").click(function () {
+            if ($('#fecha').blur()) {
+                $("#ui-datepicker-div").show();
+            }
+        });
+
+        $("#ui-datepicker-div").hide();
+    });
+    function Crear() {
+        var url = '@Url.Action("Crear")';
+
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#crearModal").html(data);
+            },
+            error: function (xhr) {
+                alert('Error a la hora de abrir el modal.');
+            }
+        });
+    }
+
+    function Edit(iddocumento) {
+        var url = '@Url.Action("Editar")';
+        var myId = iddocumento;
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            data: {
+                'id': iddocumento
+            },
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#editarModal").html(data);
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    }
+        function Details(iddocumento) {
+        var url = '@Url.Action("Detalles")';
+        var myId = iddocumento;
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            data: {
+                'id': iddocumento
+            },
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#detalleModal").html(data);
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    }
+    function Reply(iddocumento) {
+        var url = '@Url.Action("Responder")';
+        var myId = iddocumento;
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            data: {
+                'id': iddocumento
+            },
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#responderModal").html(data);
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    }
+    function Reference() {
+    var url = '@Url.Action("Referencias")';
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#responderModal").html(data);
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    }
+    $(function () {
+        $('body').on('click', '.modal-link', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#modal-container');
+            $(this).attr('data-toggle', 'modal');
+        });
+        // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#modal-container').modal('hide');
+        });
+        //clear modal cache, so that new content can be loaded
+        $('#modal-container').on('hidden.bs.modal', function () {
+            $('#detalleModal').modal('dispose');
+            $(this).removeData('bs.modal');
+        });
+        $('#CancelModal').on('click', function () {
+            return false;
+        });
+    });
+</script>

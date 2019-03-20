@@ -1,0 +1,101 @@
+﻿@model PagedList.IPagedList<BackEnd.Model.Documento>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+
+<table class="table table-bordered" id="table_documentos">
+    <tr>
+        <th>
+            @Html.ActionLink("Número de oficio", "Index", new { sortOrder = ViewBag.NumeroOficio })
+        </th>
+        <th>
+            @Html.ActionLink("Fecha", "Index", new { sortOrder = ViewBag.FechaDeIngreso })
+        </th>
+        @foreach (var item in Model)
+        {
+            if (item.numeroIngreso != null)
+            {
+                <th id="numeroDocumento">
+                    Número de ingreso
+                </th>
+                break;
+            }
+            else
+            {
+                break;
+            }
+        }
+        <th>
+            Tipo de origen
+        </th>
+        <th>
+            Origen
+        </th>
+
+        <th>
+            Estado
+        </th>
+    </tr>
+    @if (Model.Count() == 0)
+    {
+        <tr><td align="center" colspan="7">No hay registros que coincidan con la busqueda.</td></tr>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+        <tr>
+            <td style="display:none;">
+                @Html.DisplayFor(modelItem => item.idDocumento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.numeroDocumento)
+            </td>
+
+            <td>
+                @Html.ValueFor(modelItem => item.fecha, "{0:dd/MM/yyyy}")
+            </td>
+            @if (item.numeroIngreso != null)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.numeroIngreso)
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.TablaGeneral3.descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TablaGeneral.descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TablaGeneral1.descripcion)
+            </td>
+        </tr>
+        }
+    }
+</table>
+@Html.PagedListPager(Model, page => Url.Action("Referencias", new { page, pageSize = Model.PageSize }))
+
+<div id="contextMenu" class="dropdown clearfix">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+        <li>
+            <a tabindex="-1" href="#" onclick="Details(getInd())" data-value="getInd()" data-toggle="modal" data-target="#detalleModal">Ver detalles</a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a tabindex="-1" href="#" onclick="Reply(getInd())" data-value="getInd()" data-toggle="modal" data-target="#responderModal">Responder</a>
+        </li>
+        <li>
+            <a tabindex="-1" href="#" onclick="Edit(getInd())" data-value="getInd()" data-toggle="modal" data-target="#editarModal">Editar</a>
+        </li>
+        <li>
+            <a tabindex="-1" href="#" onclick="Reference()" data-toggle="modal" data-target="#referenciaModal">Ver referencias</a>
+        </li>
+        <li>
+            <a tabindex="-1" href="#">Eliminar</a>
+        </li>
+    </ul>
+</div>

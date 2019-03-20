@@ -7,14 +7,14 @@
 <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <span class="modal-title" id="ediatModal">Editar oficio</span>
+            <span class="modal-title" id="ediatModal">Editar expediente</span>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <div id="contenidoModal">
-                @using (Html.BeginForm("EditarDocumento", "Documento"))
+                @using (Html.BeginForm("EditarDocumento", "DocumentoExpediente"))
                 {
                     @Html.AntiForgeryToken()
                 <div class="form-horizontal" id="parent">
@@ -48,17 +48,20 @@
                             @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    @if (Model.numeroIngreso != null)
-                    {
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.numeroIngreso, "Número de Ingreso:", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.numeroIngreso, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.numeroIngreso, "", new { @class = "text-danger" })
-                            </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.parte, "Parte:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.parte, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.parte, "", new { @class = "text-danger" })
                         </div>
-                    }
-
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.numeroIngreso, "Número de Ingreso:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.numeroIngreso, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.numeroIngreso, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.idEstado, "Estado de Documento:", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
@@ -111,7 +114,7 @@
                             <input class="form-control" type="file" name="elementName" multiple="multiple" />
                         </div>
                     </div>
-                </div>        
+                </div>
                     <div class="modal-footer">
                         <div class="col-md-offset-2 col-md-10">
                             <input type="submit" value="Actualizar documento" class="btn btn-default" />
@@ -119,7 +122,6 @@
                         </div>
                     </div>
                 }
-
             </div>
         </div>
     </div>
@@ -308,7 +310,7 @@
     }
     $("#idOrigen").change(function () {
         onChangeId();
-    }); 
+    });
     //Limpia el campo del numero de documento y pone el placeholder dependiento del origen.
     function onChangeId() {
         changeIdOrigen($("#tipoOrigen").val(), $("#idOrigen").val());
@@ -336,7 +338,7 @@
             else {
                 event.preventDefault();
             }
-            
+
         }
         else {
             if (e.key != 1 && e.key != 2 && e.key != 3 && e.key != 4 && e.key != 5 && e.key != 6 && e.key != 7 && e.key != 8 && e.key != 9 && e.key != 0 && e.key != 'Backspace' && e.keyCode != 32) {

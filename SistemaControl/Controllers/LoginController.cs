@@ -37,6 +37,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception ex)
             {
+                ex = new Exception();
                 return false;
             }
 
@@ -58,8 +59,8 @@ namespace SistemaControl.Controllers
             }
             IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
             var authService = new AdAuthenticationService(authenticationManager);
-            // var authenticationResult = authService.SignIn(model.Username, model.Password);
-            var authenticationResult = authService.SignIn("Steven Villalobos", "svch1996");
+            var authenticationResult = authService.SignIn(model.Username, model.Password);
+           // var authenticationResult = authService.SignIn("Steven Villalobos", "svch1996");
             string user;
             if (authenticationResult.IsSuccess)
             {

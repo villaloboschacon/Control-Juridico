@@ -34,6 +34,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception ex)
             {
+                ex = new Exception();
                 return View();
             }
             ViewBag.CurrentSort = sortOrder;
@@ -187,10 +188,10 @@ namespace SistemaControl.Controllers
             return PartialView("Editar", caso);
         }
 
-        public JsonResult ComprobarCaso(int numeroCaso)
+        public JsonResult ComprobarCaso(string numeroCaso,string idCaso)
         {
             casoBLL = new CasoBLLImpl();
-            if (casoBLL.Comprobar(numeroCaso))
+            if (casoBLL.Comprobar(numeroCaso,idCaso))
             {
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
@@ -226,6 +227,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception ex)
             {
+                ex = new Exception();
             }
             return this.Json(new { Id = "idPersona", Reg = "Supermercado", Data = ViewBag.idPersona }, JsonRequestBehavior.AllowGet);
 

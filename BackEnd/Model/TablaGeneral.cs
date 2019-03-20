@@ -38,6 +38,7 @@ namespace BackEnd.Model
         public string tabla { get; set; }
         public string campo { get; set; }
         public string descripcion { get; set; }
+        public string nomenclatura { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Adjunto> Adjuntos { get; set; }

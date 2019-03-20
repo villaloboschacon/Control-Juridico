@@ -1,0 +1,250 @@
+﻿@model PagedList.IPagedList<BackEnd.Model.Persona>
+@{
+
+    ViewBag.Title = "Index";
+}
+
+@using PagedList.Mvc;
+<a href="~/Views/PersonaFisica/Index.cshtml"></a>
+
+<script src="~/Content/js/site.js"></script>
+<link href="~/Content/css/style.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<div class="title">Personas Jurídicas</div>
+<div class="container" style="margin-top:20px">
+    @using (Html.BeginForm("Index", "Personas", FormMethod.Get))
+    {
+        @*<div>
+                @Html.TextBox("search") <input type="submit" name="submit" value="Buscar" />
+            </div>
+            <div>
+                <b> Opciones de busqueda: </b>
+                @Html.RadioButton("option", "Nombre") <text>Nombre</text>
+                @Html.RadioButton("option", "Cédula") <text> Cédula </text>
+                @Html.RadioButton("option", "Representante legal")<text>Representante legal</text>
+                @Html.RadioButton("option", "Representante social")<text>Representante social</text>
+            </div>*@
+        <div class="widget" style="height:100px;">
+            <div class="title">
+                <span class="form-inline">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    @Html.TextBox("search")  <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
+                </span>
+
+                <div style="color:black; font-size:14px;">
+                    <b> Opciones de búsqueda: </b>
+                    @Html.RadioButton("option", "Cédula") <text>Cédula</text>
+                    @Html.RadioButton("option", "Nombreo") <text> Nombre </text>
+                    @Html.RadioButton("option", "Representante legal") <text>Representante legal</text>
+                    @Html.RadioButton("option", "Representante social") <text>Representante social </text>
+
+                </div>
+            </div>
+        </div>
+    }
+
+    <table class="table table-bordered" id="table_personas">
+        <tr>
+            <th>
+                @Html.ActionLink("Cédula", "Index", new { sortOrder = ViewBag.Cedula })
+            </th>
+            <th>
+                @Html.ActionLink("Nombre Completo", "Index", new { sortOrder = ViewBag.NombreCompleto })
+            </th>
+            <th>Representante legal</th>
+            <th>Representante social</th>
+            <th>Correo</th>
+
+        </tr>
+        @if (Model.Count() == 0)
+        {
+            <tr>
+                <td align="center" colspan="8">No se encontraron coincidencias</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.idPersona)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cedula)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nombreCompleto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RepresentanteLegal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RepresentanteSocial)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.correo)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.observacion)
+                        </td>*@
+                </tr>
+            }
+        }
+    </table>
+    <div>
+        <a href="#" onclick="Crear()" class="btnEdit" data-toggle="modal" data-target="#crearModal" id="btnEdit">Crear persona</a>
+        @*<a href="#" onclick="Reference()" class="btnEdit" data-toggle="modal" data-target="#referenciaModal" id="btnEdit">Ref documento</a>*@
+    </div>
+    <br />
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
+    @*Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount personas*@
+
+</div>
+<div id="editarModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editarModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+<div id="crearModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crearModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
+
+
+<div id="contextMenu" class="dropdown clearfix">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+        <li>
+            <a tabindex="-1" href="#" onclick="Details(getInd())" data-value="getInd()" data-toggle="modal" data-target="#detalleModal">Ver detalles</a>
+        </li>
+        <li class="divider"></li>
+        @*<li>
+                <a tabindex="-1" href="#" onclick="Reply(getInd())" data-value="getInd()" data-toggle="modal" data-target="#responderModal">Responder</a>
+            </li>*@
+        <li>
+            <a tabindex="-1" href="#" onclick="Edit(getInd())" data-value="getInd()" data-toggle="modal" data-target="#editarModal">Editar</a>
+        </li>
+        @*<li>
+                <a tabindex="-1" href="#" onclick="Reference()" data-toggle="modal" data-target="#referenciaModal">Ver referencias</a>
+            </li>*@
+        <li>
+            <a tabindex="-1" href="#">Eliminar</a>
+        </li>
+    </ul>
+</div>
+<style>
+    #contextMenu {
+        position: absolute;
+        display: none;
+        background: lightblue;
+        z-index: 1000;
+    }
+
+    .wrap {
+        width: 90%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    table {
+        border: 1px solid rgba(221, 221, 221, 1);
+    }
+
+    tr:nth-child(even) {
+        background: #F5F5F5
+    }
+
+    tr {
+        position: relative;
+    }
+
+        tr:hover {
+            background: #c9e8f7;
+            position: relative;
+        }
+</style>
+
+<script>
+
+    var ind = 0;
+    $(this).mousedown(function (e) {
+        if (e.which == 2) {
+            alert('jaja');
+            var rows = $('tr', table_documentos);
+            ind = rows.eq($(this).index()).find("td:first").text();
+            console(ind);
+            return rows.eq($(this).index()).find("td:first").text();
+        }
+    });
+    $('#table_personas').click(function () {
+        $(this).addClass('highlight').siblings().removeClass('highlight');
+        //do your stuff, you can use $(this) to get current cell
+    });
+
+    $('#table_personas').find('tr').click(function (e) {
+        var rows = $('tr', table_personas);
+        ind = rows.eq($(this).index()).find("td:first").text();
+
+        return rows.eq($(this).index()).find("td:first").text();
+    });
+    $vars = 0;
+    $(function () {
+        var $contextMenu = $("#contextMenu");
+        $("body").on("contextmenu", "table tr", function (e) {
+            var rows = $('tr', table_personas);
+            ind = rows.eq($(this).index()).find("td:first").text();
+            ind = ind.replace(/ /g, "");
+            ind = ind.replace(/\s+/g, "");
+            console.log(ind);
+            $vars = ind;
+            $contextMenu.css({
+                display: "block",
+                left: e.pageX,
+                top: e.pageY
+            });
+            return false;
+        });
+        $('html').click(function () {
+            $contextMenu.hide();
+        });
+    });
+    function getInd() {
+        console.log($vars);
+        return $vars;
+    };
+
+
+    function Crear() {
+        var url = '@Url.Action("Crear")';
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#crearModal").html(data);
+            },
+            error: function (xhr) {
+                alert('Error a la hora de abrir el modal.');
+            }
+        });
+    }
+
+    function Edit(idpersona) {
+        var url = '@Url.Action("Editar")';
+        var myId = idpersona;
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            data: {
+                'id': idpersona
+            },
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#editarModal").html(data);
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    }
+</script>

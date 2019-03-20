@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -8,11 +9,11 @@ using PagedList;
 using SistemaControl.Models;
 namespace SistemaControl.Controllers
 {
-    public class PersonasController : Controller
+    public class PersonaJuridicaController : Controller
     {
         private IPersonasBLL personaBll;
         private ITablaGeneralBLL tablaGeneralBLL;
-        public PersonasController()
+        public PersonaJuridicaController()
         {
             tablaGeneralBLL = new TablaGeneralBLLImpl();
             personaBll = new PersonasBLLImpl();
@@ -63,35 +64,93 @@ namespace SistemaControl.Controllers
                 return View(model);
             }
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CrearPersona(Persona persona)
+        {
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                personaBll = new PersonasBLLImpl();
+            }
+            catch (Exception)
+            {
+                return View();
+            }
+            if (ModelState.IsValid)
+            {
+                personaBll.Agregar(persona);
+                personaBll.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            PersonaViewModel personaVista = (PersonaViewModel)persona;
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", persona.idTipo);
+            return PartialView("Crear", personaVista);
+        }
+
+        public ActionResult Crear()
+        {
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                personaBll = new PersonasBLLImpl();
+            }
+            catch (Exception)
+            {
+                return View();
+            }
+
+            PersonaViewModel persona = new PersonaViewModel();
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", 0);
+            return PartialView("Crear", persona);
+        }
+
+        public ActionResult Editar(int id)
+        {
+            tablaGeneralBLL = new TablaGeneralBLLImpl();
+            personaBll = new PersonasBLLImpl();
+            Persona persona = personaBll.Get(id);
+            PersonaViewModel personaVista = new PersonaViewModel();
+            personaVista = (PersonaViewModel)persona;
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", persona.idTipo);
+            return PartialView("Editar", personaVista);
+        }
 
         [HttpPost]
-        public ActionResult Agregar(Persona persona)
+        [ValidateAntiForgeryToken]
+        public ActionResult EditarPersona(Persona persona)
         {
-            personaBll.Agregar(persona);
-            return RedirectToAction("Index", "Personas");
+            tablaGeneralBLL = new TablaGeneralBLLImpl();
+            personaBll = new PersonasBLLImpl();
+            if (ModelState.IsValid)
+            {
+                personaBll.Modificar(persona);
+                personaBll.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", persona.idTipo);
+            return PartialView("Editar", persona);
         }
-
-        public ActionResult Details(int id)
+        public JsonResult ComprobarPersona(string cedula, string idPersona)
         {
-            Persona persona = personaBll.Get(id);
-            return PartialView("Detalles", persona);
+            try
+            {
+                personaBll = new PersonasBLLImpl();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+          
+            if (personaBll.Comprobar(cedula, idPersona))
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("Este número de cédula ya ha sido registrado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+            }
         }
-        //[HttpPost]
-        //public ActionResult Index()
-        //{
-        //    ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Personas","tipo"), "idTablaGeneral", "descripcion");
-        //    List<Persona> listapersona = new List<Persona>();
-        //    Persona persona = personaBll.Get(2);
-        //    listapersona.Add(persona);
-        //    PagedList<Persona> model = new PagedList<Persona>(listapersona, 1, 4);
-        //    return View(model);
-        //} 
-        //public ActionResult MyAction()
-        //{
-        //    var model = new PersonasViewModel();
-        //    model.PersonaIdTemplate = new SelectList(tablaGeneralBLL.Consulta("personas"), "idTipo", "descripcion", 1);
-        //    return View(model);
-        //}
 
     }
 }

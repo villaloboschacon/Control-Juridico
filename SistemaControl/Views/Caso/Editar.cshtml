@@ -1,6 +1,9 @@
-﻿@model BackEnd.Model.Caso
-@Scripts.Render("~/bundles/jqueryval")
-
+﻿@model SistemaControl.Models.CasoViewModel
+@*Scripts para validaciones y mensajes de alerta*@
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@*--Espacio de scripts cerrado--*@
 <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -86,14 +89,15 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.observacion, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.TextAreaFor(model => model.observacion, 10, 62, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Guardar Cambios" class="btn btn-primary" />
+                            <input type="submit" value="Actualizar caso" class="btn btn-default" />
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
                 }
@@ -107,7 +111,9 @@
 
     $(document).ready(function() {
 
-        $("#idTipo").change(function () {
+    });
+
+    $("#idTipo").change(function () {
             $("#idPersona").empty();
             $.ajax({
                 type: 'POST',
@@ -127,6 +133,4 @@
             });
             return false;
         });
-    });
-
 </script>

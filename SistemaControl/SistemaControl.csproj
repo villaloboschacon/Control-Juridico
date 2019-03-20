@@ -189,13 +189,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CasoController.cs" />
     <Compile Include="Controllers\CasoJudicialController.cs" />
-    <Compile Include="Controllers\CrearDocumentoController.cs" />
     <Compile Include="Controllers\DocumentoController.cs" />
     <Compile Include="Controllers\DocumentoExpedienteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PersonaFisicaController.cs" />
-    <Compile Include="Controllers\PersonasController.cs" />
+    <Compile Include="Controllers\PersonaJuridicaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -204,7 +203,7 @@
     <Compile Include="Models\CasoViewModel.cs" />
     <Compile Include="Models\DocumentoViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
-    <Compile Include="Models\PersonasViewModel.cs" />
+    <Compile Include="Models\PersonaViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -911,7 +910,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Personas\Index.cshtml" />
+    <Content Include="Views\PersonaJuridica\Index.cshtml" />
     <Content Include="Views\PersonaFisica\Index.cshtml" />
     <Content Include="Views\Documento\Index.cshtml" />
     <Content Include="Views\DocumentoExpediente\Index.cshtml" />
@@ -922,8 +921,6 @@
     <Content Include="Views\Documento\Crear.cshtml" />
     <Content Include="Views\Documento\Editar.cshtml" />
     <Content Include="Views\Documento\Responder.cshtml" />
-    <Content Include="Views\Documento\CrearValidate.cshtml" />
-    <Content Include="Views\Documento\PopUp.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />
@@ -945,6 +942,11 @@
     <Content Include="Views\CasoJudicial\Editar.cshtml" />
     <Content Include="Views\DocumentoExpediente\Crear.cshtml" />
     <Content Include="Views\Documento\Referencias.cshtml" />
+    <Content Include="Views\Documento\TablaDocumentos.cshtml" />
+    <Content Include="Views\DocumentoExpediente\Editar.cshtml" />
+    <Content Include="Views\DocumentoExpediente\Detalle.cshtml" />
+    <Content Include="Views\PersonaJuridica\Crear.cshtml" />
+    <Content Include="Views\PersonaJuridica\Editar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
