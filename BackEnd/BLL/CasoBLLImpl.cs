@@ -33,14 +33,14 @@ namespace BackEnd.BLL
             }
         }
 
+
         public bool Comprobar(string numeroCaso , string idCaso)
         {
             int idCasoint = 0;
-            int idNumeroCasoint = 0;
+
             try
             {
                 idCasoint = Int32.Parse(idCaso);
-                idNumeroCasoint = Int32.Parse(numeroCaso);
 
             }
             catch (Exception)
@@ -52,7 +52,7 @@ namespace BackEnd.BLL
                 List<Caso> lista;
                 using (unidad = new UnidadDeTrabajo<Caso>(new SCJ_BDEntities()))
                 {
-                    Expression<Func<Caso, bool>> consulta = (d => d.idCaso.Equals(idCasoint) && d.numeroCaso.Equals(idNumeroCasoint));
+                    Expression<Func<Caso, bool>> consulta = (d => d.idCaso.Equals(idCasoint) && d.numeroCaso.Equals(numeroCaso));
                     lista = unidad.genericDAL.Find(consulta).ToList();
                     if (lista.Count() == 1)
                     {
@@ -60,7 +60,7 @@ namespace BackEnd.BLL
                     }
                     else
                     {
-                        consulta = (d => d.numeroCaso.Equals(idNumeroCasoint));
+                        consulta = (d => d.numeroCaso.Equals(numeroCaso));
                         lista = unidad.genericDAL.Find(consulta).ToList();
                         if (lista.Count() == 0)
                         {

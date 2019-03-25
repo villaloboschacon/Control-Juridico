@@ -43,6 +43,7 @@
         <AssociationConnector Association="SCJ_BD.FK_Usuario_Estado" ManuallyRouted="false" />
         <AssociationConnector Association="SCJ_BD.CasoDocumento" ManuallyRouted="false" />
         <AssociationConnector Association="SCJ_BD.UsuarioRol" ManuallyRouted="false" />
+        <AssociationConnector Association="SCJ_BD.FK_Persona_TipoIdentificacion" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

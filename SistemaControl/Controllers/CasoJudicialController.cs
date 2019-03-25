@@ -54,7 +54,7 @@ namespace SistemaControl.Controllers
             if (option == "Número de Caso")
             {
                 ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
-                List<Caso> listaCaso = casoBLL.Find(x => x.numeroCaso == 1 && x.idTipo == 20 || search == null).ToList();
+                List<Caso> listaCaso = casoBLL.Find(x => x.numeroCaso == search && x.idTipo == 20 || search == null).ToList();
                 PagedList<Caso> model = new PagedList<Caso>(listaCaso, pageNumber, pageSize);
                 return View(model.ToPagedList(pageNumber, pageSize));
             }
@@ -200,6 +200,8 @@ namespace SistemaControl.Controllers
                 return Json("El número de caso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
             }
         }
+
+
 
         [HttpPost]
         public JsonResult GetTipoPersona(int id)

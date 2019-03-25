@@ -10,16 +10,9 @@
 namespace BackEnd.Model
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Persona
+    public partial class SP_BuscaPersonaNombre_Result
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Persona()
-        {
-            this.Casos = new HashSet<Caso>();
-        }
-    
         public int idPersona { get; set; }
         public int idTipo { get; set; }
         public string cedula { get; set; }
@@ -29,10 +22,5 @@ namespace BackEnd.Model
         public string correo { get; set; }
         public string observacion { get; set; }
         public Nullable<int> tipoIdentificacion { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Caso> Casos { get; set; }
-        public virtual TablaGeneral TablaGeneral { get; set; }
-        public virtual TablaGeneral TablaGeneral1 { get; set; }
     }
 }

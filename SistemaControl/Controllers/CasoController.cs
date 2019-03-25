@@ -41,7 +41,7 @@ namespace SistemaControl.Controllers
             }
             else if (option == "Abogado")
             {
-                List<Caso> listacaso = casoBLL.Find(x => x.numeroCaso == Int32.Parse(search) && x.idCaso == 3 || search == null).ToList();
+                List<Caso> listacaso = casoBLL.Find(x => x.numeroCaso == search && x.idCaso == 3 || search == null).ToList();
                 PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
                 return View(model);
             }
@@ -53,7 +53,7 @@ namespace SistemaControl.Controllers
             }
             else if (option == "Número de caso")
             {
-                List<Caso> listacaso = casoBLL.Find(x => x.numeroCaso == Int32.Parse(search) && x.idCaso == 3 || search == null).ToList();
+                List<Caso> listacaso = casoBLL.Find(x => x.numeroCaso == search && x.idCaso == 3 || search == null).ToList();
                 PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
                 return View(model);
             }

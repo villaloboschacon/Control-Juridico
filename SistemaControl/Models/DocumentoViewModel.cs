@@ -29,7 +29,7 @@ namespace SistemaControl.Models
 
         [RegularExpression(@"(MA-[a-zñA-ZÑ]{1,6}-[0-9]{4}-\b20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])\b)$", ErrorMessage = "Formato incorrecto. MA-*SIGLAS DEL DEPARTAMENTO*-*CUATRO NÚMEROS*-*AÑO ACTUAL*. \n Ejemplo:MA-PSI-5463-2019.")]
         [Required(ErrorMessage = "*Debe digitar el número de documento.")]
-        [StringLength(19, MinimumLength = 14, ErrorMessage = "El número de documento debe tener al menos 11 caracteres.")]
+        [StringLength(19, MinimumLength = 10, ErrorMessage = "El número de documento debe tener al menos 15 caracteres.")]
         [Display(Name = "Número de Documento ")]
         [Remote("ComprobarDocumento", "Documento",AdditionalFields = "idDocumento")]
         public string numeroDocumento { get; set; }

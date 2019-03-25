@@ -11,6 +11,8 @@ namespace BackEnd.BLL
     public class PersonasBLLImpl:BLLGenericoImpl<Persona>, IPersonasBLL
     {
         private UnidadDeTrabajo<Persona> unidad;
+        private SCJ_BDEntities context;
+
         public bool Comprobar(string cedula, string idPersona)
         {
             int id = 0;
@@ -110,6 +112,40 @@ namespace BackEnd.BLL
         {
             this.Update(persona);
             return true;
+        }
+
+        public List<Persona> buscaPorNombre(string filtro)
+        {
+            try
+            {
+                List<Persona> listapersonas;
+                using (context = new SCJ_BDEntities())
+                {
+                    listapersonas = context.SP_BuscaPersonaNombre(filtro).ToList();
+                    return listapersonas;
+                }             
+            }
+            catch (Exception)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public List<Persona> buscarNombre(string filtro)
+        {
+            try
+            {
+                List<Persona> listapersonas;
+                using (context = new SCJ_BDEntities())
+                {
+                    listapersonas = context.Personas.Where(x => x.nombreCompleto.Contains(filtro) || filtro == null).ToList(); 
+                    return listapersonas;
+                }
+            }
+            catch (Exception)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

@@ -13,7 +13,10 @@ namespace SistemaControl.Models
         [Key]
         public int idPersona { get; set; }
 
+
         public int? idTipo { get; set; }
+
+        public int? tipoIdentificacion { get; set; }
 
         [Required(ErrorMessage = "*Error. Debe de digitar correctamente la cédula de la persona")]
         [StringLength(15, ErrorMessage = "Error: Cédula de persona Fisica: X-XXXX-XXXX y Cédula de persona Jurídica: X-XXX-XXXXXX")]
@@ -51,6 +54,7 @@ namespace SistemaControl.Models
             PersonaViewModel view = new PersonaViewModel();
             view.idPersona = p.idPersona;
             view.idTipo = p.idTipo;
+            view.tipoIdentificacion = p.tipoIdentificacion;
             view.cedula = p.cedula;
             view.nombreCompleto = p.nombreCompleto;
             view.representanteSocial = p.RepresentanteSocial;

@@ -85,6 +85,7 @@ namespace SistemaControl.Controllers
             }
             PersonaViewModel personaVista = (PersonaViewModel)persona;
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", persona.idTipo);
+            ViewBag.tipoIdentificacion = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", persona.tipoIdentificacion);
             return PartialView("Crear", personaVista);
         }
 
@@ -102,6 +103,7 @@ namespace SistemaControl.Controllers
 
             PersonaViewModel persona = new PersonaViewModel();
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", 0);
+            ViewBag.tipoIdentificacion = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", 0);
             return PartialView("Crear", persona);
         }
 
@@ -113,6 +115,7 @@ namespace SistemaControl.Controllers
             PersonaViewModel personaVista = new PersonaViewModel();
             personaVista = (PersonaViewModel)persona;
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", persona.idTipo);
+            ViewBag.tipoIdentificacion = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", persona.tipoIdentificacion);
             return PartialView("Editar", personaVista);
         }
 
@@ -129,6 +132,7 @@ namespace SistemaControl.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", persona.idTipo);
+            ViewBag.tipoIdentificacion = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", persona.tipoIdentificacion);
             return PartialView("Editar", persona);
         }
         public JsonResult ComprobarPersona(string cedula, string idPersona)

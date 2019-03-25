@@ -89,8 +89,8 @@
           <Property Name="observacion" Type="varchar" MaxLength="750" />
           <Property Name="observacionBitacora" Type="varchar" MaxLength="750" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SCJ_BD.dbo.CasoDocumento' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CasoDocumento">
           <Key>
             <PropertyRef Name="idCaso" />
@@ -109,7 +109,7 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida 
           <Property Name="idUsuario" Type="int" Nullable="false" />
           <Property Name="idEstado" Type="int" Nullable="false" />
           <Property Name="tipoLitigante" Type="int" Nullable="false" />
-          <Property Name="numeroCaso" Type="int" Nullable="false" />
+          <Property Name="numeroCaso" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="materia" Type="varchar" MaxLength="100" />
           <Property Name="descripcion" Type="varchar" MaxLength="750" />
           <Property Name="observacion" Type="varchar" MaxLength="750" />
@@ -154,6 +154,7 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida 
           <Property Name="RepresentanteLegal" Type="varchar" MaxLength="150" />
           <Property Name="correo" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="observacion" Type="varchar" MaxLength="750" />
+          <Property Name="tipoIdentificacion" Type="int" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
@@ -182,8 +183,8 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida 
           <Property Name="descripcion" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="nomenclatura" Type="varchar" MaxLength="20" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UsuarioRol">
           <Key>
             <PropertyRef Name="idUsuario" />
@@ -477,6 +478,18 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Persona_TipoIdentificacion">
+          <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="0..1" />
+          <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Personas">
+              <PropertyRef Name="tipoIdentificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Persona_TipoPersona">
           <End Role="TablaGeneral" Type="Self.TablaGeneral" Multiplicity="1" />
           <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
@@ -534,6 +547,9 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <Parameter Name="owner_id" Type="int" Mode="In" />
           <Parameter Name="version" Type="int" Mode="In" />
           <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_BuscaPersonaNombre" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NombrePersona" Type="varchar" Mode="In" />
         </Function>
         <Function Name="sp_ConsultaNumerodeIngreso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -684,6 +700,10 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
             <End Role="TablaGeneral" EntitySet="TablaGeneral" />
             <End Role="Documentos" EntitySet="Documentos" />
           </AssociationSet>
+          <AssociationSet Name="FK_Persona_TipoIdentificacion" Association="Self.FK_Persona_TipoIdentificacion">
+            <End Role="TablaGeneral" EntitySet="TablaGeneral" />
+            <End Role="Personas" EntitySet="Personas" />
+          </AssociationSet>
           <AssociationSet Name="FK_Persona_TipoPersona" Association="Self.FK_Persona_TipoPersona">
             <End Role="TablaGeneral" EntitySet="TablaGeneral" />
             <End Role="Personas" EntitySet="Personas" />
@@ -809,7 +829,7 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <Property Name="idUsuario" Type="Int32" Nullable="false" />
           <Property Name="idEstado" Type="Int32" Nullable="false" />
           <Property Name="tipoLitigante" Type="Int32" Nullable="false" />
-          <Property Name="numeroCaso" Type="Int32" Nullable="false" />
+          <Property Name="numeroCaso" Type="String" Nullable="false" />
           <Property Name="materia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="descripcion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
           <Property Name="observacion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
@@ -871,6 +891,8 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <Property Name="observacion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Casos" Relationship="Self.FK_Caso_Persona" FromRole="Personas" ToRole="Casos" />
           <NavigationProperty Name="TablaGeneral" Relationship="Self.FK_Persona_TipoPersona" FromRole="Personas" ToRole="TablaGeneral" />
+          <Property Name="tipoIdentificacion" Type="Int32" />
+          <NavigationProperty Name="TablaGeneral1" Relationship="SCJ_BD.FK_Persona_TipoIdentificacion" FromRole="Persona" ToRole="TablaGeneral" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -914,6 +936,7 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <NavigationProperty Name="Personas" Relationship="Self.FK_Persona_TipoPersona" FromRole="TablaGeneral" ToRole="Personas" />
           <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuario_Estado" FromRole="TablaGeneral" ToRole="Usuarios" />
           <Property Name="nomenclatura" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Personas1" Relationship="SCJ_BD.FK_Persona_TipoIdentificacion" FromRole="TablaGeneral" ToRole="Persona" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
@@ -1372,6 +1395,13 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <Parameter Name="nombre" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_GeneraNumerodeIngreso" ReturnType="Collection(Int64)" />
+          <AssociationSet Name="FK_Persona_TipoIdentificacion" Association="SCJ_BD.FK_Persona_TipoIdentificacion">
+            <End Role="TablaGeneral" EntitySet="TablaGenerals" />
+            <End Role="Persona" EntitySet="Personas" />
+          </AssociationSet>
+          <FunctionImport Name="SP_BuscaPersonaNombre" EntitySet="Personas" ReturnType="Collection(SCJ_BD.Persona)">
+          <Parameter Name="NombrePersona" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1418,6 +1448,29 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
           <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <Association Name="FK_Persona_TipoIdentificacion">
+          <End Type="SCJ_BD.TablaGeneral" Role="TablaGeneral" Multiplicity="0..1" />
+          <End Type="SCJ_BD.Persona" Role="Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TablaGeneral">
+              <PropertyRef Name="idTablaGeneral" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="tipoIdentificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="SP_BuscaPersonaNombre_Result">
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="String" Name="cedula" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="nombreCompleto" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteSocial" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteLegal" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="correo" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="Int32" Name="tipoIdentificacion" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1563,6 +1616,7 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <EntitySetMapping Name="Personas">
             <EntityTypeMapping TypeName="SCJ_BD.Persona">
               <MappingFragment StoreEntitySet="Personas">
+                <ScalarProperty Name="tipoIdentificacion" ColumnName="tipoIdentificacion" />
                 <ScalarProperty Name="idPersona" ColumnName="idPersona" />
                 <ScalarProperty Name="idTipo" ColumnName="idTipo" />
                 <ScalarProperty Name="cedula" ColumnName="cedula" />
@@ -1662,6 +1716,8 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <FunctionImportMapping FunctionImportName="sp_ConsultaNumerodeIngreso" FunctionName="SCJ_BD.Store.sp_ConsultaNumerodeIngreso" />
           <FunctionImportMapping FunctionImportName="getNomenclatura" FunctionName="SCJ_BD.Store.getNomenclatura" />
           <FunctionImportMapping FunctionImportName="sp_GeneraNumerodeIngreso" FunctionName="SCJ_BD.Store.sp_GeneraNumerodeIngreso" />
+          <FunctionImportMapping FunctionImportName="SP_BuscaPersonaNombre" FunctionName="SCJ_BD.Store.SP_BuscaPersonaNombre">
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

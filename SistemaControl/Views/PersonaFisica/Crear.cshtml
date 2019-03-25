@@ -33,10 +33,19 @@
                         </div>
                     </div>
 
-                    <div class="form-group" id="div_cedula">
-                        @Html.LabelFor(model => model.cedula, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.tipoIdentificacion, "Tipo de Identificación", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.cedula, new { htmlAttributes = new { @class = "form-control", placeholder = "ejemplo:201230456" } })
+                            @Html.DropDownList("tipoIdentificacion", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.tipoIdentificacion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="div_cedula">
+                        @Html.LabelFor(model => model.cedula, htmlAttributes: new { @class = "control-label col-md-2", placeholder="" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.cedula, new { htmlAttributes = new { @class = "form-control", @id = "identificacion" } })
+                            @*, placeholder = "ejemplo:201230456"*@
                             @Html.ValidationMessageFor(model => model.cedula, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -121,8 +130,66 @@
         $("#div_representanteLegal").hide();
         $("#representanteSocial").attr('maxlength', '50');
         $("#representanteLegal").attr('maxlength', '50');
+        //$('#M').attr('placeholder',"eje:C030059877");
 
     });
+
+    $('#tipoIdentificacion').change(function () {
+        if ($('#tipoIdentificacion').val() == "93") {
+            $('#identificacion').attr('placeholder', "eje:201230456");
+            $('#identificacion').keypress(function (e) {
+                var key = e.keyCode || e.which;
+
+                teclado = String.fromCharCode(key).toLowerCase();
+
+                letras = "0123456789";
+
+                especiales = "8-37-38-46-164";
+
+                teclado_especial = false;
+
+                for (var i in especiales) {
+                    if (key == especiales[i]) {
+                        teclado_especial = true;
+                        break;
+                    }
+                }
+
+                if (letras.indexOf(teclado) == -1 && !teclado_especial) {
+                    return false;
+                }
+            });
+
+        } else if ($('#tipoIdentificacion').val() == "94") {
+            $('#identificacion').attr('placeholder', "eje:C030059877");
+            $('#identificacion').keypress(function (e) {
+                var key = e.keyCode || e.which;
+
+                teclado = String.fromCharCode(key).toLowerCase();
+
+                letras = "qwertyuiopasdfghjklñzxcvbnm0123456789-";
+
+                especiales = "8-37-38-46-164";
+
+                teclado_especial = false;
+
+                for (var i in especiales) {
+                    if (key == especiales[i]) {
+                        teclado_especial = true;
+                        break;
+                    }
+                }
+
+                if (letras.indexOf(teclado) == -1 && !teclado_especial) {
+                    return false;
+                }
+            });
+
+        } else {
+            $('#identificacion').attr('placeholder', "");
+        }
+    });
+
 
     $('#idTipo').change(function () {
         if ($('#idTipo').val() == "1") {

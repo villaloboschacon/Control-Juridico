@@ -22,11 +22,13 @@ namespace SistemaControl.Models
         public int? idEstado { get; set; }
 
         public int? tipoLitigante { get; set; }
-
-        [Required(ErrorMessage = "*Debe de digitar el número de documento.")]
+       
+      
+        [RegularExpression("[0-9]{2}-[0-9]{6}-[0-9]{4}-[a-zñA-ZÑ]{1,12}(-[0-9]{1}|)$", ErrorMessage = "Formato incorrecto. *DOS NUMEROS*-*SEIS NÚMEROS*-*CUATRO NUMEROS*-*MATERIA*. \n Ejemplo:19-161616-8989-Penal.")]
+        [Required(ErrorMessage = "*Debe de digitar el número de caso.")]
         [Remote("ComprobarCaso", "Caso", AdditionalFields = "idCaso")]
         [Display(Name = "Número de Caso")]
-        public int numeroCaso { get; set; }
+        public string numeroCaso { get; set; }
 
         [Required(ErrorMessage = "*Debe de digitar la materia del proceso.")]
         [Display(Name = "Materia")]
