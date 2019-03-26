@@ -18,23 +18,23 @@ namespace SistemaControl.Models
 
         public int? tipoIdentificacion { get; set; }
 
-        [Required(ErrorMessage = "*Error. Debe de digitar correctamente la cédula de la persona")]
-        [StringLength(15, ErrorMessage = "Error: Cédula de persona Fisica: X-XXXX-XXXX y Cédula de persona Jurídica: X-XXX-XXXXXX")]
+        [Required(ErrorMessage = "*Error. Debe de digitar la cédula de la persona")]
+        [StringLength(18, ErrorMessage = "Formato Incorrecto. Cédula de persona Fisica: ######### y Cédula de persona Jurídica: ##########")]
         [Remote("ComprobarPersona", "PersonaFisica", AdditionalFields = "idPersona")]
         [Display(Name = "Cédula:")]
         public string cedula { get; set; }
 
-        [Required(ErrorMessage = "Error. Debe de digitar el nombre de la persona correctamente.")]
+        [Required(ErrorMessage = "Error. Debe de digitar el nombre de la persona.")]
         [StringLength(150, ErrorMessage = "El nombre de la persona no puede contener mas de 150 caracteres.")]
         [Display(Name = "Nombre Completo:")]
         public string nombreCompleto { get; set; }
 
-        [Required(ErrorMessage = "Error. Debe de digitar el nombre del Representante Social correctamente.")]
+        [Required(ErrorMessage = "Error. Debe de digitar el nombre del Representante Social.")]
         [StringLength(150, ErrorMessage = "El representante social no puede contener mas de 150 caracteres.")]
         [Display(Name = "Representante Social:")]
         public string representanteSocial { get; set; }
 
-        [Required(ErrorMessage = "Error. Debe de digitar el nombre del Representante Legal correctamente.")]
+        [Required(ErrorMessage = "Error. Debe de digitar el nombre del Representante Legal.")]
         [StringLength(150, ErrorMessage = "El representante legal no puede contener mas de 150 caracteres.")]
         [Display(Name = "Representante Legal:")]
         public string representanteLegal { get; set; }

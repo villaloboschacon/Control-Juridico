@@ -233,33 +233,46 @@ namespace SistemaControl.Controllers
 
         public ActionResult Editar(int id)
         {
-            tablaGeneralBLL = new TablaGeneralBLLImpl();
-            personaBll = new PersonasBLLImpl();
-            Persona persona = personaBll.Get(id);
-            PersonaViewModel personaVista = new PersonaViewModel();
-            personaVista = (PersonaViewModel)persona;
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                personaBll = new PersonasBLLImpl();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            PersonaViewModel persona = (PersonaViewModel)personaBll.Get(id);
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion",persona.idTipo);
             ViewBag.tipoIdentificacion = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", persona.tipoIdentificacion);
 
-            return PartialView("Editar", personaVista);
+            return PartialView("Editar", persona);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditarPersona(Persona persona)
         {
-            tablaGeneralBLL = new TablaGeneralBLLImpl();
-            personaBll = new PersonasBLLImpl();
+
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                personaBll = new PersonasBLLImpl();
+            }
+            catch (Exception ex)
+            {
+
+            }
             if (ModelState.IsValid)
             {
                 personaBll.Modificar(persona);
                 personaBll.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index"); ;
             }
-            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion",persona.idTipo);
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", persona.idTipo);
             ViewBag.tipoIdentificacion = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", persona.tipoIdentificacion);
-
-            return PartialView("Editar", persona);
+            return PartialView("Editar", (PersonaViewModel)persona);
         }
 
         public JsonResult ComprobarPersona(string cedula, string idPersona)
@@ -279,7 +292,7 @@ namespace SistemaControl.Controllers
             }
             else
             {
-                return Json("Este número de cédula ya ha sido registrado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                return Json("Este número de identificación ya ha sido registrado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
             }
         }
     }

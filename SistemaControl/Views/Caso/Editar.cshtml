@@ -132,5 +132,81 @@
                 }
             });
             return false;
-        });
+    });
+    $("#idTipo").change(function () {
+        if ($('#idTipo').val() == "19") {
+            $('#numeroCaso').val('N.I.');
+        } else {
+            $('#numeroCaso').val('');
+        }
+
+    });
+
+    //Maneja el campo del numero de caso
+    $("#numeroCaso").keydown(function (e) {
+
+        var reg = /((N.I.[0-9]{4}-\b20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])\b)|[0-9]{2}-[0-9]{6}-[0-9]{4}-[a-zñA-ZÑ]{1,12}(-[0-9]{1}|))$/;
+        var numDoc = $('#numeroCaso').val();
+        var regPrev = /N.I.[0-9]{4}/;
+        var regPrev1 = /^[0-9]{2}$/;
+        var regPrev2 = /^[0-9]{2}-[0-9]{6}$/;
+        var regPrev3 = /^[0-9]{2}-[0-9]{6}-[0-9]{4}$/;
+
+        // var regPrev = /N.I.[0-9]{4}/;
+
+
+        if ($('#idTipo').val() == "19") {
+
+            console.log(e.keyCode);
+            console.log(e.key);
+            if (reg.test(numDoc)) {
+                console.log('Entró.');
+                if (e.key == 'Backspace') {
+                    $('#numeroCaso').val(numDoc.slice(0, -6));
+                    event.preventDefault();
+                }
+                else {
+                    event.preventDefault();
+                }
+
+            }
+            else {
+                if (e.key != 1 && e.key != 2 && e.key != 3 && e.key != 4 && e.key != 5 && e.key != 6 && e.key != 7 && e.key != 8 && e.key != 9 && e.key != 0 && e.key != 'Backspace' && e.keyCode != 32) {
+                    event.preventDefault();
+                }
+                else {
+
+                    if ((e.key == 'Backspace' && $('#numeroCaso').val() == 'N.I.') || e.keyCode == 32) {
+                        event.preventDefault();
+                    }
+                }
+                if (regPrev.test(numDoc + e.key)) {
+                    console.log(123);
+                    $('#numeroCaso').val(numDoc + e.key + '-2019');
+                    event.preventDefault();
+                }
+            }
+        } else if ($('#idTipo').val() == "20") {
+            console.log(e.keyCode);
+            console.log(e.key);
+            if (reg.test(numDoc)) {
+                if (e.key == 'Backspace') {
+                    $('#numeroCaso').val(numDoc.slice(0, -6));
+                    event.preventDefault();
+                }
+
+            } else {
+                if (regPrev1.test(numDoc + e.key)) {
+                    $('#numeroCaso').val(numDoc + e.key + '-');
+                    event.preventDefault();
+                } else if (regPrev2.test(numDoc + e.key)) {
+                    $('#numeroCaso').val(numDoc + e.key + '-');
+                    event.preventDefault();
+                } else if (regPrev3.test(numDoc + e.key)) {
+                    $('#numeroCaso').val(numDoc + e.key + '-');
+                    event.preventDefault();
+                }
+            }
+        }
+    });
 </script>

@@ -152,7 +152,7 @@ namespace SistemaControl.Controllers
             }
             else
             {
-                return Json("Este número de cédula ya ha sido registrado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                return Json("Este número de identificación ya ha sido registrado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
             }
         }
 
