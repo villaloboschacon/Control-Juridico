@@ -56,7 +56,6 @@
                     <div class="form-group"  id="numerosDocumentos">
                         @Html.LabelFor(model => model.numeroDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @*, placeholder = "MA-PSI-#####-2018", autocomplete = "off"*@
                             @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { @class = "form-control", @id = "numeroDocumento" } })
                             @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
                         </div>
@@ -221,6 +220,25 @@
 
     $("#idTipo").change(function ()
     {
+        @*$.ajax({
+            type: 'POST',
+            url: '@Url.Action("ComprobarDropdownList")',
+            dataType: 'json',
+            data: { id: $("#idTipo").val() },
+                success: function (origins)
+                {                  
+                    if (origins.success == false) {
+                        alert('false');
+                    }
+                    else {
+                        alert('problem');
+                    }
+                },
+                error: function (ex)
+                {
+                    alert('Seleccione una opción válida.' + ex);
+                }
+            });*@
         if ($("#idTipo").val() == "")
         {
             hideall();
@@ -253,7 +271,6 @@
             }
             $('#tipoOrigenes').show();
         }
-
     });
 
     $("#tipoOrigen").change(function () {
@@ -368,10 +385,9 @@
         $(this).blur();
     });
 
-    $("#fecha").keydown(function () {
+    $("#fecha").keydown(function (){
         event.preventDefault();
-        }
-    );
+    });
     $("#parte").keydown(function (e) {
         //109+189
         var reg = /EXP-AD-[a-zA-ZñÑ0-9]+-20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])$/;

@@ -89,8 +89,8 @@
           <Property Name="observacion" Type="varchar" MaxLength="750" />
           <Property Name="observacionBitacora" Type="varchar" MaxLength="750" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SCJ_BD.dbo.CasoDocumento' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="CasoDocumento">
           <Key>
             <PropertyRef Name="idCaso" />
@@ -183,8 +183,8 @@ warning 6002: The table/view 'SCJ_BD.dbo.CasoDocumento' does not have a primary 
           <Property Name="descripcion" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="nomenclatura" Type="varchar" MaxLength="20" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="UsuarioRol">
           <Key>
             <PropertyRef Name="idUsuario" />
@@ -548,9 +548,6 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <Parameter Name="version" Type="int" Mode="In" />
           <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
         </Function>
-        <Function Name="SP_BuscaPersonaNombre" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="NombrePersona" Type="varchar" Mode="In" />
-        </Function>
         <Function Name="sp_ConsultaNumerodeIngreso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -829,7 +826,7 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <Property Name="idUsuario" Type="Int32" Nullable="false" />
           <Property Name="idEstado" Type="Int32" Nullable="false" />
           <Property Name="tipoLitigante" Type="Int32" Nullable="false" />
-          <Property Name="numeroCaso" Type="String" Nullable="false" />
+          <Property Name="numeroCaso" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
           <Property Name="materia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="descripcion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
           <Property Name="observacion" Type="String" MaxLength="750" FixedLength="false" Unicode="false" />
@@ -1716,8 +1713,6 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <FunctionImportMapping FunctionImportName="sp_ConsultaNumerodeIngreso" FunctionName="SCJ_BD.Store.sp_ConsultaNumerodeIngreso" />
           <FunctionImportMapping FunctionImportName="getNomenclatura" FunctionName="SCJ_BD.Store.getNomenclatura" />
           <FunctionImportMapping FunctionImportName="sp_GeneraNumerodeIngreso" FunctionName="SCJ_BD.Store.sp_GeneraNumerodeIngreso" />
-          <FunctionImportMapping FunctionImportName="SP_BuscaPersonaNombre" FunctionName="SCJ_BD.Store.SP_BuscaPersonaNombre">
-          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

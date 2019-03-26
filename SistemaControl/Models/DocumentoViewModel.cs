@@ -14,11 +14,14 @@ namespace SistemaControl.Models
         [Key]
         public int idDocumento { get; set; }
 
-        [Required(ErrorMessage = "Country Required.")]
+        [Required(ErrorMessage = "Tipo requerido.")]
+        [Remote("ComprobarDropdownList", "Documento")]
         public int? idTipo { get; set; }
-        [Required(ErrorMessage = "Country Required.")]
+        [Required(ErrorMessage = "Origen requerido.")]
+        [Remote("ComprobarDropdownList", "Documento")]
         public int? idOrigen { get; set; }
-        [Required(ErrorMessage = "Country Required.")]
+        [Required(ErrorMessage = "Tipo de origen requerido.")]
+        [Remote("ComprobarDropdownList", "Documento")]
         public int? tipoOrigen { get; set; }
 
         public int? idEstado { get; set; }
@@ -38,6 +41,7 @@ namespace SistemaControl.Models
         [Required(ErrorMessage = "*Debe digitar el número de ingreso.")]
         [StringLength(14, MinimumLength = 13, ErrorMessage = "El número del documento debe tener al menos 13 caracteres.")]
         [Display(Name = "Número de Ingreso")]
+        [Remote("ComprobarIngreso", "Documento", AdditionalFields = "idDocumento")]
         public string numeroIngreso { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

@@ -104,15 +104,6 @@ namespace SistemaControl.Controllers
                         documento.TablaGeneral1 = tablaGeneralBLL.Get(i);
                     }
                 }
-                //var m = documentoBll.listaSalidas();
-                //var m0 = documentoBll.listaEntradas();
-                //var m1 = documentoBll.consultaNumeroIngreso();
-                //var m2 = documentoBll.generaNumIngreso();
-                //var m3 = documentoBll.consultaNumeroIngreso();
-                //var z = documentoBll.getNomenclatura("Servicios Informaticos");
-
-
-
                 PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
                 return View(model);
             }
@@ -278,8 +269,8 @@ namespace SistemaControl.Controllers
                 documentoBll.generaNumIngreso();
                 documentoBll.SaveChanges();
                 //Cambiar esto
-                //return RedirectToAction("Index");
-                return View();
+                return RedirectToAction("Index");
+                //return View();
             }
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion", documento.idTipo);
             ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion", documento.tipoOrigen);
@@ -461,9 +452,22 @@ namespace SistemaControl.Controllers
             }
             else
             {
-                return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                return Json("El número de ingreso no se encuentra disponible.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
             }
 
+        }
+        public JsonResult ComprobarDropdownList(string id)
+        {
+            if (id != "")
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                //ModelState.AddModelError("idTipo", "Last Name is required.");
+                //return Json(new { success = false, errors = "Debe seleccionar una opción válida.\n Por favor inténtelo de nuevo." }, JsonRequestBehavior.AllowGet);
+                return Json("Debe seleccionar una opción válida.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+            }
         }
         public JsonResult Search(string name)
         {
