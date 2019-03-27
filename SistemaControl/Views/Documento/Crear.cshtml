@@ -218,27 +218,8 @@
         hideall();   
     });
 
-    $("#idTipo").change(function ()
-    {
-        @*$.ajax({
-            type: 'POST',
-            url: '@Url.Action("ComprobarDropdownList")',
-            dataType: 'json',
-            data: { id: $("#idTipo").val() },
-                success: function (origins)
-                {                  
-                    if (origins.success == false) {
-                        alert('false');
-                    }
-                    else {
-                        alert('problem');
-                    }
-                },
-                error: function (ex)
-                {
-                    alert('Seleccione una opción válida.' + ex);
-                }
-            });*@
+    $("#idTipo").change(function ()    {
+'
         if ($("#idTipo").val() == "")
         {
             hideall();

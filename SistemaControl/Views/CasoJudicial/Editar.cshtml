@@ -109,31 +109,30 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
+    $(document).ready(function() {
 
     });
 
     $("#idTipo").change(function () {
-        $("#idPersona").empty();
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("GetTipoPersona")', // we are calling json method
-            dataType: 'json',
-            data: { id: $("#idTipo").val() },
-            success: function (origins) {
-                var another = origins.Data;
-                console.log(another[0].Value);
-                $.each(another, function (i, state) {
-                    $("#idPersona").append('<option value="' + state.Value + '">' + state.Text + '</option>');
-                });
-            },
-            error: function (ex) {
-                alert('Failed to retrieve states.' + ex);
-            }
-        });
-        return false;
+            $("#idPersona").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetTipoPersona")', // we are calling json method
+                dataType: 'json',
+                data: { id: $("#idTipo").val() },
+                success: function (origins) {
+                    var another = origins.Data;
+                    console.log(another[0].Value);
+                    $.each(another, function (i, state) {
+                        $("#idPersona").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve states.' + ex);
+                }
+            });
+            return false;
     });
-
     $("#idTipo").change(function () {
         if ($('#idTipo').val() == "19") {
             $('#numeroCaso').val('N.I.');
@@ -152,14 +151,15 @@
         var regPrev1 = /^[0-9]{2}$/;
         var regPrev2 = /^[0-9]{2}-[0-9]{6}$/;
         var regPrev3 = /^[0-9]{2}-[0-9]{6}-[0-9]{4}$/;
+        var regPrev5 = /^[0-9]{2}-[0-9]{6}-[0-9]{4}-[a-zñA-ZÑ]{1,12}$/;
+        var regPrev4 = /^$/;
 
         // var regPrev = /N.I.[0-9]{4}/;
 
-
         if ($('#idTipo').val() == "19") {
-
-            console.log(e.keyCode);
-            console.log(e.key);
+            if (regPrev4.test(numDoc)) {
+                $('#numeroCaso').val('N.I.');
+            }
             if (reg.test(numDoc)) {
                 console.log('Entró.');
                 if (e.key == 'Backspace') {
@@ -182,17 +182,26 @@
                     }
                 }
                 if (regPrev.test(numDoc + e.key)) {
-                    console.log(123);
-                    $('#numeroCaso').val(numDoc + e.key + '-2019');
-                    event.preventDefault();
+
+                    if (reg.test(numDoc + e.key)) {
+                        console.log(1111);
+                        event.preventDefault();
+                    }
+                    else {
+                        $('#numeroCaso').val(numDoc + e.key + '-2019');
+                        event.preventDefault();
+                    }
                 }
             }
         } else if ($('#idTipo').val() == "20") {
-            console.log(e.keyCode);
-            console.log(e.key);
             if (reg.test(numDoc)) {
                 if (e.key == 'Backspace') {
-                    $('#numeroCaso').val(numDoc.slice(0, -6));
+                    if (regPrev5.test(numDoc)) {
+                        $('#numeroCaso').val(numDoc.slice(0, -4));
+                    }
+                    else {
+                        $('#numeroCaso').val(numDoc.slice(0, -6));
+                    }
                     event.preventDefault();
                 }
 

@@ -113,10 +113,17 @@ namespace SistemaControl.Controllers
 
         public ActionResult Crear()
         {
-            tablaGeneralBLL = new TablaGeneralBLLImpl();
-            casoBLL = new CasoBLLImpl();
-            personaBLL = new PersonasBLLImpl();
-            usuarioBLL = new UsuarioBLLImpl();
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                casoBLL = new CasoBLLImpl();
+                personaBLL = new PersonasBLLImpl();
+                usuarioBLL = new UsuarioBLLImpl();
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
             ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
@@ -131,10 +138,17 @@ namespace SistemaControl.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CrearCaso(Caso caso)
         {
-            tablaGeneralBLL = new TablaGeneralBLLImpl();
-            casoBLL = new CasoBLLImpl();
-            personaBLL = new PersonasBLLImpl();
-            usuarioBLL = new UsuarioBLLImpl();
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                casoBLL = new CasoBLLImpl();
+                personaBLL = new PersonasBLLImpl();
+                usuarioBLL = new UsuarioBLLImpl();
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             if (ModelState.IsValid)
             {

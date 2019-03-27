@@ -148,7 +148,7 @@
         var letras = "";
         if ($('#tipoIdentificacion').val() == "93") {
             $('#identificacion').attr('placeholder', "eje:201230456");
-            $("#identificacion").attr('maxlength', '10');
+            $("#identificacion").attr('maxlength', '9');
 
         } else if ($('#tipoIdentificacion').val() == "94") {
             $('#identificacion').attr('placeholder', "eje:C030059877");
@@ -157,36 +157,6 @@
         } else {
             $('#identificacion').attr('placeholder', "");
         }
-
-        //$('#identificacion').keypress(function (e) {
-
-        //    var key = e.keyCode || e.which;
-
-        //    teclado = String.fromCharCode(key).toLowerCase();
-
-        //    if ($('#tipoIdentificacion').val() == "93") {
-        //        letras = "0123456789";
-
-        //    } else if ($('#tipoIdentificacion').val() == "94") {
-        //        letras = "qwertyuiopasdfghjklñzxcvbnm0123456789-";
-
-        //    } 
-
-        //    especiales = "8-37-38-46-164";
-
-        //    teclado_especial = false;
-
-        //    for (var i in especiales) {
-        //         if (key == especiales[i]) {
-        //             teclado_especial = true;
-        //             break;
-        //         }
-        //    }
-
-        //    if (letras.indexOf(teclado) == -1 && !teclado_especial) {
-        //        return false;
-        //    }
-        //});
     });
 
     $('#identificacion').keypress(function (e) {
