@@ -138,11 +138,10 @@
         var letras = "";
         if ($('#tipoIdentificacion').val() == "93") {
             $('#identificacion').attr('placeholder', "eje:201230456");
-            $("#identificacion").attr('maxlength', '10');
 
         } else if ($('#tipoIdentificacion').val() == "94") {
             $('#identificacion').attr('placeholder', "eje:C030059877");
-            $("#identificacion").attr('maxlength', '18');
+            $("#identificacion").attr('maxlength', '12');
 
         } else {
             $('#identificacion').attr('placeholder', "");
@@ -228,6 +227,7 @@
     $('#idTipo').change(function () {
         $('#identificacion').val("");
         if ($('#idTipo').val() == "1") {
+            $("#identificacion").attr('maxlength', '10');
             $('#div_representanteSocial').hide();
             $('#div_representanteLegal').hide();
             $('#div_tipoIdentificacion').show();
@@ -235,7 +235,7 @@
             $('#representanteSocial').val('');
         } else if ($('#idTipo').val() == "2") {
             $('#identificacion').attr('placeholder', "eje:3101222222");
-            $("#identificacion").attr('maxlength', '15');
+            $("#identificacion").attr('maxlength', '12');
 
 
             $('#div_tipoIdentificacion').hide();

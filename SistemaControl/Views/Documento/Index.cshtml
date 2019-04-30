@@ -34,14 +34,13 @@
             <div class="title">
                 <span class="form-inline">
                     <i class="fa fa-search" aria-hidden="true"></i>
-                    @Html.TextBox("Buscar")
+                    @Html.TextBox("search", "", new { @class = "classname", autocomplete = "off" })
                     <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
                 </span>
                 <div style="color:black; font-size:14px;">
                     <b> Opciones de busqueda: </b>
-                    @Html.RadioButton("option", "Número de oficio") <text>Número de oficio</text>
+                    @Html.RadioButton("option", "Número de Oficio") <text>Número de oficio</text>
                     @Html.RadioButton("option", "Número de Ingreso") <text> Número de Ingreso </text>
-                    @Html.RadioButton("option", "Asunto") <text>Asunto</text>
                     @Html.RadioButton("option", "Fecha") <text>Fecha </text>
                 </div>
             </div>
@@ -78,13 +77,13 @@
     <table class="table table-bordered" id="table_documentos">
         <tr>
             <th>
-                @Html.ActionLink("Número de oficio", "Index", new { sortOrder = ViewBag.NumeroOficio })
+               Número de oficio
             </th>
             <th>
-                @Html.ActionLink("Número de Ingreso", "Index", new { sortOrder = ViewBag.Ingreso })
+                Número de Ingreso
             </th>
             <th>
-                @Html.ActionLink("Fecha", "Index", new { sortOrder = ViewBag.FechaDeIngreso })
+              Fecha
             </th>
             <th>
                 Tipo de origen
@@ -122,10 +121,10 @@
                         @Html.DisplayFor(modelItem => item.TablaGeneral3.descripcion)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TablaGeneral.descripcion)
+                        @Html.DisplayFor(modelItem => item.TablaGeneral1.descripcion)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TablaGeneral1.descripcion)
+                        @Html.DisplayFor(modelItem => item.TablaGeneral.descripcion)
                     </td>
                 </tr>
             }

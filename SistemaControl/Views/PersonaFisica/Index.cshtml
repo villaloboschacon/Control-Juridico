@@ -31,14 +31,14 @@
             <div class="title">
                 <span class="form-inline">
                     <i class="fa fa-search" aria-hidden="true"></i>
-                    @Html.TextBox("search")  <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
+                   @* <input name="Search" id="Search"  class="form-control" placeholder="Search..." type="text" />*@
+                   @Html.TextBox("search", "", new { @class = "classname", autocomplete = "off" })  <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
                 </span>
                 <div style="color:black; font-size:14px;">
                     <b> Opciones de busqueda: </b>
                     @Html.RadioButton("option", "Cédula") <text>Cédula</text>
-                    @Html.RadioButton("option", "Nombre Completo") <text>Nombre Completo</text>
-                    @Html.RadioButton("option", "Correo") <text>Correo</text>
-                    @Html.RadioButton("option", "Observacion") <text>Observacion</text>
+                    @Html.RadioButton("option", "Nombre Completo") <text>Nombre</text>
+                    @Html.RadioButton("option", "Correo Electrónico") <text>Correo</text>
                 </div>
             </div>
         </div>
@@ -47,10 +47,11 @@
     <table class="table table-bordered" id="table_personas">
         <tr>
             <th>
-                @Html.ActionLink("Cédula", "Index", new { sortOrder = ViewBag.Cedula })
+                @* @Html.ActionLink("Cédula", "Index", new { sortOrder = ViewBag.Cedula })*@
+                Cédula
             </th>
             <th>
-                @Html.ActionLink("Nombre Completo", "Index", new { sortOrder = ViewBag.NombreCompleto })
+               Nombre Completo
             </th>
             <th>Correo</th>
             @*<th>Observación</th>*@
@@ -202,6 +203,36 @@
         console.log($vars);
         return $vars;
     };
+
+    @*$(function () {
+    $("#Search").keyup(function (event) {
+        var url = '@Url.Action("Index")';
+        //.getElementById("Search").submit();
+        var n = $("#Search").val();
+        $.ajax({
+        cache: false,
+            url: url+"?search="+n+"&option=Cédula",
+        success: function (data) {
+            $('#table_personas').empty().html(data);
+        }
+    });
+        });
+
+    });*@
+
+    //$(function () {
+
+    //    $("#Name,#SurName").keyup(function (e) {
+    //        var n = $("#Name").val();
+    //        var sn = $("#SurName").val();
+    //        $.get("/Home/Index?Name=" + n + "&SurName=" + sn, function (r) {
+    //            //update ui with results
+    //            $("#resultsTable").html(r);
+    //        });
+
+    //    });
+
+    //});
 
 
     function Crear() {

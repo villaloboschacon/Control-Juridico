@@ -23,7 +23,7 @@ namespace SistemaControl.Controllers
             return Json(resultado, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Index(string option, string search, string currentFilter, string sortOrder, int? page)
+        public ActionResult Index(string option, string search, int page = 1, int pageSize = 4)
         {
             try
             {
@@ -34,82 +34,357 @@ namespace SistemaControl.Controllers
             }
             catch (Exception ex)
             {
-                ex = new Exception();
-                return View();
+                return null;
             }
-            ViewBag.CurrentSort = sortOrder;
-            if (search != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                search = currentFilter;
-            }
-            ViewBag.CurrentFilter = search;
 
-            int pageSize = 4;
-            int pageNumber = (page ?? 1);
-
-            if (option == "Número de Caso")
+            if (option == "Número de Expediente" && !String.IsNullOrEmpty(search))
             {
-                ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
-                List<Caso> listaCaso = casoBLL.Find(x => x.numeroCaso == search && x.idTipo == 20 || search == null).ToList();
-                PagedList<Caso> model = new PagedList<Caso>(listaCaso, pageNumber, pageSize);
-                return View(model.ToPagedList(pageNumber, pageSize));
-            }
-            else if (option == "Materia")
-            {
-                ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
-                List<Caso> listaCaso = casoBLL.Find(x => x.materia == search && x.idTipo == 20 || search == null).ToList();
-                PagedList<Caso> model = new PagedList<Caso>(listaCaso, pageNumber, pageSize);
-                return View(model);
-            }
-            else if (option == "Descripción")
-            {
-                ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
-                List<Caso> listaCaso = casoBLL.Find(x => x.descripcion == search && x.idTipo == 20 || search == null).ToList();
-                PagedList<Caso> model = new PagedList<Caso>(listaCaso, pageNumber, pageSize);
-                return View(model);
-            }
-            else if (option == "Observación")
-            {
-                ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
-                List<Caso> listaCaso = casoBLL.Find(x => x.observacion == search && x.idTipo == 20 || search == null).ToList();
-                PagedList<Caso> model = new PagedList<Caso>(listaCaso, pageNumber, pageSize);
-                return View(model);
-            }
-            else
-            {
-                ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
-                ViewBag.NumeroCaso = String.IsNullOrEmpty(sortOrder) ? "CasoDes" : "";
-                var casos = from s in casoBLL.Find(x => search == null && x.idTipo == 20) select s;
-
-                switch (sortOrder)
+                //ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+                //List<Caso> listaCaso = casoBLL.Find(x => x.numeroCaso == search && x.idTipo == 20 || search == null).ToList();
+                //PagedList<Caso> model = new PagedList<Caso>(listaCaso, page, pageSize);
+                //return View(model.ToPagedList(page, pageSize));
+                var casosSearch = casoBLL.Find(x => x.numeroCaso.Contains(search) && x.idTipo == 20 || search == null).ToList();
+                if (!String.IsNullOrEmpty(search))
                 {
-                    case "CasoDes":
-                        casos = casos.OrderByDescending(s => s.numeroCaso);
-                        break;
-                    default:
-                        casos = casos.OrderBy(s => s.numeroCaso);
-                        break;
+                    ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+                    ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
+                    ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
+                    ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
+                    ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
+                    foreach (Caso caso in casosSearch)
+                    {
+                        caso.Persona = personaBLL.Get(caso.idPersona);
+                        caso.Usuario = usuarioBLL.Get(caso.idUsuario);
+                        caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
+                        caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
+                        caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
+                    }
                 }
-                List<Caso> listacasos = casos.ToList();
-                foreach (Caso caso in listacasos)
+                PagedList<Caso> model = new PagedList<Caso>(casosSearch, page, pageSize);
+                return View(model);
+            }
+            else if (option == "Abogado" && !String.IsNullOrEmpty(search))
+            {
+                //ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+                //List<Caso> listaCaso = casoBLL.Find(x => x.materia == search && x.idTipo == 20 || search == null).ToList();
+                //PagedList<Caso> model = new PagedList<Caso>(listaCaso, page, pageSize);
+                //return View(model);
+                var casosSearch = casoBLL.Find(x => x.Usuario.nombre.Contains(search) && x.idTipo == 20 || search == null).ToList();
+                if (!String.IsNullOrEmpty(search))
                 {
-                    tablaGeneralBLL = new TablaGeneralBLLImpl();
-                    personaBLL = new PersonasBLLImpl();
-                    usuarioBLL = new UsuarioBLLImpl();
+                    ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+                    ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
+                    ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
+                    ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
+                    ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
+                    foreach (Caso caso in casosSearch)
+                    {
+                        caso.Persona = personaBLL.Get(caso.idPersona);
+                        caso.Usuario = usuarioBLL.Get(caso.idUsuario);
+                        caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
+                        caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
+                        caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
+                    }
+                }
+                PagedList<Caso> model = new PagedList<Caso>(casosSearch, page, pageSize);
+                return View(model);
+            }
+            else if (option == "Persona" && !String.IsNullOrEmpty(search))
+            {
+                //ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+                //List<Caso> listaCaso = casoBLL.Find(x => x.descripcion == search && x.idTipo == 20 || search == null).ToList();
+                //PagedList<Caso> model = new PagedList<Caso>(listaCaso, page, pageSize);
+                //return View(model);
+                var casosSearch = casoBLL.Find(x => x.Persona.nombreCompleto.Contains(search) && x.idTipo == 20 || search == null).ToList();
+                if (!String.IsNullOrEmpty(search))
+                {
+                    ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+                    ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
+                    ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
+                    ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
+                    ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
+                    foreach (Caso caso in casosSearch)
+                    {
+                        caso.Persona = personaBLL.Get(caso.idPersona);
+                        caso.Usuario = usuarioBLL.Get(caso.idUsuario);
+                        caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
+                        caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
+                        caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
+                    }
+                }
+                PagedList<Caso> model = new PagedList<Caso>(casosSearch, page, pageSize);
+                return View(model);
+            }
+            else if (option == "Estado" && !String.IsNullOrEmpty(search))
+            {
+                //ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+                //List<Caso> listaCaso = casoBLL.Find(x => x.observacion == search && x.idTipo == 20 || search == null).ToList();
+                //PagedList<Caso> model = new PagedList<Caso>(listaCaso, page, pageSize);
+                //return View(model);
+                var casosSearch = casoBLL.Find(x => x.TablaGeneral1.descripcion.Contains(search) && x.idTipo == 20 || search == null).ToList();
+                if (!String.IsNullOrEmpty(search))
+                {
+                    ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+                    ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
+                    ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
+                    ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
+                    ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
+                    foreach (Caso caso in casosSearch)
+                    {
+                        caso.Persona = personaBLL.Get(caso.idPersona);
+                        caso.Usuario = usuarioBLL.Get(caso.idUsuario);
+                        caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
+                        caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
+                        caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
+                    }
+                }
+                PagedList<Caso> model = new PagedList<Caso>(casosSearch, page, pageSize);
+                return View(model);
+            }
+            else
+            {
+                ViewBag.tipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
+                ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
+                ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
+                ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+                List<Caso> listacaso = casoBLL.Find(x => search == null && x.idTipo == 20).ToList();
+                foreach (Caso caso in listacaso)
+                {
                     caso.Persona = personaBLL.Get(caso.idPersona);
                     caso.Usuario = usuarioBLL.Get(caso.idUsuario);
                     caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
                     caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
                     caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
                 }
-                PagedList<Caso> model = new PagedList<Caso>(listacasos, pageNumber, pageSize);
+                PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
                 return View(model);
             }
         }
+
+        //public ActionResult Index(string option, string search, int page = 1, int pageSize = 4)
+        //{
+        //    try
+        //    {
+        //        tablaGeneralBLL = new TablaGeneralBLLImpl();
+        //        casoBLL = new CasoBLLImpl();
+        //        personaBLL = new PersonasBLLImpl();
+        //        usuarioBLL = new UsuarioBLLImpl();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return null;
+        //    }
+        //    if (option == "Abogado" && !String.IsNullOrEmpty(search))
+        //    {
+        //        //List<Caso> listacaso = casoBLL.Find(x => x.numeroCaso == search && x.idCaso == 3 || search == null).ToList();
+        //        //PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
+        //        //return View(model);
+        //        var casosSearch = casoBLL.Find(x => x.Usuario.nombre.Contains(search) && x.idTipo == 20 || search == null).ToList();
+        //        if (!String.IsNullOrEmpty(search))
+        //        {
+        //            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+        //            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
+        //            ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
+        //            ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
+        //            ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
+        //            foreach (Caso caso in casosSearch)
+        //            {
+        //                caso.Persona = personaBLL.Get(caso.idPersona);
+        //                caso.Usuario = usuarioBLL.Get(caso.idUsuario);
+        //                caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
+        //                caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
+        //                caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
+        //            }
+        //        }
+        //        PagedList<Caso> model = new PagedList<Caso>(casosSearch, page, pageSize);
+        //        return View(model);
+        //    }
+        //    else if (option == "Persona" && !String.IsNullOrEmpty(search))
+        //    {
+        //        //List<Caso> listacaso = casoBLL.Find(x => x.tipoLitigante == Int32.Parse(search) && x.idCaso == 3 || search == null).ToList();
+        //        //PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
+        //        //return View(model);
+        //        var casosSearch = casoBLL.Find(x => x.Persona.nombreCompleto.Contains(search) && x.idTipo == 20 || search == null).ToList();
+        //        if (!String.IsNullOrEmpty(search))
+        //        {
+        //            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+        //            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
+        //            ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
+        //            ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
+        //            ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
+        //            foreach (Caso caso in casosSearch)
+        //            {
+        //                caso.Persona = personaBLL.Get(caso.idPersona);
+        //                caso.Usuario = usuarioBLL.Get(caso.idUsuario);
+        //                caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
+        //                caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
+        //                caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
+        //            }
+        //        }
+        //        PagedList<Caso> model = new PagedList<Caso>(casosSearch, page, pageSize);
+        //        return View(model);
+        //    }
+        //    else if (option == "Número de proceso" && !String.IsNullOrEmpty(search))
+        //    {
+        //        //List<Caso> listacaso = casoBLL.Find(x => x.numeroCaso == search && x.idCaso == 3 || search == null).ToList();
+        //        //PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
+        //        //return View(model);
+        //        //var casosSearch = casoBLL.GetAll();
+        //        var casosSearch = casoBLL.Find(x => x.numeroCaso.Contains(search) && x.idTipo == 20 || search == null).ToList();
+        //        if (!String.IsNullOrEmpty(search))
+        //        {
+        //            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+        //            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
+        //            ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
+        //            ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
+        //            ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
+        //            foreach (Caso caso in casosSearch)
+        //            {
+        //                caso.Persona = personaBLL.Get(caso.idPersona);
+        //                caso.Usuario = usuarioBLL.Get(caso.idUsuario);
+        //                caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
+        //                caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
+        //                caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
+        //            }
+        //        }
+        //        PagedList<Caso> model = new PagedList<Caso>(casosSearch, page, pageSize);
+        //        return View(model);
+        //    }
+        //    else if (option == "Estado" && !String.IsNullOrEmpty(search))
+        //    {
+        //        //List<Caso> listacaso = casoBLL.Find(x => x.idEstado == Int32.Parse(search) && x.idCaso == 3 || search == null).ToList();
+        //        //PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
+        //        //return View(model);
+        //        //var casosSearch = casoBLL.GetAll();
+        //        var casosSearch = casoBLL.Find(x => x.TablaGeneral.descripcion.Contains(search) && x.idTipo == 20 || search == null).ToList();
+        //        if (!String.IsNullOrEmpty(search))
+        //        {
+        //            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+        //            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
+        //            ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
+        //            ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
+        //            ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
+        //            foreach (Caso caso in casosSearch)
+        //            {
+        //                caso.Persona = personaBLL.Get(caso.idPersona);
+        //                caso.Usuario = usuarioBLL.Get(caso.idUsuario);
+        //                caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
+        //                caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
+        //                caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
+        //            }
+        //        }
+        //        PagedList<Caso> model = new PagedList<Caso>(casosSearch, page, pageSize);
+        //        return View(model);
+        //    }
+        //    else
+        //    {
+
+        //        ViewBag.tipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
+        //        ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
+        //        ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
+        //        ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+        //        List<Caso> listacaso = casoBLL.Find(x => search == null && x.idTipo == 20).ToList();
+        //        foreach (Caso caso in listacaso)
+        //        {
+        //            caso.Persona = personaBLL.Get(caso.idPersona);
+        //            caso.Usuario = usuarioBLL.Get(caso.idUsuario);
+        //            caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
+        //            caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
+        //            caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
+        //        }
+        //        PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
+        //        List<Caso> documento = casoBLL.GetAll();
+        //        return View(model);
+        //    }
+        //}
+
+        //public ActionResult Index(string option, string search, string currentFilter, string sortOrder, int? page)
+        //{
+        //    try
+        //    {
+        //        tablaGeneralBLL = new TablaGeneralBLLImpl();
+        //        personaBLL = new PersonasBLLImpl();
+        //        usuarioBLL = new UsuarioBLLImpl();
+        //        casoBLL = new CasoBLLImpl();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ex = new Exception();
+        //        return View();
+        //    }
+        //    ViewBag.CurrentSort = sortOrder;
+        //    if (search != null)
+        //    {
+        //        page = 1;
+        //    }
+        //    else
+        //    {
+        //        search = currentFilter;
+        //    }
+        //    ViewBag.CurrentFilter = search;
+
+        //    int pageSize = 4;
+        //    int pageNumber = (page ?? 1);
+
+        //    if (option == "Número de Caso")
+        //    {
+        //        ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+        //        List<Caso> listaCaso = casoBLL.Find(x => x.numeroCaso == search && x.idTipo == 20 || search == null).ToList();
+        //        PagedList<Caso> model = new PagedList<Caso>(listaCaso, pageNumber, pageSize);
+        //        return View(model.ToPagedList(pageNumber, pageSize));
+        //    }
+        //    else if (option == "Materia")
+        //    {
+        //        ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+        //        List<Caso> listaCaso = casoBLL.Find(x => x.materia == search && x.idTipo == 20 || search == null).ToList();
+        //        PagedList<Caso> model = new PagedList<Caso>(listaCaso, pageNumber, pageSize);
+        //        return View(model);
+        //    }
+        //    else if (option == "Descripción")
+        //    {
+        //        ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+        //        List<Caso> listaCaso = casoBLL.Find(x => x.descripcion == search && x.idTipo == 20 || search == null).ToList();
+        //        PagedList<Caso> model = new PagedList<Caso>(listaCaso, pageNumber, pageSize);
+        //        return View(model);
+        //    }
+        //    else if (option == "Observación")
+        //    {
+        //        ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+        //        List<Caso> listaCaso = casoBLL.Find(x => x.observacion == search && x.idTipo == 20 || search == null).ToList();
+        //        PagedList<Caso> model = new PagedList<Caso>(listaCaso, pageNumber, pageSize);
+        //        return View(model);
+        //    }
+        //    else
+        //    {
+        //        ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+        //        ViewBag.NumeroCaso = String.IsNullOrEmpty(sortOrder) ? "CasoDes" : "";
+        //        var casos = from s in casoBLL.Find(x => search == null && x.idTipo == 20) select s;
+
+        //        switch (sortOrder)
+        //        {
+        //            case "CasoDes":
+        //                casos = casos.OrderByDescending(s => s.numeroCaso);
+        //                break;
+        //            default:
+        //                casos = casos.OrderBy(s => s.numeroCaso);
+        //                break;
+        //        }
+        //        List<Caso> listacasos = casos.ToList();
+        //        foreach (Caso caso in listacasos)
+        //        {
+        //            tablaGeneralBLL = new TablaGeneralBLLImpl();
+        //            personaBLL = new PersonasBLLImpl();
+        //            usuarioBLL = new UsuarioBLLImpl();
+        //            caso.Persona = personaBLL.Get(caso.idPersona);
+        //            caso.Usuario = usuarioBLL.Get(caso.idUsuario);
+        //            caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
+        //            caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
+        //            caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
+        //        }
+        //        PagedList<Caso> model = new PagedList<Caso>(listacasos, pageNumber, pageSize);
+        //        return View(model);
+        //    }
+        //}
 
         public ActionResult Crear()
         {

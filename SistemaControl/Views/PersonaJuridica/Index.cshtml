@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <div class="title">Personas Jurídicas</div>
 <div class="container" style="margin-top:20px">
-    @using (Html.BeginForm("Index", "Personas", FormMethod.Get))
+    @using (Html.BeginForm("Index", "PersonaJuridica", FormMethod.Get))
     {
         @*<div>
                 @Html.TextBox("search") <input type="submit" name="submit" value="Buscar" />
@@ -28,15 +28,16 @@
             <div class="title">
                 <span class="form-inline">
                     <i class="fa fa-search" aria-hidden="true"></i>
-                    @Html.TextBox("search")  <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
+                    @Html.TextBox("search", "", new { @class = "classname", autocomplete = "off" })  <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
                 </span>
 
                 <div style="color:black; font-size:14px;">
                     <b> Opciones de búsqueda: </b>
-                    @Html.RadioButton("option", "Cédula") <text>Cédula</text>
-                    @Html.RadioButton("option", "Nombreo") <text> Nombre </text>
-                    @Html.RadioButton("option", "Representante legal") <text>Representante legal</text>
-                    @Html.RadioButton("option", "Representante social") <text>Representante social </text>
+                    @Html.RadioButton("option", "Cédula Jurídica") <text>Cédula Jurídica</text>
+                    @Html.RadioButton("option", "Nombre Completo") <text> Nombre </text>
+                    @Html.RadioButton("option", "Representante Legal") <text>Representante legal</text>
+                    @Html.RadioButton("option", "Representante Social") <text>Representante social </text>
+                    @Html.RadioButton("option", "Correo Electrónico") <text>Correo</text>
 
                 </div>
             </div>
@@ -46,10 +47,10 @@
     <table class="table table-bordered" id="table_personas">
         <tr>
             <th>
-                @Html.ActionLink("Cédula", "Index", new { sortOrder = ViewBag.Cedula })
+                Cédula
             </th>
             <th>
-                @Html.ActionLink("Nombre Completo", "Index", new { sortOrder = ViewBag.NombreCompleto })
+                Nombre Completo
             </th>
             <th>Representante legal</th>
             <th>Representante social</th>

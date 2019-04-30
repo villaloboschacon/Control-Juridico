@@ -16,7 +16,7 @@ namespace SistemaControl.Controllers
         private ITablaGeneralBLL tablaGeneralBLL;
         public int pageglobal;
 
-        public ActionResult Index(string option, string search, string currentFilter,string sortOrder, int? page)
+        public ActionResult Index(string option, string search, int page = 1, int pageSize = 4)
         {
             try
             {
@@ -25,89 +25,210 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
-            }
-            ViewBag.CurrentSort = sortOrder;
-
-            if (search != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                search = currentFilter;
+                return null;
             }
 
-            ViewBag.CurrentFilter = search;
-
-            int pageSize = 4;
-            int pageNumber = (page ?? 1);
-            if (option == "Número de oficio")
+            if (option == "Número de Oficio" && !String.IsNullOrEmpty(search))
             {
-                ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
-                List<Documento> listaDocumentos = documentoBll.Find(x => x.numeroDocumento == search && x.idTipo == 3|| search == null).ToList();
-                PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
-                return View(model.ToPagedList(pageNumber, pageSize));
-            }
-            else if (option == "Número de Ingreso")
-            {
-                ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
-                List<Documento> listaDocumentos = documentoBll.Find(x => x.numeroIngreso == search && x.idTipo == 3|| search == null).ToList();
-                PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
-                return View(model);
-            }
-            if (option == "Asunto")
-            {
-                ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
-                List<Documento> listaDocumentos = documentoBll.Find(x => x.asunto == search && x.idTipo == 3 || search == null && x.idTipo == 3).ToList();
-                PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
-                return View(model);
-            }
-            else
-            {
-                ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
-                ViewBag.NumeroOficio = String.IsNullOrEmpty(sortOrder) ? "numerodocdes" : "";
-                ViewBag.Ingreso = sortOrder == "Ingreso" ? "IngresoDes" : "Ingreso";
-                ViewBag.FechaDeIngreso = sortOrder == "Fecha" ? "FechaDes" : "Fecha";
-                var documentos = from s in documentoBll.Find(x => search == null && x.idTipo == 3 || x.idTipo == 23) select s;
-
-                switch (sortOrder)
+                //ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+                //List<Documento> listaDocumentos = documentoBll.Find(x => x.numeroDocumento == search && x.idTipo == 3|| search == null).ToList();
+                //PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
+                //return View(model.ToPagedList(pageNumber, pageSize));
+                var listaDocumentos = documentoBll.Find(x => x.numeroDocumento.Contains(search) && x.idTipo == 3 || search == null).ToList();
+                if (!String.IsNullOrEmpty(search))
                 {
-                    case "numerodocdes":
-                        documentos = documentos.OrderByDescending(s => s.numeroDocumento);
-                        break;
-                    case "Fecha":
-                        documentos = documentos.OrderBy(s => s.fecha);
-                        break;
-                    case "FechaDes":
-                        documentos = documentos.OrderByDescending(s => s.fecha);
-                        break;
-                    case "Ingreso":
-                        documentos = documentos.OrderBy(s => s.numeroIngreso);
-                        break;
-                    case "IngresoDes":
-                        documentos = documentos.OrderByDescending(s => s.numeroIngreso);
-                        break;
-                    default:
-                        documentos = documentos.OrderBy(s => s.numeroDocumento);
-                        break;
+                    ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+                    ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion");
+                    ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion");
+                    ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion");
+                    foreach (Documento documento in listaDocumentos)
+                    {
+                        documento.TablaGeneral1 = tablaGeneralBLL.Get(documento.idOrigen);
+                        documento.TablaGeneral2 = tablaGeneralBLL.Get(documento.idTipo);
+                        documento.TablaGeneral3 = tablaGeneralBLL.Get(documento.tipoOrigen);
+                        if (documento.idEstado.HasValue)
+                        {
+                            int i = (int)(documento.idEstado);
+                            documento.TablaGeneral = tablaGeneralBLL.Get(i);
+                        }
+                    }
                 }
+                PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, page, pageSize);
+                return View(model);
+            }
+            else if (option == "Número de Ingreso" && !String.IsNullOrEmpty(search))
+            {
+                //ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+                //List<Documento> listaDocumentos = documentoBll.Find(x => x.numeroIngreso == search && x.idTipo == 3|| search == null).ToList();
+                //PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
+                //return View(model);
+                var listaDocumentos = documentoBll.Find(x => x.numeroIngreso.Contains(search) && x.idTipo == 3 || search == null).ToList();
+                if (!String.IsNullOrEmpty(search))
+                {
+                    ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+                    ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion");
+                    ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion");
+                    ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion");
+                    foreach (Documento documento in listaDocumentos)
+                    {
+                        documento.TablaGeneral1 = tablaGeneralBLL.Get(documento.idOrigen);
+                        documento.TablaGeneral2 = tablaGeneralBLL.Get(documento.idTipo);
+                        documento.TablaGeneral3 = tablaGeneralBLL.Get(documento.tipoOrigen);
+                        if (documento.idEstado.HasValue)
+                        {
+                            int i = (int)(documento.idEstado);
+                            documento.TablaGeneral = tablaGeneralBLL.Get(i);
+                        }
+                    }
+                }
+                PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, page, pageSize);
+                return View(model);
+            }
+            else if (option == "Fecha" && !String.IsNullOrEmpty(search))
+            {
+                //ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+                //List<Documento> listaDocumentos = documentoBll.Find(x => x.asunto == search && x.idTipo == 3 || search == null && x.idTipo == 3).ToList();
+                //PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
+                //return View(model);
+                DateTime date = Convert.ToDateTime(search);
+                var listaDocumentos = documentoBll.Find(x => x.fecha.Equals(date) && x.idTipo == 3 || search == null).ToList();
+                if (!String.IsNullOrEmpty(search))
+                {
+                    ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+                    ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion");
+                    ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion");
+                    ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion");
+                    foreach (Documento documento in listaDocumentos)
+                    {
+                        documento.TablaGeneral1 = tablaGeneralBLL.Get(documento.idOrigen);
+                        documento.TablaGeneral2 = tablaGeneralBLL.Get(documento.idTipo);
+                        documento.TablaGeneral3 = tablaGeneralBLL.Get(documento.tipoOrigen);
+                        if (documento.idEstado.HasValue)
+                        {
+                            int i = (int)(documento.idEstado);
+                            documento.TablaGeneral = tablaGeneralBLL.Get(i);
+                        }
+                    }
+                }
+                PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, page, pageSize);
+                return View(model);
+            }
+            else
+            {
+                ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+                ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion");
+                ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion");
+                ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion");
+                var documentos = documentoBll.Find(x => search == null && x.idTipo == 3 || x.idTipo == 23);
                 List<Documento> listaDocumentos = documentos.ToList();
                 foreach (Documento documento in listaDocumentos)
                 {
-                    tablaGeneralBLL = new TablaGeneralBLLImpl();
-                    documento.TablaGeneral = tablaGeneralBLL.Get(documento.idOrigen);
+                    documento.TablaGeneral1 = tablaGeneralBLL.Get(documento.idOrigen);
+                    documento.TablaGeneral2 = tablaGeneralBLL.Get(documento.idTipo);
                     documento.TablaGeneral3 = tablaGeneralBLL.Get(documento.tipoOrigen);
-                    documento.TablaGeneral2 = tablaGeneralBLL.Get(documento.idOrigen);
-                    if(documento.idEstado.HasValue){
+                    if (documento.idEstado.HasValue)
+                    {
                         int i = (int)(documento.idEstado);
-                        documento.TablaGeneral1 = tablaGeneralBLL.Get(i);
+                        documento.TablaGeneral = tablaGeneralBLL.Get(i);
                     }
                 }
-                PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
+                PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, page, pageSize);
                 return View(model);
             }
         }
+
+        //public ActionResult Index(string option, string search, string currentFilter,string sortOrder, int? page)
+        //{
+        //    try
+        //    {
+        //        tablaGeneralBLL = new TablaGeneralBLLImpl();
+        //        documentoBll = new DocumentoBLLImpl();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return View();
+        //    }
+        //    ViewBag.CurrentSort = sortOrder;
+
+        //    if (search != null)
+        //    {
+        //        page = 1;
+        //    }
+        //    else
+        //    {
+        //        search = currentFilter;
+        //    }
+
+        //    ViewBag.CurrentFilter = search;
+
+        //    int pageSize = 4;
+        //    int pageNumber = (page ?? 1);
+        //    if (option == "Número de oficio")
+        //    {
+        //        ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+        //        List<Documento> listaDocumentos = documentoBll.Find(x => x.numeroDocumento == search && x.idTipo == 3|| search == null).ToList();
+        //        PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
+        //        return View(model.ToPagedList(pageNumber, pageSize));
+        //    }
+        //    else if (option == "Número de Ingreso")
+        //    {
+        //        ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+        //        List<Documento> listaDocumentos = documentoBll.Find(x => x.numeroIngreso == search && x.idTipo == 3|| search == null).ToList();
+        //        PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
+        //        return View(model);
+        //    }
+        //    if (option == "Asunto")
+        //    {
+        //        ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+        //        List<Documento> listaDocumentos = documentoBll.Find(x => x.asunto == search && x.idTipo == 3 || search == null && x.idTipo == 3).ToList();
+        //        PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
+        //        return View(model);
+        //    }
+        //    else
+        //    {
+        //        ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+        //        ViewBag.NumeroOficio = String.IsNullOrEmpty(sortOrder) ? "numerodocdes" : "";
+        //        ViewBag.Ingreso = sortOrder == "Ingreso" ? "IngresoDes" : "Ingreso";
+        //        ViewBag.FechaDeIngreso = sortOrder == "Fecha" ? "FechaDes" : "Fecha";
+        //        var documentos = from s in documentoBll.Find(x => search == null && x.idTipo == 3 || x.idTipo == 23) select s;
+
+        //        switch (sortOrder)
+        //        {
+        //            case "numerodocdes":
+        //                documentos = documentos.OrderByDescending(s => s.numeroDocumento);
+        //                break;
+        //            case "Fecha":
+        //                documentos = documentos.OrderBy(s => s.fecha);
+        //                break;
+        //            case "FechaDes":
+        //                documentos = documentos.OrderByDescending(s => s.fecha);
+        //                break;
+        //            case "Ingreso":
+        //                documentos = documentos.OrderBy(s => s.numeroIngreso);
+        //                break;
+        //            case "IngresoDes":
+        //                documentos = documentos.OrderByDescending(s => s.numeroIngreso);
+        //                break;
+        //            default:
+        //                documentos = documentos.OrderBy(s => s.numeroDocumento);
+        //                break;
+        //        }
+        //        List<Documento> listaDocumentos = documentos.ToList();
+        //        foreach (Documento documento in listaDocumentos)
+        //        {
+        //            tablaGeneralBLL = new TablaGeneralBLLImpl();
+        //            documento.TablaGeneral = tablaGeneralBLL.Get(documento.idOrigen);
+        //            documento.TablaGeneral3 = tablaGeneralBLL.Get(documento.tipoOrigen);
+        //            documento.TablaGeneral2 = tablaGeneralBLL.Get(documento.idOrigen);
+        //            if(documento.idEstado.HasValue){
+        //                int i = (int)(documento.idEstado);
+        //                documento.TablaGeneral1 = tablaGeneralBLL.Get(i);
+        //            }
+        //        }
+        //        PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
+        //        return View(model);
+        //    }
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CrearDocumento(Documento documento)

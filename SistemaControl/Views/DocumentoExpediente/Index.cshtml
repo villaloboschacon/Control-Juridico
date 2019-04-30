@@ -50,17 +50,15 @@
 
                 <span class="form-inline">
                     <i class="fa fa-search" aria-hidden="true"></i>
-                    @Html.TextBox("Buscar") <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
+                    @Html.TextBox("search", "", new { @class = "classname", autocomplete = "off" }) <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
                 </span>
 
                 <div style="color:black; font-size:14px;">
                     <b> Opciones de busqueda: </b>
-                    @Html.RadioButton("option", "Número de oficio") <text>Número de expediente</text>
-                    @Html.RadioButton("option", "Número de Ingreso") <text> Numero de Ingreso </text>
-                    @Html.RadioButton("option", "Asunto") <text>Asunto</text>
-                    @Html.RadioButton("option", "Fecha") <text>Fecha </text>
+                    @Html.RadioButton("option", "Número de Expediente") <text> Número de Expediente </text>
+                    @Html.RadioButton("option", "Número de Ingreso") <text> Número de Ingreso </text>
                     @Html.RadioButton("option", "Ubicación") <text>Ubicación</text>
-                    @Html.RadioButton("option", "Descripción") <text>Descripción </text>
+                    @Html.RadioButton("option", "Fecha") <text>Fecha </text>
 
                 </div>
             </div>
@@ -72,8 +70,8 @@
             <th>Número de expediente</th>
             <th>Número de Ingreso</th>
             <th>Fecha</th>
-            <th>Parte</th>
             <th>Asunto</th>
+            <th>Ubicacion</th>
         </tr>
 
         @if (Model.Count() == 0)
@@ -95,13 +93,13 @@
                         @Html.DisplayFor(modelItem => item.numeroIngreso)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.fecha)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.parte)
+                        @Html.DisplayFor(modelItem => item.fecha, "{0:dd/MM/yyyy}")
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.asunto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ubicacion)
                     </td>
 
                 </tr>

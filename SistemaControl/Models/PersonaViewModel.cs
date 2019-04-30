@@ -13,15 +13,15 @@ namespace SistemaControl.Models
         [Key]
         public int idPersona { get; set; }
 
-
+        
         public int? idTipo { get; set; }
 
         public int? tipoIdentificacion { get; set; }
 
-        [Required(ErrorMessage = "*Error. Debe de digitar la cédula de la persona")]
+        [Required(ErrorMessage = "*Error. Debe de digitar la identificación de la persona")]
         [StringLength(18, ErrorMessage = "Formato Incorrecto. Cédula de persona Fisica: ######### y Cédula de persona Jurídica: ##########")]
         [Remote("ComprobarPersona", "PersonaFisica", AdditionalFields = "idPersona")]
-        [Display(Name = "Cédula:")]
+        [Display(Name = "Identificación:")]
         public string cedula { get; set; }
 
         [Required(ErrorMessage = "Error. Debe de digitar el nombre de la persona.")]

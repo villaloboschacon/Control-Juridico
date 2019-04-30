@@ -49,16 +49,16 @@
             <div class="title">
                 <span class="form-inline">
                     <i class="fa fa-search" aria-hidden="true"></i>
-                    @Html.TextBox("search") <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
+                    @Html.TextBox("search", "", new { @class = "classname", autocomplete = "off" }) <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
                 </span>
 
                 <div style="color:black; font-size:14px;">
                     <b> Opciones de busqueda: </b>
-                    @Html.RadioButton("option", "Persona") <text>Persona</text>
-                    @Html.RadioButton("option", "Abogado") <text>Abogado</text>
                     @Html.RadioButton("option", "Número de proceso") <text>Número de proceso</text>
+                    @Html.RadioButton("option", "Abogado") <text>Abogado</text>
+                    @Html.RadioButton("option", "Persona") <text>Persona</text>
                     @Html.RadioButton("option", "Estado") <text>Estado </text>
-                    @Html.RadioButton("option", "Materia") <text>Materia </text>
+                    @*@Html.RadioButton("option", "Materia") <text>Materia </text>*@
 
                 </div>
             </div>
@@ -68,7 +68,7 @@
     <table class="table table-bordered" id="table_casos">
         <tr>
             <th>
-                @Html.ActionLink("Número de Proceso", "Index", new { sortOrder = ViewBag.NumeroCaso })
+                Número de Proceso
             </th>
             <th>Abogado</th>
             <th>Materia</th>
