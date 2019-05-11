@@ -285,6 +285,8 @@ namespace SistemaControl.Controllers
 
             if (option == "Cédula" && !String.IsNullOrEmpty(search))
             {
+                ViewBag.search = search;
+                ViewBag.option = option;
                 var listaPersonas = personaBll.Find(x => x.cedula.Contains(search) && x.idTipo == 1 || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
@@ -299,6 +301,8 @@ namespace SistemaControl.Controllers
             }
             else if (option == "Nombre Completo" && !String.IsNullOrEmpty(search))
             {
+                ViewBag.search = search;
+                ViewBag.option = option;
                 var listaPersonas = personaBll.Find(x => x.nombreCompleto.Contains(search) && x.idTipo == 1 || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
@@ -313,6 +317,8 @@ namespace SistemaControl.Controllers
             }
             else if (option == "Correo Electrónico" && !String.IsNullOrEmpty(search))
             {
+                ViewBag.search = search;
+                ViewBag.option = option;
                 var listaPersonas = personaBll.Find(x => x.correo.Contains(search) && x.idTipo == 1 || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
@@ -323,6 +329,20 @@ namespace SistemaControl.Controllers
                     }
                 }
                 PagedList<Persona> model = new PagedList<Persona>(listaPersonas, page, pageSize);
+                return View(model);
+            }
+            else if (option == "" || String.IsNullOrEmpty(search))
+            {
+                option = "";
+                search = null;
+                
+                ViewBag.idPersona = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
+                var personas = personaBll.Find(x => search == null && x.idTipo == 1);
+                foreach (Persona persona in personas)
+                {
+                    persona.TablaGeneral = tablaGeneralBLL.Get(persona.idTipo); //TablaGeneral es el {get;set} para poder traer idTipo de tabla general
+                }
+                PagedList<Persona> model = new PagedList<Persona>(personas, page, pageSize);
                 return View(model);
             }
             else
@@ -399,6 +419,24 @@ namespace SistemaControl.Controllers
             ViewBag.tipoIdentificacion = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", persona.tipoIdentificacion);
 
             return PartialView("Editar", persona);
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Eliminar(int id)
+        {
+            try
+            {
+                personaBll = new PersonasBLLImpl();
+                Persona persona = personaBll.Get(id);
+                personaBll.Eliminar(persona);
+                personaBll.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         [HttpPost]

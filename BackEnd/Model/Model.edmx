@@ -89,8 +89,8 @@
           <Property Name="observacion" Type="varchar" MaxLength="750" />
           <Property Name="observacionBitacora" Type="varchar" MaxLength="750" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SCJ_BD.dbo.CasoDocumento' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CasoDocumento">
           <Key>
             <PropertyRef Name="idCaso" />
@@ -183,8 +183,8 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida 
           <Property Name="descripcion" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="nomenclatura" Type="varchar" MaxLength="20" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UsuarioRol">
           <Key>
             <PropertyRef Name="idUsuario" />
@@ -548,6 +548,12 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <Parameter Name="version" Type="int" Mode="In" />
           <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
         </Function>
+        <Function Name="sp_archivaCaso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idCasoP" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_archivaDocumento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idDocumentoP" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_ConsultaNumerodeIngreso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -560,8 +566,12 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <Parameter Name="owner_id" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_GeneraNumerodeIngreso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_GeneraNumerodeReferencia" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_getRolesForUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="userName" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_getUsuarioCorreo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idUsuarioP" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -572,6 +582,9 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <Parameter Name="owner_id" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_listaEntradas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_ListaReferencias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idReferenciaB" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="sp_listaSalidas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -1399,6 +1412,19 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <FunctionImport Name="SP_BuscaPersonaNombre" EntitySet="Personas" ReturnType="Collection(SCJ_BD.Persona)">
           <Parameter Name="NombrePersona" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_ListaReferencias" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+          <Parameter Name="idReferenciaB" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="sp_getUsuarioCorreo" ReturnType="Collection(String)">
+          <Parameter Name="idUsuarioP" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_archivaCaso">
+          <Parameter Name="idCasoP" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_archivaDocumento">
+          <Parameter Name="idDocumentoP" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GeneraNumerodeReferencia" ReturnType="Collection(Int64)" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1468,6 +1494,22 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <Property Type="String" Name="correo" Nullable="false" MaxLength="150" />
           <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
           <Property Type="Int32" Name="tipoIdentificacion" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_ListaReferencias_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="true" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1713,6 +1755,12 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <FunctionImportMapping FunctionImportName="sp_ConsultaNumerodeIngreso" FunctionName="SCJ_BD.Store.sp_ConsultaNumerodeIngreso" />
           <FunctionImportMapping FunctionImportName="getNomenclatura" FunctionName="SCJ_BD.Store.getNomenclatura" />
           <FunctionImportMapping FunctionImportName="sp_GeneraNumerodeIngreso" FunctionName="SCJ_BD.Store.sp_GeneraNumerodeIngreso" />
+          <FunctionImportMapping FunctionImportName="sp_ListaReferencias" FunctionName="SCJ_BD.Store.sp_ListaReferencias">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_getUsuarioCorreo" FunctionName="SCJ_BD.Store.sp_getUsuarioCorreo" />
+          <FunctionImportMapping FunctionImportName="sp_archivaCaso" FunctionName="SCJ_BD.Store.sp_archivaCaso" />
+          <FunctionImportMapping FunctionImportName="sp_archivaDocumento" FunctionName="SCJ_BD.Store.sp_archivaDocumento" />
+          <FunctionImportMapping FunctionImportName="sp_GeneraNumerodeReferencia" FunctionName="SCJ_BD.Store.sp_GeneraNumerodeReferencia" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

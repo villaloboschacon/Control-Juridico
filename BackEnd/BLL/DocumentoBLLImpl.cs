@@ -160,6 +160,8 @@ namespace BackEnd.BLL
             
         }
 
+
+
         public Nullable<long> generaNumIngreso()
         { 
             using (context = new SCJ_BDEntities())
@@ -174,6 +176,47 @@ namespace BackEnd.BLL
             using (context = new SCJ_BDEntities())
             {
                 var result = this.context.getNomenclatura(nombreDept).FirstOrDefault();
+                return result;
+            }
+        }
+
+        public List<Documento> listaReferencias(long? referencia)
+        {
+                try
+                {
+                    using (context = new SCJ_BDEntities())
+                    {
+                        var result = this.context.sp_ListaReferencias(referencia).ToList();
+                        if (result != null)
+                        {
+                            return result;
+                        }
+                        return null;
+                    }
+
+                }
+                catch (Exception)
+                {
+
+                    return null;
+                }
+            
+        }
+
+        public bool archivaDocumento(int idDocumento)
+        {
+            using (context = new SCJ_BDEntities())
+            {
+                this.context.sp_archivaDocumento(idDocumento);
+                return true;
+            }
+        }
+
+        public long? generaNumeroReferencia()
+        {
+            using (context = new SCJ_BDEntities())
+            {
+                var result = this.context.sp_GeneraNumerodeReferencia().FirstOrDefault();
                 return result;
             }
         }

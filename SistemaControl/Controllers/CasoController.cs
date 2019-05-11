@@ -36,10 +36,12 @@ namespace SistemaControl.Controllers
             }
             if (option == "Abogado" && !String.IsNullOrEmpty(search))
             {
+                ViewBag.search = search;
+                ViewBag.option = option;
                 //List<Caso> listacaso = casoBLL.Find(x => x.numeroCaso == search && x.idCaso == 3 || search == null).ToList();
                 //PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
                 //return View(model);
-                var casosSearch = casoBLL.Find(x => x.Usuario.nombre.Contains(search) && x.idTipo == 19 || search == null).ToList();
+                var casosSearch = casoBLL.Find(x => x.Usuario.nombre.Contains(search) && x.idTipo == 19 && x.idEstado != 95 || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
                     ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
@@ -61,10 +63,12 @@ namespace SistemaControl.Controllers
             }
             else if (option == "Persona" && !String.IsNullOrEmpty(search))
             {
+                ViewBag.search = search;
+                ViewBag.option = option;
                 //List<Caso> listacaso = casoBLL.Find(x => x.tipoLitigante == Int32.Parse(search) && x.idCaso == 3 || search == null).ToList();
                 //PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
                 //return View(model);
-                var casosSearch = casoBLL.Find(x => x.Persona.nombreCompleto.Contains(search) && x.idTipo == 19 || search == null).ToList();
+                var casosSearch = casoBLL.Find(x => x.Persona.nombreCompleto.Contains(search) && x.idTipo == 19 && x.idEstado != 95 || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
                     ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
@@ -86,11 +90,13 @@ namespace SistemaControl.Controllers
             }
             else if (option == "Número de proceso" && !String.IsNullOrEmpty(search))
             {
+                ViewBag.search = search;
+                ViewBag.option = option;
                 //List<Caso> listacaso = casoBLL.Find(x => x.numeroCaso == search && x.idCaso == 3 || search == null).ToList();
                 //PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
                 //return View(model);
                 //var casosSearch = casoBLL.GetAll();
-                var casosSearch = casoBLL.Find(x => x.numeroCaso.Contains(search) && x.idTipo == 19 || search == null).ToList();
+                var casosSearch = casoBLL.Find(x => x.numeroCaso.Contains(search) && x.idTipo == 19 && x.idEstado != 95 || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
                     ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
@@ -112,10 +118,8 @@ namespace SistemaControl.Controllers
             }
             else if (option == "Estado" && !String.IsNullOrEmpty(search))
             {
-                //List<Caso> listacaso = casoBLL.Find(x => x.idEstado == Int32.Parse(search) && x.idCaso == 3 || search == null).ToList();
-                //PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
-                //return View(model);
-                //var casosSearch = casoBLL.GetAll();
+                ViewBag.search = search;
+                ViewBag.option = option;
                 var casosSearch = casoBLL.Find(x => x.TablaGeneral.descripcion.Contains(search) && x.idTipo == 19 || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
@@ -136,13 +140,15 @@ namespace SistemaControl.Controllers
                 PagedList<Caso> model = new PagedList<Caso>(casosSearch, page, pageSize);
                 return View(model);
             }
-            else
+            else if (option == "" || String.IsNullOrEmpty(search))
             {
+                search = null;
+                option = "";
                 ViewBag.tipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
                 ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
                 ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
                 ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
-                List<Caso> listacaso = casoBLL.Find(x => search == null && x.idTipo == 19).ToList();
+                List<Caso> listacaso = casoBLL.Find(x => search == null && x.idTipo == 19 && x.idEstado != 95).ToList();
                 foreach (Caso caso in listacaso)
                 {
                     caso.Persona = personaBLL.Get(caso.idPersona);
@@ -155,71 +161,30 @@ namespace SistemaControl.Controllers
                 List<Caso> documento = casoBLL.GetAll();
                 return View(model);
             }
+            else
+            {
+                ViewBag.tipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
+                ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
+                ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
+                ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
+                List<Caso> listacaso = casoBLL.Find(x => search == null && x.idTipo == 19 && x.idEstado != 95).ToList();
+                foreach (Caso caso in listacaso)
+                {
+                    caso.Persona = personaBLL.Get(caso.idPersona);
+                    caso.Usuario = usuarioBLL.Get(caso.idUsuario);
+                    caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
+                    caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
+                    caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
+                }
+                PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
+                List<Caso> documento = casoBLL.GetAll();
+                return View(model);
+
+            }
 
 
         }
-        //public ActionResult Index(string option, string search, int page = 1, int pageSize = 4)
-        //{
-        //    try
-        //    {
-        //        tablaGeneralBLL = new TablaGeneralBLLImpl();
-        //        casoBLL = new CasoBLLImpl();
-        //        personaBLL = new PersonasBLLImpl();
-        //        usuarioBLL = new UsuarioBLLImpl();
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //    }
-        //    if (option == "Materia")
-        //    {
-        //        List<Caso> listacaso = casoBLL.Find(x => x.materia == search && x.idCaso == 3 || search == null).ToList();
-        //        PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
-        //        return View(model);
-        //    }
-        //    else if (option == "Abogado")
-        //    {
-        //        List<Caso> listacaso = casoBLL.Find(x => x.numeroCaso == search && x.idCaso == 3 || search == null).ToList();
-        //        PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
-        //        return View(model);
-        //    }
-        //    else if (option == "Tipo de litigante")
-        //    {
-        //        List<Caso> listacaso = casoBLL.Find(x => x.tipoLitigante == Int32.Parse(search) && x.idCaso == 3 || search == null).ToList();
-        //        PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
-        //        return View(model);
-        //    }
-        //    else if (option == "Número de caso")
-        //    {
-        //        List<Caso> listacaso = casoBLL.Find(x => x.numeroCaso == search && x.idCaso == 3 || search == null).ToList();
-        //        PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
-        //        return View(model);
-        //    }
-        //    else if (option == "Estado")
-        //    {
-        //        List<Caso> listacaso = casoBLL.Find(x => x.idEstado == Int32.Parse(search) && x.idCaso == 3 || search == null).ToList();
-        //        PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
-        //        return View(model);
-        //    }
-        //    else {
-
-        //        ViewBag.tipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos","tipoLitigio"), "idTablaGeneral", "descripcion");
-        //        ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
-        //        ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
-        //        List<Caso> listacaso = casoBLL.Find(x => search == null && x.idTipo == 19).ToList();
-        //        foreach (Caso caso in listacaso)
-        //        {
-        //            caso.Persona = personaBLL.Get(caso.idPersona);
-        //            caso.Usuario = usuarioBLL.Get(caso.idUsuario);
-        //            caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
-        //            caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
-        //            caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
-        //        }
-        //        PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
-        //        List<Caso> documento = casoBLL.GetAll();
-        //        return View(model);
-        //    }
-        //}
+       
         public ActionResult Crear()
         {
             try
@@ -322,6 +287,23 @@ namespace SistemaControl.Controllers
             ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto", caso.idPersona);
             ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre", caso.idUsuario);
             return PartialView("Editar", (CasoViewModel)caso);
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Archivar(int id)
+        {
+          try
+            {
+                casoBLL = new CasoBLLImpl();
+                casoBLL.archivaCaso(id);
+                casoBLL.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
 

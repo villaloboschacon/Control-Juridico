@@ -17,7 +17,10 @@ namespace BackEnd.BLL
         List<Documento> listaEntradas();
         Nullable<long> consultaNumeroIngreso();
         Nullable<long> generaNumIngreso();
+        Nullable<long> generaNumeroReferencia();
         string getNomenclatura(string nombreDept);
+        List<Documento> listaReferencias(long? referencia);
+        bool archivaDocumento(int idDocumento);
 
     }
 }

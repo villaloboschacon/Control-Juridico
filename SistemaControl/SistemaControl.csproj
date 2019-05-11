@@ -947,6 +947,8 @@
     <Content Include="Views\DocumentoExpediente\Detalle.cshtml" />
     <Content Include="Views\PersonaJuridica\Crear.cshtml" />
     <Content Include="Views\PersonaJuridica\Editar.cshtml" />
+    <Content Include="Views\Documento\IndexReferencias.cshtml" />
+    <Content Include="Views\Documento\IndexSalidas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

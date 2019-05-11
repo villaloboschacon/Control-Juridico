@@ -147,5 +147,11 @@ namespace BackEnd.BLL
                 throw new NotImplementedException();
             }
         }
+
+        public bool Eliminar(Persona persona)
+        {
+               this.Remove(persona);
+                return true;
+        }
     }
 }

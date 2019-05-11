@@ -12,6 +12,7 @@ namespace BackEnd.BLL
     public class CasoBLLImpl : BLLGenericoImpl<Caso>, ICasoBLL
     {
         private UnidadDeTrabajo<Caso> unidad;
+        private SCJ_BDEntities context;
 
         public bool Agregar(Caso caso)
         {
@@ -24,6 +25,12 @@ namespace BackEnd.BLL
             this.Update(caso);
             return true;
         }
+
+        public bool Eliminar(Caso caso)
+        {
+            this.Remove(caso);
+            return true;
+        }
         public bool SaveChanges()
         {
             using (unidad = new UnidadDeTrabajo<Caso>(new SCJ_BDEntities()))
@@ -32,6 +39,7 @@ namespace BackEnd.BLL
                 return true;
             }
         }
+
 
 
         public bool Comprobar(string numeroCaso , string idCaso)
@@ -77,6 +85,24 @@ namespace BackEnd.BLL
             catch (Exception ex)
             {
                 throw new NotImplementedException();
+            }
+        }
+
+        public string getCorreo(int idUsuario)
+        {
+            using (context = new SCJ_BDEntities())
+            {
+                var result = this.context.sp_getUsuarioCorreo(idUsuario).FirstOrDefault();
+                return result;
+            }
+        }
+
+        public bool archivaCaso(int idCaso)
+        {
+            using (context = new SCJ_BDEntities())
+            {
+                this.context.sp_archivaCaso(idCaso);
+                return true;
             }
         }
     }

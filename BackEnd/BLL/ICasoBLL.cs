@@ -11,7 +11,10 @@ namespace BackEnd.BLL
     {
         bool Agregar(Caso caso);
         bool Modificar(Caso caso);
+        bool Eliminar(Caso caso);
         bool SaveChanges();
         bool Comprobar(string idCaso,string numeroCaso);
+        string getCorreo(int idUsuario);
+        bool archivaCaso(int idCaso);
     }
 }

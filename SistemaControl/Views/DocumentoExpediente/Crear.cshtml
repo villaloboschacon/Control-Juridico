@@ -14,7 +14,7 @@
         </div>
         <div class="modal-body">
             <div id="contenidoModal">
-                
+
                 @using (Html.BeginForm("CrearDocumento", "DocumentoExpediente"))
                 {
                     @Html.AntiForgeryToken()
@@ -83,7 +83,7 @@
                         <div class="form-group" id="fechas">
                             @Html.LabelFor(model => model.fecha, "Fecha", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @type = "date", @class = "form-control datepicker" } })
 
                                 @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
                             </div>
@@ -303,15 +303,19 @@
     function hideexpediente() {
         $("#Expediente").hide();
         $("#partes").hide();
+        $("#ubicaciones").hide();
     }
     function showexpediente() {
         if ($("#idOrigen").val() == "") {
             $("#Expediente").hide();
             $("#partes").hide();
+            $("#ubicaciones").hide();
+
         }
         else {
             $("#Expediente").show();
             $("#partes").show();
+            $("#ubicaciones").show();
         }
     }
 
@@ -339,35 +343,35 @@
         $("#observaciones").show();
         $("#file").show();
     }
-    $('#fecha').datepicker({
-        dateFormat: 'yy-mm-dd',
-        closeText: 'Cerrar',
-        minDate: "-1",
-        maxDate: "0",
-        yearRange: '1910:2018',
-        language: "Es",
-        regional: 'es',
-        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
-        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-        weekHeader: 'Sm',
-        container: '#contenidoModal',
-        beforeShow: function (input, inst) {
-            var calendar = inst.dpDiv;
-            setTimeout(function () {
-                calendar.position({
-                    my: 'center bottom',
-                    at: 'bottom',
-                    collision: 'none',
-                    of: input
-                });
-            }, 1);
-        }
-    }).on('changeDate', function (ev) {
-        $(this).blur();
-    });
+    //$('#fechas').datepicker({
+    //    dateFormat: 'yy-mm-dd',
+    //    closeText: 'Cerrar',
+    //    minDate: "-1",
+    //    maxDate: "0",
+    //    yearRange: '1910:2018',
+    //    language: "Es",
+    //    regional: 'es',
+    //    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    //    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+    //    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    //    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+    //    dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+    //    weekHeader: 'Sm',
+    //    container: '#contenidoModal',
+    //    beforeShow: function (input, inst) {
+    //        var calendar = inst.dpDiv;
+    //        setTimeout(function () {
+    //            calendar.position({
+    //                my: 'center bottom',
+    //                at: 'bottom',
+    //                collision: 'none',
+    //                of: input
+    //            });
+    //        }, 1);
+    //    }
+    //}).on('changeDate', function (ev) {
+    //    $(this).blur();
+    //});
 
     $("#fecha").keydown(function () {
         event.preventDefault();

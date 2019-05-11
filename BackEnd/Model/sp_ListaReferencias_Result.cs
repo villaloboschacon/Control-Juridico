@@ -11,7 +11,7 @@ namespace BackEnd.Model
 {
     using System;
     
-    public partial class sp_listaSalidas_Result
+    public partial class sp_ListaReferencias_Result
     {
         public int idDocumento { get; set; }
         public int idTipo { get; set; }

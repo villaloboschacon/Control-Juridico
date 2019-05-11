@@ -21,6 +21,9 @@
     <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
 </head>
 <div class="title">Personas Fisicas</div>
 
@@ -30,16 +33,18 @@
         <div class="widget" style="height:100px;">
             <div class="title">
                 <span class="form-inline">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                   @* <input name="Search" id="Search"  class="form-control" placeholder="Search..." type="text" />*@
-                   @Html.TextBox("search", "", new { @class = "classname", autocomplete = "off" })  <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
+                    @{ List<SelectListItem> searchListItem = new List<SelectListItem>();
+                        searchListItem.Add(new SelectListItem { Text = "Cédula", Value = "Cédula" });
+                        searchListItem.Add(new SelectListItem { Text = "Nombre Completo", Value = "Nombre Completo" });
+                        searchListItem.Add(new SelectListItem { Text = "Correo Electrónico", Value = "Correo Electrónico" });
+
+                    }
+                    @Html.DropDownList("option", new SelectList(searchListItem, "Value", "Text"), "Opciones de Búsqueda", htmlAttributes: new { @class = "form-control", @style = "width:205px;", @onchange = "Limpiar()" })
+                    @Html.TextBox("search", "", new { @class = "form-control", autocomplete = "off" })
+                    <button type="submit" class="btn btn-default" value="Buscar" style="color:black; font-size:14px;">
+                        <i class="fa fa-search" aria-hidden="true"></i> Buscar
+                    </button>
                 </span>
-                <div style="color:black; font-size:14px;">
-                    <b> Opciones de busqueda: </b>
-                    @Html.RadioButton("option", "Cédula") <text>Cédula</text>
-                    @Html.RadioButton("option", "Nombre Completo") <text>Nombre</text>
-                    @Html.RadioButton("option", "Correo Electrónico") <text>Correo</text>
-                </div>
             </div>
         </div>
     }
@@ -51,7 +56,7 @@
                 Cédula
             </th>
             <th>
-               Nombre Completo
+                Nombre Completo
             </th>
             <th>Correo</th>
             @*<th>Observación</th>*@
@@ -90,8 +95,36 @@
         <a href="#" id="btnEdit" class="btnEdit" onclick="Crear()" data-toggle="modal" data-target="#crearModal">Crear Persona</a>
     </div>
     <br />
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
-    @*Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount Personas*@
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, search = ViewBag.search, option = ViewBag.option }))
+    <div class="modal fade" id="modalArchivar">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Eliminar Persona</h3>
+                </div>
+                <div class="modal-body">
+                    <h4>Esta seguro que desea eliminar esta persona? </h4>
+
+                    @*<div style="text-align:center;display:none" id="loaderDiv">
+                            <img src="~/Content/InternetSlowdown_Day.gif" width="150" />
+                        </div>*@
+
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Cancelar</a>
+                    <a href="#" class="btn btn-default" onclick="Archivar()">Confirmar</a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    @*hidden field for storing current DocId*@
+    <input type="hidden" id="idPersona" />
     <br />
 </div>
 
@@ -107,17 +140,11 @@
             <a tabindex="-1" href="#" onclick="Details(getInd())" data-value="getInd()" data-toggle="modal" data-target="#detalleModal">Ver detalles</a>
         </li>
         <li class="divider"></li>
-        @*<li>
-                <a tabindex="-1" href="#" onclick="Reply(getInd())" data-value="getInd()" data-toggle="modal" data-target="#responderModal">Responder</a>
-            </li>*@
         <li>
             <a tabindex="-1" href="#" onclick="Edit(getInd())" data-value="getInd()" data-toggle="modal" data-target="#editarModal">Editar</a>
         </li>
-        @*<li>
-                <a tabindex="-1" href="#" onclick="Reference()" data-toggle="modal" data-target="#referenciaModal">Ver referencias</a>
-            </li>*@
         <li>
-            <a tabindex="-1" href="#">Eliminar</a>
+            <a href="#" onclick="Confirmar(getInd())">Eliminar</a>
         </li>
     </ul>
 </div>
@@ -203,6 +230,10 @@
         console.log($vars);
         return $vars;
     };
+
+    function Limpiar() {
+        $('#search').val("")
+    }
 
     @*$(function () {
     $("#Search").keyup(function (event) {
@@ -297,6 +328,34 @@
             return false;
         });
     });
+
+        var Confirmar = function (idPersona) {
+
+        $("#idPersona").val(idPersona);
+        $('#modalArchivar').modal('show');
+       // $("#myModal").show();// show();//('show');
+
+    }
+
+    var Archivar = function () {
+        var url = '@Url.Action("Eliminar")';
+        var myId = $("#idPersona").val();
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            data: {
+                'id': myId
+            },
+            success: function (result) {
+                $("#modalArchivar").modal("hide");
+                location.reload();
+
+            }
+
+        })
+
+    }
 </script>
 
 @*

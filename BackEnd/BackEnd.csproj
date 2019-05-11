@@ -154,6 +154,9 @@
     <Compile Include="Model\sp_listaEntradas_Result.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\sp_ListaReferencias_Result.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\sp_listaSalidas_Result.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

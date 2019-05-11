@@ -10,36 +10,30 @@
 <script src="~/Content/js/site.js"></script>
 <link href="~/Content/css/style.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <div class="title">Personas Jurídicas</div>
 <div class="container" style="margin-top:20px">
     @using (Html.BeginForm("Index", "PersonaJuridica", FormMethod.Get))
     {
-        @*<div>
-                @Html.TextBox("search") <input type="submit" name="submit" value="Buscar" />
-            </div>
-            <div>
-                <b> Opciones de busqueda: </b>
-                @Html.RadioButton("option", "Nombre") <text>Nombre</text>
-                @Html.RadioButton("option", "Cédula") <text> Cédula </text>
-                @Html.RadioButton("option", "Representante legal")<text>Representante legal</text>
-                @Html.RadioButton("option", "Representante social")<text>Representante social</text>
-            </div>*@
         <div class="widget" style="height:100px;">
             <div class="title">
                 <span class="form-inline">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                    @Html.TextBox("search", "", new { @class = "classname", autocomplete = "off" })  <input type="submit" name="submit" value="Buscar" style="color:black; font-size:14px;" />
+                    @{ List<SelectListItem> searchListItem = new List<SelectListItem>();
+                        searchListItem.Add(new SelectListItem { Text = "Cédula Jurídica", Value = "Cédula Jurídica" });
+                        searchListItem.Add(new SelectListItem { Text = "Nombre Completo", Value = "Nombre Completo" });
+                        searchListItem.Add(new SelectListItem { Text = "Representante Legal", Value = "Representante Legal" });
+                        searchListItem.Add(new SelectListItem { Text = "Representante Social", Value = "Representante Social" });
+                        searchListItem.Add(new SelectListItem { Text = "Correo Electrónico", Value = "Correo Electrónico" });
+
+                    }
+                    @Html.DropDownList("option", new SelectList(searchListItem, "Value", "Text"), "Opciones de Búsqueda", htmlAttributes: new { @class = "form-control", @style = "width:205px;", @onchange = "Limpiar()" })
+                    @Html.TextBox("search", "", new { @class = "form-control", autocomplete = "off" })
+                    <button type="submit" class="btn btn-default" value="Buscar" style="color:black; font-size:14px;">
+                        <i class="fa fa-search" aria-hidden="true"></i> Buscar
+                    </button>
                 </span>
-
-                <div style="color:black; font-size:14px;">
-                    <b> Opciones de búsqueda: </b>
-                    @Html.RadioButton("option", "Cédula Jurídica") <text>Cédula Jurídica</text>
-                    @Html.RadioButton("option", "Nombre Completo") <text> Nombre </text>
-                    @Html.RadioButton("option", "Representante Legal") <text>Representante legal</text>
-                    @Html.RadioButton("option", "Representante Social") <text>Representante social </text>
-                    @Html.RadioButton("option", "Correo Electrónico") <text>Correo</text>
-
-                </div>
             </div>
         </div>
     }
@@ -99,8 +93,38 @@
     </div>
     <br />
 
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
-    @*Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount personas*@
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, search = ViewBag.search, option = ViewBag.option }))
+    <div class="modal fade" id="modalArchivar">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Eliminar Persona</h3>
+                </div>
+                <div class="modal-body">
+                    <h4>Esta seguro que desea eliminar esta persona? </h4>
+
+                    @*<div style="text-align:center;display:none" id="loaderDiv">
+                            <img src="~/Content/InternetSlowdown_Day.gif" width="150" />
+                        </div>*@
+
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Cancelar</a>
+                    <a href="#" class="btn btn-default" onclick="Archivar()">Confirmar</a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    @*hidden field for storing current DocId*@
+    <input type="hidden" id="idPersona" />
+    <br />
+
 
 </div>
 <div id="editarModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editarModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
@@ -115,17 +139,11 @@
             <a tabindex="-1" href="#" onclick="Details(getInd())" data-value="getInd()" data-toggle="modal" data-target="#detalleModal">Ver detalles</a>
         </li>
         <li class="divider"></li>
-        @*<li>
-                <a tabindex="-1" href="#" onclick="Reply(getInd())" data-value="getInd()" data-toggle="modal" data-target="#responderModal">Responder</a>
-            </li>*@
         <li>
             <a tabindex="-1" href="#" onclick="Edit(getInd())" data-value="getInd()" data-toggle="modal" data-target="#editarModal">Editar</a>
         </li>
-        @*<li>
-                <a tabindex="-1" href="#" onclick="Reference()" data-toggle="modal" data-target="#referenciaModal">Ver referencias</a>
-            </li>*@
         <li>
-            <a tabindex="-1" href="#">Eliminar</a>
+            <a href="#" onclick="Confirmar(getInd())">Eliminar</a>
         </li>
     </ul>
 </div>
@@ -177,6 +195,10 @@
         $(this).addClass('highlight').siblings().removeClass('highlight');
         //do your stuff, you can use $(this) to get current cell
     });
+
+    function Limpiar() {
+        $('#search').val("")
+    }
 
     $('#table_personas').find('tr').click(function (e) {
         var rows = $('tr', table_personas);
@@ -247,5 +269,33 @@
                 alert('error');
             }
         });
+    }
+
+            var Confirmar = function (idPersona) {
+
+        $("#idPersona").val(idPersona);
+        $('#modalArchivar').modal('show');
+       // $("#myModal").show();// show();//('show');
+
+    }
+
+    var Archivar = function () {
+        var url = '@Url.Action("Eliminar")';
+        var myId = $("#idPersona").val();
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            data: {
+                'id': myId
+            },
+            success: function (result) {
+                $("#modalArchivar").modal("hide");
+                location.reload();
+
+            }
+
+        })
+
     }
 </script>

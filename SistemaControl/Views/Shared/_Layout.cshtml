@@ -111,56 +111,63 @@
             <img style="display: block;margin: 0 auto; padding-bottom:10px;" src="~/Content/img/muni.gif" />
             @*<img src="https://image.flaticon.com/icons/svg/866/866218.svg" /><img src="https://image.flaticon.com/icons/svg/866/866218.svg" style="display: none" />*@
         </div>
-        <div class="ui accordion" style="border:1px;font-size:14px;color:white;">
+        <div class="ui accordion" style="border:1px;font-size:15px;color:white;">
             <a class="item" href="~/Home/Index" >
-                <span style="color:white;"><i class="fa fa-home"></i></span><b style="color:white;" >Menú principal</b>
+                <span style="color:white;"><i class="fa fa-home"></i></span><b style="color:white;" ><text style="margin-left:1.4em"> Menú Principal</text></b>
             </a>
-            <a class="title item"style="border:1px;font-size:14px;color:white;">
-                Documentos  <i class="dropdown icon"></i>
+            <a class="title item" style="border:1px;font-size:14px;color:white;">
+                <span><i class="fa fa-archive"></i></span>
+                <text style="margin-left:1.3em"> Documentos</text>  <i class="dropdown icon"></i>
             </a>
             <div class="content">
                 <a class="item" style="border:1px;font-size:14px;color:white;" href="~/Documento/Index">
-                    Oficios
+                    <text style="margin-left:4em"> Entradas</text>
+                </a>
+                <a class="item" style="border:1px;font-size:14px;color:white;" href="/Documento/IndexSalidas">
+                    <text style="margin-left:4em"> Salidas</text>
                 </a>
                 <a class="item" style="border:1px;font-size:14px;color:white;" href="/DocumentoExpediente/Index">
-                    Expedientes
+                    <text style="margin-left:4em"> Expedientes</text>
                 </a>
-                <a class="item" style="border:1px;font-size:14px;color:white;" href="/Documento/Referencias">
-                    Ref
-                </a>
+                @*<a class="item" style="border:1px;font-size:14px;color:white;" href="/Documento/IndexReferencias">
+            Referencias
+        </a>*@
             </div>
 
-            <div class="title item"style="border:1px;font-size:14px;color:white;">
-                <i class="dropdown icon"></i> Procesos
+            <div class="title item" style="border:1px;font-size:14px;color:white;">
+                <span><i class="fa fa-balance-scale"></i></span>    
+                <i class="dropdown icon"></i><text style="margin-left:1em"> Procesos</text>
             </div>
             <div class="content" style="border:1px;font-size:14px;color:white;">
                 <a class="item" style="border:1px;font-size:14px;color:white;" href="~/Caso/Index">
-                    Administrativos
+                    <text style="margin-left:4em"> Administrativos</text>
                 </a>
-                <a class="item" style="border:1px;font-size:14px;color:white;"  href="/CasoJudicial/Index">
-                    Judiciales
+                <a class="item" style="border:1px;font-size:14px;color:white;" href="/CasoJudicial/Index">
+                    <text style="margin-left:4em"> Judiciales</text>
                 </a>
             </div>
-            <div class="title item"style="border:1px;font-size:14px;color:white;">
-                <i class="dropdown icon"></i> Personas
+            <div class="title item" style="border:1px;font-size:14px;color:white;">
+                <span><i class="fa fa-users"></i></span>
+                    <i class="dropdown icon"></i> <text style="margin-left:1.3em"> Personas</text>
             </div>
             <div class="content" style="border:1px;font-size:14px;color:white;">
-                <a class="item" style="color:white;font-size:14px; font-family:sans-serif"href="/PersonaFisica/Index">
-                Fisicas
+                <a class="item" style="color:white;font-size:14px; font-family:sans-serif" href="/PersonaFisica/Index">
+                    <text style="margin-left:4em"> Fisicas</text>                    
                 </a>
                 <a class="item" style="color:white;font-size:14px; font-family:sans-serif" href="/PersonaJuridica/Index">
-                    Jurídicas
+                    <text style="margin-left:4em"> Jurídicas</text>
                 </a>
             </div>
-            <div class="title item"style="border:1px;font-size:14px;color:white;">
-                <i class="dropdown icon"></i> Ayuda
+            <div class="title item" style="border:1px;font-size:14px;color:white;">
+                <span><i class="fa fa-question-circle"></i></span>
+                <i class="dropdown icon"></i> <text style="margin-left:1.8em"> Ayuda</text>
             </div>
             <div class="content" style="color:white">
                 <a class="item" href="accordion.html">
-                    Acerca de SCJ
+                    <text style="margin-left:4em">   Acerca de SCJ</text>
                 </a>
                 <a class="item" href="breadcrumb.html">
-                    Ayuda
+                    <text style="margin-left:4em"> Ayuda</text>
                 </a>
             </div>
         </div>

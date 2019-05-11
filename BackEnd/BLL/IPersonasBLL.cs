@@ -12,6 +12,7 @@ namespace BackEnd.BLL
         bool Agregar(Persona persona);
         bool Modificar(Persona persona);
         bool Comprobar(string cedula, string idPersona);
+        bool Eliminar(Persona persona);
         bool SaveChanges();
         List<Persona> buscaPorNombre(string filtro);
         List<Persona> buscarNombre(string filtro);
