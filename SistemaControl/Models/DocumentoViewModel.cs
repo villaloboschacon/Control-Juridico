@@ -65,6 +65,34 @@ namespace SistemaControl.Models
         [Display(Name = "Observación")]
         public string observacion { get; set; }
 
+        [Display(Name = "Documento textual")]
+        [Remote("SetTextEditor", "Documento")]
+        public string textoDocumento { get; set; }
+
+        [Display(Name = "¿Desea escribir el oficio?")]
+        [Remote("SetTextEditor", "Documento")]
+        public int checkStatus { get; set; }
+
+        public static explicit operator Documento(DocumentoViewModel v)
+        {
+            Documento view = new Documento();
+            view.asunto = v.asunto;
+            view.descripcion = v.descripcion;
+            view.fecha = v.fecha;
+            view.idDocumento = v.idDocumento;
+            view.idEstado = v.idEstado;
+            view.idOrigen = (int)v.idOrigen;
+            view.idTipo = (int)v.idTipo;
+            view.idReferencia = v.idReferencia;
+            view.numeroDocumento = v.numeroDocumento;
+            view.numeroIngreso = v.numeroIngreso;
+            view.observacion = v.observacion;
+            view.parte = v.parte;
+            view.tipoOrigen = (int)v.tipoOrigen;
+            view.ubicacion = v.ubicacion;
+            return view;
+        }
+
         public static explicit operator DocumentoViewModel(Documento v)
         {
             DocumentoViewModel view = new DocumentoViewModel();

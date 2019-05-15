@@ -47,5 +47,6 @@ namespace BackEnd.Model
         public virtual TablaGeneral TablaGeneral3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Caso> Casos { get; set; }
+
     }
 }
