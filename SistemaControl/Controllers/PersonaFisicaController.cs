@@ -15,6 +15,12 @@ namespace SistemaControl.Controllers
         private IPersonasBLL personaBll;
         private ITablaGeneralBLL tablaGeneralBLL;
 
+        //public JsonResult Search(string name)
+        //{
+        //    var resultado = personaBll.Find(x => x.cedula.Contains(name)).Select(x => x.cedula).Take(11).ToList();
+        //    return Json(resultado, JsonRequestBehavior.AllowGet);
+        //}
+
         public JsonResult Search(string filtro)
         {
 
@@ -48,6 +54,37 @@ namespace SistemaControl.Controllers
             return View(model);
             //return PartialView("Referencias",);
         }
+        //public JsonResult Search(string filtro)
+        //{
+        //    var s = personaBll.Find(a => a.nombreCompleto.Contains(filtro)).Take(10).Select(a => new {
+        //        resultItem = a.nombreCompleto
+        //    }).ToList();
+
+
+
+        //    var returnList = s.ToList();
+
+        //    return Json(new {returnList}, JsonRequestBehavior.AllowGet);
+        //    //return Json(resultado, JsonRequestBehavior.AllowGet);
+        //}
+
+        //public JsonResult Search(string pr)
+        //{
+        //    var s = _context.Products.Where(a => a.Name.Contains(pr) || a.Model.Contains(pr) || a.Brands.Name.Contains(pr)).Take(10).Select(a => new {
+        //        resultItem = a.Name + " " + a.Model + " " + a.Brands.Name
+        //    }).ToList();
+
+        //    var storen = _context.Stores.Where(a => a.Name.StartsWith(pr)).Select(a => new {
+        //        resultItem = a.Name
+        //    }).ToList();
+
+        //    var returnList = s.Concat(storen).ToList();
+
+        //    return Json(new
+        //    {
+        //        returnList
+        //    }, JsonRequestBehavior.AllowGet);
+        //}z
         public ActionResult Searchm(string searchString, int? page)
         {
             try
@@ -86,6 +123,150 @@ namespace SistemaControl.Controllers
             return View(model);
            // return View(per.ToPagedList(pageNumber, pageSize));
         }
+
+        //public ActionResult Index(string option, string search, string currentFilter, string sortOrder, int? page,string l)
+        //{
+
+        //    try
+
+        //    {
+        //        tablaGeneralBLL = new TablaGeneralBLLImpl();
+        //        personaBll = new PersonasBLLImpl();
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ex = new Exception();
+        //        return View();
+        //    }
+        //    ViewBag.CurrentSort = sortOrder;
+        //    if (search != null)
+        //    {
+        //        page = 1;
+        //    }
+        //    else
+        //    {
+        //        search = currentFilter;
+        //    }
+        //    ViewBag.CurrenFilter = search;
+        //    int pageSize = 4;
+        //    int pageNumber = (page ?? 1);
+        //    if (option == "Cédula")
+        //    {
+        //        ViewBag.idPersona = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
+        //        var listaPersonas = personaBll.GetAll().AsQueryable();
+        //        //var folders = db.Folders.AsQueryable();
+
+        //        if (!String.IsNullOrEmpty(search))
+        //        {
+        //             listaPersonas = listaPersonas.Where(p => p.cedula.ToLower().Contains(search.ToLower()));
+        //            //HttpContext.Cache["listaPersonas"] =listaPersonas.Where(p => p.cedula.ToLower().Contains(search.ToLower()));
+        //        }
+        //        //List<Persona> listaPersonas = personaBll.Find(x => x.cedula == search && x.idTipo == 1 || search == null).ToList();
+        //        foreach (Persona persona in listaPersonas)
+        //        {
+        //            tablaGeneralBLL = new TablaGeneralBLLImpl();
+        //            persona.TablaGeneral = tablaGeneralBLL.Get(persona.idTipo); //TablaGeneral es el {get;set} para poder traer idTipo de tabla general
+        //        }
+        //        PagedList<Persona> model = new PagedList<Persona>(listaPersonas, pageNumber, pageSize);
+        //        return View(model.ToPagedList(pageNumber, pageSize));
+        //    }
+        //    else if (option == "Nombre Completo")
+        //    {
+
+        //        ViewBag.idPersona = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
+        //        var listaPersonas = personaBll.GetAll().AsQueryable();
+        //        //var folders = db.Folders.AsQueryable();
+
+        //        if (!String.IsNullOrEmpty(search))
+        //        {
+        //            listaPersonas = listaPersonas.Where(p => p.nombreCompleto.ToLower().Contains(search.ToLower()));
+        //            //HttpContext.Cache["listaPersonas"] =listaPersonas.Where(p => p.cedula.ToLower().Contains(search.ToLower()));
+        //        }
+        //        //List<Persona> listaPersonas = personaBll.Find(x => x.cedula == search && x.idTipo == 1 || search == null).ToList();
+        //        foreach (Persona persona in listaPersonas)
+        //        {
+        //            tablaGeneralBLL = new TablaGeneralBLLImpl();
+        //            persona.TablaGeneral = tablaGeneralBLL.Get(persona.idTipo); //TablaGeneral es el {get;set} para poder traer idTipo de tabla general
+        //        }
+        //        PagedList<Persona> model = new PagedList<Persona>(listaPersonas, pageNumber, pageSize);
+        //        return View(model.ToPagedList(pageNumber, pageSize));
+        //    }
+        //    else if (option == "Correo")
+        //    {
+
+        //        ViewBag.idPersona = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
+        //        var listaPersonas = personaBll.GetAll().AsQueryable();
+        //        //var folders = db.Folders.AsQueryable();
+
+        //        if (!String.IsNullOrEmpty(search))
+        //        {
+        //            listaPersonas = listaPersonas.Where(p => p.correo.ToLower().Contains(search.ToLower()));
+        //            //HttpContext.Cache["listaPersonas"] =listaPersonas.Where(p => p.cedula.ToLower().Contains(search.ToLower()));
+        //        }
+        //        //List<Persona> listaPersonas = personaBll.Find(x => x.cedula == search && x.idTipo == 1 || search == null).ToList();
+        //        foreach (Persona persona in listaPersonas)
+        //        {
+        //            tablaGeneralBLL = new TablaGeneralBLLImpl();
+        //            persona.TablaGeneral = tablaGeneralBLL.Get(persona.idTipo); //TablaGeneral es el {get;set} para poder traer idTipo de tabla general
+        //        }
+        //        PagedList<Persona> model = new PagedList<Persona>(listaPersonas, pageNumber, pageSize);
+        //        return View(model.ToPagedList(pageNumber, pageSize));
+        //    }
+        //    else if (option == "Observación")
+        //    {
+
+        //        ViewBag.idPersona = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
+        //        var listaPersonas = personaBll.GetAll().AsQueryable();
+        //        //var folders = db.Folders.AsQueryable();
+
+        //        if (!String.IsNullOrEmpty(search))
+        //        {
+        //            listaPersonas = listaPersonas.Where(p => p.observacion.ToLower().Contains(search.ToLower()));
+        //            //HttpContext.Cache["listaPersonas"] =listaPersonas.Where(p => p.cedula.ToLower().Contains(search.ToLower()));
+        //        }
+        //        //List<Persona> listaPersonas = personaBll.Find(x => x.cedula == search && x.idTipo == 1 || search == null).ToList();
+        //        foreach (Persona persona in listaPersonas)
+        //        {
+        //            tablaGeneralBLL = new TablaGeneralBLLImpl();
+        //            persona.TablaGeneral = tablaGeneralBLL.Get(persona.idTipo); //TablaGeneral es el {get;set} para poder traer idTipo de tabla general
+        //        }
+        //        PagedList<Persona> model = new PagedList<Persona>(listaPersonas, pageNumber, pageSize);
+        //        return View(model.ToPagedList(pageNumber, pageSize));
+        //    }
+        //    else
+        //    {
+        //        ViewBag.idPersona = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
+        //        ViewBag.Cedula = String.IsNullOrEmpty(sortOrder) ? "cedulades" : "";
+        //        ViewBag.NombreCompleto = sortOrder == "NombreCompleto" ? "nombrecomdes" : "NombreCompleto";
+
+        //        var personas = from s in personaBll.Find(x => search == null && x.idTipo == 1) select s;
+
+        //        switch (sortOrder)
+        //        {
+        //            case "cedulades":
+        //                personas = personas.OrderByDescending(s => s.cedula);
+        //                break;
+        //            case "nombrecomdes":
+        //                personas = personas.OrderByDescending(s => s.nombreCompleto);
+        //                break;
+        //            case "NombreCompleto":
+        //                personas = personas.OrderBy(s => s.nombreCompleto);
+        //                break;
+        //            default:
+        //                personas = personas.OrderBy(s => s.cedula);
+        //                break;
+        //        }
+        //        List<Persona> listaPersonas = personas.ToList();
+        //        foreach (Persona persona in listaPersonas)
+        //        {
+        //            tablaGeneralBLL = new TablaGeneralBLLImpl();
+        //            persona.TablaGeneral = tablaGeneralBLL.Get(persona.idTipo); //TablaGeneral es el {get;set} para poder traer idTipo de tabla general
+        //        }
+        //        PagedList<Persona> model = new PagedList<Persona>(listaPersonas, pageNumber, pageSize);
+        //        return View(model);
+        //    }
+        //}
 
         public ActionResult Index(string option, string search, int page = 1, int pageSize = 4)
         {

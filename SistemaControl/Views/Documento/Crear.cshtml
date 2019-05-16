@@ -1,382 +1,209 @@
 ﻿@model SistemaControl.Models.DocumentoViewModel
-<!doctype html>
-<html lang="en">
+@*Scripts para validaciones y mensajes de alerta*@
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@*--Espacio de scripts cerrado--*@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title" id="createModal" style="text-align:center;">Crear documento</span>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div id="contenidoModal">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="robots">
-    <title>Crear Documento</title>
-    <script src="https://code.jquery.com/jquery-3.4.1.js"
-            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.ckeditor.com/4.11.4/standard-all/ckeditor.js"></script>
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-
-    <style>
-        .modal-open.ui-datepicker {
-            margin: 5px auto 0;
-            font: 12pt Arial, sans-serif;
-        }
-
-            .modal-open .ui-datepicker table {
-                width: 100%;
-                background-color: white;
-            }
-
-        .modal-open .ui-datepicker-header {
-            background: #35475e;
-            color: #ffffff;
-            font-family: sans-serif;
-            border-width: 1px 0 0 0;
-            border-style: solid;
-            border-color: #111;
-        }
-
-        .modal-open .ui-datepicker-title {
-            text-align: center;
-            font-size: 15px;
-        }
-
-        .modal-open .ui-datepicker-prev {
-            float: left;
-            cursor: pointer;
-            background-position: center -30px;
-        }
-
-        .modal-open .ui-datepicker-next {
-            float: right;
-            cursor: pointer;
-        }
-
-        .modal-open .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
-            width: 49%;
-            color: black;
-            font-family: sans-serif;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title" id="createModal" style="text-align:center;">Crear documento</span>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="contenidoModal">
-
-                    @using (Html.BeginForm("CrearDocumento", "Documento"))
-                    {
-                        @Html.AntiForgeryToken()
-                        <div class="form-horizontal" id="parent">
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            @Html.HiddenFor(model => model.idDocumento)
+                @using (Html.BeginForm("CrearDocumento", "Documento"))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal" id="parent">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.idDocumento)
 
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.idTipo, "Tipo de Documento", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownList("idTipo", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.idTipo, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="tipoOrigenes">
-                                @Html.LabelFor(model => model.tipoOrigen, "Tipo de origen", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownList("tipoOrigen", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.tipoOrigen, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="origenes">
-                                @Html.LabelFor(model => model.idOrigen, "Origen", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownList("idOrigen", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.idOrigen, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="partes">
-                                @Html.LabelFor(model => model.parte, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.parte, new { htmlAttributes = new { @class = "form-control", placeholder = "EXP-AD-NOMBREDELAPERSONA-2018", autocomplete = "off", style = "text-transform: uppercase;" } })
-                                    @Html.ValidationMessageFor(model => model.parte, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group" id="numerosDocumentos">
-                                @Html.LabelFor(model => model.numeroDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @*, placeholder = "MA-PSI-#####-2018", autocomplete = "off"*@
-                                    @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { @class = "form-control", @id = "numeroDocumento" } })
-                                    @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="numerosIngresos">
-                                @Html.LabelFor(model => model.numeroIngreso, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.numeroIngreso, new { htmlAttributes = new { @class = "form-control", placeholder = "N.I.####-2018", autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.numeroIngreso, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-
-                            <div class="form-group" id="idEstados">
-                                @Html.LabelFor(model => model.idEstado, "Estado", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownList("idEstado", null, htmlAttributes: new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.idEstado, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="fechas">
-                                @Html.LabelFor(model => model.fecha, "Fecha", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @type = "date", @class = "form-control datepicker" } })
-
-                                    @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group" id="ubicaciones">
-                                @Html.LabelFor(model => model.ubicacion, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", placeholder = "La ubicación física del documento." } })
-                                    @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group" id="asuntos">
-                                @Html.LabelFor(model => model.asunto, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.asunto, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", placeholder = "Asunto" } })
-                                    @Html.ValidationMessageFor(model => model.asunto, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="descripciones">
-                                @Html.LabelFor(model => model.descripcion, htmlAttributes: new { @class = "control-label col-md-2", placeholder = "Descripción breve del documento." })
-                                <div class="col-md-10">
-                                    @Html.TextAreaFor(model => model.descripcion, 5, 62, new { @class = "form-control", @style = "resize: vertical;min-height: 100px;" })
-                                    @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="observaciones">
-                                @Html.LabelFor(model => model.observacion, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.TextAreaFor(model => model.observacion, 10, 62, new { @class = "form-control", @style = "resize: vertical;min-height: 200px;" })
-                                    @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group" id="check">
-                                @Html.LabelFor(model => model.checkStatus, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownListFor(model => model.checkStatus, new[] { new SelectListItem { Text = "Si", Value = "1" }, new SelectListItem { Text = "No", Value = "0" } }, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.checkStatus, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-
-                            @*<div class="form-group" id="editor1">
-                                    @Html.LabelFor(model => model.textoDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.TextAreaFor(model => model.textoDocumento, new { @id = "FullDescription", @class = "form-control", @rows = "200" }) @Html.ValidationMessageFor(model => model.textoDocumento, "", new { @class = "text-danger" })
-
-                                        <script>
-                                            CKEDITOR.replace("FullDescription");
-                                        </script>
-                                    </div>
-                                </div>*@
-
-                            <textarea cols="100" id="editor1" name="editor1" rows="10"></textarea>
-
-                            <div class="form-group" id="file">
-                                <label class="control-label col-md-2">Adjuntar archivos:</label>
-                                <div class="col-md-10">
-                                    <input class="form-control" type="file" name="elementName" multiple="multiple" />
-                                </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.idTipo, "Tipo de Documento", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("idTipo", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.idTipo, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
-                        <div class="modal-footer">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" id="CrearBoton" value="Crear documento" class="btn btn-default" onclick="Save" />
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <div class="form-group" id="tipoOrigenes">
+                            @Html.LabelFor(model => model.tipoOrigen, "Tipo de origen", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("tipoOrigen", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.tipoOrigen, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                    }
 
-                </div>
+                        <div class="form-group" id="origenes">
+                            @Html.LabelFor(model => model.idOrigen, "Origen", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("idOrigen", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.idOrigen, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="partes">
+                            @Html.LabelFor(model => model.parte, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.parte, new { htmlAttributes = new { @class = "form-control", placeholder = "EXP-AD-NOMBREDELAPERSONA-2018", autocomplete = "off", style = "text-transform: uppercase;" } })
+                                @Html.ValidationMessageFor(model => model.parte, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group" id="numerosDocumentos">
+                            @Html.LabelFor(model => model.numeroDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @*, placeholder = "MA-PSI-#####-2018", autocomplete = "off"*@
+                                @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { @class = "form-control", @id = "numeroDocumento" } })
+                                @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="numerosIngresos">
+                            @Html.LabelFor(model => model.numeroIngreso, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.numeroIngreso, new { htmlAttributes = new { @class = "form-control", placeholder = "N.I.####-2018", autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.numeroIngreso, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" id="idEstados">
+                            @Html.LabelFor(model => model.idEstado, "Estado", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("idEstado", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.idEstado, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="fechas">
+                            @Html.LabelFor(model => model.fecha, "Fecha", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @type = "date", @class = "form-control datepicker" } })
+
+                                @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group" id="ubicaciones">
+                            @Html.LabelFor(model => model.ubicacion, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", placeholder = "La ubicación física del documento." } })
+                                @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group" id="asuntos">
+                            @Html.LabelFor(model => model.asunto, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.asunto, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", placeholder = "Asunto" } })
+                                @Html.ValidationMessageFor(model => model.asunto, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="descripciones">
+                            @Html.LabelFor(model => model.descripcion, htmlAttributes: new { @class = "control-label col-md-2", placeholder = "Descripción breve del documento." })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.descripcion, 5, 62, new { @class = "form-control", @style = "resize: vertical;min-height: 100px;" })
+                                @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="observaciones">
+                            @Html.LabelFor(model => model.observacion, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.observacion, 10, 62, new { @class = "form-control", @style = "resize: vertical;min-height: 200px;" })
+                                @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group" id="file">
+                            <label class="control-label col-md-2">Adjuntar archivos:</label>
+                            <div class="col-md-10">
+                                <input class="form-control" type="file" name="elementName" multiple="multiple" />
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="form-group">
+                            <div class="btn btn-primary">
+                                <div class="col-md-10">
+                                </div>
+                                <input type="file" id="imageBrowes" multiple="multiple" />
+                            </div>
+                            <div id="imgPreview" class="thumbnail" style="display:none">
+                                <img class="img-responsive" id="targetImg" />
+                                <div class="caption">
+                                    <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
+                                    <span id="description"></span>
+                                </div>
+                            </div>
+
+                        </div>*@
+
+                    <div class="modal-footer">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" id="CrearBoton" value="Crear documento" class="btn btn-default" />
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                }
+
             </div>
         </div>
     </div>
+</div>
+<style>
+    .modal-open.ui-datepicker {
+        /*width: 300px;
+        height: 300px;*/
+        margin: 5px auto 0;
+        font: 12pt Arial, sans-serif;
+    }
 
-    <script>
-        // Helper function to display messages below CKEditor.
-        function ShowMessage(msg) {
-            document.getElementById('eMessage').innerHTML = msg;
+        .modal-open .ui-datepicker table {
+            width: 100%;
+            background-color: white;
         }
 
-        function InsertHTML() {
-            // Get the editor instance that you want to interact with.
-            var editor = CKEDITOR.instances.editor1;
-            var value = document.getElementById('htmlArea').value;
+    .modal-open .ui-datepicker-header {
+        background: #35475e;
+        color: #ffffff;
+        font-family: sans-serif;
+        border-width: 1px 0 0 0;
+        border-style: solid;
+        border-color: #111;
+    }
 
-            // Check the active editing mode.
-            if (editor.mode == 'wysiwyg') {
-                // Insert HTML code.
-                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-insertHtml
-                editor.insertHtml(value);
-            } else
-                alert('You must be in WYSIWYG mode!');
-        }
+    .modal-open .ui-datepicker-title {
+        text-align: center;
+        font-size: 15px;
+    }
 
-        function InsertText() {
-            // Get the editor instance that you want to interact with.
-            var editor = CKEDITOR.instances.editor1;
-            var value = document.getElementById('txtArea').value;
+    .modal-open .ui-datepicker-prev {
+        float: left;
+        cursor: pointer;
+        background-position: center -30px;
+    }
 
-            // Check the active editing mode.
-            if (editor.mode == 'wysiwyg') {
-                // Insert as plain text.
-                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-insertText
-                editor.insertText(value);
-            } else
-                alert('You must be in WYSIWYG mode!');
-        }
+    .modal-open .ui-datepicker-next {
+        float: right;
+        cursor: pointer;
+    }
 
-        function SetContents() {
-            // Get the editor instance that you want to interact with.
-            var editor = CKEDITOR.instances.editor1;
-            var value = document.getElementById('htmlArea').value;
+    .modal-open .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+        width: 49%;
+        color: black;
+        font-family: sans-serif;
+    }
 
-            // Set editor content (replace current content).
-            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-setData
-            editor.setData(value);
-        }
-
-        function GetContents() {
-            // Get the editor instance that you want to interact with.
-            var editor = CKEDITOR.instances.editor1.getData();
-
-            // Get editor content.
-            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-getData
-            debugger
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("GetTipoOrigen")',
-                dataType: 'json',
-                data: { id: editor.Text },
-                success: function (origins) {
-                    alert(editor);
-                },
-                error: function (ex) {
-                    debugger
-                    alert('Failed to retrieve states.' + ex);
-                }
-            });     
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("SetTextEditor")',
-                dataType: 'json',
-                data: { id: editor.Text },
-                success: function (origins) {
-                    alert(editor);
-                },
-                error: function (ex) {
-                    debugger
-                    alert('Failed to retrieve states.' + ex);
-                }
-            });
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("EditText")',
-                dataType: 'json',
-                data: JSON.stringify({ stringhtml: 1 }),
-                success: function (origins) {
-                    alert(editor);
-                },
-                error: function (ex) {
-                    debugger
-                    alert('Failed to retrieve states.' + ex);
-                }
-            }); 
-        }
-
-        function ExecuteCommand(commandName) {
-            // Get the editor instance that you want to interact with.
-            var editor = CKEDITOR.instances.editor1;
-
-            // Check the active editing mode.
-            if (editor.mode == 'wysiwyg') {
-                // Execute the command.
-                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-execCommand
-                editor.execCommand(commandName);
-            } else
-                alert('You must be in WYSIWYG mode!');
-        }
-
-        function CheckDirty() {
-            // Get the editor instance that you want to interact with.
-            var editor = CKEDITOR.instances.editor1;
-            // Checks whether the current editor content contains changes when compared
-            // to the content loaded into the editor at startup.
-            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-checkDirty
-            alert(editor.checkDirty());
-        }
-
-        function ResetDirty() {
-            // Get the editor instance that you want to interact with.
-            var editor = CKEDITOR.instances.editor1;
-            // Resets the "dirty state" of the editor.
-            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-resetDirty
-            editor.resetDirty();
-            alert('The "IsDirty" status was reset.');
-        }
-
-        function Focus() {
-            // Get the editor instance that you want to interact with.
-            var editor = CKEDITOR.instances.editor1;
-            // Focuses the editor.
-            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-focus
-            editor.focus();
-        }
-    </script>
-    <script>
-        // Attaching event listeners to the global CKEDITOR object.
-        // The instanceReady event is fired when an instance of CKEditor has finished its initialization.
-        CKEDITOR.on('instanceReady', function (ev) {
-            ShowMessage('Editor instance <em>' + ev.editor.name + '</em> was loaded.');
-
-            // The editor is ready, so sample buttons can be displayed.
-            document.getElementById('eButtons').style.display = 'block';
-        });
-
-        // Replace the <textarea id="editor1"> with a CKEditor instance.
-        // A reference to the editor object is returned by CKEDITOR.replace() allowing you to work with editor instances.
-        var editor = CKEDITOR.replace('editor1', {
-            height: 150
-        });
-
-        // Attaching event listeners to CKEditor instances.
-        // Refer to https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html for a list of all available events.
-        editor.on('focus', function (evt) {
-            ShowMessage('Editor instance <em>' + this.name + '</em> <b>is focused</b>.');
-        });
-        editor.on('blur', function (evt) {
-            ShowMessage('Editor instance <em>' + this.name + '</em> <b>lost focus</b>.');
-        });
-        // Helper variable to count the number of detected changes in CKEditor.
-        var changesNum = 0;
-        editor.on('change', function (evt) {
-            ShowMessage('The number of changes in <em>' + this.name + '</em>: <b>' + ++changesNum + '</b>.');
-        });
-    </script>
-    <script type="text/javascript">
+    /*.modal-open .ui-datepicker-div {
+        position: sticky;
+        top: 80px !important;
+        right: 50px !important;
+    }*/
+</style>
+<script type="text/javascript">
     //Variables.
     var nomneclatura = "";
     //Metodos
@@ -390,17 +217,10 @@
         $("#CrearBoton").hide();
         $("#origenes").hide();
         $("#tipoOrigenes").hide();
-        $("#textEditor").hide();
         hideall();
     });
-    $("#checkStatus").change(function () {
-        if ($("#checkStatus").val() == 1) {
-            $("#textEditor").show(200);
-        } else {
-            $("#textEditor").hide(200);
-        }
-    });
-     $("#idTipo").change(function ()
+
+    $("#idTipo").change(function ()
     {
         if ($("#idTipo").val() == "")
         {
@@ -441,13 +261,13 @@
         if ($("#tipoOrigen").val() == "") {
             hideall();
             hideexpediente();
-            $("#origenes").hide(200);
-            $("#CrearBoton").hide(200);
+            $("#origenes").hide();
+            $("#CrearBoton").hide();
             $("#idOrigen").get(0).selectedIndex = 0;
             $("#numerosIngresos").hide();
         }
         else {
-            $("#origenes").show(200);
+            $("#origenes").show();
         }
 
     });
@@ -514,7 +334,6 @@
         $("#file").hide();
     }
     function showall() {
-
         $("#ubicaciones").show();
         $("#numerosDocumentos").show();
         $("#idEstados").show();
@@ -524,6 +343,35 @@
         $("#observaciones").show();
         $("#file").show();
     }
+    //$('#fechas').datepicker({
+    //    dateFormat: 'yy-mm-dd',
+    //    closeText: 'Cerrar',
+    //    minDate: "-1",
+    //    maxDate: "0",
+    //    yearRange: '1910:2018',
+    //    language: "Es",
+    //    regional: 'es',
+    //    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    //    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+    //    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    //    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+    //    dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+    //    weekHeader: 'Sm',
+    //    container: '#contenidoModal',
+    //    beforeShow: function (input, inst) {
+    //        var calendar = inst.dpDiv;
+    //        setTimeout(function () {
+    //            calendar.position({
+    //                my: 'center bottom',
+    //                at: 'bottom',
+    //                collision: 'none',
+    //                of: input
+    //            });
+    //        }, 1);
+    //    }
+    //}).on('changeDate', function (ev) {
+    //    $(this).blur();
+    //});
 
     $("#fecha").keydown(function () {
         event.preventDefault();
@@ -848,181 +696,4 @@
 
     });
 
-    </script>
-    <p id="eMessage"></p>
-    <div id="eButtons" style="display: none">
-        <p>
-            <input onclick="GetContents();" type="button" value="Get Editor Content (HTML)">
-        </p>
-    </div>
-</body>
-
-</html>
-
-
-@*<div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title" id="createModal" style="text-align:center;">Crear documento</span>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="contenidoModal">
-
-                    @using (Html.BeginForm("CrearDocumento", "Documento"))
-                    {
-                        @Html.AntiForgeryToken()
-                        <div class="form-horizontal" id="parent">
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            @Html.HiddenFor(model => model.idDocumento)
-
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.idTipo, "Tipo de Documento", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownList("idTipo", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.idTipo, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="tipoOrigenes">
-                                @Html.LabelFor(model => model.tipoOrigen, "Tipo de origen", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownList("tipoOrigen", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.tipoOrigen, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="origenes">
-                                @Html.LabelFor(model => model.idOrigen, "Origen", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownList("idOrigen", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.idOrigen, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="partes">
-                                @Html.LabelFor(model => model.parte, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.parte, new { htmlAttributes = new { @class = "form-control", placeholder = "EXP-AD-NOMBREDELAPERSONA-2018", autocomplete = "off", style = "text-transform: uppercase;" } })
-                                    @Html.ValidationMessageFor(model => model.parte, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group" id="numerosDocumentos">
-                                @Html.LabelFor(model => model.numeroDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @*, placeholder = "MA-PSI-#####-2018", autocomplete = "off"
-                                    @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { @class = "form-control", @id = "numeroDocumento" } })
-                                    @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="numerosIngresos">
-                                @Html.LabelFor(model => model.numeroIngreso, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.numeroIngreso, new { htmlAttributes = new { @class = "form-control", placeholder = "N.I.####-2018", autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.numeroIngreso, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-
-                            <div class="form-group" id="idEstados">
-                                @Html.LabelFor(model => model.idEstado, "Estado", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownList("idEstado", null, htmlAttributes: new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.idEstado, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="fechas">
-                                @Html.LabelFor(model => model.fecha, "Fecha", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @type = "date", @class = "form-control datepicker" } })
-
-                                    @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group" id="ubicaciones">
-                                @Html.LabelFor(model => model.ubicacion, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", placeholder = "La ubicación física del documento." } })
-                                    @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group" id="asuntos">
-                                @Html.LabelFor(model => model.asunto, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.asunto, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", placeholder = "Asunto" } })
-                                    @Html.ValidationMessageFor(model => model.asunto, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="descripciones">
-                                @Html.LabelFor(model => model.descripcion, htmlAttributes: new { @class = "control-label col-md-2", placeholder = "Descripción breve del documento." })
-                                <div class="col-md-10">
-                                    @Html.TextAreaFor(model => model.descripcion, 5, 62, new { @class = "form-control", @style = "resize: vertical;min-height: 100px;" })
-                                    @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group" id="observaciones">
-                                @Html.LabelFor(model => model.observacion, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.TextAreaFor(model => model.observacion, 10, 62, new { @class = "form-control", @style = "resize: vertical;min-height: 200px;" })
-                                    @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group" id="check">
-                                @Html.LabelFor(model => model.checkStatus, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownListFor(model => model.checkStatus, new[] { new SelectListItem { Text = "Si", Value = "1" }, new SelectListItem { Text = "No", Value = "0" } }, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.checkStatus, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-
-                            <div class="form-group" id="textEditor">
-                                @Html.LabelFor(model => model.textoDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.TextAreaFor(model => model.textoDocumento, new { @id = "FullDescription", @class = "form-control", @rows = "200" }) @Html.ValidationMessageFor(model => model.textoDocumento, "", new { @class = "text-danger" })
-                                    <script>
-                                        CKEDITOR.replace("FullDescription");
-                                    </script> @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } }) @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-
-
-                            @*<div class="form-group" id="textEditor">
-                                    @Html.LabelFor(model => model.textoDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div ass="col-md-10">
-                                        @Html.TextAreaFor(model => model.textoDocumento, new { @id = "FullDescription", @class = "form-control", @rows = "200" }) @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                                        <script>
-                                            CKEDITOR.replace("FullDescription");
-                                        </script> @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } }) @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-
-                            <div class="form-group" id="file">
-                                <label class="control-label col-md-2">Adjuntar archivos:</label>
-                                <div class="col-md-10">
-                                    <input class="form-control" type="file" name="elementName" multiple="multiple" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" id="CrearBoton" value="Crear documento" class="btn btn-default" onclick="Save" />
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            </div>
-                        </div>
-                    }
-
-                </div>
-            </div>
-        </div>
-    </div>*@
+</script>

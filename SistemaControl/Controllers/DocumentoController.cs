@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using BackEnd.BLL;
 using BackEnd.Model;
-using NPOI.XWPF.UserModel;
 using PagedList;
 using SistemaControl.Models;
-using Xceed.Words.NET;
-using Spire.Doc;
-using Spire.Doc.Documents;
-using System.Web;
-using System.Net;
-using System.Web.Script.Serialization;
 
 namespace SistemaControl.Controllers
 {
@@ -24,7 +15,7 @@ namespace SistemaControl.Controllers
         private IDocumentoBLL documentoBll;
         private ITablaGeneralBLL tablaGeneralBLL;
         public int pageglobal;
-        private string x;
+
         public ActionResult Index(string option, string search, int page = 1, int pageSize = 4)
         {
             try
@@ -41,7 +32,11 @@ namespace SistemaControl.Controllers
             {
                 ViewBag.search = search;
                 ViewBag.option = option;
-                var listaDocumentos = documentoBll.Find(x => x.numeroDocumento.Contains(search) && x.idTipo == 3 && x.idEstado != 9 && x.numeroIngreso != null || search == null).ToList();
+                //ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+                //List<Documento> listaDocumentos = documentoBll.Find(x => x.numeroDocumento == search && x.idTipo == 3|| search == null).ToList();
+                //PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
+                //return View(model.ToPagedList(pageNumber, pageSize));
+                var listaDocumentos = documentoBll.Find(x => x.numeroDocumento.Contains(search) && x.idTipo == 3 && x.idEstado != 9 && x.numeroIngreso!=null|| search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
                     ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
@@ -67,6 +62,10 @@ namespace SistemaControl.Controllers
             {
                 ViewBag.search = search;
                 ViewBag.option = option;
+                //ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+                //List<Documento> listaDocumentos = documentoBll.Find(x => x.numeroIngreso == search && x.idTipo == 3|| search == null).ToList();
+                //PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
+                //return View(model);
                 var listaDocumentos = documentoBll.Find(x => x.numeroIngreso.Contains(search) && x.idTipo == 3 && x.idEstado != 9 && x.numeroIngreso != null || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
@@ -93,6 +92,10 @@ namespace SistemaControl.Controllers
             {
                 ViewBag.search = search;
                 ViewBag.option = option;
+                //ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+                //List<Documento> listaDocumentos = documentoBll.Find(x => x.asunto == search && x.idTipo == 3 || search == null && x.idTipo == 3).ToList();
+                //PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
+                //return View(model);
                 DateTime date = Convert.ToDateTime(search);
                 var listaDocumentos = documentoBll.Find(x => x.fecha.Equals(date) && x.idTipo == 3 && x.idEstado != 9 && x.numeroIngreso != null || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
@@ -120,8 +123,6 @@ namespace SistemaControl.Controllers
             {
                 option = "";
                 search = null;
-
-
                 ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
                 ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion");
                 ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion");
@@ -182,6 +183,10 @@ namespace SistemaControl.Controllers
             {
                 ViewBag.search = search;
                 ViewBag.option = option;
+                //ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+                //List<Documento> listaDocumentos = documentoBll.Find(x => x.numeroDocumento == search && x.idTipo == 3|| search == null).ToList();
+                //PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
+                //return View(model.ToPagedList(pageNumber, pageSize));
                 var listaDocumentos = documentoBll.Find(x => x.numeroDocumento.Contains(search) && x.idTipo == 3 && x.idEstado != 9 && x.numeroIngreso == null || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
@@ -208,6 +213,10 @@ namespace SistemaControl.Controllers
             {
                 ViewBag.search = search;
                 ViewBag.option = option;
+                //ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+                //List<Documento> listaDocumentos = documentoBll.Find(x => x.numeroIngreso == search && x.idTipo == 3|| search == null).ToList();
+                //PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
+                //return View(model);
                 var listaDocumentos = documentoBll.Find(x => x.numeroIngreso.Contains(search) && x.idTipo == 3 && x.idEstado != 9 && x.numeroIngreso == null || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
@@ -234,6 +243,10 @@ namespace SistemaControl.Controllers
             {
                 ViewBag.search = search;
                 ViewBag.option = option;
+                //ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
+                //List<Documento> listaDocumentos = documentoBll.Find(x => x.asunto == search && x.idTipo == 3 || search == null && x.idTipo == 3).ToList();
+                //PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
+                //return View(model);
                 DateTime date = Convert.ToDateTime(search);
                 var listaDocumentos = documentoBll.Find(x => x.fecha.Equals(date) && x.idTipo == 3 && x.idEstado != 9 && x.numeroIngreso == null || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
@@ -283,7 +296,6 @@ namespace SistemaControl.Controllers
             }
             else
             {
-
                 ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
                 ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion");
                 ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion");
@@ -305,23 +317,7 @@ namespace SistemaControl.Controllers
                 return View(model);
             }
         }
-        public class jsonString
-        {
-            public string id { get; set; }
-        }
-        public JsonResult EditText(Object stringhtml)
-        {
-            jsonString ord = new jsonString();
-            Dictionary<string, object> tmp = (Dictionary<string, object>)stringhtml;
-            object id = null;
-            tmp.TryGetValue("id", out id);
-            ord.id = id.ToString();
 
-
-            //var example2Model = new JavaScriptSerializer().Deserialize<jsonString>(stringhtml);
-            x = (string)id;
-            return this.Json(new { Id = "idOrigen", Reg = "OIJ", Data = ViewBag.idOrigen }, JsonRequestBehavior.AllowGet);
-        }
         public ActionResult IndexReferencias(string option,int id, string search, int page = 1, int pageSize = 15)
         {
             try
@@ -335,6 +331,14 @@ namespace SistemaControl.Controllers
             }
             search = id.ToString();
 
+            //Documento docu = documentoBll.Get(id);
+            //// var doc = documentoBll.Find(x => x.numeroDocumento.Equals(search) && x.idTipo == 3 || search == null).ToList();
+            //var referencias = documentoBll.listaReferencias(docu.idReferencia);
+
+            ////var listaDocumentos = doc.Union(referencias);
+            //var listaDocumentos = referencias;
+
+            ////listaDocumentos.Union(listaDocumentos);
             if (!String.IsNullOrEmpty(search))
             {
                 //var doc = documentoBll.Find(x => x.numeroDocumento.Equals(search) && x.idTipo == 3 && x.idEstado != 9 || search == null).ToList();
@@ -404,64 +408,10 @@ namespace SistemaControl.Controllers
                 return View();
             }
             if (ModelState.IsValid)
-            { 
+            {
                 documento.idReferencia = documentoBll.generaNumeroReferencia();
-                Documento documentoX = (Documento)documento;
-                documentoBll.Agregar(documentoX);
-                
-                Spire.Doc.Document document = new Spire.Doc.Document();
-                //Carga el html de la direccion de createHtml
-                string createHtml = @"C:\Users\Steven Villalobos\Desktop\1142.html";
-                document.LoadFromFile(createHtml, FileFormat.Html, XHTMLValidationType.None);
-                Spire.Doc.Documents.Paragraph paraInserted = new Spire.Doc.Documents.Paragraph(document);
-                paraInserted.AppendText("This is a inserted paragraph, I want to insert this paragraph in the start of document.");
-                document.Sections[0].Paragraphs.Insert(0, paraInserted);
-
-                //Lo almacena en la misma ubicacion con formato Docx
-                document.SaveToFile(@"C:\Users\Steven Villalobos\Desktop\" + documento.idDocumento + "1.docx", FileFormat.Docx);
-
-                //Carga el template
-                string templateDocument = AppDomain.CurrentDomain.BaseDirectory + "Content\\template.docx";
-                var docF = DocX.Load(templateDocument);
-
-                //reemplaza los numeros adentro del documento
-                docF.ReplaceText("[numeroOficio]", documento.numeroDocumento, false);
-                docF.ReplaceText("[numeroIngreso]", documento.numeroIngreso, false);
-
-                //carga e inserta el documento que se convirtio de html to docx y lo guarda
-                string htmlDoc = @"C:\Users\Steven Villalobos\Desktop\" + documento.idDocumento + "1.docx";
-                var docxHtml = DocX.Load(htmlDoc);
-                docF.InsertDocument(docxHtml, true);
-
-                //lo almacena en el escritorio
-                string saveDoc = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + documento.idDocumento + ".docx";
-                docF.SaveAs(saveDoc);
-
-                saveDoc = saveDoc.Remove(saveDoc.Length -5);
-                saveDoc +=".pdf";
-                document.SaveToFile(saveDoc, FileFormat.PDF);
-                //Launch Document  
-                System.Diagnostics.Process.Start(saveDoc);
-                try {
-                    System.IO.File.Delete(htmlDoc);
-                    System.IO.File.Delete(htmlDoc);
-                }
-                catch (Exception ex) {
-
-                }
-                
-                //Process.Start("WINWORD.EXE", saveDoc);
-                //System.Diagnostics.Process.Start(saveDoc);
+                documentoBll.Agregar(documento);
                 documentoBll.SaveChanges();
-                //WebClient User = new WebClient();
-                //Byte[] FileBuffer = User.DownloadData(saveDoc);
-                //if (FileBuffer != null)
-                //{
-                //    Response.ContentType = "application/pdf";
-                //    Response.AddHeader("content-length", FileBuffer.Length.ToString());
-                //    Response.BinaryWrite(FileBuffer);
-                //}
-
                 return RedirectToAction("Index");
             }
             DocumentoViewModel documentoVista = (DocumentoViewModel)documento;
@@ -471,22 +421,7 @@ namespace SistemaControl.Controllers
             ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion", documento.idEstado);
             return PartialView("Crear", documentoVista);
         }
-        public JsonResult SetTextEditor(int id)
-        {
-            if (id != null) {
-                x = id.ToString();
-            }
-            return this.Json(new { id = "1"}, JsonRequestBehavior.AllowGet);
-        }
-        [HttpPost]
-        public JsonResult xxxxx(string id)
-        {
-            if (id != null)
-            {
-                x = id;
-            }
-            return this.Json(new { id = "1" }, JsonRequestBehavior.AllowGet);
-        }
+
         public ActionResult Crear()
         {
             try

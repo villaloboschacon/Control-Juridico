@@ -64,39 +64,6 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Spire.Barcode, Version=3.2.0.14040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\FreeSpire.Office.4.3.1\lib\net40\Spire.Barcode.dll</HintPath>
-    </Reference>
-    <Reference Include="Spire.Common, Version=2.2.16.19040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\FreeSpire.Office.4.3.1\lib\net40\Spire.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Spire.DataExport, Version=4.1.9.19040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\FreeSpire.Office.4.3.1\lib\net40\Spire.DataExport.dll</HintPath>
-    </Reference>
-    <Reference Include="Spire.DataExport.ResourceMgr, Version=2.1.0.19040, Culture=neutral, PublicKeyToken=4bc1500157862925, processorArchitecture=MSIL">
-      <HintPath>..\packages\FreeSpire.Office.4.3.1\lib\net40\Spire.DataExport.ResourceMgr.dll</HintPath>
-    </Reference>
-    <Reference Include="Spire.Doc, Version=7.2.8.19040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\FreeSpire.Office.4.3.1\lib\net40\Spire.Doc.dll</HintPath>
-    </Reference>
-    <Reference Include="Spire.DocViewer.Forms, Version=4.1.10.19040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\FreeSpire.Office.4.3.1\lib\net40\Spire.DocViewer.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="Spire.License, Version=1.3.7.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
-      <HintPath>..\packages\FreeSpire.Office.4.3.1\lib\net40\Spire.License.dll</HintPath>
-    </Reference>
-    <Reference Include="Spire.Pdf, Version=5.2.17.19040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\FreeSpire.Office.4.3.1\lib\net40\Spire.Pdf.dll</HintPath>
-    </Reference>
-    <Reference Include="Spire.PdfViewer.Forms, Version=4.2.7.19040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\FreeSpire.Office.4.3.1\lib\net40\Spire.PdfViewer.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="Spire.Presentation, Version=4.2.6.19040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\FreeSpire.Office.4.3.1\lib\net40\Spire.Presentation.dll</HintPath>
-    </Reference>
-    <Reference Include="Spire.XLS, Version=9.2.16.19040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\FreeSpire.Office.4.3.1\lib\net40\Spire.XLS.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -108,9 +75,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Xceed.Words.NET, Version=1.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\DocX.1.3.0\lib\net40\Xceed.Words.NET.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\BLLGenericoImpl.cs" />
@@ -215,8 +179,6 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="doc\evaluation.rtf" />
-    <None Include="doc\richtexteditor.chm" />
     <None Include="Model\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
     </None>
@@ -280,7 +242,6 @@
       <DependentUpon>Model.edmx</DependentUpon>
       <LastGenOutput>Model.cs</LastGenOutput>
     </Content>
-    <Content Include="READ_ME.txt" />
     <Content Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
