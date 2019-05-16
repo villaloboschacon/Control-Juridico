@@ -4,10 +4,13 @@
     ViewBag.Title = "Index";
 }
 <head>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    de
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.ckeditor.com/4.11.4/standard-all/ckeditor.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-
     <link type="text/css" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
@@ -25,6 +28,17 @@
 
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <script type="text/javascript" src="http://codeseven.github.com/toastr/toastr.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="http://codeseven.github.com/toastr/toastr.css">
+    <link rel="stylesheet" type="text/css" href="http://codeseven.github.com/toastr/toastr-responsive.css">
+
+    @*<link href="~/Content/Toast/toastrsample.css" rel="stylesheet" />*@
+    <script src="~/Content/Toast/toastrsample.js"></script>
 
 </head>
 <div class="title">Oficios de Entrada</div>
@@ -138,7 +152,9 @@
 
     </div>
 
-
+    <button type="button" class="btn" id="showtoast">
+        Show Toastr Notification
+    </button>
     @*hidden field for storing current DocId*@
     <input type="hidden" id="idDocumento" />
 
@@ -175,16 +191,6 @@
         <li>
             <a href="#" onclick="Refe(getInd())">Referencias</a>
         </li>
-        @*<li>
-            <a tabindex="-1" href="/Documento/Index" onclick="Reference(getInd())" data-value="getInd()" data-toggle="modal" data-target="#referencia">Ver Ref</a>
-        </li>
-        <li>
-            <a class="item" font-family:sans-serif" href="/Documento/Referencias">Ver referenciasmm</a>
-
-        </li>
-        <li>
-            <a tabindex="-1" href="#">Eliminar</a>
-        </li>*@
     </ul>
 </div>
 <style>
@@ -221,16 +227,40 @@
 
 
 <script>
+
+    $(document).ready(function () {
+        if ('@TempData["message"]' == "success") {
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 3000,
+                "extendedTimeOut": 1000
+            }
+
+            var d = '@TempData["DocumentoId"]';
+            toastr["success"](d, "Oficio agregado exitosamente");
+        }
+        else {
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 3000,
+                "extendedTimeOut": 1000
+            }
+            toastr["error"]( "Error al crear el documento.");
+        }
+    });
+
     $('#crearModal').on('hidden', function () {
-        debugger;
         $(this).data('modal', null);
     });
-
     $("#crearModal").on('hidden.bs.modal', function () {
-        debugger;
         $(this).data('bs.modal', null);
     });
-
     var ind = 0;
     $(this).mousedown(function (e) {
         if (e.which == 2) {
@@ -244,11 +274,9 @@
         $(this).addClass('highlight').siblings().removeClass('highlight');
         //do your stuff, you can use $(this) to get current cell
     });
-
     $('#table_documentos').find('tr').click(function (e) {
         var rows = $('tr', table_documentos);
         ind = rows.eq($(this).index()).find("td:first").text();
-
         return rows.eq($(this).index()).find("td:first").text();
     });
     $vars = 0;
@@ -271,35 +299,30 @@
         $('html').click(function () {
             $contextMenu.hide();
         });
-    });
+    }); 
+
     function getInd() {
         console.log($vars);
         return $vars;
     };
-
     $('a.redirect').click(function (event) {
         event.preventDefault();
         var href = $(this).attr('href')
         window.location = 'http://localhost:53772/Documento/IndexReferencias' + href;
     });
-
     function Limpiar() {
         $('#search').val("")
     }
-
     $("#crearModal").scroll(function () {
-
         $("#fecha").click(function () {
             if ($('#fecha').blur()) {
                 $("#ui-datepicker-div").show();
             }
         });
-
         $("#ui-datepicker-div").hide();
     });
     function Crear() {
         var url = '@Url.Action("Crear")';
-
         $.ajax({
             url: url,
             datatype: "json",
@@ -314,7 +337,6 @@
             }
         });
     }
-
     function Edit(iddocumento) {
         var url = '@Url.Action("Editar")';
         var myId = iddocumento;
@@ -414,15 +436,11 @@
             return false;
         });
     });
-
     var Confirmar = function (idDocumento) {
-
         $("#idDocumento").val(idDocumento);
         $('#modalArchivar').modal('show');
        // $("#myModal").show();// show();//('show');
-
     }
-
     var Archivar = function () {
         var url = '@Url.Action("Archivar")';
         var myId = $("#idDocumento").val();
@@ -436,13 +454,9 @@
             success: function (result) {
                 $("#modalArchivar").modal("hide");
                 location.reload();
-
             }
-
         })
-
     }
-
     function Ref(iddocumento) {
         var url = '@Url.Action("IndexReferencias")';
         var myId = iddocumento;
@@ -456,13 +470,9 @@
             success: function (result) {
                 //$("#modalArchivar").modal("hide");
                 location.reload();
-
             }
-
         })
-
     }
-
   function Refe(iddocumento) {
         var url = '@Url.Action("IndexReferencias")';
         var myId = iddocumento;
@@ -484,6 +494,110 @@
             }
         });
     }
-
-
+</script>
+<script>
+        // Helper function to display messages below CKEditor.
+        function ShowMessage(msg) {
+            document.getElementById('eMessage').innerHTML = msg;
+        }
+        function InsertHTML() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.editor1;
+            var value = document.getElementById('htmlArea').value;
+            // Check the active editing mode.
+            if (editor.mode == 'wysiwyg') {
+                // Insert HTML code.
+                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-insertHtml
+                editor.insertHtml(value);
+            } else
+                alert('You must be in WYSIWYG mode!');
+        }
+        function InsertText() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.editor1;
+            var value = document.getElementById('txtArea').value;
+            // Check the active editing mode.
+            if (editor.mode == 'wysiwyg') {
+                // Insert as plain text.
+                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-insertText
+                editor.insertText(value);
+            } else
+                alert('You must be in WYSIWYG mode!');
+        }
+        function SetContents() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.editor1;
+            var value = document.getElementById('htmlArea').value;
+            // Set editor content (replace current content).
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-setData
+            editor.setData(value);
+        }
+        function GetContents() {
+            // Get the editor instance that you want to interact with.
+            //var editor = CKEDITOR.instances.editor1;
+            // Get editor content.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-getData
+            //alert(editor.getData());
+        }
+        function ExecuteCommand(commandName) {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.editor1;
+            // Check the active editing mode.
+            if (editor.mode == 'wysiwyg') {
+                // Execute the command.
+                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-execCommand
+                editor.execCommand(commandName);
+            } else
+                alert('You must be in WYSIWYG mode!');
+        }
+        function CheckDirty() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.editor1;
+            // Checks whether the current editor content contains changes when compared
+            // to the content loaded into the editor at startup.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-checkDirty
+            alert(editor.checkDirty());
+        }
+        function ResetDirty() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.editor1;
+            // Resets the "dirty state" of the editor.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-resetDirty
+            editor.resetDirty();
+            alert('The "IsDirty" status was reset.');
+        }
+        function Focus() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.editor1;
+            // Focuses the editor.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-focus
+            editor.focus();
+        }
+</script>
+<script>
+        // Attaching event listeners to the global CKEDITOR object.
+        // The instanceReady event is fired when an instance of CKEditor has finished its initialization.
+        CKEDITOR.on('instanceReady', function (ev) {
+            ShowMessage('Editor instance <em>' + ev.editor.name + '</em> was loaded.');
+            // The editor is ready, so sample buttons can be displayed.
+            document.getElementById('eButtons').style.display = 'block';
+        });
+        // Replace the <textarea id="editor1"> with a CKEditor instance.
+        // A reference to the editor object is returned by CKEDITOR.replace() allowing you to work with editor instances.
+        //var editor = CKEDITOR.replace('editor1', {
+        //    height: 150
+        //});
+        // Attaching event listeners to CKEditor instances.
+        // Refer to https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html for a list of all available events.
+        //editor.on('focus', function (evt) {
+        //    ShowMessage('Editor instance <em>' + this.name + '</em> <b>is focused</b>.');
+        //});
+        //editor.on('blur', function (evt) {
+        //    ShowMessage('Editor instance <em>' + this.name + '</em> <b>lost focus</b>.');
+        //});
+        //// Helper variable to count the number of detected changes in CKEditor.
+        //var changesNum = 0;
+        //editor.on('change', function (evt) {
+        //    ShowMessage('The number of changes in <em>' + this.name + '</em>: <b>' + ++changesNum + '</b>.');
+        //});
 </script>

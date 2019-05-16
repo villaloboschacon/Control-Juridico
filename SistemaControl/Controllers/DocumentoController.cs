@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web.Mvc;
 using BackEnd.BLL;
 using BackEnd.Model;
 using PagedList;
 using SistemaControl.Models;
+using Spire.Doc;
+using Spire.Doc.Documents;
+using Xceed.Words.NET;
 
 namespace SistemaControl.Controllers
 {
@@ -16,7 +21,7 @@ namespace SistemaControl.Controllers
         private ITablaGeneralBLL tablaGeneralBLL;
         public int pageglobal;
 
-        public ActionResult Index(string option, string search, int page = 1, int pageSize = 4)
+        public ActionResult Index(string option, string search, int page = 1, int pageSize = 4, string message = "")
         {
             try
             {
@@ -27,7 +32,13 @@ namespace SistemaControl.Controllers
             {
                 return null;
             }
-
+            if (!string.IsNullOrEmpty(message))
+            {
+                TempData["message"] = "success";
+            }
+            else {
+                TempData["message"] = "error";
+            }
             if (option == "Número de Oficio" && !String.IsNullOrEmpty(search))
             {
                 ViewBag.search = search;
@@ -410,16 +421,69 @@ namespace SistemaControl.Controllers
             if (ModelState.IsValid)
             {
                 documento.idReferencia = documentoBll.generaNumeroReferencia();
+                
+                //Crea el html del texto recibido en el modal
+                string path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + documento.idDocumento + ".html";
+                using (FileStream fs = new FileStream(path, FileMode.Create))
+                {
+                    using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
+                    {
+                        w.WriteLine(documento.texto);
+                    }
+                }
+                //Carga el html de la direccion de path
+                Spire.Doc.Document document = new Spire.Doc.Document();
+                document.LoadFromFile(path, FileFormat.Html, XHTMLValidationType.None);
+
+                //Lo almacena en la misma ubicacion con formato Docx
+                string ContentDocx = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + documento.idDocumento + "1.docx";
+                document.SaveToFile(ContentDocx, FileFormat.Docx);
+
+                //Carga el template
+                string templateDocument = AppDomain.CurrentDomain.BaseDirectory + "Content\\template.docx";
+                var templateOficio = DocX.Load(templateDocument);
+
+                //reemplaza los numeros adentro del documento
+                templateOficio.ReplaceText("[numeroOficio]", documento.numeroDocumento, false);
+                templateOficio.ReplaceText("[numeroIngreso]", documento.numeroIngreso, false);
+
+                //carga e inserta el documento que se convirtio de html to docx y lo guarda
+                var docxHtml = DocX.Load(ContentDocx);
+                templateOficio.InsertDocument(docxHtml, true);
+
+                //lo almacena en el escritorio
+                path = path.Remove(path.Length - 5);
+                path += ".docx";
+                templateOficio.SaveAs(path);
+
+                path = path.Remove(path.Length - 5);
+                path += ".pdf";
+                document.SaveToFile(path, FileFormat.PDF);
+                //Launch Document  
+                System.Diagnostics.Process.Start(path);
+                try
+                {
+                    System.IO.File.Delete(path);
+                    path = path.Remove(path.Length - 4);
+                    path += ".docx";
+                    System.IO.File.Delete(path);
+                }
+                catch (Exception ex)
+                {
+
+                }
+                documento.texto = " ";
                 documentoBll.Agregar(documento);
                 documentoBll.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["DocumentoId"] = documento.numeroDocumento;
+                return RedirectToAction("Index",new { message = "success" });
             }
             DocumentoViewModel documentoVista = (DocumentoViewModel)documento;
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion", documento.idTipo);
             ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion", documento.tipoOrigen);
             ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion", documento.idOrigen);
             ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion", documento.idEstado);
-            return PartialView("Crear", documentoVista);
+            return RedirectToAction("Index", new { message = "error" });
         }
 
         public ActionResult Crear()

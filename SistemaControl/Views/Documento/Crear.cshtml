@@ -1,23 +1,77 @@
 ﻿@model SistemaControl.Models.DocumentoViewModel
-@*Scripts para validaciones y mensajes de alerta*@
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-@*--Espacio de scripts cerrado--*@
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="modal-title" id="createModal" style="text-align:center;">Crear documento</span>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div id="contenidoModal">
+<!doctype html>
+<html lang="en">
 
-                @using (Html.BeginForm("CrearDocumento", "Documento"))
-                {
-                    @Html.AntiForgeryToken()
+<head>
+    <meta charset="utf-8">
+    <meta name="robots">
+    <title>Crear Documento</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.ckeditor.com/4.11.4/standard-all/ckeditor.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+    <style>
+        .modal-open.ui-datepicker {
+            margin: 5px auto 0;
+            font: 12pt Arial, sans-serif;
+        }
+
+            .modal-open .ui-datepicker table {
+                width: 100%;
+                background-color: white;
+            }
+
+        .modal-open .ui-datepicker-header {
+            background: #35475e;
+            color: #ffffff;
+            font-family: sans-serif;
+            border-width: 1px 0 0 0;
+            border-style: solid;
+            border-color: #111;
+        }
+
+        .modal-open .ui-datepicker-title {
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .modal-open .ui-datepicker-prev {
+            float: left;
+            cursor: pointer;
+            background-position: center -30px;
+        }
+
+        .modal-open .ui-datepicker-next {
+            float: right;
+            cursor: pointer;
+        }
+
+        .modal-open .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+            width: 49%;
+            color: black;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="createModal" style="text-align:center;">Crear documento</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="contenidoModal">
+
+                    @using (Html.BeginForm("CrearDocumento", "Documento"))
+                    {
+                        @Html.AntiForgeryToken()
                     <div class="form-horizontal" id="parent">
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         @Html.HiddenFor(model => model.idDocumento)
@@ -118,6 +172,23 @@
                                 @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
                             </div>
                         </div>
+                        <div class="form-group" id="textoCheck">
+                            @Html.LabelFor(model => model.check, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.check, new[] { new SelectListItem { Text = "Seleccione un opción.", Value = "0" },new SelectListItem { Text = "Si", Value = "1" }, new SelectListItem { Text = "No", Value = "2" } }, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.check, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group" id="textoDocumento">
+                            @Html.LabelFor(model => model.texto, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.texto, new { @id = "texto", @name = "editor1" })
+                                <br />
+                                <input class="btn btn-default" onclick="GetContents();" type="button" value="Guardar archivo">
+                            </div>
+                        </div>
+
+
                         <div class="form-group" id="file">
                             <label class="control-label col-md-2">Adjuntar archivos:</label>
                             <div class="col-md-10">
@@ -125,85 +196,127 @@
                             </div>
                         </div>
                     </div>
-                    @*<div class="form-group">
-                            <div class="btn btn-primary">
-                                <div class="col-md-10">
-                                </div>
-                                <input type="file" id="imageBrowes" multiple="multiple" />
-                            </div>
-                            <div id="imgPreview" class="thumbnail" style="display:none">
-                                <img class="img-responsive" id="targetImg" />
-                                <div class="caption">
-                                    <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
-                                    <span id="description"></span>
-                                </div>
-                            </div>
 
-                        </div>*@
-
-                    <div class="modal-footer">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" id="CrearBoton" value="Crear documento" class="btn btn-default" />
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <div class="modal-footer">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" id="CrearBoton" value="Crear documento" class="btn btn-default" onclick="Save" />
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
                         </div>
-                    </div>
-                }
+                    }
 
+                </div>
             </div>
         </div>
     </div>
-</div>
-<style>
-    .modal-open.ui-datepicker {
-        /*width: 300px;
-        height: 300px;*/
-        margin: 5px auto 0;
-        font: 12pt Arial, sans-serif;
-    }
 
-        .modal-open .ui-datepicker table {
-            width: 100%;
-            background-color: white;
+    <script>
+        // Helper function to display messages below CKEditor.
+        function ShowMessage(msg) {
+            document.getElementById('eMessage').innerHTML = msg;
         }
-
-    .modal-open .ui-datepicker-header {
-        background: #35475e;
-        color: #ffffff;
-        font-family: sans-serif;
-        border-width: 1px 0 0 0;
-        border-style: solid;
-        border-color: #111;
-    }
-
-    .modal-open .ui-datepicker-title {
-        text-align: center;
-        font-size: 15px;
-    }
-
-    .modal-open .ui-datepicker-prev {
-        float: left;
-        cursor: pointer;
-        background-position: center -30px;
-    }
-
-    .modal-open .ui-datepicker-next {
-        float: right;
-        cursor: pointer;
-    }
-
-    .modal-open .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
-        width: 49%;
-        color: black;
-        font-family: sans-serif;
-    }
-
-    /*.modal-open .ui-datepicker-div {
-        position: sticky;
-        top: 80px !important;
-        right: 50px !important;
-    }*/
-</style>
-<script type="text/javascript">
+        function InsertHTML() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto;
+            var value = document.getElementById('htmlArea').value;
+            // Check the active editing mode.
+            if (editor.mode == 'wysiwyg') {
+                // Insert HTML code.
+                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-insertHtml
+                editor.insertHtml(value);
+            } else
+                alert('You must be in WYSIWYG mode!');
+        }
+        function InsertText() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto;
+            var value = document.getElementById('txtArea').value;
+            // Check the active editing mode.
+            if (editor.mode == 'wysiwyg') {
+                // Insert as plain text.
+                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-insertText
+                editor.insertText(value);
+            } else
+                alert('You must be in WYSIWYG mode!');
+        }
+        function SetContents() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto;
+            var value = document.getElementById('htmlArea').value;
+            // Set editor content (replace current content).
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-setData
+            editor.setData(value);
+        }
+        function GetContents() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto.getData();
+            // Get editor content.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-getData
+            $("#texto").val(editor);
+        }
+        function ExecuteCommand(commandName) {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto;
+            // Check the active editing mode.
+            if (editor.mode == 'wysiwyg') {
+                // Execute the command.
+                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-execCommand
+                editor.execCommand(commandName);
+            } else
+                alert('You must be in WYSIWYG mode!');
+        }
+        function CheckDirty() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto;
+            // Checks whether the current editor content contains changes when compared
+            // to the content loaded into the editor at startup.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-checkDirty
+            alert(editor.checkDirty());
+        }
+        function ResetDirty() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto;
+            // Resets the "dirty state" of the editor.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-resetDirty
+            editor.resetDirty();
+            alert('The "IsDirty" status was reset.');
+        }
+        function Focus() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto;
+            // Focuses the editor.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-focus
+            editor.focus();
+        }
+    </script>
+    <script>
+        // Attaching event listeners to the global CKEDITOR object.
+        // The instanceReady event is fired when an instance of CKEditor has finished its initialization.
+        CKEDITOR.on('instanceReady', function (ev) {
+            ShowMessage('Editor instance <em>' + ev.editor.name + '</em> was loaded.');
+            // The editor is ready, so sample buttons can be displayed.
+            document.getElementById('eButtons').style.display = 'block';
+        });
+        // Replace the <textarea id="editor1"> with a CKEditor instance.
+        // A reference to the editor object is returned by CKEDITOR.replace() allowing you to work with editor instances.
+        var editor = CKEDITOR.replace('texto', {
+            height: 150
+        });
+        // Attaching event listeners to CKEditor instances.
+        // Refer to https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html for a list of all available events.
+        editor.on('focus', function (evt) {
+            ShowMessage('Editor instance <em>' + this.name + '</em> <b>is focused</b>.');
+        });
+        editor.on('blur', function (evt) {
+            ShowMessage('Editor instance <em>' + this.name + '</em> <b>lost focus</b>.');
+        });
+        // Helper variable to count the number of detected changes in CKEditor.
+        var changesNum = 0;
+        editor.on('change', function (evt) {
+            ShowMessage('The number of changes in <em>' + this.name + '</em>: <b>' + ++changesNum + '</b>.');
+        });
+    </script>
+    <script type="text/javascript">
     //Variables.
     var nomneclatura = "";
     //Metodos
@@ -216,22 +329,34 @@
         $("#numerosIngresos").hide();
         $("#CrearBoton").hide();
         $("#origenes").hide();
-        $("#tipoOrigenes").hide();
+        $("#tipoOrigenes").hide();  
+        $("#textoDocumento").hide();
+        $("#textoCheck").hide();
         hideall();
     });
-
-    $("#idTipo").change(function ()
+    $("#check").change(function () {
+        if ($("#check").val() == 1) {
+            $("#textoDocumento").show(200);
+        } else {
+            $("#textoDocumento").hide(200);
+        }
+    });
+     $("#idTipo").change(function ()
     {
         if ($("#idTipo").val() == "")
         {
             hideall();
             hideexpediente();
-            $("#origenes").hide();
-            $("#tipoOrigenes").hide();
-            $("#CrearBoton").hide();
+            $("#check").val(1);
+            $("#origenes").hide(200);
+            $("#tipoOrigenes").hide(200);
+            $("#CrearBoton").hide(200);
             $("#tipoOrigen").get(0).selectedIndex = 0;
             $("#idOrigen").get(0).selectedIndex = 0;
-            $("#numerosIngresos").hide();
+            $("#numerosIngresos").hide(200);
+            $("#textoDocumento").hide(200);
+            $("#textoCheck").hide(200);
+            $("#check").val(0);
         }
         else
         {
@@ -240,7 +365,7 @@
                 if ($("#idTipo").val() == 3)
                 {
                     showoficio();
-                    $("#numerosIngresos").show();
+                    $("#numerosIngresos").show(200);
                 }
                 else if ($("#idTipo").val() == 23)
                 {
@@ -249,130 +374,102 @@
                 else
                 {
                     showexpediente();
-                    $("#numerosIngresos").show();
+                    $("#numerosIngresos").show(200);
                 }
             }
-            $('#tipoOrigenes').show();
+            $('#tipoOrigenes').show(200);
         }
-
     });
-
     $("#tipoOrigen").change(function () {
         if ($("#tipoOrigen").val() == "") {
             hideall();
             hideexpediente();
-            $("#origenes").hide();
-            $("#CrearBoton").hide();
+            $("#origenes").hide(200);
+            $("#CrearBoton").hide(200);
             $("#idOrigen").get(0).selectedIndex = 0;
-            $("#numerosIngresos").hide();
+            $("#numerosIngresos").hide(200);
+            $("#check").val(0);
         }
         else {
-            $("#origenes").show();
+            $("#origenes").show(200);
         }
-
     });
-
     $("#idOrigen").change(function () {
         if ($("#idOrigen").val() == "") {
             hideall();
             hideexpediente();
-            $("#CrearBoton").hide();
-            $("#numerosIngresos").hide();
+            $("#check").val(0);
+            $("#CrearBoton").hide(200);
+            $("#numerosIngresos").hide(200);
         }
         else {
             showall();
             var valIdTipo = $("#idTipo").val();
             if (valIdTipo == 3) {
                 showoficio();
-                $("#numerosIngresos").show();
+                $("#numerosIngresos").show(200);
             }
             else if (valIdTipo == 23) {
                 showoficiosin();
             }
             else {
                 showexpediente();
-                $("#numerosIngresos").show();
+                $("#numerosIngresos").show(200);
             }
-            $("#CrearBoton").show();
+            $("#CrearBoton").show(200);
         }
-
     });
     function showoficio() {
         hideexpediente();
     }
     function hideexpediente() {
-        $("#Expediente").hide();
-        $("#partes").hide();
-        $("#ubicaciones").hide();
+        $("#Expediente").hide(200);
+        $("#partes").hide(200);
+        $("#ubicaciones").hide(200);
+        $("#textoDocumento").hide(200);
     }
     function showexpediente() {
         if ($("#idOrigen").val() == "") {
-            $("#Expediente").hide();
-            $("#partes").hide();
-            $("#ubicaciones").hide();
-
+            $("#Expediente").hide(200);
+            $("#partes").hide(200);
+            $("#ubicaciones").hide(200);
+            $("#textoCheck").hide(200);
         }
         else {
-            $("#Expediente").show();
-            $("#partes").show();
-            $("#ubicaciones").show();
+            $("#Expediente").show(200);
+            $("#partes").show(200);
+            $("#ubicaciones").show(200);
+            $("#textoCheck").show(200);
         }
     }
-
     function showoficiosin() {
         hideexpediente();
-        $("#numerosIngresos").hide();
+        $("#numerosIngresos").hide(200);
     }
     function hideall() {
-        $("#ubicaciones").hide();
-        $("#numerosDocumentos").hide();
-        $("#idEstados").hide();
-        $("#fechas").hide();
-        $("#asuntos").hide();
-        $("#descripciones").hide();
-        $("#observaciones").hide();
-        $("#file").hide();
+        $("#ubicaciones").hide(200);
+        $("#numerosDocumentos").hide(200);
+        $("#idEstados").hide(200);
+        $("#fechas").hide(200);
+        $("#asuntos").hide(200);
+        $("#descripciones").hide(200);
+        $("#observaciones").hide(200);
+        $("#file").hide(200);
+        $("#textoDocumento").hide(200);
+        $("#textoCheck").hide(200);
     }
     function showall() {
-        $("#ubicaciones").show();
-        $("#numerosDocumentos").show();
-        $("#idEstados").show();
-        $("#fechas").show();
-        $("#asuntos").show();
-        $("#descripciones").show();
-        $("#observaciones").show();
-        $("#file").show();
+        $("#ubicaciones").show(200);
+        $("#numerosDocumentos").show(200);
+        $("#idEstados").show(200);
+        $("#fechas").show(200);
+        $("#asuntos").show(200);
+        $("#descripciones").show(200);
+        $("#observaciones").show(200);
+        $("#file").show(200);
+        $("#textoDocumento").show(200);
+        $("#textoCheck").show(200);
     }
-    //$('#fechas').datepicker({
-    //    dateFormat: 'yy-mm-dd',
-    //    closeText: 'Cerrar',
-    //    minDate: "-1",
-    //    maxDate: "0",
-    //    yearRange: '1910:2018',
-    //    language: "Es",
-    //    regional: 'es',
-    //    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-    //    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-    //    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-    //    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
-    //    dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-    //    weekHeader: 'Sm',
-    //    container: '#contenidoModal',
-    //    beforeShow: function (input, inst) {
-    //        var calendar = inst.dpDiv;
-    //        setTimeout(function () {
-    //            calendar.position({
-    //                my: 'center bottom',
-    //                at: 'bottom',
-    //                collision: 'none',
-    //                of: input
-    //            });
-    //        }, 1);
-    //    }
-    //}).on('changeDate', function (ev) {
-    //    $(this).blur();
-    //});
-
     $("#fecha").keydown(function () {
         event.preventDefault();
         }
@@ -399,7 +496,6 @@
                 event.preventDefault();
             }
             else {
-
                 if ((e.key == 'Backspace' && $('#parte').val() == 'EXP-AD-') || e.keyCode == 32) {
                     event.preventDefault();
                 }
@@ -410,9 +506,7 @@
                 event.preventDefault();
             }
         }
-
     });
-
     //Cambiar los combos cuando se cambia el tipo de origen
     $("#tipoOrigen").change(function () {
         $("#idOrigen").empty();
@@ -434,7 +528,6 @@
                     alert('Seleccione una opción válida.' + ex);
                 }
             }
-
             );
             return false;
         }
@@ -629,14 +722,12 @@
             else {
                 event.preventDefault();
             }
-
         }
         else {
             if (e.key != 1 && e.key != 2 && e.key != 3 && e.key != 4 && e.key != 5 && e.key != 6 && e.key != 7 && e.key != 8 && e.key != 9 && e.key != 0 && e.key != 'Backspace' && e.keyCode != 32) {
                 event.preventDefault();
             }
             else {
-
                 if ((e.key == 'Backspace' && $('#numeroDocumento').val() == 'MA-' + nomenclatura) || e.keyCode == 32) {
                     event.preventDefault();
                 }
@@ -647,7 +738,6 @@
                 event.preventDefault();
             }
         }
-
     });
     //Cuando se pone el click escribe las iniciales
     $("#numeroIngreso").click(function () {
@@ -675,14 +765,12 @@
             else {
                 event.preventDefault();
             }
-
         }
         else {
             if (e.key != 1 && e.key != 2 && e.key != 3 && e.key != 4 && e.key != 5 && e.key != 6 && e.key != 7 && e.key != 8 && e.key != 9 && e.key != 0 && e.key != 'Backspace' && e.keyCode != 32) {
                 event.preventDefault();
             }
             else {
-
                 if ((e.key == 'Backspace' && $('#numeroIngreso').val() == 'N.I.') || e.keyCode == 32) {
                     event.preventDefault();
                 }
@@ -693,7 +781,160 @@
                 event.preventDefault();
             }
         }
-
     });
+    </script>
+    <p id="eMessage"></p>
+    <div id="eButtons" style="display: none">
+        <p>
+            <input onclick="GetContents();" type="button" value="Get Editor Content (HTML)">
+        </p>
+    </div>
+</body>
 
-</script>
+</html>
+
+
+@*<div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="createModal" style="text-align:center;">Crear documento</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="contenidoModal">
+                    @using (Html.BeginForm("CrearDocumento", "Documento"))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-horizontal" id="parent">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.idDocumento)
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.idTipo, "Tipo de Documento", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("idTipo", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.idTipo, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="tipoOrigenes">
+                                @Html.LabelFor(model => model.tipoOrigen, "Tipo de origen", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("tipoOrigen", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.tipoOrigen, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="origenes">
+                                @Html.LabelFor(model => model.idOrigen, "Origen", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("idOrigen", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.idOrigen, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="partes">
+                                @Html.LabelFor(model => model.parte, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.parte, new { htmlAttributes = new { @class = "form-control", placeholder = "EXP-AD-NOMBREDELAPERSONA-2018", autocomplete = "off", style = "text-transform: uppercase;" } })
+                                    @Html.ValidationMessageFor(model => model.parte, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="numerosDocumentos">
+                                @Html.LabelFor(model => model.numeroDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @*, placeholder = "MA-PSI-#####-2018", autocomplete = "off"
+                                    @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { @class = "form-control", @id = "numeroDocumento" } })
+                                    @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="numerosIngresos">
+                                @Html.LabelFor(model => model.numeroIngreso, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.numeroIngreso, new { htmlAttributes = new { @class = "form-control", placeholder = "N.I.####-2018", autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.numeroIngreso, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="idEstados">
+                                @Html.LabelFor(model => model.idEstado, "Estado", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("idEstado", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.idEstado, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="fechas">
+                                @Html.LabelFor(model => model.fecha, "Fecha", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @type = "date", @class = "form-control datepicker" } })
+                                    @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="ubicaciones">
+                                @Html.LabelFor(model => model.ubicacion, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", placeholder = "La ubicación física del documento." } })
+                                    @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="asuntos">
+                                @Html.LabelFor(model => model.asunto, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.asunto, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", placeholder = "Asunto" } })
+                                    @Html.ValidationMessageFor(model => model.asunto, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="descripciones">
+                                @Html.LabelFor(model => model.descripcion, htmlAttributes: new { @class = "control-label col-md-2", placeholder = "Descripción breve del documento." })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.descripcion, 5, 62, new { @class = "form-control", @style = "resize: vertical;min-height: 100px;" })
+                                    @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="observaciones">
+                                @Html.LabelFor(model => model.observacion, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.observacion, 10, 62, new { @class = "form-control", @style = "resize: vertical;min-height: 200px;" })
+                                    @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="check">
+                                @Html.LabelFor(model => model.checkStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownListFor(model => model.checkStatus, new[] { new SelectListItem { Text = "Si", Value = "1" }, new SelectListItem { Text = "No", Value = "0" } }, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.checkStatus, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="textEditor">
+                                @Html.LabelFor(model => model.textoDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.textoDocumento, new { @id = "FullDescription", @class = "form-control", @rows = "200" }) @Html.ValidationMessageFor(model => model.textoDocumento, "", new { @class = "text-danger" })
+                                    <script>
+                                        CKEDITOR.replace("FullDescription");
+                                    </script> @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } }) @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            @*<div class="form-group" id="textEditor">
+                                    @Html.LabelFor(model => model.textoDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div ass="col-md-10">
+                                        @Html.TextAreaFor(model => model.textoDocumento, new { @id = "FullDescription", @class = "form-control", @rows = "200" }) @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                        <script>
+                                            CKEDITOR.replace("FullDescription");
+                                        </script> @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } }) @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            <div class="form-group" id="file">
+                                <label class="control-label col-md-2">Adjuntar archivos:</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" type="file" name="elementName" multiple="multiple" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" id="CrearBoton" value="Crear documento" class="btn btn-default" onclick="Save" />
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>*@
