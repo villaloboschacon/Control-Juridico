@@ -242,7 +242,7 @@
             var d = '@TempData["DocumentoId"]';
             toastr["success"](d, "Oficio agregado exitosamente");
         }
-        else {
+        else if ('@TempData["message"]' == "error") {
             toastr.options = {
                 "debug": false,
                 "onclick": null,
@@ -251,8 +251,9 @@
                 "timeOut": 3000,
                 "extendedTimeOut": 1000
             }
-            toastr["error"]( "Error al crear el documento.");
+            toastr["error"]("Error al crear el documento.");
         }
+        else { }
     });
 
     $('#crearModal').on('hidden', function () {

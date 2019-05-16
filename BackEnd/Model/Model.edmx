@@ -89,8 +89,8 @@
           <Property Name="observacion" Type="varchar" MaxLength="750" />
           <Property Name="observacionBitacora" Type="varchar" MaxLength="750" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SCJ_BD.dbo.CasoDocumento' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CasoDocumento">
           <Key>
             <PropertyRef Name="idCaso" />
@@ -141,7 +141,6 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida 
           <Property Name="ubicacion" Type="varchar" MaxLength="500" />
           <Property Name="observacion" Type="varchar" MaxLength="750" />
           <Property Name="parte" Type="varchar" MaxLength="50" />
-          <Property Name="texto" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Personas">
           <Key>
@@ -184,8 +183,8 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.CasoDocumento' no tiene definida 
           <Property Name="descripcion" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="nomenclatura" Type="varchar" MaxLength="20" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UsuarioRol">
           <Key>
             <PropertyRef Name="idUsuario" />
@@ -887,7 +886,6 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <NavigationProperty Name="TablaGeneral2" Relationship="Self.FK_Documento_TipoDocumento" FromRole="Documentos" ToRole="TablaGeneral" />
           <NavigationProperty Name="TablaGeneral3" Relationship="Self.FK_Documento_TipoOrigen" FromRole="Documentos" ToRole="TablaGeneral" />
           <NavigationProperty Name="Casos" Relationship="Self.CasoDocumento" FromRole="Documentos" ToRole="Casos" />
-          <Property Name="texto" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Persona">
           <Key>
@@ -1637,7 +1635,6 @@ advertencia 6002: La tabla o vista 'SCJ_BD.dbo.UsuarioRol' no tiene definida nin
           <EntitySetMapping Name="Documentos">
             <EntityTypeMapping TypeName="SCJ_BD.Documento">
               <MappingFragment StoreEntitySet="Documentos">
-                <ScalarProperty Name="texto" ColumnName="texto" />
                 <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
                 <ScalarProperty Name="idTipo" ColumnName="idTipo" />
                 <ScalarProperty Name="idOrigen" ColumnName="idOrigen" />

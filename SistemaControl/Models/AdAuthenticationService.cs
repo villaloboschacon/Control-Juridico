@@ -163,7 +163,7 @@ namespace SistemaControl.Models
         {
             var identity = new ClaimsIdentity(MyAuthentication.ApplicationCookie, ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             identity.AddClaim(new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "Active Directory"));
-            identity.AddClaim(new Claim(ClaimTypes.Name, userPrincipal.DisplayName));
+            //identity.AddClaim(new Claim(ClaimTypes.Name, userPrincipal.DisplayName));
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, userPrincipal.SamAccountName));
             if (!String.IsNullOrEmpty(userPrincipal.EmailAddress))
             {

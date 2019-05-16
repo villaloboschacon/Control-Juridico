@@ -68,6 +68,7 @@ namespace SistemaControl.Models
         [Display(Name = "¿Desea escribir el oficio?")]
         public Boolean check { get; set; }
         [Display(Name = "Oficio")]
+        [AllowHtml]
         public string texto { get; set; }
 
         public static explicit operator DocumentoViewModel(Documento v)

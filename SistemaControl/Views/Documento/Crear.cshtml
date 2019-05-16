@@ -184,7 +184,7 @@
                             <div class="col-md-10">
                                 @Html.TextAreaFor(model => model.texto, new { @id = "texto", @name = "editor1" })
                                 <br />
-                                <input class="btn btn-default" onclick="GetContents();" type="button" value="Guardar archivo">
+                                <input id="guardarTexto" class="btn btn-default" onclick="GetContents();" type="button" value="Guardar archivo">
                             </div>
                         </div>
 
@@ -253,6 +253,16 @@
             // Get editor content.
             // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-getData
             $("#texto").val(editor);
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 3000,
+                "extendedTimeOut": 1000
+            }
+            toastr["success"]("Texto actualizado");
+            $("#guardarTexto").attr('disabled', true);
         }
         function ExecuteCommand(commandName) {
             // Get the editor instance that you want to interact with.
@@ -319,7 +329,7 @@
     <script type="text/javascript">
     //Variables.
     var nomneclatura = "";
-    //Metodos
+
     $(document).ready(function ()
     {
         $("#numeroDocumento").attr('maxlength', '19');
@@ -334,6 +344,10 @@
         $("#textoCheck").hide();
         hideall();
     });
+    CKEDITOR.instances.texto.on('change', function () {
+        $("#guardarTexto").attr('disabled', false);
+    });
+
     $("#check").change(function () {
         if ($("#check").val() == 1) {
             $("#textoDocumento").show(200);

@@ -36,8 +36,12 @@ namespace SistemaControl.Controllers
             {
                 TempData["message"] = "success";
             }
-            else {
+            else if (message == "error")
+            {
                 TempData["message"] = "error";
+            }
+            else {
+                TempData["message"] = "";
             }
             if (option == "Número de Oficio" && !String.IsNullOrEmpty(search))
             {
@@ -407,6 +411,7 @@ namespace SistemaControl.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult CrearDocumento(Documento documento)
         {
             try
@@ -421,9 +426,10 @@ namespace SistemaControl.Controllers
             if (ModelState.IsValid)
             {
                 documento.idReferencia = documentoBll.generaNumeroReferencia();
-                
+                documentoBll.Agregar(documento);
+                documentoBll.SaveChanges();
                 //Crea el html del texto recibido en el modal
-                string path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + documento.idDocumento + ".html";
+                string path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + documento.numeroDocumento+".html";
                 using (FileStream fs = new FileStream(path, FileMode.Create))
                 {
                     using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
@@ -436,7 +442,7 @@ namespace SistemaControl.Controllers
                 document.LoadFromFile(path, FileFormat.Html, XHTMLValidationType.None);
 
                 //Lo almacena en la misma ubicacion con formato Docx
-                string ContentDocx = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + documento.idDocumento + "1.docx";
+                string ContentDocx = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + documento.numeroDocumento + "1.docx";
                 document.SaveToFile(ContentDocx, FileFormat.Docx);
 
                 //Carga el template
@@ -456,6 +462,8 @@ namespace SistemaControl.Controllers
                 path += ".docx";
                 templateOficio.SaveAs(path);
 
+                //Recupera el docx que genera y crea un PDF
+                document.LoadFromFile(path, FileFormat.PDF, XHTMLValidationType.None);
                 path = path.Remove(path.Length - 5);
                 path += ".pdf";
                 document.SaveToFile(path, FileFormat.PDF);
@@ -463,9 +471,11 @@ namespace SistemaControl.Controllers
                 System.Diagnostics.Process.Start(path);
                 try
                 {
-                    System.IO.File.Delete(path);
                     path = path.Remove(path.Length - 4);
-                    path += ".docx";
+                    path += ".html";
+                    System.IO.File.Delete(path);
+                    path = path.Remove(path.Length - 5);
+                    path += "1.docx";
                     System.IO.File.Delete(path);
                 }
                 catch (Exception ex)
@@ -473,8 +483,7 @@ namespace SistemaControl.Controllers
 
                 }
                 documento.texto = " ";
-                documentoBll.Agregar(documento);
-                documentoBll.SaveChanges();
+
                 TempData["DocumentoId"] = documento.numeroDocumento;
                 return RedirectToAction("Index",new { message = "success" });
             }
@@ -498,6 +507,7 @@ namespace SistemaControl.Controllers
                 return View();
             }
             DocumentoViewModel documento = new DocumentoViewModel();
+            documento.texto = "";
             documento.fecha = DateTime.Now.Date;
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion", 0);
             ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion", 0);
