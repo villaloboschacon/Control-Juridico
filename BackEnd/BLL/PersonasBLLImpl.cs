@@ -66,19 +66,30 @@ namespace BackEnd.BLL
         {
             try
             {
-                List<Persona> personas;
                 using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
                 {
-                    personas = unidad.genericDAL.GetAll().ToList();
+                    return unidad.genericDAL.GetAll().ToList();
                 }
-                return personas;
             }
             catch (Exception)
             {
                 return null;
             }
         }
-
+        public Persona GetPersona(int iId)
+        {
+            try
+            {
+                using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
+                {
+                    return unidad.genericDAL.Get(iId);
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
         public bool Comprobar(string sCedula, string sIdPersona)
         {
             try

@@ -16,11 +16,6 @@ namespace SistemaControl.Controllers
         private IUsuarioBLL usuarioBLL;
         private IPersonasBLL personaBLL;
 
-        public CasoController()
-        {
-
-        }
-
         public ActionResult Index(string option, string search, int page = 1, int pageSize = 4)
         {
             try
@@ -30,7 +25,7 @@ namespace SistemaControl.Controllers
                 personaBLL = new PersonasBLLImpl();
                 usuarioBLL = new UsuarioBLLImpl();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -38,9 +33,6 @@ namespace SistemaControl.Controllers
             {
                 ViewBag.search = search;
                 ViewBag.option = option;
-                //List<Caso> listacaso = casoBLL.Find(x => x.numeroCaso == search && x.idCaso == 3 || search == null).ToList();
-                //PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
-                //return View(model);
                 var casosSearch = casoBLL.Find(x => x.Usuario.nombre.Contains(search) && x.idTipo == 19 && x.idEstado != 95 || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
@@ -65,9 +57,6 @@ namespace SistemaControl.Controllers
             {
                 ViewBag.search = search;
                 ViewBag.option = option;
-                //List<Caso> listacaso = casoBLL.Find(x => x.tipoLitigante == Int32.Parse(search) && x.idCaso == 3 || search == null).ToList();
-                //PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
-                //return View(model);
                 var casosSearch = casoBLL.Find(x => x.Persona.nombreCompleto.Contains(search) && x.idTipo == 19 && x.idEstado != 95 || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
@@ -92,10 +81,6 @@ namespace SistemaControl.Controllers
             {
                 ViewBag.search = search;
                 ViewBag.option = option;
-                //List<Caso> listacaso = casoBLL.Find(x => x.numeroCaso == search && x.idCaso == 3 || search == null).ToList();
-                //PagedList<Caso> model = new PagedList<Caso>(listacaso, page, pageSize);
-                //return View(model);
-                //var casosSearch = casoBLL.GetAll();
                 var casosSearch = casoBLL.Find(x => x.numeroCaso.Contains(search) && x.idTipo == 19 && x.idEstado != 95 || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
@@ -194,7 +179,7 @@ namespace SistemaControl.Controllers
                 personaBLL = new PersonasBLLImpl();
                 usuarioBLL = new UsuarioBLLImpl();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -218,7 +203,7 @@ namespace SistemaControl.Controllers
                 personaBLL = new PersonasBLLImpl();
                 usuarioBLL = new UsuarioBLLImpl();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }

@@ -16,20 +16,17 @@ namespace BackEnd.BLL
 
         public bool Agregar(Caso caso)
         {
-            this.Add(caso);
-            return true;
+            return Add(caso);
         }
 
         public bool Modificar(Caso caso)
         {
-            this.Update(caso);
-            return true;
+            return Update(caso);
         }
 
         public bool Eliminar(Caso caso)
         {
-            this.Remove(caso);
-            return true;
+            return Remove(caso);
         }
         public bool SaveChanges()
         {
@@ -39,8 +36,6 @@ namespace BackEnd.BLL
                 return true;
             }
         }
-
-
 
         public bool Comprobar(string numeroCaso , string idCaso)
         {
@@ -82,7 +77,7 @@ namespace BackEnd.BLL
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new NotImplementedException();
             }

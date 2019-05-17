@@ -9,6 +9,9 @@ using System.Web.Mvc;
 
 namespace SistemaControl.Models
 {
+    ///<summary>
+    ///Clase encargada de la vista de la entidad de Documento
+    ///</summary>
     public class DocumentoViewModel
     {
         [Key]
@@ -27,8 +30,6 @@ namespace SistemaControl.Models
         public int? idEstado { get; set; }
 
         public long? idReferencia { get; set; }
-
-        //public int? idReferenciaView { get; set; }
 
         [RegularExpression(@"(MA-[a-zñA-ZÑ]{1,6}-[0-9]{4}-\b20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])\b)$", ErrorMessage = "Formato incorrecto. MA-*SIGLAS DEL DEPARTAMENTO*-*####*-*AÑO ACTUAL*. \n Ejemplo:MA-PSI-5463-2019.")]
         [Required(ErrorMessage = "*Debe digitar el número de documento.")]

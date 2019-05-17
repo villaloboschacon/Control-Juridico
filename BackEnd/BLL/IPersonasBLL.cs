@@ -27,6 +27,11 @@ namespace BackEnd.BLL
         List<Persona> GetPersonas();
 
         ///<summary>
+        ///Recupera una persona desde el id.  
+        ///</summary>
+        Persona GetPersona(int iId);
+
+        ///<summary>
         ///Agrega el registro de la persona.
         ///</summary>
         bool Agregar(Persona oPersona);
