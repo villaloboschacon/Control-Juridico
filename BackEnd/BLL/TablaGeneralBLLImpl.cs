@@ -12,65 +12,79 @@ namespace BackEnd.BLL
     {
         private UnidadDeTrabajo<TablaGeneral> unidad;
 
-
-        public List<TablaGeneral> Consulta(string tabla,string campo)
+        public List<TablaGeneral> Consulta(string sTabla,string sCampo)
         {
             try
             {
-                List<TablaGeneral> lista;
                 using (unidad = new UnidadDeTrabajo<TablaGeneral>(new SCJ_BDEntities()))
                 {
-                    Expression<Func<TablaGeneral, bool>> consulta = (d => d.tabla.Equals(tabla) && d.campo.Equals(campo));
-                    lista = unidad.genericDAL.Find(consulta).ToList();
+                    Expression<Func<TablaGeneral, bool>> consulta = (oTablaGeneral => oTablaGeneral.tabla.Equals(sTabla) && oTablaGeneral.campo.Equals(sCampo));
+                    return unidad.genericDAL.Find(consulta).ToList();
                 }
-                return lista;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                e = new Exception();
-                throw new NotImplementedException();
+                return null;
             }
         }
-        public TablaGeneral getTablaGeneral(string tabla, string campo)
+
+        public TablaGeneral GetTablaGeneral(string tabla, string campo)
         {
             try
             {
-                List<TablaGeneral> lista;
+                List<TablaGeneral> aTablaGeneral;
                 using (unidad = new UnidadDeTrabajo<TablaGeneral>(new SCJ_BDEntities()))
                 {
-                    Expression<Func<TablaGeneral, bool>> consulta = (d => d.tabla.Equals(tabla) && d.campo.Equals(campo));
-                    lista = unidad.genericDAL.Find(consulta).ToList();
+                    Expression<Func<TablaGeneral, bool>> consulta = (oTablaGeneral => oTablaGeneral.tabla.Equals(tabla) && oTablaGeneral.campo.Equals(campo));
+                    aTablaGeneral = unidad.genericDAL.Find(consulta).ToList();
                 }
-                if (lista.Count == 1)
+                if (aTablaGeneral.Count == 1)
                 {
-                    return lista[0];
+                    return aTablaGeneral[0];
                 }
                 return null;
             }
             catch (Exception)
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
-        public int getIdTablaGeneral(string tabla, string campo, string descripcion)
+
+        public TablaGeneral GetTablaGeneral(int iId)
         {
             try
             {
-                List<TablaGeneral> lista;
                 using (unidad = new UnidadDeTrabajo<TablaGeneral>(new SCJ_BDEntities()))
                 {
-                    Expression<Func<TablaGeneral, bool>> consulta = (d => d.tabla.Equals(tabla) && d.campo.Equals(campo) && d.descripcion.Equals(descripcion));
-                    lista = unidad.genericDAL.Find(consulta).ToList();
+                    //Expression<Func<TablaGeneral, bool>> consulta = (oTablaGeneral => oTablaGeneral.tabla.Equals(tabla) && oTablaGeneral.campo.Equals(campo));
+                    return unidad.genericDAL.Get(iId);
                 }
-                if (lista.Count == 1)
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public int GetIdTablaGeneral(string sTabla, string sCampo, string sDescripcion)
+        {
+            try
+            {
+                List<TablaGeneral> aTablaGeneral;
+                using (unidad = new UnidadDeTrabajo<TablaGeneral>(new SCJ_BDEntities()))
                 {
-                    return lista[0].idTablaGeneral;
+                    Expression<Func<TablaGeneral, bool>> consulta = (oTablaGeneral => oTablaGeneral.tabla.Equals(sTabla) && oTablaGeneral.campo.Equals(sCampo) && oTablaGeneral.descripcion.Equals(sDescripcion));
+                    aTablaGeneral = unidad.genericDAL.Find(consulta).ToList();
+                }
+                if (aTablaGeneral.Count == 1)
+                {
+                    return aTablaGeneral[0].idTablaGeneral;
                 }
                 return -1;
             }
             catch (Exception)
             {
-                throw new NotImplementedException();
+                return -1;
             }
         }
     }

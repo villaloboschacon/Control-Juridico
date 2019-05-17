@@ -80,7 +80,7 @@ namespace SistemaControl.Controllers
                 if (usuarioBLL.getUsuario(model.Username) == null)
                 {
                     Usuario usuario = new Usuario();
-                    usuario.idEstado = tablaGeneralBLL.getIdTablaGeneral("usuarios", "estado", "activo");
+                    usuario.idEstado = tablaGeneralBLL.GetIdTablaGeneral("usuarios", "estado", "activo");
                     usuario.nombre = model.Username;
                     usuario.usuario1 = user;
                     usuarioBLL.Add(usuario);

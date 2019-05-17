@@ -21,6 +21,5 @@ namespace BackEnd.BLL
         string getNomenclatura(string nombreDept);
         List<Documento> listaReferencias(long? referencia);
         bool archivaDocumento(int idDocumento);
-
     }
 }

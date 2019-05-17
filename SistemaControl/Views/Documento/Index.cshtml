@@ -37,7 +37,6 @@
     <link rel="stylesheet" type="text/css" href="http://codeseven.github.com/toastr/toastr.css">
     <link rel="stylesheet" type="text/css" href="http://codeseven.github.com/toastr/toastr-responsive.css">
 
-    @*<link href="~/Content/Toast/toastrsample.css" rel="stylesheet" />*@
     <script src="~/Content/Toast/toastrsample.js"></script>
 
 </head>
@@ -239,7 +238,7 @@
                 "extendedTimeOut": 1000
             }
 
-            var d = '@TempData["DocumentoId"]';
+            var d = '@TempData["cedula"]';
             toastr["success"](d, "Oficio agregado exitosamente");
         }
         else if ('@TempData["message"]' == "error") {

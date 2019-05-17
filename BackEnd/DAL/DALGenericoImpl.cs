@@ -17,7 +17,7 @@ namespace BackEnd.DAL
             Context = context;
         }
 
-        public void Add(TEntity entity)
+        public bool Add(TEntity entity)
         {
             try
             {
@@ -25,22 +25,9 @@ namespace BackEnd.DAL
             }
             catch (Exception)
             {
-
-                throw;
+                return false;
             }
-        }
-
-        public void AddRange(IEnumerable<TEntity> entities)
-        {
-            try
-            {
-                Context.Set<TEntity>().AddRange(entities);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return true;
         }
 
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
@@ -82,7 +69,7 @@ namespace BackEnd.DAL
             }
         }
 
-        public void Remove(TEntity entity)
+        public bool Remove(TEntity entity)
         {
             try
             {
@@ -91,22 +78,9 @@ namespace BackEnd.DAL
             }
             catch (Exception)
             {
-
-                throw;
+                return false;
             }
-        }
-
-        public void RemoveRange(IEnumerable<TEntity> entities)
-        {
-            try
-            {
-                Context.Set<TEntity>().RemoveRange(entities);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return true;
         }
 
         public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
@@ -122,7 +96,7 @@ namespace BackEnd.DAL
             }
         }
 
-        public void Update(TEntity entity)
+        public bool Update(TEntity entity)
         {
             try
             {
@@ -130,9 +104,9 @@ namespace BackEnd.DAL
             }
             catch (Exception)
             {
-
-                throw;
+                return false;
             }
+            return true;
         }
 
     }

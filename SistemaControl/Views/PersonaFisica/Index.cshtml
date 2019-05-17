@@ -24,6 +24,15 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <script type="text/javascript" src="http://codeseven.github.com/toastr/toastr.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="http://codeseven.github.com/toastr/toastr.css">
+    <link rel="stylesheet" type="text/css" href="http://codeseven.github.com/toastr/toastr-responsive.css">
+
+    <script src="~/Content/Toast/toastrsample.js"></script>
+
 </head>
 <div class="title">Personas Fisicas</div>
 
@@ -183,7 +192,33 @@
 
 
 <script>
+        $(document).ready(function () {
+        if ('@TempData["message"]' == "success") {
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 3000,
+                "extendedTimeOut": 1000
+            }
 
+            var d = '@TempData["cedula"]';
+            toastr["success"](d, "Persona agregada exitosamente");
+        }
+        else if ('@TempData["message"]' == "error") {
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 3000,
+                "extendedTimeOut": 1000
+            }
+            toastr["error"]("Error al crear el documento.");
+        }
+        else { }
+    });
     var ind = 0;
     $(this).mousedown(function (e) {
         if (e.which == 2) {

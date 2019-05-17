@@ -8,53 +8,112 @@ using BackEnd.Model;
 using BackEnd.DAL;
 namespace BackEnd.BLL
 {
+    ///<summary>
+    ///Interfaz encargada de realizar las funciones relacionadas con las personas.
+    ///</summary>
     public class PersonasBLLImpl:BLLGenericoImpl<Persona>, IPersonasBLL
     {
         private UnidadDeTrabajo<Persona> unidad;
-        private SCJ_BDEntities context;
 
-        public bool Comprobar(string cedula, string idPersona)
+        public List<Persona> Consulta(int iTipo)
         {
-            int id = 0;
             try
             {
-                id = Int32.Parse(idPersona);
+                List<Persona> listapersonas;
+                using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
+                {
+                    Expression<Func<Persona, bool>> consulta = (oPersona => oPersona.idTipo.Equals(iTipo));
+                    listapersonas = unidad.genericDAL.Find(consulta).ToList();
+                }
+                return listapersonas;
             }
             catch (Exception)
             {
-
+                return null;
             }
+        }
+
+        public List<Persona> Consulta(int iTipo, string sFiltro, string sCampo)
+        {
             try
             {
-                List<Persona> lista;
-                    using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
+                using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
+                {
+                    switch (sCampo){
+                        
+                        case "Cédula":
+                            Expression<Func<Persona, bool>> consultaCedula = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.cedula.Contains(sFiltro));
+                            return unidad.genericDAL.Find(consultaCedula).ToList();
+                        case "Nombre Completo":
+                            Expression<Func<Persona, bool>> consultaNombre = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.nombreCompleto.Contains(sFiltro));
+                            return unidad.genericDAL.Find(consultaNombre).ToList();
+                        case "Correo Electrónico":
+                            Expression<Func<Persona, bool>> consultaCorreo = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.correo.Contains(sFiltro));
+                            return unidad.genericDAL.Find(consultaCorreo).ToList();
+                        default:
+                            Expression<Func<Persona, bool>> consultaDefault = (oPersona => oPersona.idTipo.Equals(iTipo));
+                            return unidad.genericDAL.Find(consultaDefault).ToList();
+                    }     
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Persona> GetPersonas()
+        {
+            try
+            {
+                List<Persona> personas;
+                using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
+                {
+                    personas = unidad.genericDAL.GetAll().ToList();
+                }
+                return personas;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public bool Comprobar(string sCedula, string sIdPersona)
+        {
+            try
+            {
+                List<Persona> personas;
+                int iIdPersona = Int32.Parse(sIdPersona);
+                using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
+                {
+                    Expression<Func<Persona, bool>> consulta = (d => d.cedula.Equals(sCedula) && d.idPersona.Equals(iIdPersona));
+                    personas = unidad.genericDAL.Find(consulta).ToList();
+                    if (personas.Count() == 1)
                     {
-                        Expression<Func<Persona, bool>> consulta = (d => d.cedula.Equals(cedula) && d.idPersona.Equals(id));
-                        lista = unidad.genericDAL.Find(consulta).ToList();
-                        if (lista.Count() == 1)
+                        return true;
+                    }
+                    else
+                    {
+                        consulta = (d => d.cedula.Equals(sCedula));
+                        personas = unidad.genericDAL.Find(consulta).ToList();
+                        if (personas.Count() == 0)
                         {
                             return true;
                         }
                         else
                         {
-                            consulta = (d => d.cedula.Equals(cedula));
-                            lista = unidad.genericDAL.Find(consulta).ToList();
-                            if (lista.Count() == 0)
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                return false;
-                            }
+                            return false;
                         }
                     }
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new NotImplementedException();
+                return false;
             }
         }
+
         public bool SaveChanges()
         {
             using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
@@ -63,95 +122,27 @@ namespace BackEnd.BLL
                 return true;
             }
         }
-        public List<Persona> getModel()
-        {
-            try
-            {
-                List<Persona> listapersonas;
-                using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
-                {
-                    listapersonas = unidad.genericDAL.GetAll().ToList();
-                }
-                return listapersonas;
-            }
-            catch (Exception)
-            {
-                throw new NotImplementedException();
-            }
-        }
+        
         public bool Agregar(Persona persona)
         {
-            if (persona != null){
-                this.Add(persona);
-                return true;
+            if (persona != null)
+            {
+                return Add(persona);
             }
             else
             {
                 return false;
             }
         }
-        public List<Persona> Consulta(int idtipo)
-        {
-            try
-            {
-                List<Persona> listapersonas;
-                using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
-                {
-                    Expression<Func<Persona, bool>> consulta = (d => d.idTipo.Equals(idtipo));
-                    listapersonas = unidad.genericDAL.Find(consulta).ToList();
-                }
-                return listapersonas;
-            }
-            catch(Exception)
-            {
-                throw new NotImplementedException();
-            }
-        }
 
-        public bool Modificar(Persona persona)
+        public bool Actualizar(Persona persona)
         {
-            this.Update(persona);
-            return true;
-        }
-
-        public List<Persona> buscaPorNombre(string filtro)
-        {
-            try
-            {
-                List<Persona> listapersonas;
-                using (context = new SCJ_BDEntities())
-                {
-                    listapersonas = context.SP_BuscaPersonaNombre(filtro).ToList();
-                    return listapersonas;
-                }             
-            }
-            catch (Exception)
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public List<Persona> buscarNombre(string filtro)
-        {
-            try
-            {
-                List<Persona> listapersonas;
-                using (context = new SCJ_BDEntities())
-                {
-                    listapersonas = context.Personas.Where(x => x.nombreCompleto.Contains(filtro) || filtro == null).ToList(); 
-                    return listapersonas;
-                }
-            }
-            catch (Exception)
-            {
-                throw new NotImplementedException();
-            }
+            return Update(persona);
         }
 
         public bool Eliminar(Persona persona)
         {
-               this.Remove(persona);
-                return true;
+            return Remove(persona);
         }
     }
 }

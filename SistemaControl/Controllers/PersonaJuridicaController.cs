@@ -13,19 +13,13 @@ namespace SistemaControl.Controllers
     {
         private IPersonasBLL personaBll;
         private ITablaGeneralBLL tablaGeneralBLL;
-        public PersonaJuridicaController()
-        {
-            tablaGeneralBLL = new TablaGeneralBLLImpl();
-            personaBll = new PersonasBLLImpl();
-        }
+
         public ActionResult Index(string option, string search, int page = 1, int pageSize = 4)
         {
             try
-
             {
                 tablaGeneralBLL = new TablaGeneralBLLImpl();
                 personaBll = new PersonasBLLImpl();
-
             }
             catch (Exception ex)
             {
@@ -248,7 +242,7 @@ namespace SistemaControl.Controllers
             personaBll = new PersonasBLLImpl();
             if (ModelState.IsValid)
             {
-                personaBll.Modificar(persona);
+                personaBll.Actualizar(persona);
                 personaBll.SaveChanges();
                 return RedirectToAction("Index");
             }

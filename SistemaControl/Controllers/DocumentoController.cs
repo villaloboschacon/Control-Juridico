@@ -421,11 +421,10 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
             if (ModelState.IsValid)
             {
-                documento.idReferencia = documentoBll.generaNumeroReferencia();
                 documentoBll.Agregar(documento);
                 documentoBll.SaveChanges();
                 //Crea el html del texto recibido en el modal
@@ -709,10 +708,10 @@ namespace SistemaControl.Controllers
             documentoVista.fecha = DateTime.Now;
             documentoVista.numeroDocumento = getNumeroDocumento();
 
-            documentoVista.idTipo = tablaGeneralBLL.getIdTablaGeneral("Documentos","tipo","Oficio");
-            documentoVista.idOrigen = tablaGeneralBLL.getIdTablaGeneral("Documentos", "idOrigen", "Servicios jurídicos");
-            documentoVista.tipoOrigen = tablaGeneralBLL.getIdTablaGeneral("Documentos", "tipoOrigen", "Departamento Interno");
-            documentoVista.idEstado = tablaGeneralBLL.getIdTablaGeneral("Documentos", "estado", "Activo");
+            documentoVista.idTipo = tablaGeneralBLL.GetIdTablaGeneral("Documentos","tipo","Oficio");
+            documentoVista.idOrigen = tablaGeneralBLL.GetIdTablaGeneral("Documentos", "idOrigen", "Servicios jurídicos");
+            documentoVista.tipoOrigen = tablaGeneralBLL.GetIdTablaGeneral("Documentos", "tipoOrigen", "Departamento Interno");
+            documentoVista.idEstado = tablaGeneralBLL.GetIdTablaGeneral("Documentos", "estado", "Activo");
             documentoVista.idReferencia = documentoBll.Get(id).idReferencia;
             //documentoVista.idReferenciaView = documentoBll.Get(id).numeroDocumento;
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion", documentoVista.idTipo);

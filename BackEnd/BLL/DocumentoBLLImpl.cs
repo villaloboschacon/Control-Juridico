@@ -16,8 +16,7 @@ namespace BackEnd.BLL
 
         public bool Agregar(Documento documento)
         {
-            this.Add(documento);
-            return true;
+            return this.Add(documento);
         }
 
         public bool Modificar(Documento documento)

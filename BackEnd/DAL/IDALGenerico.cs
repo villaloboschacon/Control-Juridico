@@ -16,11 +16,8 @@ namespace BackEnd.DAL
         // This method was not in the videos, but I thought it would be useful to add.
         TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate);
 
-        void Add(TEntity entity);
-        void AddRange(IEnumerable<TEntity> entities);
-
-        void Update(TEntity entity);
-        void Remove(TEntity entity);
-        void RemoveRange(IEnumerable<TEntity> entities);
+        bool Add(TEntity entity);
+        bool Update(TEntity entity);
+        bool Remove(TEntity entity);
     }
 }

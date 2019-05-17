@@ -12,7 +12,8 @@ namespace BackEnd.BLL
     public class BLLGenericoImpl<T> : IBLLGenerico<T> where T : class
     {
         private UnidadDeTrabajo<T> unidad;
-        public string Add(T entity)
+
+        public bool Add(T entity)
         {
             try
             {
@@ -21,30 +22,11 @@ namespace BackEnd.BLL
                     unidad.genericDAL.Add(entity);
                     unidad.Complete();
                 }
-                return "Exito";
+                return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-
-                return e.Message;
-            }
-        }
-
-        public string AddRange(IEnumerable<T> entities)
-        {
-            try
-            {
-                using (unidad = new UnidadDeTrabajo<T>(new SCJ_BDEntities()))
-                {
-                    unidad.genericDAL.AddRange(entities);
-                    unidad.Complete();
-                }
-                return "Exito";
-            }
-            catch (Exception e)
-            {
-
-                return e.Message;
+                return false;
             }
         }
 
@@ -102,7 +84,7 @@ namespace BackEnd.BLL
             }
         }
 
-        public string Remove(T entity)
+        public bool Remove(T entity)
         {
             try
             {
@@ -111,29 +93,11 @@ namespace BackEnd.BLL
                     unidad.genericDAL.Remove(entity);
                     unidad.Complete();
                 }
-                return "Exito";
-            }
-            catch (Exception e)
-            {
-
-                return e.Message;
-            }
-        }
-
-        public void RemoveRange(IEnumerable<T> entities)
-        {
-            try
-            {
-                using (unidad = new UnidadDeTrabajo<T>(new SCJ_BDEntities()))
-                {
-
-                }
-
+                return true;
             }
             catch (Exception)
             {
-
-
+                return false;
             }
         }
 
@@ -155,7 +119,7 @@ namespace BackEnd.BLL
                 return null;
             }
         }
-        public string Update(T entity)
+        public bool Update(T entity)
         {
             try
             {
@@ -164,30 +128,9 @@ namespace BackEnd.BLL
                     unidad.genericDAL.Update(entity);
                     unidad.Complete();
                 }
-                return "Exito";
-            }
-            catch (Exception e)
-            {
-
-                return e.Message;
-            }
-        }
-        public bool Check(string idDocumento)
-        {
-            try
-            {
-                List<T> resultado;
-                using (unidad = new UnidadDeTrabajo<T>(new SCJ_BDEntities()))
-                {
-                    resultado = unidad.genericDAL.GetAll().ToList();
-                }
-                foreach(T entidad in resultado)
-                {
-                   
-                }
                 return true;
             }
-            catch
+            catch (Exception)
             {
                 return false;
             }

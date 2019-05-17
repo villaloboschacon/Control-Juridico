@@ -13,14 +13,10 @@ namespace BackEnd.BLL
         List<T> GetAll();
         List<T> Find(Expression<Func<T, bool>> predicate);
 
-        // This method was not in the videos, but I thought it would be useful to add.
         T SingleOrDefault(Expression<Func<T, bool>> predicate);
 
-        string Add(T entity);
-        string AddRange(IEnumerable<T> entities);
-
-        string Update(T entity);
-        string Remove(T entity);
-        void RemoveRange(IEnumerable<T> entities);
+        bool Add(T entity);
+        bool Update(T entity);
+        bool Remove(T entity);
     }
 }
