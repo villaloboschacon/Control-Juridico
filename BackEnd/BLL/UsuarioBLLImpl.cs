@@ -74,15 +74,14 @@ namespace BackEnd.BLL
                 throw new NotImplementedException();
             }
         }
-        public string[] gerRolForUser(string userName)
+        public string gerRolForUser(string userName)
         {
             string[] result;
             using (context = new SCJ_BDEntities())
             {
                 result = context.sp_getRolesForUser(userName).ToArray();
             }
-
-            return result;
+            return result[0];
 
         }
     }

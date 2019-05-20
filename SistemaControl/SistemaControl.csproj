@@ -7856,6 +7856,7 @@
     <Content Include="Views\Documento\IndexReferencias.cshtml" />
     <Content Include="Views\Documento\IndexSalidas.cshtml" />
     <Content Include="Views\Shared\_MainMenu.cshtml" />
+    <Content Include="Views\Shared\_MainMenuDev.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

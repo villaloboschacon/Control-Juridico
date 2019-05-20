@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.DirectoryServices.AccountManagement;
 using System.Security.Claims;
 using Microsoft.Owin.Security;
-using SistemaControl;
 using SistemaControl.App_Start;
-using BackEnd.Model;
+using BackEnd.BLL;
 
 namespace SistemaControl.Models
 {
     public class AdAuthenticationService
     {
+        private IUsuarioBLL usuarioBLL;
         public class AuthenticationResult
         {
             public AuthenticationResult(string errorMessage = null)
@@ -95,7 +92,6 @@ namespace SistemaControl.Models
                 isAuthenticated = false;
                 userPrincipal = null;
             }
-
             if (!isAuthenticated || userPrincipal == null)
             {
                 return new AuthenticationResult("Username or Password is not correct");
@@ -164,6 +160,18 @@ namespace SistemaControl.Models
             var identity = new ClaimsIdentity(MyAuthentication.ApplicationCookie, ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             identity.AddClaim(new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "Active Directory"));
             //identity.AddClaim(new Claim(ClaimTypes.Name, userPrincipal.DisplayName));
+            try
+            {
+                usuarioBLL = new UsuarioBLLImpl();
+                usuarioBLL.getUsuario(userPrincipal.Name);
+                string role = usuarioBLL.gerRolForUser(userPrincipal.Name).ToString();
+                identity.AddClaim(new Claim(ClaimTypes.Role, role));
+            }
+            catch (Exception)
+            {
+
+            }
+
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, userPrincipal.SamAccountName));
             if (!String.IsNullOrEmpty(userPrincipal.EmailAddress))
             {

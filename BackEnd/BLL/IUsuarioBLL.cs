@@ -11,6 +11,6 @@ namespace BackEnd.BLL
     {      
         List<Usuario> Consulta();
         Usuario getUsuario(string username);
-        string[] gerRolForUser(string userName);
+        string gerRolForUser(string userName);
     }
 }

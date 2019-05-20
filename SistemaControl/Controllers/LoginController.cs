@@ -12,6 +12,8 @@ using System.DirectoryServices.AccountManagement;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
+using System.Security.Claims;
+using System.Linq;
 
 namespace SistemaControl.Controllers
 {
@@ -60,38 +62,37 @@ namespace SistemaControl.Controllers
             IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
             var authService = new AdAuthenticationService(authenticationManager);
             var authenticationResult = authService.SignIn(model.Username, model.Password);
-           // var authenticationResult = authService.SignIn("Steven Villalobos", "svch1996");
+            var roles = ((ClaimsIdentity)User.Identity).Claims
+                                    .Where(c => c.Type == ClaimTypes.Role)
+                                    .Select(c => c.Value);
+            // var authenticationResult = authService.SignIn("Steven Villalobos", "svch1996");
             string user;
             if (authenticationResult.IsSuccess)
             {
-                user = authService.GetUsername(model.Username, model.Password);
                 string rolU;
 
                 try
                 {
                     tablaGeneralBLL = new TablaGeneralBLLImpl();
                     usuarioBLL = new UsuarioBLLImpl();
-                    rolU = String.Concat(usuarioBLL.gerRolForUser(usuarioBLL.getUsuario(user).nombre));
+                    rolU = roles.First();
                 }
                 catch (Exception)
                 {
-                    return View();
+                    return RedirectToAction("Index", "Login");
                 }
                 if (usuarioBLL.getUsuario(model.Username) == null)
                 {
                     Usuario usuario = new Usuario();
                     usuario.idEstado = tablaGeneralBLL.GetIdTablaGeneral("usuarios", "estado", "activo");
                     usuario.nombre = model.Username;
-                    usuario.usuario1 = user;
+                    usuario.usuario1 = model.Username;
                     usuarioBLL.Add(usuario);
                 }
-                if (rolU == "DBA")
+                if (rolU == "Jefatura")
                 {
-                    if (crearRoles("DBA"))
-                    {
-                        Roles.AddUserToRole(model.Username, "DBA");
-                    }
-                    
+                    return RedirectToAction("Index", "Documento");
+
                 }
                 else if (rolU == "Abogado")
                 {
@@ -101,7 +102,18 @@ namespace SistemaControl.Controllers
                 {
 
                 }
-                return RedirectToLocal(returnUrl);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                if (usuarioBLL.getUsuario(model.Username) != null)
+                {
+                    Usuario usuario = new Usuario();
+                    usuario.idEstado = tablaGeneralBLL.GetIdTablaGeneral("usuarios", "estado", "activo");
+                    usuario.nombre = model.Username;
+                    usuario.usuario1 = model.Username;
+                    usuarioBLL.Add(usuario);
+                }
             }
 
             ModelState.AddModelError("", authenticationResult.ErrorMessage);

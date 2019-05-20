@@ -11,10 +11,11 @@ using SistemaControl.Models;
 using Spire.Doc;
 using Spire.Doc.Documents;
 using Xceed.Words.NET;
+using System.Security.Claims;
 
 namespace SistemaControl.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class DocumentoController : Controller
     {
         private IDocumentoBLL documentoBll;
@@ -36,6 +37,8 @@ namespace SistemaControl.Controllers
 
             List<Documento> aDocumentos = new List<Documento>();
             int iTipo = tablaGeneralBLL.GetIdTablaGeneral("Documentos", "tipo", "Oficio");
+            
+
 
             if (!string.IsNullOrEmpty(message))
             {
