@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using BackEnd.Model;
 using BackEnd.DAL;
 namespace BackEnd.BLL
 {
-    ///<summary>
-    ///Interfaz encargada de realizar las funciones relacionadas con las personas.
-    ///</summary>
+
     public class PersonasBLLImpl:BLLGenericoImpl<Persona>, IPersonasBLL
     {
         private UnidadDeTrabajo<Persona> unidad;
@@ -19,13 +15,11 @@ namespace BackEnd.BLL
         {
             try
             {
-                List<Persona> listapersonas;
                 using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
                 {
                     Expression<Func<Persona, bool>> consulta = (oPersona => oPersona.idTipo.Equals(iTipo));
-                    listapersonas = unidad.genericDAL.Find(consulta).ToList();
+                    return unidad.genericDAL.Find(consulta).ToList();
                 }
-                return listapersonas;
             }
             catch (Exception)
             {
@@ -39,8 +33,8 @@ namespace BackEnd.BLL
             {
                 using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
                 {
-                    switch (sCampo){
-                        
+                    switch (sCampo)
+                    {                      
                         case "Cédula":
                             Expression<Func<Persona, bool>> consultaCedula = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.cedula.Contains(sFiltro));
                             return unidad.genericDAL.Find(consultaCedula).ToList();

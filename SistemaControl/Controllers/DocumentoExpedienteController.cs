@@ -14,13 +14,8 @@ namespace SistemaControl.Controllers
     {
         private IDocumentoBLL documentoBll;
         private ITablaGeneralBLL tablaGeneralBLL;
-        public DocumentoExpedienteController()
-        {
-            tablaGeneralBLL = new TablaGeneralBLLImpl();
-            documentoBll = new DocumentoBLLImpl();
-        }
 
-        public ActionResult Index(string option, string search, int page = 1, int pageSize = 4)
+        public ActionResult Index(string option, string search,string sSearchFecha, int page = 1, int pageSize = 4)
         {
             try
             {
@@ -31,10 +26,12 @@ namespace SistemaControl.Controllers
             {
                 return null;
             }
-            if (option == "Número de Expediente" && !String.IsNullOrEmpty(search))
+            if (!String.IsNullOrEmpty(option) && !String.IsNullOrEmpty(search))
             {
                 ViewBag.search = search;
                 ViewBag.option = option;
+                int iTipo = tablaGeneralBLL.GetIdTablaGeneral("Documentos","tipo","Expediente");
+                var aDocumentos = documentoBll.Consulta(iTipo, search, sSearchFecha, option,true);
                 var listaDocumentos = documentoBll.Find(x => x.numeroDocumento.Contains(search) && x.idTipo == 4 && x.idEstado != 9 || search == null).ToList();
                 if (!String.IsNullOrEmpty(search))
                 {
@@ -244,8 +241,8 @@ namespace SistemaControl.Controllers
             }
             if (ModelState.IsValid)
             {
-                documentoBll.generaNumIngreso();
-                documentoBll.Modificar(documento);
+                documentoBll.GeneraNumeroIngreso();
+                documentoBll.Actualizar(documento);
                 documentoBll.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -294,7 +291,7 @@ namespace SistemaControl.Controllers
             }
             if (ModelState.IsValid)
             {
-                documentoBll.Modificar(documento);
+                documentoBll.Actualizar(documento);
                 documentoBll.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -332,7 +329,7 @@ namespace SistemaControl.Controllers
             try
             {
                 documentoBll = new DocumentoBLLImpl();
-                documentoBll.archivaDocumento(id);
+                documentoBll.ArchivarDocumento(id);
                 documentoBll.SaveChanges();
                 return RedirectToAction("Index");
             }

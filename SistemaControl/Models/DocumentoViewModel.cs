@@ -68,10 +68,14 @@ namespace SistemaControl.Models
 
         [Display(Name = "¿Desea escribir el oficio?")]
         public Boolean check { get; set; }
+
+        [Display(Name = "Oficio")]
+        [AllowHtml]
+        public string numeroVinculado { get; set; }
+
         [Display(Name = "Oficio")]
         [AllowHtml]
         public string texto { get; set; }
-
         public static explicit operator DocumentoViewModel(Documento v)
         {
             DocumentoViewModel view = new DocumentoViewModel();
@@ -90,6 +94,7 @@ namespace SistemaControl.Models
             view.tipoOrigen = v.tipoOrigen;
             view.ubicacion = v.ubicacion;
             view.texto = v.texto;
+            view.numeroVinculado = v.numeroDocumento;
             return view;
         }
     }

@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "_MainMenu";
+}
+
+<ul class="sidebar-menu" data-widget="tree">
+    <li class="header" style="text-align:center;"><b>Módulos</b></li>
+    <li><a href="/Home/Index"><i class="fa fa-book"></i> <span>Menú Principal</span></a></li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-archive"></i> <span>Documentos</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu" style="background:#2e5972">
+            <li><a href="~/Documento/Index">Entradas</a></li>
+            <li><a href="/Documento/IndexSalidas">Salidas</a></li>
+            <li><a href="/DocumentoExpediente/Index">Expedientes</a></li>
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-balance-scale"></i> <span>Procesos</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu" style="background:#2e5972">
+            <li><a href="~/Caso/Index">Administrativos</a></li>
+            <li><a href="/CasoJudicial/Index">Judiciales</a></li>
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-users"></i> <span>Personas</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu" style="background:#2e5972">
+            <li><a href="/PersonaFisica/Index">Físicas</a></li>
+            <li><a href="/PersonaJuridica/Index">Jurídicas</a></li>
+        </ul>
+    </li>
+
+    <li><a href="#"><i class="fa fa-link"></i> <span>Ayuda</span></a></li>
+    <li><a href="#"><i class="fa fa-link"></i> <span>Acerca de SCJ</span></a></li>
+
+</ul>

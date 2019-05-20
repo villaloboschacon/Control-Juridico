@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using BackEnd.Model;
 using System.Data.Entity;
 
@@ -34,11 +32,12 @@ namespace BackEnd.DAL
         {
             try
             {
+
                 return Context.Set<TEntity>().Where(predicate);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                string mess = ex.Message;
                 return null;
             }
         }
@@ -64,7 +63,6 @@ namespace BackEnd.DAL
             }
             catch (Exception)
             {
-
                 return null;
             }
         }
@@ -91,7 +89,6 @@ namespace BackEnd.DAL
             }
             catch (Exception)
             {
-
                 return null;
             }
         }

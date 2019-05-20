@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using BackEnd.Model;
 namespace BackEnd.BLL
 {
@@ -11,26 +7,6 @@ namespace BackEnd.BLL
     ///</summary>
     public interface IPersonasBLL:IBLLGenerico<Persona>
     {
-        ///<summary>
-        ///Recupera la lista de personas filtrandolas por tipo. 
-        ///</summary>
-        List<Persona> Consulta(int iTipo);
-
-        ///<summary>
-        ///Recupera la lista de personas filtrandolas por nombre de persona, tipo de persona y campo de busqueda. 
-        ///</summary>
-        List<Persona> Consulta(int iTipo, string sFiltro, string sCampo);
-
-        ///<summary>
-        ///Recupera la lista de todas las personas.  
-        ///</summary>
-        List<Persona> GetPersonas();
-
-        ///<summary>
-        ///Recupera una persona desde el id.  
-        ///</summary>
-        Persona GetPersona(int iId);
-
         ///<summary>
         ///Agrega el registro de la persona.
         ///</summary>
@@ -56,5 +32,24 @@ namespace BackEnd.BLL
         ///</summary>
         bool SaveChanges();
 
+        ///<summary>
+        ///Recupera la lista de personas filtrandolas por tipo. 
+        ///</summary>
+        List<Persona> Consulta(int iTipo);
+
+        ///<summary>
+        ///Recupera la lista de personas filtrandolas por nombre de persona, tipo de persona y campo de busqueda. 
+        ///</summary>
+        List<Persona> Consulta(int iTipo, string sFiltro, string sCampo);
+
+        ///<summary>
+        ///Recupera la lista de todas las personas.  
+        ///</summary>
+        List<Persona> GetPersonas();
+
+        ///<summary>
+        ///Recupera una persona desde el id.  
+        ///</summary>
+        Persona GetPersona(int iId);
     }
 }

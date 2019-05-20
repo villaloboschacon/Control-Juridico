@@ -1,110 +1,101 @@
 ﻿@model PagedList.IPagedList<BackEnd.Model.Persona>
 @using PagedList.Mvc;
 <head>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
-    <link type="text/css" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+    @*<link type="text/css" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
-    @*SCRIPT PARA EL EDITOR DE TEXTO*@
+    @*SCRIPT PARA EL EDITOR DE TEXTO
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></>
+    @*<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></>
     <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-    <link href="~/Content/css/style.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    @*<script src="~/Content/ckeditor2/ckeditor.js"></script>*@
-    <script src="~/Content/js/site.js"></script>
+    @*<link href="~/Content/css/style.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="~/Content/js/site.js"></script>
 
     <script src="~/Scripts/jquery-3.3.1.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-
-    <script type="text/javascript" src="http://codeseven.github.com/toastr/toastr.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="http://codeseven.github.com/toastr/toastr.css">
-    <link rel="stylesheet" type="text/css" href="http://codeseven.github.com/toastr/toastr-responsive.css">
-
-    <script src="~/Content/Toast/toastrsample.js"></script>
+    @*<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>*@
 
 </head>
-<div class="title">Personas Fisicas</div>
+<div class="title">Personas Físicas</div>
 
 <div class="container" style="margin-top:20px">
     @using (Html.BeginForm("Index", "PersonaFisica", FormMethod.Get))
     {
-        <div class="widget" style="height:100px;">
-            <div class="title">
-                <span class="form-inline">
-                    @{ List<SelectListItem> searchListItem = new List<SelectListItem>();
-                        searchListItem.Add(new SelectListItem { Text = "Cédula", Value = "Cédula" });
-                        searchListItem.Add(new SelectListItem { Text = "Nombre Completo", Value = "Nombre Completo" });
-                        searchListItem.Add(new SelectListItem { Text = "Correo Electrónico", Value = "Correo Electrónico" });
+        <div class="widget">
+            <span class="form-inline">
+                @{ List<SelectListItem> searchListItem = new List<SelectListItem>();
+                    searchListItem.Add(new SelectListItem { Text = "Cédula", Value = "Cédula" });
+                    searchListItem.Add(new SelectListItem { Text = "Nombre Completo", Value = "Nombre Completo" });
+                    searchListItem.Add(new SelectListItem { Text = "Correo Electrónico", Value = "Correo Electrónico" });
 
-                    }
-                    @Html.DropDownList("option", new SelectList(searchListItem, "Value", "Text"), "Opciones de Búsqueda", htmlAttributes: new { @class = "form-control", @style = "width:205px;", @onchange = "Limpiar()" })
-                    @Html.TextBox("search", "", new { @class = "form-control", autocomplete = "off" })
-                    <button type="submit" class="btn btn-default" value="Buscar" style="color:black; font-size:14px;">
-                        <i class="fa fa-search" aria-hidden="true"></i> Buscar
-                    </button>
-                </span>
-            </div>
+                }
+                @Html.DropDownList("option", new SelectList(searchListItem, "Value", "Text"), "Opciones de Búsqueda", htmlAttributes: new { @class = "form-control", @style = "width:205px;", @onchange = "Limpiar()" })
+                @Html.TextBox("search", "", new { @class = "form-control", autocomplete = "off" })
+                <button type="submit" class="btn btn-default" value="Buscar" style="color:black; font-size:14px;">
+                    <i class="fa fa-search" aria-hidden="true"></i> Buscar
+                </button>
+            </span>
         </div>
     }
 
-    <table class="table table-bordered" id="table_personas">
+        <table class="table table-hover table-fixed" id="table_personas">
+           <thead>
         <tr>
             <th>
-                @* @Html.ActionLink("Cédula", "Index", new { sortOrder = ViewBag.Cedula })*@
                 Cédula
             </th>
             <th>
                 Nombre Completo
             </th>
             <th>Correo</th>
-            @*<th>Observación</th>*@
         </tr>
-        @if (Model.Count() == 0)
-        {
-            <tr>
-                <td align="center" colspan="8">No se encontraron coincidencias</td>
-            </tr>
-        }
-        else
-        {
-            foreach (var item in Model)
-            {
-                <tr>
-                    <td style="display:none;">
-                        @Html.DisplayFor(modelItem => item.idPersona)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.cedula)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.nombreCompleto)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.correo)
-                    </td>
-                    @*<td>
-                            @Html.DisplayFor(modelItem => item.observacion)
-                        </td>*@
-                </tr>
-            }
-        }
+                 </thead>
+  <!--Table head-->
+
+  <!--Table body-->
+           <tbody>
+               @if (Model.Count() == 0)
+               {
+                   <tr>
+                       <td align="center" colspan="8">No se encontraron coincidencias</td>
+                   </tr>
+               }
+               else
+               {
+                   foreach (var item in Model)
+                   {
+                       <tr>
+                           <td style="display:none;">
+                               @Html.DisplayFor(modelItem => item.idPersona)
+                           </td>
+                           <td>
+                               @Html.DisplayFor(modelItem => item.cedula)
+                           </td>
+                           <td>
+                               @Html.DisplayFor(modelItem => item.nombreCompleto)
+                           </td>
+                           <td>
+                               @Html.DisplayFor(modelItem => item.correo)
+                           </td>
+                       </tr>
+                   }
+               }
+           </tbody>
     </table>
     <div>
         <a href="#" id="btnEdit" class="btnEdit" onclick="Crear()" data-toggle="modal" data-target="#crearModal">Crear Persona</a>
     </div>
     <br />
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, search = ViewBag.search, option = ViewBag.option }))
+
     <div class="modal fade" id="modalArchivar">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -114,26 +105,14 @@
                 </div>
                 <div class="modal-body">
                     <h4>Esta seguro que desea eliminar esta persona? </h4>
-
-                    @*<div style="text-align:center;display:none" id="loaderDiv">
-                            <img src="~/Content/InternetSlowdown_Day.gif" width="150" />
-                        </div>*@
-
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn btn-default" data-dismiss="modal">Cancelar</a>
                     <a href="#" class="btn btn-default" onclick="Archivar()">Confirmar</a>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
-
-    @*hidden field for storing current DocId*@
-    <input type="hidden" id="idPersona" />
     <br />
 </div>
 
@@ -141,9 +120,10 @@
 </div>
 <div id="crearModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crearModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
 </div>
+<div id="detalleModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detalleModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+</div>
 
-
-<div id="contextMenu" class="dropdown clearfix">
+<div id="contextMenu" class="dropdown">
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
         <li>
             <a tabindex="-1" href="#" onclick="Details(getInd())" data-value="getInd()" data-toggle="modal" data-target="#detalleModal">Ver detalles</a>
@@ -183,42 +163,16 @@
         position: relative;
     }
 
-        tr:hover {
-            background: #c9e8f7;
-            position: relative;
-        }
+    tr:hover {
+        background: #c9e8f7;
+        position: relative;
+    }
 </style>
 
 
 
 <script>
-        $(document).ready(function () {
-        if ('@TempData["message"]' == "success") {
-            toastr.options = {
-                "debug": false,
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 100,
-                "timeOut": 3000,
-                "extendedTimeOut": 1000
-            }
 
-            var d = '@TempData["cedula"]';
-            toastr["success"](d, "Persona agregada exitosamente");
-        }
-        else if ('@TempData["message"]' == "error") {
-            toastr.options = {
-                "debug": false,
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 100,
-                "timeOut": 3000,
-                "extendedTimeOut": 1000
-            }
-            toastr["error"]("Error al crear el documento.");
-        }
-        else { }
-    });
     var ind = 0;
     $(this).mousedown(function (e) {
         if (e.which == 2) {
@@ -270,37 +224,6 @@
         $('#search').val("")
     }
 
-    @*$(function () {
-    $("#Search").keyup(function (event) {
-        var url = '@Url.Action("Index")';
-        //.getElementById("Search").submit();
-        var n = $("#Search").val();
-        $.ajax({
-        cache: false,
-            url: url+"?search="+n+"&option=Cédula",
-        success: function (data) {
-            $('#table_personas').empty().html(data);
-        }
-    });
-        });
-
-    });*@
-
-    //$(function () {
-
-    //    $("#Name,#SurName").keyup(function (e) {
-    //        var n = $("#Name").val();
-    //        var sn = $("#SurName").val();
-    //        $.get("/Home/Index?Name=" + n + "&SurName=" + sn, function (r) {
-    //            //update ui with results
-    //            $("#resultsTable").html(r);
-    //        });
-
-    //    });
-
-    //});
-
-
     function Crear() {
         var url = '@Url.Action("Crear")';
         $.ajax({
@@ -314,6 +237,27 @@
             },
             error: function (xhr) {
                 alert('Error a la hora de abrir el modal.');
+            }
+        });
+    }
+
+    function Details(idpersona) {
+        var url = '@Url.Action("Detalles")';
+        var myId = idpersona;
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            data: {
+                'id': idpersona
+            },
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#detalleModal").html(data);
+            },
+            error: function (xhr) {
+                alert('error');
             }
         });
     }
@@ -341,11 +285,7 @@
 </script>
 <script type="text/javascript">
     $(function () {
-        // Initialize numeric spinner input boxes
-        //$(".numeric-spinner").spinedit();
-        // Initialize modal dialog
-        // attach modal-container bootstrap attributes to links with .modal-link class.
-        // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
+
         $('body').on('click', '.modal-link', function (e) {
             e.preventDefault();
             $(this).attr('data-target', '#modal-container');
@@ -368,8 +308,6 @@
 
         $("#idPersona").val(idPersona);
         $('#modalArchivar').modal('show');
-       // $("#myModal").show();// show();//('show');
-
     }
 
     var Archivar = function () {
@@ -392,213 +330,3 @@
 
     }
 </script>
-
-@*
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position: fixed">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <span class="modal-title" id="exampleModalLabel">Editar persona</span>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="contenidoModal">
-                            @using (Html.BeginForm())
-                            {
-                                @Html.AntiForgeryToken()
-                                int i = 0;
-                                <div class="form-horizontal">
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                    @Html.HiddenFor(model => model[i].idPersona)
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].nombreCompleto, "Nombre completo:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].nombreCompleto, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].nombreCompleto, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].cedula, "Cédula:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].cedula, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].cedula, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].idTipo, "Tipo de persona", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.DropDownList("idTipo", null, htmlAttributes: new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model[i].idTipo, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].correo, "Correo:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].correo, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].correo, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.TextAreaFor(model => model[i].observacion, 5, 62, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model[i].observacion, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                            <div class="form-group">
-                                <input type="file" name="elementName" multiple="multiple" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary"><a style="color:white;" href="/PersonaFisica/Index">Cerrar</a></button>
-                        <button type="button" class="btn btn-primary"><a style="color:white;" href="/PersonaFisica/Index">Guardar persona</a></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div>
-            <a href="#" id="btnEdit" class="btnEdit" data-value="@Model[0].idPersona" data-toggle="modal" data-target="#modalAgregar"> Agregar persona </a>
-        </div>
-
-        <br />
-
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
-        Mostrando @Model.FirstItemOnPage de @Model.LastItemOnPage de @Model.TotalItemCount personas
-
-
-
-        <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position: absolute">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <span class="modal-title" id="exampleModalLabel">Agregar persona fisica</span>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="contenidoModal">
-                            @using (Html.BeginForm(new { id = "demoForm", name = "demoForm" }))
-                            {
-
-                                @Html.AntiForgeryToken()
-                                int i = 0;
-                                <div class="form-horizontal">
-
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                    @Html.HiddenFor(model => model[i].idPersona)
-
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].nombreCompleto, "Nombre completo:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].nombreCompleto, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].nombreCompleto, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].cedula, "Cédula:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model[i].cedula, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model[i].cedula, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model[i].idTipo, "Tipo de persona", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-
-                                            @Html.DropDownList("idTipo", null, htmlAttributes: new { onchange = @"form.submit();", @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model[i].idTipo, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    @if (Model[i].idTipo == 2)
-                                    {
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model[i].RepresentanteSocial, "Representante Social:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model[i].RepresentanteSocial, null, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model[i].RepresentanteSocial, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model[i].RepresentanteLegal, "Representante Legal:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model[i].RepresentanteLegal, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model[i].RepresentanteLegal, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model[i].correo, "Correo:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model[i].correo, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model[i].correo, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model[i].observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.TextAreaFor(model => model[i].observacion, 10, 62, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model[i].observacion, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-                                        string caca = Request["idTipo"];
-                                    }
-                                    else
-                                    {
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model[i].correo, "Correo:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model[i].correo, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model[i].correo, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model[i].observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.TextAreaFor(model => model[i].observacion, 10, 62, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model[i].observacion, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-                                    }
-
-                                </div>
-                            }
-                            <input type="file" name="elementName" multiple="multiple" />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary"><a style="color:white;" href="/PersonaFisica/Index">Cerrar</a></button>
-                        <button type="button" class="btn btn-primary"><a style="color:white;" href="/PersonaFisica/Index">Guardar cambios</a></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> *@
-
-@*<script type="text/javascript">
-        function SelectedIndexChanged() {
-            //Form post
-            document.demoForm.submit();
-        }
-
-        $(document).ready(function () {
-            $(".btnEdit").click(function () {
-                var id = $(this).data("value");
-                $("#contenidoModal").load("/Personas/Details/" + id, function () {
-                    $("#myModal").modal("show");
-                });
-            });
-        });
-    </script>*@

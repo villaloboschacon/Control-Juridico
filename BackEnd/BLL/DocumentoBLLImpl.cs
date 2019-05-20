@@ -14,97 +14,189 @@ namespace BackEnd.BLL
         private UnidadDeTrabajo<Documento> unidad;
         private SCJ_BDEntities context;
 
-        public bool Agregar(Documento documento)
+        public bool Agregar(Documento oDocumento)
         {
-            return this.Add(documento);
-        }
-
-        public bool Modificar(Documento documento)
-        {
-            this.Update(documento);
-            return true;
-        }
-        public bool SaveChanges()
-        {
-            using (unidad = new UnidadDeTrabajo<Documento>(new SCJ_BDEntities()))
-            {
-                this.unidad.Complete();
-                return true;
-            }
-        }
-        public bool Comprobar(string numeroDocumento, int opcion,string idDocumento)
-        {
-            int id = 0;
             try
             {
-                id = Int32.Parse(idDocumento);
+                return Add(oDocumento);
             }
             catch (Exception)
             {
-
-            }
-            try
-            {
-                List<Documento> lista;
-                if (opcion == 1)
-                {
-                    using (unidad = new UnidadDeTrabajo<Documento>(new SCJ_BDEntities()))
-                    {
-                        Expression<Func<Documento, bool>> consulta = (d => d.numeroDocumento.Equals(numeroDocumento) && d.idDocumento.Equals(id));
-                        lista = unidad.genericDAL.Find(consulta).ToList();
-                        if (lista.Count() == 1)
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            consulta = (d => d.numeroDocumento.Equals(numeroDocumento));
-                            lista = unidad.genericDAL.Find(consulta).ToList();
-                            if (lista.Count() == 0)
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                return false;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    using (unidad = new UnidadDeTrabajo<Documento>(new SCJ_BDEntities()))
-                    {
-                        Expression<Func<Documento, bool>> consulta = (d => d.numeroIngreso.Equals(numeroDocumento) && d.idDocumento.Equals(id));
-                        lista = unidad.genericDAL.Find(consulta).ToList();
-                        if (lista.Count() == 1)
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            consulta = (d => d.numeroIngreso.Equals(numeroDocumento));
-                            lista = unidad.genericDAL.Find(consulta).ToList();
-                            if (lista.Count() == 0)
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                return false;
-                            }
-                        }
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                throw new NotImplementedException();
+                return false;
             }
         }
 
-        public List<Documento> listaSalidas()
+        public bool Actualizar(Documento oDocumento)
+        {
+            try
+            {
+                return Update(oDocumento);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool Eliminar(Documento oDocumento)
+        {
+            try
+            {
+                return Remove(oDocumento);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public List<Documento> Consulta(int iTipo, string sFiltro, string sFechaFinal, string sCampo, Boolean bIngreso)
+        {
+            try
+            {
+                using (unidad = new UnidadDeTrabajo<Documento>(new SCJ_BDEntities()))
+                {
+                    ITablaGeneralBLL oTablaGeneralBLL = new TablaGeneralBLLImpl();
+                    int iEstado = oTablaGeneralBLL.GetIdTablaGeneral("Documentos", "Estado", "Archivado");
+                    if (bIngreso)
+                    {
+                        switch (sCampo)
+                        {
+                            case "Número de Oficio":
+                                Expression<Func<Documento, bool>> consultaNumeroOficio = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroDocumento.Contains(sFiltro) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso != null);
+                                return unidad.genericDAL.Find(consultaNumeroOficio).ToList();
+                            case "Número de Ingreso":
+                                Expression<Func<Documento, bool>> consultaNumeroIngreso = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroIngreso.Contains(sFiltro) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso != null);
+                                return unidad.genericDAL.Find(consultaNumeroIngreso).ToList();
+                            case "Fecha":
+                                DateTime date = Convert.ToDateTime(sFiltro);
+                                DateTime dateFinal = Convert.ToDateTime(sFechaFinal);
+                                Expression<Func<Documento, bool>> consultaFecha = (oDocumento => oDocumento.idTipo.Equals(iTipo) && (oDocumento.fecha >= date && oDocumento.fecha <= dateFinal) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso != null);
+                                return unidad.genericDAL.Find(consultaFecha).ToList();
+                            default:
+                                Expression<Func<Documento, bool>> consultaDefault = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso != null);
+                                return unidad.genericDAL.Find(consultaDefault).ToList();
+                        }
+                    }
+                    else {
+                        switch (sCampo)
+                        {
+                            case "Número de Oficio":
+                                Expression<Func<Documento, bool>> consultaNumeroOficio = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroDocumento.Contains(sFiltro) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso == null);
+                                return unidad.genericDAL.Find(consultaNumeroOficio).ToList();
+                            case "Número de Ingreso":
+                                Expression<Func<Documento, bool>> consultaNumeroIngreso = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroIngreso.Contains(sFiltro) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso == null);
+                                return unidad.genericDAL.Find(consultaNumeroIngreso).ToList();
+                            case "Fecha":
+                                DateTime date = Convert.ToDateTime(sFiltro);
+                                DateTime dateFinal = Convert.ToDateTime(sFechaFinal);
+                                Expression<Func<Documento, bool>> consultaFecha = (oDocumento => oDocumento.idTipo.Equals(iTipo) && (oDocumento.fecha >= date && oDocumento.fecha <= dateFinal) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso == null);
+                                return unidad.genericDAL.Find(consultaFecha).ToList();
+                            default:
+                                Expression<Func<Documento, bool>> consultaDefault = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso == null);
+                                return unidad.genericDAL.Find(consultaDefault).ToList();
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+
+        public bool ArchivarDocumento(int iIdDocumento)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    this.context.sp_archivaDocumento(iIdDocumento);
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool Comprobar(string sNumeroDocumento, int iOpcion,string sIdDocumento)
+        {
+            try
+            {
+                using (unidad = new UnidadDeTrabajo<Documento>(new SCJ_BDEntities()))
+                {
+                    int iId = Int32.Parse(sIdDocumento);
+                    Expression<Func<Documento, bool>> eConsulta = (oDocumento => oDocumento.numeroDocumento.Equals(sNumeroDocumento) && oDocumento.idDocumento.Equals(iId));
+                    List<Documento> lista = unidad.genericDAL.Find(eConsulta).ToList();
+                    if (iOpcion == 1)
+                    {
+                        if (lista.Count() == 1)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            eConsulta = (oDocumento => oDocumento.numeroDocumento.Equals(sNumeroDocumento));
+                            lista = unidad.genericDAL.Find(eConsulta).ToList();
+                            if (lista.Count() == 0)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }     
+                    }
+                    else
+                    {
+                        if (lista.Count() == 1)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            eConsulta = (oDocumento => oDocumento.numeroIngreso.Equals(sNumeroDocumento));
+                            lista = unidad.genericDAL.Find(eConsulta).ToList();
+                            if (lista.Count() == 0)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool SaveChanges()
+        {
+            try
+            {
+                using (unidad = new UnidadDeTrabajo<Documento>(new SCJ_BDEntities()))
+                {
+                    this.unidad.Complete();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
+        public List<Documento> GetSalidas()
         {
             try
             {
@@ -115,19 +207,16 @@ namespace BackEnd.BLL
                     {
                         return result;
                     }
-
                     return null;
                 }
-
             }
             catch (Exception)
-            {
-
+            { 
                 return null;
             }
         }
 
-        public List<Documento> listaEntradas()
+        public List<Documento> GetEntradas()
         {
             try
             {
@@ -140,83 +229,105 @@ namespace BackEnd.BLL
                     }
                     return null;
                 }
-
             }
             catch (Exception)
             {
-
                 return null;
             }
         }
 
-        public Nullable<long> consultaNumeroIngreso()
+        public List<Documento> GetReferencias(long? referencia)
         {
-            using (context = new SCJ_BDEntities())
+            try
             {
-               var result = this.context.sp_ConsultaNumerodeIngreso().FirstOrDefault();
-               return result;
-            }
-            
-        }
-
-
-
-        public Nullable<long> generaNumIngreso()
-        { 
-            using (context = new SCJ_BDEntities())
-             {
-                 var result = this.context.sp_GeneraNumerodeIngreso().FirstOrDefault();
-                 return result;
-             }
-        }
-
-        public string getNomenclatura(string nombreDept)
-        {
-            using (context = new SCJ_BDEntities())
-            {
-                var result = this.context.getNomenclatura(nombreDept).FirstOrDefault();
-                return result;
-            }
-        }
-
-        public List<Documento> listaReferencias(long? referencia)
-        {
-                try
+                using (context = new SCJ_BDEntities())
                 {
-                    using (context = new SCJ_BDEntities())
+                    var result = context.sp_ListaReferencias(referencia).ToList();
+                    if (result != null)
                     {
-                        var result = this.context.sp_ListaReferencias(referencia).ToList();
-                        if (result != null)
-                        {
-                            return result;
-                        }
-                        return null;
+                        return result;
                     }
-
-                }
-                catch (Exception)
-                {
-
                     return null;
                 }
-            
-        }
-
-        public bool archivaDocumento(int idDocumento)
-        {
-            using (context = new SCJ_BDEntities())
+            }
+            catch (Exception)
             {
-                this.context.sp_archivaDocumento(idDocumento);
-                return true;
+                return null;
             }
         }
 
-        public long? generaNumeroReferencia()
+        public Nullable<long> GetNumeroIngreso()
         {
-            using (context = new SCJ_BDEntities())
+            try
             {
-                var result = this.context.sp_GeneraNumerodeReferencia().FirstOrDefault();
-                return result;
+                using (context = new SCJ_BDEntities())
+                {
+                   return context.sp_ConsultaNumerodeIngreso().FirstOrDefault();
+                }          
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public Nullable<long> GeneraNumeroIngreso()
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                 {
+                     return context.sp_GeneraNumerodeIngreso().FirstOrDefault();
+                 }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public string GetNomenclatura(string sNombreDepartamento)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    return context.getNomenclatura(sNombreDepartamento).FirstOrDefault();
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public long? GeneraNumeroReferencia()
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    return this.context.sp_GeneraNumerodeReferencia().FirstOrDefault();
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public Documento GetDocumento(int iId)
+        {
+            try
+            {
+                using (unidad = new UnidadDeTrabajo<Documento>(new SCJ_BDEntities()))
+                {
+                    return unidad.genericDAL.Get(iId);
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
     }

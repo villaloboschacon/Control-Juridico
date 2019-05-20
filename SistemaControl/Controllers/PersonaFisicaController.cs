@@ -46,7 +46,7 @@ namespace SistemaControl.Controllers
             return View(model);
         }
 
-        public ActionResult Index(string sOption, string sSearch, int page = 1, int pageSize = 4, string message = "")
+        public ActionResult Index(string sOption, string sSearch, int iPage = 1, int iPageSize = 4, string sMessage = "")
         {
             try
             {
@@ -57,40 +57,38 @@ namespace SistemaControl.Controllers
             {
                 return RedirectToAction("Index", new { message = "error" });
             }
-            if (!string.IsNullOrEmpty(message))
+            if (!string.IsNullOrEmpty(sMessage))
             {
-                TempData["message"] = "success";
-            }
-            else if (message == "error")
-            {
-                TempData["message"] = "error";
+                TempData["message"] = sMessage;
             }
             else
             {
                 TempData["message"] = "";
             }
-            if (!String.IsNullOrEmpty(sSearch))
+            if (!String.IsNullOrEmpty(sSearch) && !String.IsNullOrEmpty(sOption))
             {
                 ViewBag.search = sSearch;
                 ViewBag.option = sOption;
-                var aPersonas = oPersonasBLL.Consulta(oTablaGeneralBLL.GetIdTablaGeneral("Persona","tipo","Fisica"), sSearch, sOption);
+                int iTipo = oTablaGeneralBLL.GetIdTablaGeneral("Persona", "Tipo", "Fisica");
+                var aPersonas = oPersonasBLL.Consulta(iTipo, sSearch, sOption);
                 ViewBag.idPersona = new SelectList(oTablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
-                foreach (Persona persona in aPersonas)
-                {
-                    persona.TablaGeneral = oTablaGeneralBLL.GetTablaGeneral(persona.idTipo); //TablaGeneral es el {get;set} para poder traer idTipo de tabla general
-                }
-                PagedList<Persona> model = new PagedList<Persona>(aPersonas, page, pageSize);
-                return View(model);
-            }
-            else
-            {
-                ViewBag.idPersona = new SelectList(oTablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
-                var aPersonas = oPersonasBLL.Consulta(1);
                 foreach (Persona oPersona in aPersonas)
                 {
                     oPersona.TablaGeneral = oTablaGeneralBLL.GetTablaGeneral(oPersona.idTipo); //TablaGeneral es el {get;set} para poder traer idTipo de tabla general
                 }
-                PagedList<Persona> model = new PagedList<Persona>(aPersonas, page, pageSize);
+                PagedList<Persona> model = new PagedList<Persona>(aPersonas, iPage, iPageSize);
+                return View(model);
+            }
+            else
+            {
+                ViewBag.idPersona = new SelectList(oTablaGeneralBLL.Consulta("Persona", "Tipo"), "idTablaGeneral", "descripcion");
+                int iTipo = oTablaGeneralBLL.GetIdTablaGeneral("Persona", "Tipo", "Fisica");
+                var aPersonas = oPersonasBLL.Consulta(iTipo);
+                foreach (Persona oPersona in aPersonas)
+                {
+                    oPersona.TablaGeneral = oTablaGeneralBLL.GetTablaGeneral(oPersona.idTipo);
+                }
+                PagedList<Persona> model = new PagedList<Persona>(aPersonas, iPage, iPageSize);
                 return View(model);
             }
         }
