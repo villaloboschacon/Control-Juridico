@@ -253,6 +253,7 @@
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\CasoViewModel.cs" />
     <Compile Include="Models\DocumentoViewModel.cs" />
+    <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\PersonaViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
