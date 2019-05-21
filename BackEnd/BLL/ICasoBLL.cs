@@ -12,6 +12,7 @@ namespace BackEnd.BLL
         bool Agregar(Caso caso);
         bool Modificar(Caso caso);
         bool Eliminar(Caso caso);
+        List<Caso> Consulta(int iTipo,string sSearch,string sCampo);
         bool SaveChanges();
         bool Comprobar(string idCaso,string numeroCaso);
         string getCorreo(int idUsuario);

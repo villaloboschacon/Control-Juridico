@@ -98,6 +98,45 @@ namespace BackEnd.BLL
                 return true;
             }
         }
+
+        public List<Caso> Consulta(int iTipo, string sFiltro, string sCampo)
+        {
+            try
+            {
+                using (unidad = new UnidadDeTrabajo<Caso>(new SCJ_BDEntities()))
+                {
+                    ITablaGeneralBLL oTablaGeneralBLL = new TablaGeneralBLLImpl();
+                    int iEstado = oTablaGeneralBLL.GetIdTablaGeneral("Casos", "estado", "inactivo");
+
+                    switch (sCampo)
+                    {
+                        case "Persona":
+                            int iFiltroConsulta = Int32.Parse(sFiltro);
+                            Expression<Func<Caso, bool>> consultaPersona = (oCaso => oCaso.idTipo.Equals(iTipo) && oCaso.Persona.Equals(iFiltroConsulta) && oCaso.idEstado != (iEstado));
+                            return unidad.genericDAL.Find(consultaPersona).ToList();
+                        case "Abogado":
+                            int iFiltroAbogado = Int32.Parse(sFiltro);
+                            Expression<Func<Caso, bool>> consultaAbogado = (oCaso => oCaso.idTipo.Equals(iTipo) && oCaso.idUsuario.Equals(iFiltroAbogado) && oCaso.idEstado != (iEstado));
+                            return unidad.genericDAL.Find(consultaAbogado).ToList();
+                        case "Estado":
+                            int iFiltroEstado = Int32.Parse(sFiltro);
+                            Expression<Func<Caso, bool>> consultaEstado = (oCaso => oCaso.idTipo.Equals(iTipo) && oCaso.idEstado.Equals(iFiltroEstado) && oCaso.idEstado != (iEstado));
+                            return unidad.genericDAL.Find(consultaEstado).ToList();
+                        case "Número de proceso":
+                            Expression<Func<Caso, bool>> consultaNumeroProceso = (oCaso => oCaso.idTipo.Equals(iTipo) && oCaso.numeroCaso.Contains(sFiltro) && oCaso.idEstado != (iEstado));
+                            return unidad.genericDAL.Find(consultaNumeroProceso).ToList();
+                        default:
+                            Expression<Func<Caso, bool>> consultaDefault = (oCaso => oCaso.idTipo.Equals(iTipo) && oCaso.idEstado != (iEstado) && oCaso.numeroCaso.Contains(sFiltro));
+                            return unidad.genericDAL.Find(consultaDefault).ToList();
+                    }
+ 
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }
 
