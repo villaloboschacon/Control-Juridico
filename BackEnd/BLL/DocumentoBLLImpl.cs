@@ -50,7 +50,7 @@ namespace BackEnd.BLL
             }
         }
 
-        public List<Documento> Consulta(int iTipo, string sFiltro, string sFechaFinal, string sCampo, Boolean bIngreso)
+        public List<Documento> Consulta(int iTipo, string sFiltro, string sFechaFinal, string sCampo, string sTipoDocumento)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace BackEnd.BLL
                 {
                     ITablaGeneralBLL oTablaGeneralBLL = new TablaGeneralBLLImpl();
                     int iEstado = oTablaGeneralBLL.GetIdTablaGeneral("Documentos", "Estado", "Archivado");
-                    if (bIngreso)
+                    if (sTipoDocumento == "OficioEntrada")
                     {
                         switch (sCampo)
                         {
@@ -78,7 +78,8 @@ namespace BackEnd.BLL
                                 return unidad.genericDAL.Find(consultaDefault).ToList();
                         }
                     }
-                    else {
+                    else if(sTipoDocumento == "OficioSalida")
+                    {
                         switch (sCampo)
                         {
                             case "Número de Oficio":
@@ -96,6 +97,54 @@ namespace BackEnd.BLL
                                 Expression<Func<Documento, bool>> consultaDefault = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso == null);
                                 return unidad.genericDAL.Find(consultaDefault).ToList();
                         }
+                    }
+                    else if (sTipoDocumento == "Expediente")
+                    {
+                        switch (sCampo)
+                        {
+                            case "Número de Oficio":
+                                Expression<Func<Documento, bool>> consultaNumeroOficio = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroDocumento.Contains(sFiltro) && oDocumento.idEstado != (iEstado));
+                                return unidad.genericDAL.Find(consultaNumeroOficio).ToList();
+                            case "Número de Ingreso":
+                                Expression<Func<Documento, bool>> consultaNumeroIngreso = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroIngreso.Contains(sFiltro) && oDocumento.idEstado != (iEstado) );
+                                return unidad.genericDAL.Find(consultaNumeroIngreso).ToList();
+                            case "Parte":
+                                Expression<Func<Documento, bool>> consultaParte = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.parte.Contains(sFiltro) && oDocumento.idEstado != (iEstado));
+                                return unidad.genericDAL.Find(consultaParte).ToList();
+                            case "Fecha":
+                                DateTime date = Convert.ToDateTime(sFiltro);
+                                DateTime dateFinal = Convert.ToDateTime(sFechaFinal);
+                                Expression<Func<Documento, bool>> consultaFecha = (oDocumento => oDocumento.idTipo.Equals(iTipo) && (oDocumento.fecha >= date && oDocumento.fecha <= dateFinal) && oDocumento.idEstado != (iEstado));
+                                return unidad.genericDAL.Find(consultaFecha).ToList();
+                            default:
+                                Expression<Func<Documento, bool>> consultaDefault = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.idEstado != (iEstado));
+                                return unidad.genericDAL.Find(consultaDefault).ToList();
+                        }
+                    }
+                    else if(sTipoDocumento == "SNI")
+                    {
+                        switch (sCampo)
+                        {
+                            case "Número de Oficio":
+                                Expression<Func<Documento, bool>> consultaNumeroOficio = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroDocumento.Contains(sFiltro) && oDocumento.idEstado != (iEstado));
+                                return unidad.genericDAL.Find(consultaNumeroOficio).ToList();
+                            case "Número de Ingreso":
+                                Expression<Func<Documento, bool>> consultaNumeroIngreso = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroIngreso.Contains(sFiltro) && oDocumento.idEstado != (iEstado));
+                                return unidad.genericDAL.Find(consultaNumeroIngreso).ToList();
+                            case "Fecha":
+                                DateTime date = Convert.ToDateTime(sFiltro);
+                                DateTime dateFinal = Convert.ToDateTime(sFechaFinal);
+                                Expression<Func<Documento, bool>> consultaFecha = (oDocumento => oDocumento.idTipo.Equals(iTipo) && (oDocumento.fecha >= date && oDocumento.fecha <= dateFinal) && oDocumento.idEstado != (iEstado));
+                                return unidad.genericDAL.Find(consultaFecha).ToList();
+                            default:
+                                Expression<Func<Documento, bool>> consultaDefault = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.idEstado != (iEstado));
+                                return unidad.genericDAL.Find(consultaDefault).ToList();
+                        }
+                    }
+                    else
+                    {
+                        Expression<Func<Documento, bool>> consultaDefault = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.idEstado != (iEstado));
+                        return unidad.genericDAL.Find(consultaDefault).ToList();
                     }
                 }
             }
@@ -121,59 +170,86 @@ namespace BackEnd.BLL
                 return false;
             }
         }
-
-        public bool Comprobar(string sNumeroDocumento, int iOpcion,string sIdDocumento)
+        //Revisar codigo.
+        public bool Comprobar(string sNumeroDocumento, string sIdDocumento, Boolean bNumero,Boolean bStatus)
         {
             try
             {
                 using (unidad = new UnidadDeTrabajo<Documento>(new SCJ_BDEntities()))
                 {
-                    int iId = Int32.Parse(sIdDocumento);
-                    Expression<Func<Documento, bool>> eConsulta = (oDocumento => oDocumento.numeroDocumento.Equals(sNumeroDocumento) && oDocumento.idDocumento.Equals(iId));
-                    List<Documento> lista = unidad.genericDAL.Find(eConsulta).ToList();
-                    if (iOpcion == 1)
+                    //Nuevo
+                    if (bStatus)
                     {
-                        if (lista.Count() == 1)
+                        //Numero documento
+                        if (bNumero)
                         {
-                            return true;
-                        }
-                        else
-                        {
-                            eConsulta = (oDocumento => oDocumento.numeroDocumento.Equals(sNumeroDocumento));
-                            lista = unidad.genericDAL.Find(eConsulta).ToList();
-                            if (lista.Count() == 0)
+                            Expression<Func<Documento, bool>> eConsulta = (oDocumentoConsulta => oDocumentoConsulta.numeroDocumento.Equals(sNumeroDocumento));
+                            List<Documento> lista = unidad.genericDAL.Find(eConsulta).ToList();
+                            if ((unidad.genericDAL.Find(eConsulta).ToList()).Count == 0)
                             {
                                 return true;
                             }
-                            else
+                            return false;
+                        }
+                        //Numero ingreso
+                        else
+                        {
+                            Expression<Func<Documento, bool>> eConsulta = (oDocumentoConsulta => oDocumentoConsulta.numeroIngreso.Equals(sNumeroDocumento));
+                            List<Documento> lista = unidad.genericDAL.Find(eConsulta).ToList();
+                            if ((unidad.genericDAL.Find(eConsulta).ToList()).Count == 0)
                             {
-                                return false;
+                                return true;
                             }
-                        }     
+                            return false;
+                        }
                     }
+                    //Editar
                     else
                     {
-                        if (lista.Count() == 1)
+                        int iIdDocumento = Int32.Parse(sIdDocumento);
+                        Documento documento = Get(iIdDocumento);
+                        //Numero documento
+                        if (bNumero)
                         {
-                            return true;
-                        }
-                        else
-                        {
-                            eConsulta = (oDocumento => oDocumento.numeroIngreso.Equals(sNumeroDocumento));
-                            lista = unidad.genericDAL.Find(eConsulta).ToList();
-                            if (lista.Count() == 0)
+                            string sNumeroIngresoComprobacion = documento.numeroDocumento;
+                            if (sNumeroIngresoComprobacion == sNumeroDocumento)
                             {
                                 return true;
                             }
                             else
                             {
+                                Expression<Func<Documento, bool>> eConsulta = (oDocumentoConsulta => oDocumentoConsulta.numeroDocumento.Equals(sNumeroDocumento));
+                                List<Documento> lista = unidad.genericDAL.Find(eConsulta).ToList();
+                                if ((unidad.genericDAL.Find(eConsulta).ToList()).Count == 0)
+                                {
+                                    return true;
+                                }
+                                return false;
+                            }
+                        }
+                        //Numero INGRESO
+                        else
+                        {
+                            string sNumeroDocumentoComprobacion = documento.numeroIngreso;
+                            if(sNumeroDocumentoComprobacion == sNumeroDocumento)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                Expression<Func<Documento, bool>> eConsulta = (oDocumentoConsulta => oDocumentoConsulta.numeroIngreso.Equals(sNumeroDocumento));
+                                List<Documento> lista = unidad.genericDAL.Find(eConsulta).ToList();
+                                if ((unidad.genericDAL.Find(eConsulta).ToList()).Count == 0)
+                                {
+                                    return true;
+                                }
                                 return false;
                             }
                         }
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }
@@ -242,12 +318,7 @@ namespace BackEnd.BLL
             {
                 using (context = new SCJ_BDEntities())
                 {
-                    var result = context.sp_ListaReferencias(referencia).ToList();
-                    if (result != null)
-                    {
-                        return result;
-                    }
-                    return null;
+                    return context.sp_ListaReferencias(referencia).ToList();
                 }
             }
             catch (Exception)

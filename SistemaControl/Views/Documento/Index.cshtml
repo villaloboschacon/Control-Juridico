@@ -101,7 +101,7 @@
             <a href="#" onclick="Crear()" data-toggle="modal" data-target="#crearModal" id="bCrear">Crear documento</a>
         </div>
         <br/>
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, sSearch = ViewBag.search, sOption = ViewBag.option, sSearchFecha = ViewBag.finalDate }))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, sSearch = ViewBag.search, sOption = ViewBag.option, sSearchFecha = ViewBag.finalDate, pageReferencias=ViewBag.pageReferencias }))
         <input type="hidden" id="idDocumento" />
         <br />
     </div>
@@ -201,8 +201,8 @@
                 "extendedTimeOut": 1000
             }
 
-            var d = '@TempData["cedula"]';
-            toastr["success"](d, "Oficio agregado exitosamente");
+            var d = '@TempData["action"]';
+            toastr["success"](d, "Oficio ","exitosamente");
         }
         else if ('@TempData["message"]' == "error") {
             toastr.options = {
@@ -399,7 +399,7 @@
             }
         });
     }
-        function Details(iddocumento) {
+    function Details(iddocumento) {
         var url = '@Url.Action("Detalles")';
         var myId = iddocumento;
         $.ajax({

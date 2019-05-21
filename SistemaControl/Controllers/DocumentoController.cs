@@ -11,16 +11,14 @@ using SistemaControl.Models;
 using Spire.Doc;
 using Spire.Doc.Documents;
 using Xceed.Words.NET;
-using System.Security.Claims;
 
 namespace SistemaControl.Controllers
 {
-    [Authorize]
     public class DocumentoController : Controller
     {
         private IDocumentoBLL documentoBll;
         private ITablaGeneralBLL tablaGeneralBLL;
-        public int pageglobal;
+        List<Documento> aDocumentos = new List<Documento>();
 
         public ActionResult Index(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 7, string message = "")
         {
@@ -35,11 +33,8 @@ namespace SistemaControl.Controllers
                 return View(model);
             }
 
-            List<Documento> aDocumentos = new List<Documento>();
             int iTipo = tablaGeneralBLL.GetIdTablaGeneral("Documentos", "tipo", "Oficio");
             
-
-
             if (!string.IsNullOrEmpty(message))
             {
                 TempData["message"] = message;
@@ -56,9 +51,9 @@ namespace SistemaControl.Controllers
                     ViewBag.search = sSearch;
                     ViewBag.option = sOption;
                     ViewBag.finalDate = sSearchFecha;
-                    if (documentoBll.Consulta(iTipo, sSearch, sSearchFecha, sOption, false) != null) {
+                    if (documentoBll.Consulta(iTipo, sSearch, sSearchFecha, sOption, "OficioEntrada") != null) {
 
-                        aDocumentos = documentoBll.Consulta(iTipo, sSearch, sSearchFecha, sOption, true);
+                        aDocumentos = documentoBll.Consulta(iTipo, sSearch, sSearchFecha, sOption, "OficioEntrada");
 
                         foreach (Documento oDocumento in aDocumentos)
                         {
@@ -100,11 +95,11 @@ namespace SistemaControl.Controllers
                     ViewBag.finalDate = sSearchFecha;
                     if (String.IsNullOrEmpty(sSearch))
                     {
-                        aDocumentos = documentoBll.Consulta(iTipo, sSearch, sSearchFecha,"", true);
+                        aDocumentos = documentoBll.Consulta(iTipo, sSearch, sSearchFecha,"", "OficioEntrada");
                     }
                     else
                     {
-                        aDocumentos = documentoBll.Consulta(iTipo, sSearch, sSearchFecha, "Número de Oficio", true);
+                        aDocumentos = documentoBll.Consulta(iTipo, sSearch, sSearchFecha, "Número de Oficio", "OficioEntrada");
                     }
                     foreach (Documento documento in aDocumentos)
                     {
@@ -128,7 +123,7 @@ namespace SistemaControl.Controllers
             }
         }
 
-        public ActionResult IndexSalidas(string option, string search,string sSearchFecha, int page = 1, int pageSize = 7, string message = "")
+        public ActionResult IndexSalidas(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 7, string message = "")
         {
             try
             {
@@ -152,17 +147,17 @@ namespace SistemaControl.Controllers
                 TempData["message"] = "";
             }
 
-            if (!String.IsNullOrEmpty(option) && !String.IsNullOrEmpty(search))
+            if (!String.IsNullOrEmpty(sOption) && !String.IsNullOrEmpty(sSearch))
             {
                 //El ultimo valor es falso por que no tiene que tener numero de ingreso
                 try
                 {
-                    ViewBag.search = search;
-                    ViewBag.option = option;
-                    if (documentoBll.Consulta(iTipo, search, sSearchFecha,option, false) != null)
+                    ViewBag.search = sSearch;
+                    ViewBag.option = sOption;
+                    if (documentoBll.Consulta(iTipo, sSearch, sSearchFecha, sOption, "OficioSalida") != null)
                     {
 
-                        aDocumentos = documentoBll.Consulta(iTipo, search, sSearchFecha,option, false);
+                        aDocumentos = documentoBll.Consulta(iTipo, sSearch, sSearchFecha, sOption, "OficioSalida");
 
                         foreach (Documento oDocumento in aDocumentos)
                         {
@@ -188,7 +183,7 @@ namespace SistemaControl.Controllers
             }
             //Busqueda cuando no pone la busqueda ni la opcion de busqueda
             //Cuando se inicia el index
-            else if (String.IsNullOrEmpty(option) && String.IsNullOrEmpty(search))
+            else if (String.IsNullOrEmpty(sOption) && String.IsNullOrEmpty(sSearch))
             {
                 PagedList<Documento> model = new PagedList<Documento>(aDocumentos, page, pageSize);
                 return View(model);
@@ -197,15 +192,15 @@ namespace SistemaControl.Controllers
             {
                 try
                 {
-                    ViewBag.search = search;
-                    ViewBag.option = option;
-                    if (String.IsNullOrEmpty(search))
+                    ViewBag.search = sSearch;
+                    ViewBag.option = sOption;
+                    if (String.IsNullOrEmpty(sSearch))
                     {
-                        aDocumentos = documentoBll.Consulta(iTipo, search, sSearchFecha, "", false);
+                        aDocumentos = documentoBll.Consulta(iTipo, sSearch, sSearchFecha, "", "OficioSalida");
                     }
                     else
                     {
-                        aDocumentos = documentoBll.Consulta(iTipo, search, sSearchFecha, "Número de Oficio", false);
+                        aDocumentos = documentoBll.Consulta(iTipo, sSearch, sSearchFecha, "Número de Oficio", "OficioSalida");
                     }
                     foreach (Documento documento in aDocumentos)
                     {
@@ -229,7 +224,7 @@ namespace SistemaControl.Controllers
             }
         }
 
-        public ActionResult IndexReferencias(string option,int id, string search, int page = 1, int pageSize = 15)
+        public ActionResult IndexReferencias(string option,int id, string search, int page = 1, int pageSize = 15,int pageReferencias=0)
         {
             try
             {
@@ -240,53 +235,50 @@ namespace SistemaControl.Controllers
             {
                 return null;
             }
-            search = id.ToString();
 
-            if (!String.IsNullOrEmpty(search))
+            try
             {
-                //var doc = documentoBll.Find(x => x.numeroDocumento.Equals(search) && x.idTipo == 3 && x.idEstado != 9 || search == null).ToList();
-                var doc = documentoBll.Find(x => x.idDocumento.Equals(id) && x.idTipo == 3 && x.idEstado != 9).ToList();
-                var referencias = documentoBll.GetReferencias(doc[0].idReferencia);
-                var listaDocumentos = referencias;
+                ViewBag.pageReferencias = pageReferencias;
+                ViewBag.page = page;
+                ViewBag.id = id;
 
-              //  listaDocumentos.Union(listaDocumentos);
-                if (!String.IsNullOrEmpty(search))
+
+                Documento documento = documentoBll.GetDocumento(id);
+                if (documento.idReferencia != null)
                 {
-                    foreach (Documento documento in listaDocumentos)
+                    aDocumentos = documentoBll.GetReferencias(documento.idReferencia);
+                }
+                else
+                {
+                    aDocumentos = documentoBll.GetReferencias(documento.idDocumento);
+                }
+                if (aDocumentos.Count != 0)
+                {
+                    var oDocumentoSearch = aDocumentos.Find(x=>x.idDocumento.Equals(documento.idDocumento));
+                    if (oDocumentoSearch == null)
                     {
-                        documento.TablaGeneral1 = tablaGeneralBLL.Get(documento.idOrigen);
-                        documento.TablaGeneral2 = tablaGeneralBLL.Get(documento.idTipo);
-                        documento.TablaGeneral3 = tablaGeneralBLL.Get(documento.tipoOrigen);
-                        if (documento.idEstado.HasValue)
-                        {
-                            int i = (int)(documento.idEstado);
-                            documento.TablaGeneral = tablaGeneralBLL.Get(i);
-                        }
+                        aDocumentos.Insert(0,documento);
                     }
                 }
-
-                PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, page, pageSize);
-                return View(model);
-            }
-            
-            else
-            {
-                var documentos = documentoBll.Find(x => search == null && x.idTipo == 3 && x.idEstado != 9 || x.idTipo == 23);
-                List<Documento> listaDocumentos = documentos.ToList();
-                foreach (Documento documento in listaDocumentos)
+                foreach (Documento oDocumento in aDocumentos)
                 {
-                    documento.TablaGeneral1 = tablaGeneralBLL.Get(documento.idOrigen);
-                    documento.TablaGeneral2 = tablaGeneralBLL.Get(documento.idTipo);
-                    documento.TablaGeneral3 = tablaGeneralBLL.Get(documento.tipoOrigen);
-                    if (documento.idEstado.HasValue)
+                    oDocumento.TablaGeneral1 = tablaGeneralBLL.Get(oDocumento.idOrigen);
+                    oDocumento.TablaGeneral2 = tablaGeneralBLL.Get(oDocumento.idTipo);
+                    oDocumento.TablaGeneral3 = tablaGeneralBLL.Get(oDocumento.tipoOrigen);
+                    if (oDocumento.idEstado.HasValue)
                     {
-                        int i = (int)(documento.idEstado);
-                        documento.TablaGeneral = tablaGeneralBLL.Get(i);
+                        int i = (int)(oDocumento.idEstado);
+                        oDocumento.TablaGeneral = tablaGeneralBLL.Get(i);
                     }
                 }
-                PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, page, pageSize);
-                return View(model);
             }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", new { message = "error" });
+            }
+            PagedList<Documento> model = new PagedList<Documento>(aDocumentos, page, pageSize);
+            return View(model);
+
         }
 
         [HttpPost]
@@ -305,6 +297,7 @@ namespace SistemaControl.Controllers
             }
             if (ModelState.IsValid)
             {
+                //documento.idReferencia = documento.idDocumento;
                 documentoBll.Agregar(documento);
                 documentoBll.SaveChanges();
                 //Crea el html del texto recibido en el modal
@@ -407,7 +400,7 @@ namespace SistemaControl.Controllers
             {
                 documentoBll.Agregar(documento);
                 documentoBll.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { message = "success" });
             }
             return RedirectToAction("Index", new { message = "error" });
         }
@@ -450,7 +443,7 @@ namespace SistemaControl.Controllers
             {
                 documentoBll.Actualizar(documento);
                 documentoBll.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { message = "success" });
             }
             return RedirectToAction("Index", new { message = "error" });
 
@@ -495,7 +488,9 @@ namespace SistemaControl.Controllers
                 documentoBll.GeneraNumeroIngreso();
                 documentoBll.Actualizar(documento);
                 documentoBll.SaveChanges();
-                return RedirectToAction("Index", new { message = "error" });
+                TempData["DocumentoId"] = documento.numeroDocumento;
+                TempData["action"] = "editado";
+                return RedirectToAction("Index", new { message = "success" });
             }
             return RedirectToAction("Index", new { message = "error" });
         }
@@ -716,15 +711,29 @@ namespace SistemaControl.Controllers
             {
                 return null;
             }
-            if (documentoBll.Comprobar(numeroDocumento,1, idDocumento))
+            //Editar documento-numero documento
+            if (idDocumento == "0")
             {
-                return Json(true, JsonRequestBehavior.AllowGet);
+                if (documentoBll.Comprobar(numeroDocumento, idDocumento, true, true))
+                {
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                }
             }
             else
             {
-                return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                if (documentoBll.Comprobar(numeroDocumento, idDocumento, true, false))
+                {
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                }
             }
-
         }
 
         public JsonResult ComprobarIngreso(string numeroIngreso, string idDocumento)
@@ -737,13 +746,27 @@ namespace SistemaControl.Controllers
             {
                 return null;
             }
-            if (documentoBll.Comprobar(numeroIngreso, 2, idDocumento))
+            if (idDocumento == "0")
             {
-                return Json(true, JsonRequestBehavior.AllowGet);
+                if (documentoBll.Comprobar(numeroIngreso, idDocumento, false, true))
+                {
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                }
             }
             else
             {
-                return Json("El número de ingreso no se encuentra disponible.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                if (documentoBll.Comprobar(numeroIngreso, idDocumento, false, false))
+                {
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                }
             }
 
         }

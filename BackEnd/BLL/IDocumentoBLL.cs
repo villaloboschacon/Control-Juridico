@@ -32,7 +32,7 @@ namespace BackEnd.BLL
         ///<summary>
         ///Comprueba que el registro del numero del documento no este repetido.
         ///</summary>
-        bool Comprobar(string numeroDocumento, int opcion, string idDocumento);
+        bool Comprobar(string numeroDocumento, string idDocumento,Boolean bNumero ,Boolean bStatus);
 
         ///<summary>
         ///Guarda el estado del model actual.
@@ -42,7 +42,7 @@ namespace BackEnd.BLL
         ///<summary>
         ///Recupera la lista de documentos filtrandolas por nombre de persona, tipo de Documento, si tiene numero de ingreso y campo de busqueda
         ///</summary>
-        List<Documento> Consulta(int iTipo, string sFiltro, string sFechaFinal,string sCampo, Boolean bIngreso);   
+        List<Documento> Consulta(int iTipo, string sFiltro, string sFechaFinal,string sCampo, string sTipoDocumento);   
 
         ///<summary>
         ///Recupera la lista de documentos de salida. 
