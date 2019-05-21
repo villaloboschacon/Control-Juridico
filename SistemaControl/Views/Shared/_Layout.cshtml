@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@*
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,6 +17,8 @@
     <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <!-- Morris chart -->
+    <link rel="stylesheet" href="bower_components/morris.js/morris.css">
 
     <style>
         .marginlefting {
@@ -56,60 +59,9 @@
     </style>
 </head>
 <body>
-    @*<div class="ui sidebar vertical left menu overlay visible" style="-webkit-transition-duration: 0.1s; overflow: visible !important;background-color:#233245; width:200px">
-            <div class="item logo">
-                <img style="display: block;margin: 0 auto; padding-bottom:10px;" src="~/Content/img/muni.gif" />
-            </div>
-            <a href="~/Home/Index" style="color:white;font-size:18px; font-family:sans-serif; border-top: 1px solid #000; border-bottom: 1px solid #000;" class="title item">
-                <span><i class="fa fa-home"></i></span>Menu Principal
-            </a>
-            <div class="ui accordion">
-                <a style="color:white;font-size:18px;  border-bottom: 1px solid #000; font-family:sans-serif" class="title item">
-                    <span><i class="fa fa-archive"></i></span> Documentos
-                </a>
-                <div class="content">
-                    <a class="item" href="~/Documento/Index">
-                        Oficios
-                    </a>
-                    <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center; border-bottom: 1px solid #000;" href="~/DocumentoExpediente/Index">
-                        Expedientes
-                    </a>
-                </div>
-
-                <a style="color:white;font-size:18px;  border-bottom: 1px solid #000; font-family:sans-serif;" class="title item">
-                    <span><i class="fa fa-users"></i></span> Personas
-                </a>
-                <div class="content">
-                    <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center;  border-bottom: 1px solid #000;" href="~/PersonaFisica/Index">
-                        Fisicas
-                    </a>
-                    <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center;  border-bottom: 1px solid #000;" href="~/Personas/Index">
-                        Jurídicas
-                    </a>
-                </div>
-
-                <a style="color:white;font-size:18px;  border-bottom: 1px solid #000; font-family:sans-serif;" class="title item">
-                    <span><i class="fa fa-balance-scale"></i></span> Procesos
-                </a>
-                <div class="content">
-                    <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center; border-bottom: 1px solid #000;" href="~/Caso/Index">
-                        Administrativos
-                    </a>
-                    <a class="item" style="color:white;font-size:14px; font-family:sans-serif; text-align:center; border-bottom: 1px solid #000;" href="~/CasoJudicial/Index">
-                        Judiciales
-                    </a>
-                </div>
-
-                <a href="~/Home/Ayuda" style="color:white;font-size:18px; font-family:sans-serif;  border-bottom: 1px solid #000;" class="title item">
-                    <span><i class="fa fa-question-circle"></i></span> Ayuda
-                </a>
-            </div>
-
-        </div>*@
     <div class="ui sidebar vertical left menu overlay visible" style="-webkit-transition-duration: 0.1s; overflow: visible !important;background:#233245;">
         <div class="item logo">
             <img style="display: block;margin: 0 auto; padding-bottom:10px;" src="~/Content/img/muni.gif" />
-            @*<img src="https://image.flaticon.com/icons/svg/866/866218.svg" /><img src="https://image.flaticon.com/icons/svg/866/866218.svg" style="display: none" />*@
         </div>
         <div class="ui accordion" style="border:1px;font-size:15px;color:white;">
             <a class="item" href="~/Home/Index" >
@@ -129,9 +81,6 @@
                 <a class="item" style="border:1px;font-size:14px;color:white;" href="/DocumentoExpediente/Index">
                     <text style="margin-left:4em"> Expedientes</text>
                 </a>
-                @*<a class="item" style="border:1px;font-size:14px;color:white;" href="/Documento/IndexReferencias">
-            Referencias
-        </a>*@
             </div>
 
             <div class="title item" style="border:1px;font-size:14px;color:white;">
@@ -282,12 +231,6 @@
     </div>
     <div class="pusher">
         <div class="ui menu asd borderless" style="background:#233245;font-size:14px;border-radius: 0!important; border: 0; margin-left: 200px; -webkit-transition-duration: 0.1s;">
-            @*<a class="item openbtn">
-                    <i class="icon content"></i>
-                </a>
-                <a class="item">
-                    Messages
-                </a>*@
             <div class="right menu">
                 @Html.Partial("_LoginPartial");
             </div>
@@ -295,9 +238,7 @@
     </div>
 
     <script src="~/Content/js/jquery-3.1.0.js"></script>
-    @*<script src="js/jquery-3.1.0.js"></script>*@
     <script src="~/Content/dist1/semantic.min.js"></script>
-    @*<script src="dist/semantic.min.js"></script>*@
     <script>
         $(".openbtn").on("click", function () {
             $(".ui.sidebar").toggleClass("very thin icon");
@@ -329,4 +270,106 @@
     </style>
 </body>
 
+</html> *@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SCJ</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="~/Content/wwwroot/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Content/wwwroot/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/Content/wwwroot/bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/Content/wwwroot/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="~/Content/wwwroot/dist/css/skins/skin-blue.min.css">
+    <link href="~/Content/wwwroot/bower_components/morris.js/morris.css">
+    <!-- Google Font -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <!-- Main Header -->
+  <header class="main-header">
+
+    <!-- Logo -->
+    <a href="/Home/Index" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>SCJ</b></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg" ><b>Sistema de Control Jurídico</b></span>
+    </a>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation" style="background: #233245;">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+     @Html.Partial("_LoginPartial")
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel">
+
+        <div class="pull-left image" >
+                <img src="~/Content/img/muni.gif" class="img-circle" alt="User Image">
+        </div>
+
+        <div class="pull-left info">
+          <p>Servicios Jurídicos</p>
+          @*<a href="#"><i class="fa fa-circle text-success"></i> Online</a>*@
+        </div>
+
+      </div>
+      <!-- search form (Optional) -->
+      @*<form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search...">
+          <span class="input-group-btn">
+              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+              </button>
+            </span>
+        </div>
+      </form>*@
+      <!-- /.search form -->
+      <!-- Sidebar Menu -->
+      @Html.Partial("_MainMenu")
+      <!-- /.sidebar-menu -->
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    @RenderBody()
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2018 <a href="https://codinginfinite.com">CodingInfinite</a>.</strong> All rights reserved.
+  </footer>
+</div>
+<!-- ./wrapper -->
+<!-- REQUIRED JS SCRIPTS -->
+<!-- jQuery 3 -->
+<script src="~/Content/wwwroot/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="~/Content/wwwroot/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="~/Content/wwwroot/dist/js/adminlte.min.js"></script>
+</body>
 </html>

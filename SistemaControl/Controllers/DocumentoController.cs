@@ -535,7 +535,6 @@ namespace SistemaControl.Controllers
             ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion", documentoVista.idOrigen);
             ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion", documentoVista.idEstado);
             return PartialView("Detalle", documentoVista);
-
         }
 
         [HttpPost]

@@ -16,10 +16,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></>
     <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-    <link href="~/Content/css/style.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    @*<script src="~/Content/ckeditor2/ckeditor.js"></script>*@
-    <script src="~/Content/js/site.js"></script>
 
     <script src="~/Scripts/jquery-3.3.1.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
@@ -54,9 +50,6 @@
                 Número de oficio
             </th>
             <th>
-                Número de Ingreso
-            </th>
-            <th>
                 Fecha
             </th>
             <th>
@@ -84,9 +77,6 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.numeroDocumento)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.numeroIngreso)
                     </td>
                     <td>
                         @Html.ValueFor(modelItem => item.fecha, "{0:dd/MM/yyyy}")
@@ -289,7 +279,7 @@
             }
         });
     }
-        function Details(iddocumento) {
+    function Details(iddocumento) {
         var url = '@Url.Action("Detalles")';
         var myId = iddocumento;
         $.ajax({

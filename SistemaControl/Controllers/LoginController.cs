@@ -72,6 +72,7 @@ namespace SistemaControl.Controllers
                     tablaGeneralBLL = new TablaGeneralBLLImpl();
                     usuarioBLL = new UsuarioBLLImpl();
                     rolU = String.Concat(usuarioBLL.gerRolForUser(usuarioBLL.getUsuario(user).nombre));
+
                 }
                 catch (Exception)
                 {
