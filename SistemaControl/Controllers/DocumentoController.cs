@@ -19,6 +19,7 @@ namespace SistemaControl.Controllers
         private IDocumentoBLL documentoBll;
         private ITablaGeneralBLL tablaGeneralBLL;
         List<Documento> aDocumentos = new List<Documento>();
+        private PagedList<Documento> model; // variable se cambio
 
         public ActionResult Index(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 7, string message = "")
         {
@@ -824,6 +825,44 @@ namespace SistemaControl.Controllers
             }
             return this.Json(new { Id = "idOrigen",Reg="OIJ" ,Data = ViewBag.idOrigen }, JsonRequestBehavior.AllowGet);
         }
-        
+
+        public ActionResult ReportesReferencias()
+        {
+
+            List<Documento> _referencias = new List<Documento>();
+
+            foreach (Documento iTem in model)
+            {
+                TablaGeneral tablaGeneral3 = new TablaGeneral();
+                TablaGeneral tablaGeneral1 = new TablaGeneral();
+                TablaGeneral tablaGeneral = new TablaGeneral();
+
+                Documento doc = new Documento();
+
+                doc.idDocumento = iTem.idDocumento;
+                doc.numeroDocumento = iTem.numeroDocumento;
+                doc.numeroIngreso = iTem.numeroIngreso;
+                doc.fecha = iTem.fecha;
+                tablaGeneral3.descripcion = iTem.TablaGeneral3.descripcion;
+                tablaGeneral1.descripcion = iTem.TablaGeneral1.descripcion;
+                tablaGeneral.descripcion = iTem.TablaGeneral.descripcion;
+
+                doc.TablaGeneral3 = tablaGeneral3;
+                doc.TablaGeneral1 = tablaGeneral1;
+                doc.TablaGeneral = tablaGeneral;
+
+
+                _referencias.Add(doc);
+            }
+
+            DateTime fecha = DateTime.Now;
+            string _fecha = fecha.ToString("dd/MM/yyyy");
+
+            ReporteModel reportes = new ReporteModel();
+            byte[] abyte = reportes.PrepareReport(_referencias, _fecha);
+            return File(abyte, "application/pdf");
+
+        }
+
     }
 }

@@ -1,6 +1,18 @@
 ﻿
 @model PagedList.IPagedList<BackEnd.Model.Caso>
 @using PagedList.Mvc;
+@{
+
+    ViewBag.user = User.Identity.Name;
+ }
+<style>
+    .col-lg-3.col-sm-6 {
+        width: 33%;
+    }
+    div#miscasos {
+        width: 150%;
+    }
+</style>
 <section class="content-header" style="text-align:center;">
     <h1>
         Menú Pricipal
@@ -12,10 +24,10 @@
         </ol>*@
 </section>
 <!-- Main content -->
-<section class="content">
+<div class="container" style="margin-top:20px">
     <!-- Small boxes (Stat box) -->
     <div class="row">
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-3 col-sm-6">
             <!-- small box -->
             <div class="small-box bg-green-gradient">
                 <div class="inner">
@@ -46,7 +58,7 @@
             </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-3 col-sm-6">
             <!-- small box -->
             <div class="small-box bg-light-blue-active">
                 <div class="inner">
@@ -73,7 +85,7 @@
             </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-3 col-sm-6">
             <!-- small box -->
             <div class="small-box bg-green-active">
                 <div class="inner">
@@ -103,7 +115,7 @@
     </div>
     <!-- /.row -->
     <!-- Main row -->
-    <div class="row">
+    <div class="row" id="miscasos">
         <!-- Left col -->
         <section class="col-md-8 connectedSortable">
             <!-- Custom tabs (Charts with tabs)-->
@@ -187,7 +199,7 @@
         </section>
     </div>
     <!-- /.row (main row) -->
-</section>
+</div>
 
 <div id="detalleModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detalleModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
 </div>
