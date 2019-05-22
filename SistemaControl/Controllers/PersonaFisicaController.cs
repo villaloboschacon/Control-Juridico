@@ -210,5 +210,47 @@ namespace SistemaControl.Controllers
                 return Json("Este número de identificación ya ha sido registrado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult Detalles(int id)
+        {
+            try
+            {
+                oTablaGeneralBLL = new TablaGeneralBLLImpl();
+                oPersonasBLL = new PersonasBLLImpl();
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+            Persona persona = oPersonasBLL.Get(id);
+            PersonaViewModel personaVista = (PersonaViewModel)persona;
+            ViewBag.idTipo = new SelectList(oTablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", personaVista.idTipo);
+            ViewBag.tipoIdentificacion = new SelectList(oTablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", personaVista.tipoIdentificacion);
+            return PartialView("Detalle", personaVista);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DetallesPersonas(Persona persona)
+        {
+            try
+            {
+                oTablaGeneralBLL = new TablaGeneralBLLImpl();
+                oPersonasBLL = new PersonasBLLImpl();
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+            if (ModelState.IsValid)
+            {
+                oPersonasBLL.Actualizar(persona);
+                oPersonasBLL.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.idTipo = new SelectList(oTablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", persona.idTipo);
+            ViewBag.tipoIdentificacion = new SelectList(oTablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", persona.tipoIdentificacion);
+            return PartialView("Detalle", persona);
+        }
     }
 }

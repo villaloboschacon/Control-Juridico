@@ -432,5 +432,57 @@ namespace SistemaControl.Controllers
             var resultado = casoBLL.Find(x => x.numeroCaso.Equals(name)).Select(x => x.numeroCaso).Take(11).ToList();
             return Json(resultado, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Detalles(int id)
+        {
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                casoBLL = new CasoBLLImpl();
+                personaBLL = new PersonasBLLImpl();
+                usuarioBLL = new UsuarioBLLImpl();
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+            Caso caso = casoBLL.Get(id);
+            CasoViewModel casoVista = (CasoViewModel)caso;
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion", casoVista.idTipo);
+            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion", casoVista.idEstado);
+            ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion", casoVista.tipoLitigante);
+            ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto", casoVista.idPersona);
+            ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre", casoVista.idUsuario);
+            return PartialView("Detalle", casoVista);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DetallesCasos(Caso caso)
+        {
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                casoBLL = new CasoBLLImpl();
+                personaBLL = new PersonasBLLImpl();
+                usuarioBLL = new UsuarioBLLImpl();
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+            if (ModelState.IsValid)
+            {
+                casoBLL.Modificar(caso);
+                casoBLL.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion", caso.idTipo);
+            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion", caso.idEstado);
+            ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion", caso.tipoLitigante);
+            ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto", caso.idPersona);
+            ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre", caso.idUsuario);
+            return PartialView("Detalle", caso);
+        }
     }
 }

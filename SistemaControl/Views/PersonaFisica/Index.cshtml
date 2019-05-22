@@ -2,26 +2,26 @@
 @using PagedList.Mvc;
 <head>
     @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
-    @*<link type="text/css" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
-    @*SCRIPT PARA EL EDITOR DE TEXTO
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    @*<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></>
-    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-    @*<link href="~/Content/css/style.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="~/Content/js/site.js"></script>
+        @*<link type="text/css" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+        <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+        <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+        @*SCRIPT PARA EL EDITOR DE TEXTO
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        @*<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></>
+        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+        @*<link href="~/Content/css/style.css" rel="stylesheet" />
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <script src="~/Content/js/site.js"></script>
 
-    <script src="~/Scripts/jquery-3.3.1.js"></script>
-    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
-    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+        <script src="~/Scripts/jquery-3.3.1.js"></script>
+        <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+        <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-    @*<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>*@
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        @*<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>*@
 
 </head>
 <div class="title">Personas Físicas</div>
@@ -46,10 +46,10 @@
         </div>
     }
 
-        <table class="table table-hover table-fixed" id="table_personas">
-           <thead>
+    <table class="table table-bordered" id="table_personas">
         <tr>
             <th>
+                @* @Html.ActionLink("Cédula", "Index", new { sortOrder = ViewBag.Cedula })*@
                 Cédula
             </th>
             <th>
@@ -57,45 +57,38 @@
             </th>
             <th>Correo</th>
         </tr>
-                 </thead>
-  <!--Table head-->
-
-  <!--Table body-->
-           <tbody>
-               @if (Model.Count() == 0)
-               {
-                   <tr>
-                       <td align="center" colspan="8">No se encontraron coincidencias</td>
-                   </tr>
-               }
-               else
-               {
-                   foreach (var item in Model)
-                   {
-                       <tr>
-                           <td style="display:none;">
-                               @Html.DisplayFor(modelItem => item.idPersona)
-                           </td>
-                           <td>
-                               @Html.DisplayFor(modelItem => item.cedula)
-                           </td>
-                           <td>
-                               @Html.DisplayFor(modelItem => item.nombreCompleto)
-                           </td>
-                           <td>
-                               @Html.DisplayFor(modelItem => item.correo)
-                           </td>
-                       </tr>
-                   }
-               }
-           </tbody>
+        @if (Model.Count() == 0)
+        {
+            <tr>
+                <td align="center" colspan="8">No se encontraron coincidencias</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.idPersona)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cedula)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nombreCompleto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.correo)
+                    </td>
+                </tr>
+            }
+        }
     </table>
     <div>
         <a href="#" id="btnEdit" class="btnEdit" onclick="Crear()" data-toggle="modal" data-target="#crearModal">Crear Persona</a>
     </div>
     <br />
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, search = ViewBag.search, option = ViewBag.option }))
-
     <div class="modal fade" id="modalArchivar">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -105,14 +98,26 @@
                 </div>
                 <div class="modal-body">
                     <h4>Esta seguro que desea eliminar esta persona? </h4>
+
+                    @*<div style="text-align:center;display:none" id="loaderDiv">
+                            <img src="~/Content/InternetSlowdown_Day.gif" width="150" />
+                        </div>*@
+
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn btn-default" data-dismiss="modal">Cancelar</a>
                     <a href="#" class="btn btn-default" onclick="Archivar()">Confirmar</a>
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
+
+    @*hidden field for storing current DocId*@
+    <input type="hidden" id="idPersona" />
     <br />
 </div>
 
@@ -123,7 +128,7 @@
 <div id="detalleModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detalleModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
 </div>
 
-<div id="contextMenu" class="dropdown">
+<div id="contextMenu" class="dropdown clearfix">
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
         <li>
             <a tabindex="-1" href="#" onclick="Details(getInd())" data-value="getInd()" data-toggle="modal" data-target="#detalleModal">Ver detalles</a>
@@ -163,10 +168,10 @@
         position: relative;
     }
 
-    tr:hover {
-        background: #c9e8f7;
-        position: relative;
-    }
+        tr:hover {
+            background: #c9e8f7;
+            position: relative;
+        }
 </style>
 
 
@@ -223,6 +228,37 @@
     function Limpiar() {
         $('#search').val("")
     }
+
+    @*$(function () {
+    $("#Search").keyup(function (event) {
+        var url = '@Url.Action("Index")';
+        //.getElementById("Search").submit();
+        var n = $("#Search").val();
+        $.ajax({
+        cache: false,
+            url: url+"?search="+n+"&option=Cédula",
+        success: function (data) {
+            $('#table_personas').empty().html(data);
+        }
+    });
+        });
+
+    });*@
+
+    //$(function () {
+
+    //    $("#Name,#SurName").keyup(function (e) {
+    //        var n = $("#Name").val();
+    //        var sn = $("#SurName").val();
+    //        $.get("/Home/Index?Name=" + n + "&SurName=" + sn, function (r) {
+    //            //update ui with results
+    //            $("#resultsTable").html(r);
+    //        });
+
+    //    });
+
+    //});
+
 
     function Crear() {
         var url = '@Url.Action("Crear")';
@@ -285,7 +321,11 @@
 </script>
 <script type="text/javascript">
     $(function () {
-
+        // Initialize numeric spinner input boxes
+        //$(".numeric-spinner").spinedit();
+        // Initialize modal dialog
+        // attach modal-container bootstrap attributes to links with .modal-link class.
+        // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
         $('body').on('click', '.modal-link', function (e) {
             e.preventDefault();
             $(this).attr('data-target', '#modal-container');
@@ -308,6 +348,8 @@
 
         $("#idPersona").val(idPersona);
         $('#modalArchivar').modal('show');
+       // $("#myModal").show();// show();//('show');
+
     }
 
     var Archivar = function () {
