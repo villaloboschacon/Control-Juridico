@@ -33,7 +33,7 @@ namespace SistemaControl.Controllers
                 usuarioBLL = new UsuarioBLLImpl();
                 casoBLL = new CasoBLLImpl();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -426,7 +426,7 @@ namespace SistemaControl.Controllers
                 personaBLL = new PersonasBLLImpl();
                 usuarioBLL = new UsuarioBLLImpl();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -451,7 +451,7 @@ namespace SistemaControl.Controllers
                 personaBLL = new PersonasBLLImpl();
                 usuarioBLL = new UsuarioBLLImpl();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -460,7 +460,7 @@ namespace SistemaControl.Controllers
             {
                 casoBLL.Agregar(caso);
                 casoBLL.SaveChanges();
-                string correo = casoBLL.getCorreo(caso.idUsuario);
+                string correo = casoBLL.GetCorreo(caso.idUsuario);
 
                 try
                 {
@@ -485,7 +485,7 @@ namespace SistemaControl.Controllers
                     smtp.EnableSsl = true;
                     smtp.Send(mail);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //print("Exception in sendEmail:" + ex.Message);
                 }
@@ -510,7 +510,7 @@ namespace SistemaControl.Controllers
                 personaBLL = new PersonasBLLImpl();
                 usuarioBLL = new UsuarioBLLImpl();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -535,15 +535,15 @@ namespace SistemaControl.Controllers
                 personaBLL = new PersonasBLLImpl();
                 usuarioBLL = new UsuarioBLLImpl();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
             if (ModelState.IsValid)
             {
-                casoBLL.Modificar(caso);
+                casoBLL.Actualizar(caso);
                 casoBLL.SaveChanges();
-                string correo = casoBLL.getCorreo(caso.idUsuario);
+                string correo = casoBLL.GetCorreo(caso.idUsuario);
 
                 try
                 {
@@ -568,7 +568,7 @@ namespace SistemaControl.Controllers
                     smtp.EnableSsl = true;
                     smtp.Send(mail);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //print("Exception in sendEmail:" + ex.Message);
                 }
@@ -623,7 +623,7 @@ namespace SistemaControl.Controllers
                 personaBLL = new PersonasBLLImpl();
                 usuarioBLL = new UsuarioBLLImpl();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -631,7 +631,7 @@ namespace SistemaControl.Controllers
             Caso caso = casoBLL.Get(id);
             if (ModelState.IsValid)
             {
-                casoBLL.archivaCaso(id);
+                casoBLL.ArchivaCaso(id);
                 casoBLL.SaveChanges();
                 return RedirectToAction("Index");
             }

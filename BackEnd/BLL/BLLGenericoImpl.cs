@@ -34,16 +34,13 @@ namespace BackEnd.BLL
         {
             try
             {
-                List<T> resultado;
                 using (unidad = new UnidadDeTrabajo<T>(new SCJ_BDEntities()))
                 {
-                    resultado = unidad.genericDAL.Find(predicate).ToList();
+                    return unidad.genericDAL.Find(predicate).ToList();
                 }
-                return resultado;
             }
             catch (Exception)
             {
-
                 return null;
             }
         }
@@ -52,16 +49,13 @@ namespace BackEnd.BLL
         {
             try
             {
-                T resultado;
                 using (unidad = new UnidadDeTrabajo<T>(new SCJ_BDEntities()))
                 {
-                    resultado = unidad.genericDAL.Get(id);
+                    return unidad.genericDAL.Get(id);
                 }
-                return resultado;
             }
             catch (Exception)
             {
-
                 return null;
             }
         }
@@ -70,16 +64,13 @@ namespace BackEnd.BLL
         {
             try
             {
-                List<T> resultado;
                 using (unidad = new UnidadDeTrabajo<T>(new SCJ_BDEntities()))
                 {
-                    resultado = unidad.genericDAL.GetAll().ToList();
+                    return unidad.genericDAL.GetAll().ToList();
                 }
-                return resultado;
             }
             catch (Exception)
             {
-
                 return null;
             }
         }
@@ -92,8 +83,8 @@ namespace BackEnd.BLL
                 {
                     unidad.genericDAL.Remove(entity);
                     unidad.Complete();
+                    return true;
                 }
-                return true;
             }
             catch (Exception)
             {
@@ -105,17 +96,13 @@ namespace BackEnd.BLL
         {
             try
             {
-                T resultado;
                 using (unidad = new UnidadDeTrabajo<T>(new SCJ_BDEntities()))
                 {
-                    resultado = unidad.genericDAL.SingleOrDefault(predicate);
+                    return unidad.genericDAL.SingleOrDefault(predicate);
                 }
-                return resultado;
-
             }
             catch (Exception)
             {
-
                 return null;
             }
         }
@@ -127,10 +114,10 @@ namespace BackEnd.BLL
                 {
                     unidad.genericDAL.Update(entity);
                     unidad.Complete();
+                    return true;
                 }
-                return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

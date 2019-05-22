@@ -16,7 +16,7 @@ namespace SistemaControl.Controllers
         private IUsuarioBLL usuarioBLL;
         private IPersonasBLL personaBLL;
         List<Caso> aCasos = new List<Caso>();
-        public ActionResult Index(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 7, string message = "")
+        public ActionResult Index(string sOption, string selectedValue, string sSearch, int page = 1, int pageSize = 7, string message = "", string dropList= "", string dropLists="")
         {
             try
             {
@@ -42,17 +42,17 @@ namespace SistemaControl.Controllers
             }
 
             //Busqueda cuando se selecciona el tipo de busqueda y personaliza la busqueda
-            if (!String.IsNullOrEmpty(sOption) && !String.IsNullOrEmpty(sSearch))
+            if (!String.IsNullOrEmpty(sOption) && !String.IsNullOrEmpty(selectedValue))
             {
                 //El ultimo valor es falso por que no tiene que tener numero de ingreso
                 try
                 {
-                    ViewBag.search = sSearch;
+                    ViewBag.selectOptions = selectedValue;
                     ViewBag.option = sOption;
-                    if (casoBLL.Consulta(iTipo, sSearch, sOption) != null)
+                    if (casoBLL.Consulta(iTipo, selectedValue, sOption) != null)
                     {
 
-                        aCasos = casoBLL.Consulta(iTipo, sSearch, sOption);
+                        aCasos = casoBLL.Consulta(iTipo, selectedValue, sOption);
 
                         foreach (Caso caso in aCasos)
                         {
@@ -78,7 +78,7 @@ namespace SistemaControl.Controllers
             }
             //Busqueda cuando no pone la busqueda ni la opcion de busqueda
             //Cuando se inicia el index
-            else if (String.IsNullOrEmpty(sOption) && String.IsNullOrEmpty(sSearch))
+            else if (String.IsNullOrEmpty(sOption) && String.IsNullOrEmpty(selectedValue))
             {
                 PagedList<Caso> model = new PagedList<Caso>(aCasos, page, pageSize);
                 return View(model);
@@ -89,16 +89,16 @@ namespace SistemaControl.Controllers
             {
                 try
                 {
-                    ViewBag.search = sSearch;
+                    ViewBag.search = selectedValue;
                     ViewBag.option = sOption;
-                    ViewBag.finalDate = sSearchFecha;
-                    if (String.IsNullOrEmpty(sSearch))
+                    ViewBag.finalDate = sSearch;
+                    if (String.IsNullOrEmpty(selectedValue))
                     {
-                        aCasos = casoBLL.Consulta(iTipo, sSearch, "");
+                        aCasos = casoBLL.Consulta(iTipo, selectedValue, "");
                     }
                     else
                     {
-                        aCasos = casoBLL.Consulta(iTipo, sSearch, "Número de Oficio");
+                        aCasos = casoBLL.Consulta(iTipo, selectedValue, "Número de Oficio");
                     }
                     foreach (Caso caso in aCasos)
                     {
@@ -250,7 +250,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-
+                return RedirectToAction("Index", new { message = "error" });
             }
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
             ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
@@ -271,27 +271,21 @@ namespace SistemaControl.Controllers
                 casoBLL = new CasoBLLImpl();
                 personaBLL = new PersonasBLLImpl();
                 usuarioBLL = new UsuarioBLLImpl();
+                if (ModelState.IsValid)
+                {
+                    casoBLL.Agregar(caso);
+                    casoBLL.SaveChanges();
+                    return RedirectToAction("Index", new { message = "success" });
+                }
+                return RedirectToAction("Index", new { message = "error" });
             }
             catch (Exception)
             {
-
+                return RedirectToAction("Index", new { message = "error" });
             }
-
-            if (ModelState.IsValid)
-            {
-                casoBLL.Agregar(caso);
-                casoBLL.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
-            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
-            ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
-            ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");
-            ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
-            return PartialView("Crear", caso);
         }
 
-        public ActionResult Editar(int id)
+        public ActionResult Editar(int iIdCaso)
         {
             try
             {
@@ -300,18 +294,17 @@ namespace SistemaControl.Controllers
                 personaBLL = new PersonasBLLImpl();
                 usuarioBLL = new UsuarioBLLImpl();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
+                return RedirectToAction("Index", new { message = "error" });
             }
-
-            CasoViewModel caso = (CasoViewModel)casoBLL.Get(id);
-            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion",caso.idTipo);
-            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion",caso.idEstado);
-            ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion",caso.tipoLitigante);
-            ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto",caso.idPersona);
-            ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre",caso.idUsuario);
-            return PartialView("Editar", caso);
+            CasoViewModel oCasoViewModel = (CasoViewModel)casoBLL.Get(iIdCaso);
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion", oCasoViewModel.idTipo);
+            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion", oCasoViewModel.idEstado);
+            ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion", oCasoViewModel.tipoLitigante);
+            ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto", oCasoViewModel.idPersona);
+            ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre", oCasoViewModel.idUsuario);
+            return PartialView("Editar", oCasoViewModel);
         }
 
         [HttpPost]
@@ -324,60 +317,53 @@ namespace SistemaControl.Controllers
                 casoBLL = new CasoBLLImpl();
                 personaBLL = new PersonasBLLImpl();
                 usuarioBLL = new UsuarioBLLImpl();
+                if (ModelState.IsValid)
+                {
+                    casoBLL.Actualizar(caso);
+                    casoBLL.SaveChanges();
+                    return RedirectToAction("Index", new { message = "success" });
+                }
+                return RedirectToAction("Index", new { message = "error" });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
+                return RedirectToAction("Index", new { message = "error" });
             }
-            if (ModelState.IsValid)
-            {
-                casoBLL.Modificar(caso);
-                casoBLL.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion", caso.idTipo);
-            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion", caso.idEstado);
-            ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion", caso.tipoLitigante);
-            ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto", caso.idPersona);
-            ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre", caso.idUsuario);
-            return PartialView("Editar", (CasoViewModel)caso);
         }
 
         [HttpPost, ValidateInput(false)]
         public ActionResult Archivar(int id)
         {
-          try
+            try
             {
                 casoBLL = new CasoBLLImpl();
-                casoBLL.archivaCaso(id);
+                casoBLL.ArchivaCaso(id);
                 casoBLL.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { message = "success" });
             }
             catch (Exception)
             {
-
-                throw;
+                return RedirectToAction("Index", new { message = "error" });
             }
         }
 
-
-        public JsonResult ComprobarCaso(string numeroCaso,string idCaso)
+        public JsonResult ComprobarCaso(string sNumeroCasp,string sIdCaso)
         {
             try
             {
                 casoBLL = new CasoBLLImpl();
+                if (casoBLL.Comprobar(sNumeroCasp, sIdCaso))
+                {
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("El número de caso no se encuentra disponible.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
-            }
-            if (casoBLL.Comprobar(numeroCaso,idCaso))
-            {
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json("El número de caso no se encuentra disponible.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                return null;
             }
         }
         [HttpPost]
@@ -411,7 +397,36 @@ namespace SistemaControl.Controllers
             return this.Json(new { Id = "idPersona", Reg = "Supermercado", Data = ViewBag.idPersona }, JsonRequestBehavior.AllowGet);
 
         }
+        public JsonResult GetSearch(string id)
+        {
+            try
+            {
+                personaBLL = new PersonasBLLImpl();
+                usuarioBLL = new UsuarioBLLImpl();
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                int iSelection = Int32.Parse(id);
+                switch (iSelection)
+                {
+                    case 1:
+                        ViewBag.idOrigen = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre");
+                        break;
+                    case 2:
+                        ViewBag.idOrigen = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto");   
+                        break;
+                    case 3:
+                        ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
+                        break;
+                    default:
+                        ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
+                        break;
+                }
+            }
+            catch (Exception)
+            {
 
+            }
+            return this.Json(new { Id = "idOrigen", Reg = "OIJ", Data = ViewBag.idOrigen }, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult Search(string name)
         {
             var resultado = casoBLL.Find(x => x.numeroCaso.Equals(name)).Select(x => x.numeroCaso).Take(11).ToList();

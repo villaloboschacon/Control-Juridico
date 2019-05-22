@@ -9,6 +9,9 @@ namespace BackEnd.BLL
 {
     public interface IRollBLL : IBLLGenerico<Role>
     {
-        Role getRol(string descripcion);
+        ///<summary>
+        ///Obtiene el rol dependiendo de la descripcion
+        ///</summary>
+        Role GetRol(string descripcion);
     }
 }

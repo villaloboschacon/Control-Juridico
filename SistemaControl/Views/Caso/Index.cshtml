@@ -29,9 +29,9 @@
                     <span class="form-inline">
                         @{ List<SelectListItem> searchListItem = new List<SelectListItem>();
                             searchListItem.Add(new SelectListItem { Text = "Número de proceso", Value = "Número de proceso" });
-                            searchListItem.Add(new SelectListItem { Text = "Abogado", Value = "Abogado" });
-                            searchListItem.Add(new SelectListItem { Text = "Persona", Value = "Persona" });
-                            searchListItem.Add(new SelectListItem { Text = "Estado", Value = "Estado" });
+                            searchListItem.Add(new SelectListItem { Text = "Abogado", Value = "1" });
+                            searchListItem.Add(new SelectListItem { Text = "Persona", Value = "2" });
+                            searchListItem.Add(new SelectListItem { Text = "Estado", Value = "3" });
                         }
                         @Html.DropDownList("sOption", new SelectList(searchListItem, "Value", "Text"), "Opciones de Búsqueda", htmlAttributes: new { @class = "form-control", @style = "width:205px;", @onchange = "Limpiar()", @id = "dropList" })
                         @Html.DropDownList("sOptions", new SelectList(searchListItem, "Value", "Text"), "Opciones de Búsqueda", htmlAttributes: new { @class = "form-control", @style = "width:205px;", @onchange = "Limpiar()", @id = "dropLists" })
@@ -102,7 +102,7 @@
         </div>
         <br />
         @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))*@
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, search = ViewBag.search, option = ViewBag.option }))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, sSearch = ViewBag.search, sOption = ViewBag.option, dropList = ViewBag.selectOptions }))
 
         <div class="modal fade" id="modalArchivar">
             <div class="modal-dialog">
@@ -190,6 +190,13 @@
     </style>
 
     <script>
+        $(document).ready(function () {
+        $('#dropLists').hide();
+
+        });
+
+
+
     var ind = 0;
     $(this).mousedown(function (e) {
         if (e.which == 2) {
@@ -257,13 +264,46 @@
         });
         }
         $("#dropList").change(function () {
-            if ($('#dropList').val() === "Persona") {
-                document.getElementById('sSearch').type = 'select';
+
+
+
+
+            if ($('#dropList').val() === "Número de proceso") {
+
+                $('#dropLists').hide(200);
+                $('#sSearch').show(200);
             }
             else {
-                $('#buscarButton').prop('disabled', false);
+                $('#dropLists').show(200);
+                $('#sSearch').hide(200);
+            }
+            var selects = document.getElementById("dropList");
+            var selectedValue = selects.options[selects.selectedIndex].value;
+
+            $("#dropLists").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetSearch")',
+                dataType: 'json',
+                data: { id: selectedValue },
+                success: function (origins) {
+                    var another = origins.Data;
+                    $("#dropLists").append('<option value="">Seleccione una opción.</option>');
+                    $.each(another, function (i, state) {
+                        $("#dropLists").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Seleccione una opción válida.' + ex);
+                }
             }
             );
+            return false;
+        
+
+
+
+        });
     function Edit(idcaso) {
         var url = '@Url.Action("Editar")';
         var myId = idcaso;

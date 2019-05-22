@@ -12,25 +12,26 @@ namespace BackEnd.BLL
     class RolBLLImpl : BLLGenericoImpl<Role>, IRollBLL
     {
         private UnidadDeTrabajo<Role> unidad;
-        public Role getRol(string descripcion)
+
+        public Role GetRol(string sDescripcion)
         {
             try
             {
-                List<Role> lista;
+                List<Role> aRoles;
                 using (unidad = new UnidadDeTrabajo<Role>(new SCJ_BDEntities()))
                 {
-                    Expression<Func<Role, bool>> consulta = (d => d.descripcion.Equals(descripcion));
-                    lista = unidad.genericDAL.Find(consulta).ToList();
+                    Expression<Func<Role, bool>> consulta = (oRoles => oRoles.descripcion.Equals(sDescripcion));
+                    aRoles = unidad.genericDAL.Find(consulta).ToList();
                 }
-                if (lista.Count == 1)
+                if (aRoles.Count == 1)
                 {
-                    return lista[0];
+                    return aRoles.First();
                 }
                 return null;
             }
             catch (Exception)
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
     }

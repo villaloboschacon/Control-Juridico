@@ -163,8 +163,8 @@ namespace SistemaControl.Models
             try
             {
                 usuarioBLL = new UsuarioBLLImpl();
-                usuarioBLL.getUsuario(userPrincipal.Name);
-                string role = usuarioBLL.gerRolForUser(userPrincipal.Name).ToString();
+                usuarioBLL.GetUsuario(userPrincipal.Name);
+                string role = usuarioBLL.GetRol(userPrincipal.Name).ToString();
                 identity.AddClaim(new Claim(ClaimTypes.Role, role));
             }
             catch (Exception)

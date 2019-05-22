@@ -11,6 +11,42 @@ namespace BackEnd.BLL
     {
         private UnidadDeTrabajo<Persona> unidad;
 
+        public bool Agregar(Persona oPersona)
+        {
+            try
+            {
+                return Add(oPersona);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool Actualizar(Persona oPersona)
+        {
+            try
+            {
+                return Update(oPersona);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool Eliminar(Persona oPersona)
+        {
+            try
+            {
+                return Remove(oPersona);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public List<Persona> Consulta(int iTipo)
         {
             try
@@ -121,33 +157,20 @@ namespace BackEnd.BLL
 
         public bool SaveChanges()
         {
-            using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
+            try
             {
-                this.unidad.Complete();
-                return true;
+                using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
+                {
+                    this.unidad.Complete();
+                    return true;
+                }
             }
-        }
-        
-        public bool Agregar(Persona persona)
-        {
-            if (persona != null)
-            {
-                return Add(persona);
-            }
-            else
+            catch (Exception)
             {
                 return false;
             }
         }
+        
 
-        public bool Actualizar(Persona persona)
-        {
-            return Update(persona);
-        }
-
-        public bool Eliminar(Persona persona)
-        {
-            return Remove(persona);
-        }
     }
 }

@@ -132,7 +132,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return null;
+                return RedirectToAction("Index", new { message = "error" });
             }
 
             List<Documento> aDocumentos = new List<Documento>();
@@ -233,7 +233,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return null;
+                return RedirectToAction("Index", new { message = "error" });
             }
 
             try
@@ -350,9 +350,9 @@ namespace SistemaControl.Controllers
                     path += "1.docx";
                     System.IO.File.Delete(path);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-
+                    return RedirectToAction("Index", new { message = "error" });
                 }
                 documento.texto = " ";
 
@@ -371,7 +371,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
             DocumentoViewModel documento = new DocumentoViewModel();
             documento.texto = "";
@@ -394,7 +394,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
             if (ModelState.IsValid)
             {
@@ -414,7 +414,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
             DocumentoViewModel documento = new DocumentoViewModel();
             documento.fecha = DateTime.Now.Date;
@@ -458,7 +458,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
             Documento documento = documentoBll.GetDocumento(id);
             DocumentoViewModel documentoVista = (DocumentoViewModel)documento;
@@ -481,7 +481,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
             if (ModelState.IsValid)
             {
@@ -504,7 +504,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
 
             Documento documento = documentoBll.GetDocumento(id);
@@ -528,7 +528,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
             if (ModelState.IsValid)
             {
@@ -549,7 +549,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
             DocumentoViewModel documentoVista = new DocumentoViewModel();
 
@@ -680,7 +680,6 @@ namespace SistemaControl.Controllers
             List<Documento> listaDocumentos = new List<Documento>();
             PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, page.Value, 4);
             return PartialView("Referencias", model);
-            //return PartialView("Referencias",);
         }
 
         public string getNumeroDocumento()

@@ -66,7 +66,6 @@ namespace SistemaControl.Controllers
                                     .Where(c => c.Type == ClaimTypes.Role)
                                     .Select(c => c.Value);
             // var authenticationResult = authService.SignIn("Steven Villalobos", "svch1996");
-            string user;
             if (authenticationResult.IsSuccess)
             {
                 string rolU;
@@ -81,7 +80,7 @@ namespace SistemaControl.Controllers
                 {
                     return RedirectToAction("Index", "Login");
                 }
-                if (usuarioBLL.getUsuario(model.Username) == null)
+                if (usuarioBLL.GetUsuario(model.Username) == null)
                 {
                     Usuario usuario = new Usuario();
                     usuario.idEstado = tablaGeneralBLL.GetIdTablaGeneral("usuarios", "estado", "activo");
@@ -106,7 +105,7 @@ namespace SistemaControl.Controllers
             }
             else
             {
-                if (usuarioBLL.getUsuario(model.Username) != null)
+                if (usuarioBLL.GetUsuario(model.Username) != null)
                 {
                     Usuario usuario = new Usuario();
                     usuario.idEstado = tablaGeneralBLL.GetIdTablaGeneral("usuarios", "estado", "activo");

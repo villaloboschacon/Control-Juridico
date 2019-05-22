@@ -249,7 +249,7 @@ namespace BackEnd.BLL
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

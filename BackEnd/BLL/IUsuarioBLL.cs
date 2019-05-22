@@ -8,9 +8,20 @@ using System.Threading.Tasks;
 namespace BackEnd.BLL
 {
     public interface IUsuarioBLL : IBLLGenerico<Usuario>
-    {      
+    {
+        ///<summary>
+        ///Recupera la lista de usuarios.
+        ///</summary>
         List<Usuario> Consulta();
-        Usuario getUsuario(string username);
-        string gerRolForUser(string userName);
+
+        ///<summary>
+        ///Recupera el usuario dependiendo del nombre de usuario.
+        ///</summary>
+        Usuario GetUsuario(string sUsername);
+
+        ///<summary>
+        ///Recupera el role dependiendo del usuario.
+        ///</summary>
+        string GetRol(string sUsername);
     }
 }

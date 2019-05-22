@@ -9,13 +9,44 @@ namespace BackEnd.BLL
 {
     public interface ICasoBLL : IBLLGenerico<Caso>
     {
-        bool Agregar(Caso caso);
-        bool Modificar(Caso caso);
-        bool Eliminar(Caso caso);
+        ///<summary>
+        ///Agrega un caso. 
+        ///</summary>
+        bool Agregar(Caso oCaso);
+
+        ///<summary>
+        ///Actualiza un documento. 
+        ///</summary>
+        bool Actualizar(Caso oCaso);
+
+        ///<summary>
+        ///Elimina un documento. 
+        ///</summary>
+        bool Eliminar(Caso oCaso);
+
+        ///<summary>
+        ///Recupera la lista de casos filtrada por tipo, busqueda y el campo. 
+        ///</summary>
         List<Caso> Consulta(int iTipo,string sSearch,string sCampo);
+
+        ///<summary>
+        ///Actualiza el modelo.
+        ///</summary>
         bool SaveChanges();
+
+        ///<summary>
+        ///Comprueba que el registro del caso no este repetido.
+        ///</summary>
         bool Comprobar(string idCaso,string numeroCaso);
-        string getCorreo(int idUsuario);
-        bool archivaCaso(int idCaso);
+
+        ///<summary>
+        ///Recupera el correo segun el usuario.
+        ///</summary>
+        string GetCorreo(int idUsuario);
+
+        ///<summary>
+        ///Archiva el caso.
+        ///</summary>
+        bool ArchivaCaso(int idCaso);
     }
 }

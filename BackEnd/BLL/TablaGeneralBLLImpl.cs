@@ -40,7 +40,7 @@ namespace BackEnd.BLL
                 }
                 if (aTablaGeneral.Count == 1)
                 {
-                    return aTablaGeneral[0];
+                    return aTablaGeneral.First();
                 }
                 return null;
             }
@@ -56,7 +56,6 @@ namespace BackEnd.BLL
             {
                 using (unidad = new UnidadDeTrabajo<TablaGeneral>(new SCJ_BDEntities()))
                 {
-                    //Expression<Func<TablaGeneral, bool>> consulta = (oTablaGeneral => oTablaGeneral.tabla.Equals(tabla) && oTablaGeneral.campo.Equals(campo));
                     return unidad.genericDAL.Get(iId);
                 }
             }
@@ -78,7 +77,7 @@ namespace BackEnd.BLL
                 }
                 if (aTablaGeneral.Count == 1)
                 {
-                    return aTablaGeneral[0].idTablaGeneral;
+                    return aTablaGeneral.First().idTablaGeneral;
                 }
                 return -1;
             }

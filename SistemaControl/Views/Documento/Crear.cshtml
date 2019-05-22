@@ -416,16 +416,19 @@
             $("#numerosIngresos").hide(200);
         }
         else {
-            showall();
+        
+            
             var valIdTipo = $("#idTipo").val();
             if (valIdTipo == 3) {
-                showoficio();
+                showalloficio();
                 $("#numerosIngresos").show(200);
             }
             else if (valIdTipo == 23) {
+        showall();
                 showoficiosin();
             }
             else {
+        showall();
                 showexpediente();
                 $("#numerosIngresos").show(200);
             }
@@ -433,6 +436,7 @@
         }
     });
     function showoficio() {
+        $("#numerosIngresos").show(200);
         hideexpediente();
     }
     function hideexpediente() {
@@ -470,6 +474,18 @@
         $("#file").hide(200);
         $("#textoDocumento").hide(200);
         $("#textoCheck").hide(200);
+    }
+     function showalloficio() {
+        $("#ubicaciones").hide(200);
+        $("#numerosDocumentos").show(200);
+        $("#idEstados").show(200);
+        $("#fechas").show(200);
+        $("#asuntos").show(200);
+        $("#descripciones").show(200);
+        $("#observaciones").show(200);
+        $("#file").show(200);
+        $("#textoDocumento").show(200);
+        $("#textoCheck").show(200);
     }
     function showall() {
         $("#ubicaciones").show(200);

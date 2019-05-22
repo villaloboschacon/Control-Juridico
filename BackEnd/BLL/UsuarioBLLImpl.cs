@@ -18,71 +18,55 @@ namespace BackEnd.BLL
         {
             try
             {
-                List<Usuario> lista;
                 using (unidad = new UnidadDeTrabajo<Usuario>(new SCJ_BDEntities()))
                 {
-                    Expression<Func<Usuario, bool>> consulta = (d => d.idEstado.Equals(12));
-                    lista = unidad.genericDAL.Find(consulta).ToList();
+                    ITablaGeneralBLL tablaGeneralBLL = new TablaGeneralBLLImpl();
+                    int iIdEstado = tablaGeneralBLL.GetIdTablaGeneral("Usuarios", "estado", "activo");
+                    Expression<Func<Usuario, bool>> consulta = (oUsuario => oUsuario.idEstado.Equals(iIdEstado));
+                    return unidad.genericDAL.Find(consulta).ToList();
                 }
-                return lista;
             }
             catch (Exception)
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
 
-        //public string[] getIdRol(string idUsuario)
-        //{
-        //    string[] result;
-        //    try
-        //    {
-        //        using (context = new SCJ_BDEntities())
-        //        {
-        //            result = context.sp_getRolesForUser(idUsuario).ToArray();
-        //        }
-
-        //        return result;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return null;
-        //    }
-
-
-
-        //}
-
-        public Usuario getUsuario(string username)
+        public Usuario GetUsuario(string sUsername)
         {
             try
             {
-                List<Usuario> lista;
+                List<Usuario> aUsuarios;
                 using (unidad = new UnidadDeTrabajo<Usuario>(new SCJ_BDEntities()))
                 {
-                    Expression<Func<Usuario, bool>> consulta = (d => d.usuario1.Equals(username));
-                    lista = unidad.genericDAL.Find(consulta).ToList();
+                    Expression<Func<Usuario, bool>> consulta = (oUsuario => oUsuario.usuario1.Equals(sUsername));
+                    aUsuarios = unidad.genericDAL.Find(consulta).ToList();
                 }
-                if (lista.Count == 1)
+                if (aUsuarios.Count == 1)
                 {
-                    return lista[0];
+                    return aUsuarios.First();
                 }
                 return null;
             }
             catch (Exception)
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
-        public string gerRolForUser(string userName)
-        {
-            string[] result;
-            using (context = new SCJ_BDEntities())
-            {
-                result = context.sp_getRolesForUser(userName).ToArray();
-            }
-            return result[0];
 
+        public string GetRol(string sUsername)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    return context.sp_getRolesForUser(sUsername).ToArray().First();
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

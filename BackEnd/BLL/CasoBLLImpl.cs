@@ -12,20 +12,42 @@ namespace BackEnd.BLL
         private UnidadDeTrabajo<Caso> unidad;
         private SCJ_BDEntities context;
 
-        public bool Agregar(Caso caso)
+        public bool Agregar(Caso oCaso)
         {
-            return Add(caso);
+            try
+            {
+                return Add(oCaso);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public bool Modificar(Caso caso)
+        public bool Actualizar(Caso oCaso)
         {
-            return Update(caso);
+            try
+            {
+                return Update(oCaso);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public bool Eliminar(Caso caso)
+        public bool Eliminar(Caso oCaso)
         {
-            return Remove(caso);
+            try
+            {
+                return Remove(oCaso);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
+
         public bool SaveChanges()
         {
             using (unidad = new UnidadDeTrabajo<Caso>(new SCJ_BDEntities()))
@@ -35,35 +57,26 @@ namespace BackEnd.BLL
             }
         }
 
-        public bool Comprobar(string numeroCaso , string idCaso)
+        public bool Comprobar(string sNumeroCaso , string sIdCaso)
         {
-            int idCasoint = 0;
 
             try
             {
-                idCasoint = Int32.Parse(idCaso);
-
-            }
-            catch (Exception)
-            {
-
-            }
-            try
-            {
-                List<Caso> lista;
+                int iIdCaso = Int32.Parse(sIdCaso);
+                List<Caso> aCasos;
                 using (unidad = new UnidadDeTrabajo<Caso>(new SCJ_BDEntities()))
                 {
-                    Expression<Func<Caso, bool>> consulta = (d => d.idCaso.Equals(idCasoint) && d.numeroCaso.Equals(numeroCaso));
-                    lista = unidad.genericDAL.Find(consulta).ToList();
-                    if (lista.Count() == 1)
+                    Expression<Func<Caso, bool>> consulta = (oCaso => oCaso.idCaso.Equals(iIdCaso) && oCaso.numeroCaso.Equals(sNumeroCaso));
+                    aCasos = unidad.genericDAL.Find(consulta).ToList();
+                    if (aCasos.Count() == 1)
                     {
                         return true;
                     }
                     else
                     {
-                        consulta = (d => d.numeroCaso.Equals(numeroCaso));
-                        lista = unidad.genericDAL.Find(consulta).ToList();
-                        if (lista.Count() == 0)
+                        consulta = (d => d.numeroCaso.Equals(sNumeroCaso));
+                        aCasos = unidad.genericDAL.Find(consulta).ToList();
+                        if (aCasos.Count() == 0)
                         {
                             return true;
                         }
@@ -81,21 +94,34 @@ namespace BackEnd.BLL
             }
         }
 
-        public string getCorreo(int idUsuario)
+        public string GetCorreo(int iIdUsuario)
         {
-            using (context = new SCJ_BDEntities())
+            try
             {
-                var result = this.context.sp_getUsuarioCorreo(idUsuario).FirstOrDefault();
-                return result;
+                using (context = new SCJ_BDEntities())
+                {
+                    return context.sp_getUsuarioCorreo(iIdUsuario).FirstOrDefault();
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 
-        public bool archivaCaso(int idCaso)
+        public bool ArchivaCaso(int iIdCaso)
         {
-            using (context = new SCJ_BDEntities())
+            try
             {
-                this.context.sp_archivaCaso(idCaso);
-                return true;
+                using (context = new SCJ_BDEntities())
+                {
+                    context.sp_archivaCaso(iIdCaso);
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
