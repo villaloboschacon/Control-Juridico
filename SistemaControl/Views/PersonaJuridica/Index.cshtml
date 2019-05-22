@@ -143,8 +143,7 @@
 </div>
 <div id="crearModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crearModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
 </div>
-<div id="detalleModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detalleModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
-</div>
+
 
 <div id="contextMenu" class="dropdown clearfix">
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
@@ -193,7 +192,33 @@
 </style>
 
 <script>
+        $(document).ready(function () {
+        if ('@TempData["message"]' == "success") {
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 3000,
+                "extendedTimeOut": 1000
+            }
 
+            var d = '@TempData["cedula"]';
+            toastr["success"](d, "Persona agregada exitosamente");
+        }
+        else if ('@TempData["message"]' == "error") {
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 3000,
+                "extendedTimeOut": 1000
+            }
+            toastr["error"]("Error al crear persona.");
+        }
+        else { }
+    });
     var ind = 0;
     $(this).mousedown(function (e) {
         if (e.which == 2) {
@@ -284,27 +309,7 @@
         });
     }
 
-    function Details(idpersona) {
-        var url = '@Url.Action("Detalles")';
-        var myId = idpersona;
-        $.ajax({
-            url: url,
-            datatype: "json",
-            type: "post",
-            data: {
-                'id': idpersona
-            },
-            contenttype: 'application/json; charset=utf-8',
-            async: true,
-            success: function (data) {
-                $("#detalleModal").html(data);
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
-    }
-    var Confirmar = function (idPersona) {
+            var Confirmar = function (idPersona) {
 
         $("#idPersona").val(idPersona);
         $('#modalArchivar').modal('show');

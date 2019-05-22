@@ -17,7 +17,6 @@ namespace SistemaControl.Controllers
         private ITablaGeneralBLL tablaGeneralBLL;
         private IUsuarioBLL usuarioBLL;
         private IPersonasBLL personaBLL;
-        private static PagedList<Caso> model; // variable se cambio
 
         public JsonResult Search(string name)
         {
@@ -691,108 +690,6 @@ namespace SistemaControl.Controllers
 
         }
 
-        public ActionResult Detalles(int id)
-        {
-            try
-            {
-                tablaGeneralBLL = new TablaGeneralBLLImpl();
-                casoBLL = new CasoBLLImpl();
-                personaBLL = new PersonasBLLImpl();
-                usuarioBLL = new UsuarioBLLImpl();
-            }
-            catch (Exception ex)
-            {
-                return View();
-            }
-            Caso caso = casoBLL.Get(id);
-            CasoViewModel casoVista = (CasoViewModel)caso;
-            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion", casoVista.idTipo);
-            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion", casoVista.idEstado);
-            ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion", casoVista.tipoLitigante);
-            ViewBag.idPersona = new SelectList(personaBLL.Consulta(2), "idPersona", "nombreCompleto", casoVista.idPersona);
-            ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre", casoVista.idUsuario);
-            return PartialView("Detalle", casoVista);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DetallesCasos(Caso caso)
-        {
-            try
-            {
-                tablaGeneralBLL = new TablaGeneralBLLImpl();
-                casoBLL = new CasoBLLImpl();
-                personaBLL = new PersonasBLLImpl();
-                usuarioBLL = new UsuarioBLLImpl();
-            }
-            catch (Exception ex)
-            {
-                return View();
-            }
-            if (ModelState.IsValid)
-            {
-                casoBLL.Modificar(caso);
-                casoBLL.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion", caso.idTipo);
-            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion", caso.idEstado);
-            ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion", caso.tipoLitigante);
-            ViewBag.idPersona = new SelectList(personaBLL.Consulta(2), "idPersona", "nombreCompleto", caso.idPersona);
-            ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre", caso.idUsuario);
-            return PartialView("Detalle", caso);
-        }
-
-        // PDF Casos  judicial 
-        public ActionResult ReportesCasosJudicial()
-        {
-
-            List<Caso> _casos = new List<Caso>();
-
-
-            foreach (Caso iTem in model)
-            {
-                Caso caso = new Caso();
-
-                TablaGeneral tablaGeneral = new TablaGeneral();
-                TablaGeneral tablaGeneral1 = new TablaGeneral();
-                TablaGeneral tablaGeneral2 = new TablaGeneral();
-                Persona persona = new Persona();
-                Usuario usuario = new Usuario();
-
-
-                caso.numeroCaso = iTem.numeroCaso.ToString();
-
-                usuario.nombre = iTem.Usuario.nombre;
-                caso.Usuario = usuario;
-
-                caso.materia = iTem.materia.ToString();
-
-                persona.nombreCompleto = iTem.Persona.nombreCompleto;
-                caso.Persona = persona;
-
-                tablaGeneral1.descripcion = iTem.TablaGeneral1.descripcion;
-                caso.TablaGeneral1 = tablaGeneral1;
-
-                tablaGeneral2.descripcion = iTem.TablaGeneral2.descripcion;
-                caso.TablaGeneral2 = tablaGeneral2;
-
-                tablaGeneral.descripcion = iTem.TablaGeneral.descripcion;
-                caso.TablaGeneral = tablaGeneral;
-
-
-
-                _casos.Add(caso);
-
-            }
-
-            DateTime fecha = DateTime.Now;
-            string _fecha = fecha.ToString("dd/MM/yyyy");
-
-            ReporteModel reportes = new ReporteModel();
-            byte[] abyte = reportes.PrepareReportCasoJudicial(_casos, _fecha);
-            return File(abyte, "application/pdf");
-        }
 
     }
 }

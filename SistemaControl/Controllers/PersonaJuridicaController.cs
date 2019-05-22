@@ -290,47 +290,5 @@ namespace SistemaControl.Controllers
             }
         }
 
-        public ActionResult Detalles(int id)
-        {
-            try
-            {
-                tablaGeneralBLL = new TablaGeneralBLLImpl();
-                personaBll = new PersonasBLLImpl();
-            }
-            catch (Exception ex)
-            {
-                return View();
-            }
-            Persona persona = personaBll.Get(id);
-            PersonaViewModel personaVista = (PersonaViewModel)persona;
-            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", personaVista.idTipo);
-            ViewBag.tipoIdentificacion = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", personaVista.tipoIdentificacion);
-            return PartialView("Detalle", personaVista);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DetallesPersonas(Persona persona)
-        {
-            try
-            {
-                tablaGeneralBLL = new TablaGeneralBLLImpl();
-                personaBll = new PersonasBLLImpl();
-            }
-            catch (Exception ex)
-            {
-                return View();
-            }
-            if (ModelState.IsValid)
-            {
-                personaBll.Actualizar(persona);
-                personaBll.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", persona.idTipo);
-            ViewBag.tipoIdentificacion = new SelectList(tablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", persona.tipoIdentificacion);
-            return PartialView("Detalle", persona);
-        }
-
     }
 }
