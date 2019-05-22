@@ -5,6 +5,12 @@
  *   License: Open source - MIT
  *           Please visit http://opensource.org/licenses/MIT for more information
  */
+.col-lg-3.col-sm-6 {
+    width: 33%;
+}
+div#miscasos {
+    width: 150%;
+}
 div.title {
     background: #d8edf5;
     border-bottom: 1px solid #fff;
