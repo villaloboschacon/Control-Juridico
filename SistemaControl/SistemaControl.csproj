@@ -7858,6 +7858,10 @@
     <Content Include="Views\Documento\IndexSalidas.cshtml" />
     <Content Include="Views\Shared\_MainMenu.cshtml" />
     <Content Include="Views\Shared\_MainMenuDev.cshtml" />
+    <Content Include="Views\Caso\Detalle.cshtml" />
+    <Content Include="Views\CasoJudicial\Detalle.cshtml" />
+    <Content Include="Views\PersonaFisica\Detalle.cshtml" />
+    <Content Include="Views\PersonaJuridica\Detalle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

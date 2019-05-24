@@ -1,6 +1,9 @@
 ﻿@model SistemaControl.Models.PersonaViewModel
-@Scripts.Render("~/bundles/jqueryval")
-
+@*Scripts para validaciones y mensajes de alerta*@
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@*--Espacio de scripts cerrado--*@
 <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -103,7 +106,7 @@
         //$("#div_representanteSocial").hide();
         //$("#div_representanteLegal").hide();
         $("#div_tipoIdentificacion").hide();
-       
+
         $("#representanteSocial").attr('maxlength', '50');
         $("#representanteLegal").attr('maxlength', '50');
         //$('#M').attr('placeholder',"eje:C030059877");
@@ -298,8 +301,5 @@
             return false;
         }
     });
-
-
-
 
 </script>

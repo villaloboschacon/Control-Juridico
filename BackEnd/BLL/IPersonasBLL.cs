@@ -40,7 +40,7 @@ namespace BackEnd.BLL
         ///<summary>
         ///Recupera la lista de personas filtrandolas por nombre de persona, tipo de persona y campo de busqueda. 
         ///</summary>
-        List<Persona> Consulta(int iTipo, string sFiltro, string sCampo);
+        List<Persona> Consulta(int iTipo, string sFiltro, string sCampo, string sTipoPersona);
 
         ///<summary>
         ///Recupera la lista de todas las personas.  

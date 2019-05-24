@@ -1,126 +1,249 @@
 ﻿@model SistemaControl.Models.PersonaViewModel
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-@*Scripts para validaciones y mensajes de alerta*@
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-@*--Espacio de scripts cerrado--*@
+<!doctype html>
+<html lang="es">
 
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="modal-title" id="createModal" style="text-align:center;">Crear Persona</span>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div id="contenidoModal">
-                @using (Html.BeginForm("CrearPersona", "PersonaJuridica"))
-                {
-                    @Html.AntiForgeryToken()
-                    <div class="form-horizontal" id="parent">
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        @Html.HiddenFor(model => model.idPersona)
+<head>
+    <meta charset="utf-8">
+    <meta name="robots">
+    <title>Crear Documento</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.ckeditor.com/4.11.4/standard-all/ckeditor.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+</head>
+<body>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="createModal" style="text-align:center;">Crear Persona</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="contenidoModal">
+                    @using (Html.BeginForm("CrearPersona", "PersonaJuridica"))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-horizontal" id="parent">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.idPersona)
 
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.idTipo, "Tipo de Persona:", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownList("idTipo", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.idTipo, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="div_tipoIdentificacion">
-                            @Html.LabelFor(model => model.tipoIdentificacion, "Tipo de Identificación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownList("tipoIdentificacion", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.tipoIdentificacion, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="div_cedula">
-                            @Html.LabelFor(model => model.cedula, htmlAttributes: new { @class = "control-label col-md-2", placeholder = "" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.cedula, new { htmlAttributes = new { @class = "form-control", @id = "identificacion" } })
-                                @Html.ValidationMessageFor(model => model.cedula, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="div_nombre">
-                            @Html.LabelFor(model => model.nombreCompleto, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.nombreCompleto, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre completo" } })
-                                @Html.ValidationMessageFor(model => model.nombreCompleto, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="div_representanteSocial">
-                            @Html.LabelFor(model => model.representanteSocial, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.representanteSocial, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre completo" } })
-                                @Html.ValidationMessageFor(model => model.representanteSocial, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="div_representanteLegal">
-                            @Html.LabelFor(model => model.representanteLegal, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.representanteLegal, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre completo" } })
-                                @Html.ValidationMessageFor(model => model.representanteLegal, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="div_correo">
-                            @Html.LabelFor(model => model.correo, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.correo, new { htmlAttributes = new { @class = "form-control", placeholder = "ejemplo@gmail.com/ejemplo@outlook.com" } })
-                                @Html.ValidationMessageFor(model => model.correo, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.TextAreaFor(model => model.observacion, 10, 62, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                    </div>
-                    @*<div class="form-group">
-                            <div class="btn btn-primary">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.idTipo, "Tipo de Persona:", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                </div>
-                                <input type="file" id="imageBrowes" multiple="multiple" />
-                            </div>
-                            <div id="imgPreview" class="thumbnail" style="display:none">
-                                <img class="img-responsive" id="targetImg" />
-                                <div class="caption">
-                                    <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
-                                    <span id="description"></span>
+                                    @Html.DropDownList("idTipo", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.idTipo, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
-                        </div>*@
+                            <div class="form-group" id="div_tipoIdentificacion">
+                                @Html.LabelFor(model => model.tipoIdentificacion, "Tipo de Identificación:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("tipoIdentificacion", null, "Seleccione una opción.", htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.tipoIdentificacion, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
 
-                    <div class="modal-footer">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" id="CrearBoton" value="Crear Persona" class="btn btn-default" />
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <div class="form-group" id="div_cedula">
+                                @Html.LabelFor(model => model.cedula, htmlAttributes: new { @class = "control-label col-md-2", placeholder = "" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.cedula, new { htmlAttributes = new { @class = "form-control", @id = "identificacion" } })
+                                    @Html.ValidationMessageFor(model => model.cedula, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="div_nombre">
+                                @Html.LabelFor(model => model.nombreCompleto, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.nombreCompleto, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre completo" } })
+                                    @Html.ValidationMessageFor(model => model.nombreCompleto, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="div_representanteSocial">
+                                @Html.LabelFor(model => model.representanteSocial, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.representanteSocial, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre completo" } })
+                                    @Html.ValidationMessageFor(model => model.representanteSocial, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="div_representanteLegal">
+                                @Html.LabelFor(model => model.representanteLegal, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.representanteLegal, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre completo" } })
+                                    @Html.ValidationMessageFor(model => model.representanteLegal, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="div_correo">
+                                @Html.LabelFor(model => model.correo, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.correo, new { htmlAttributes = new { @class = "form-control", placeholder = "ejemplo@gmail.com/ejemplo@outlook.com" } })
+                                    @Html.ValidationMessageFor(model => model.correo, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.observacion, "Observación:", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.observacion, 10, 62, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
-                }
+                        @*<div class="form-group">
+                                <div class="btn btn-primary">
+                                    <div class="col-md-10">
+                                    </div>
+                                    <input type="file" id="imageBrowes" multiple="multiple" />
+                                </div>
+                                <div id="imgPreview" class="thumbnail" style="display:none">
+                                    <img class="img-responsive" id="targetImg" />
+                                    <div class="caption">
+                                        <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
+                                        <span id="description"></span>
+                                    </div>
+                                </div>
 
+                            </div>*@
+
+                        <div class="modal-footer">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" id="CrearBoton" value="Crear Persona" class="btn btn-default" />
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    }
+
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <script>
+        // Helper function to display messages below CKEditor.
+        function ShowMessage(msg) {
+            document.getElementById('eMessage').innerHTML = msg;
+        }
+        function InsertHTML() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto;
+            var value = document.getElementById('htmlArea').value;
+            // Check the active editing mode.
+            if (editor.mode == 'wysiwyg') {
+                // Insert HTML code.
+                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-insertHtml
+                editor.insertHtml(value);
+            } else
+                alert('You must be in WYSIWYG mode!');
+        }
+        function InsertText() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto;
+            var value = document.getElementById('txtArea').value;
+            // Check the active editing mode.
+            if (editor.mode == 'wysiwyg') {
+                // Insert as plain text.
+                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-insertText
+                editor.insertText(value);
+            } else
+                alert('You must be in WYSIWYG mode!');
+        }
+        function SetContents() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto;
+            var value = document.getElementById('htmlArea').value;
+            // Set editor content (replace current content).
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-setData
+            editor.setData(value);
+        }
+        function GetContents() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto.getData();
+            // Get editor content.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-getData
+            $("#texto").val(editor);
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 3000,
+                "extendedTimeOut": 1000
+            }
+            toastr["success"]("Texto actualizado");
+            $("#guardarTexto").attr('disabled', true);
+        }
+        function ExecuteCommand(commandName) {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto;
+            // Check the active editing mode.
+            if (editor.mode == 'wysiwyg') {
+                // Execute the command.
+                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-execCommand
+                editor.execCommand(commandName);
+            } else
+                alert('You must be in WYSIWYG mode!');
+        }
+        function CheckDirty() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto;
+            // Checks whether the current editor content contains changes when compared
+            // to the content loaded into the editor at startup.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-checkDirty
+            alert(editor.checkDirty());
+        }
+        function ResetDirty() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto;
+            // Resets the "dirty state" of the editor.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-resetDirty
+            editor.resetDirty();
+            alert('The "IsDirty" status was reset.');
+        }
+        function Focus() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.texto;
+            // Focuses the editor.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-focus
+            editor.focus();
+        }
+    </script>
+    <script>
+        // Attaching event listeners to the global CKEDITOR object.
+        // The instanceReady event is fired when an instance of CKEditor has finished its initialization.
+        CKEDITOR.on('instanceReady', function (ev) {
+            ShowMessage('Editor instance <em>' + ev.editor.name + '</em> was loaded.');
+            // The editor is ready, so sample buttons can be displayed.
+            document.getElementById('eButtons').style.display = 'block';
+        });
+        // Replace the <textarea id="editor1"> with a CKEditor instance.
+        // A reference to the editor object is returned by CKEDITOR.replace() allowing you to work with editor instances.
+        var editor = CKEDITOR.replace('texto', {
+            height: 150
+        });
+        // Attaching event listeners to CKEditor instances.
+        // Refer to https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html for a list of all available events.
+        editor.on('focus', function (evt) {
+            ShowMessage('Editor instance <em>' + this.name + '</em> <b>is focused</b>.');
+        });
+        editor.on('blur', function (evt) {
+            ShowMessage('Editor instance <em>' + this.name + '</em> <b>lost focus</b>.');
+        });
+        // Helper variable to count the number of detected changes in CKEditor.
+        var changesNum = 0;
+        editor.on('change', function (evt) {
+            ShowMessage('The number of changes in <em>' + this.name + '</em>: <b>' + ++changesNum + '</b>.');
+        });
+    </script>
 
 
-
-<script type="text/javascript">
+    <script type="text/javascript">
 
     $(document).ready(function () {
         $("#nombreCompleto").attr('maxlength', '50');
@@ -322,10 +445,10 @@
         }
     });
 
+    </script>
+</body>
 
-
-
-</script>
+</html>
 
 
 

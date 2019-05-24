@@ -75,6 +75,7 @@ namespace SistemaControl.Controllers
                 {
                     tablaGeneralBLL = new TablaGeneralBLLImpl();
                     usuarioBLL = new UsuarioBLLImpl();
+                    //rolU = "Jefatura";
                     rolU = roles.First();
                 }
                 catch (Exception)

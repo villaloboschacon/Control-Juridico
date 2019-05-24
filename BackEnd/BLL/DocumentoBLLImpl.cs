@@ -50,6 +50,9 @@ namespace BackEnd.BLL
             }
         }
 
+
+
+       
         public List<Documento> Consulta(int iTipo, string sFiltro, string sFechaFinal, string sCampo, string sTipoDocumento)
         {
             try
@@ -394,6 +397,21 @@ namespace BackEnd.BLL
                 using (unidad = new UnidadDeTrabajo<Documento>(new SCJ_BDEntities()))
                 {
                     return unidad.genericDAL.Get(iId);
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public Nullable<long> GetNumeroReferencia(int idDocumento)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    return context.sp_getNumeroReferencia(idDocumento).FirstOrDefault();
                 }
             }
             catch (Exception)

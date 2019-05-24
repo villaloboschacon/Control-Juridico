@@ -34,13 +34,8 @@
                             searchListItem.Add(new SelectListItem { Text = "Estado", Value = "Estado" });
                         }
                         @Html.DropDownList("sOption", new SelectList(searchListItem, "Value", "Text"), "Opciones de Búsqueda", htmlAttributes: new { @class = "form-control", @style = "width:205px;", @onchange = "Limpiar()", @id = "dropList" })
-                        @Html.DropDownList("sOptions", new SelectList(searchListItem, "Value", "Text"), "Opciones de Búsqueda", htmlAttributes: new { @class = "form-control", @style = "width:205px;", @onchange = "Limpiar()", @id = "dropLists" })
-
-
                         @Html.TextBox("sSearch", "", new { @class = "form-control", autocomplete = "off" })
-                        <button type="submit" class="btn btn-default" style="color:black; font-size:14px;">
-                            <i class="fa fa-search" aria-hidden="true"></i> Buscar
-                        </button>
+                        <button id="buscarButton" type="submit" class="btn btn-default" value="Buscar" style="color:black; font-size:14px;"> <i class="fa fa-search" aria-hidden="true"></i> Buscar </button>
                     </span>
                 </div>
             </div>
@@ -54,14 +49,14 @@
                 <th>Abogado</th>
                 <th>Materia</th>
                 <th>Persona</th>
+                <th>Tipo de Persona</th>
                 <th>Tipo de Proceso</th>
                 <th>Tipo de Litigio</th>
-                <th>Estado</th>
             </tr>
             @if (Model.Count() == 0)
             {
                 <tr>
-                    <td align="center" colspan="8">No se encontraron coincidencias</td>
+                    <td align="center" colspan="8">No hay registros que coincidan con la busqueda.</td>
                 </tr>
             }
             else
@@ -98,42 +93,31 @@
             }
         </table>
         <div>
-            <a href="#" id="btnEdit" class="btnEdit" onclick="Crear()" data-toggle="modal" data-target="#crearModal">Crear proceso</a>
+            <a href="#" onclick="Crear()" data-toggle="modal" data-target="#crearModal" id="bCrear">Crear proceso</a>
         </div>
         <br />
-        @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))*@
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, search = ViewBag.search, option = ViewBag.option }))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, sSearch = ViewBag.search, sOption = ViewBag.option, sSearchFecha = ViewBag.finalDate, pageReferencias = ViewBag.pageReferencias }))
+        <input type="hidden" id="idProceso" />
+        <br />
+    </div>
 
-        <div class="modal fade" id="modalArchivar">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <a href="#" class="close" data-dismiss="modal">&times;</a>
-                        <h3 class="modal-title">Archivar Proceso</h3>
-                    </div>
-                    <div class="modal-body">
-                        <h4>Esta seguro que desea archivar este proceso? </h4>
-
-                        @*<div style="text-align:center;display:none" id="loaderDiv">
-                                <img src="~/Content/InternetSlowdown_Day.gif" width="150" />
-                            </div>*@
-
-                    </div>
-                    <div class="modal-footer">
-                        <a href="#" class="btn btn-default" data-dismiss="modal">Cancelar</a>
-                        <a href="#" class="btn btn-default" onclick="Archivar()">Confirmar</a>
-                    </div>
+    <div class="modal fade" id="modalArchivar">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Archivar Proceso</h3>
+                </div>
+                <div class="modal-body">
+                    <h4>Esta seguro que desea archivar este proceso? </h4>
 
                 </div>
-
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Cancelar</a>
+                    <a href="#" class="btn btn-default" onclick="Archivar()">Confirmar</a>
+                </div>
             </div>
-
         </div>
-
-
-        @*hidden field for storing current employeeId*@
-        <input type="hidden" id="idProceso" />
-
     </div>
 
     <div id="editarModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editarModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
@@ -255,15 +239,29 @@
                 alert('Error a la hora de abrir el modal.');
             }
         });
-        }
-        $("#dropList").change(function () {
-            if ($('#dropList').val() === "Persona") {
-                document.getElementById('sSearch').type = 'select';
+    }
+
+    function Details(idcaso) {
+        var url = '@Url.Action("Detalles")';
+        var myId = idcaso;
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            data: {
+                'id': idcaso
+            },
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#detalleModal").html(data);
+            },
+            error: function (xhr) {
+                alert('error');
             }
-            else {
-                $('#buscarButton').prop('disabled', false);
-            }
-            );
+        });
+    }
+
     function Edit(idcaso) {
         var url = '@Url.Action("Editar")';
         var myId = idcaso;
@@ -317,29 +315,29 @@
 
     </script>
     <script type="text/javascript">
-    $(function () {
-        // Initialize numeric spinner input boxes
-        //$(".numeric-spinner").spinedit();
-        // Initialize modal dialog
-        // attach modal-container bootstrap attributes to links with .modal-link class.
-        // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
-        $('body').on('click', '.modal-link', function (e) {
-            e.preventDefault();
-            $(this).attr('data-target', '#modal-container');
-            $(this).attr('data-toggle', 'modal');
+        $(function () {
+            // Initialize numeric spinner input boxes
+            //$(".numeric-spinner").spinedit();
+            // Initialize modal dialog
+            // attach modal-container bootstrap attributes to links with .modal-link class.
+            // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
+            $('body').on('click', '.modal-link', function (e) {
+                e.preventDefault();
+                $(this).attr('data-target', '#modal-container');
+                $(this).attr('data-toggle', 'modal');
+            });
+            // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+            $('body').on('click', '.modal-close-btn', function () {
+                $('#modal-container').modal('hide');
+            });
+            //clear modal cache, so that new content can be loaded
+            $('#modal-container').on('hidden.bs.modal', function () {
+                $(this).removeData('bs.modal');
+            });
+            $('#CancelModal').on('click', function () {
+                return false;
+            });
         });
-        // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
-        $('body').on('click', '.modal-close-btn', function () {
-            $('#modal-container').modal('hide');
-        });
-        //clear modal cache, so that new content can be loaded
-        $('#modal-container').on('hidden.bs.modal', function () {
-            $(this).removeData('bs.modal');
-        });
-        $('#CancelModal').on('click', function () {
-            return false;
-        });
-    });
     </script>
 </body>
 </html>

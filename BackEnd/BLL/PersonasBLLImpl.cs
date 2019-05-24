@@ -27,27 +27,59 @@ namespace BackEnd.BLL
             }
         }
 
-        public List<Persona> Consulta(int iTipo, string sFiltro, string sCampo)
+        public List<Persona> Consulta(int iTipo, string sFiltro, string sCampo, string sTipoPersona)
         {
             try
             {
                 using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
                 {
-                    switch (sCampo)
-                    {                      
-                        case "Cédula":
-                            Expression<Func<Persona, bool>> consultaCedula = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.cedula.Contains(sFiltro));
-                            return unidad.genericDAL.Find(consultaCedula).ToList();
-                        case "Nombre Completo":
-                            Expression<Func<Persona, bool>> consultaNombre = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.nombreCompleto.Contains(sFiltro));
-                            return unidad.genericDAL.Find(consultaNombre).ToList();
-                        case "Correo Electrónico":
-                            Expression<Func<Persona, bool>> consultaCorreo = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.correo.Contains(sFiltro));
-                            return unidad.genericDAL.Find(consultaCorreo).ToList();
-                        default:
-                            Expression<Func<Persona, bool>> consultaDefault = (oPersona => oPersona.idTipo.Equals(iTipo));
-                            return unidad.genericDAL.Find(consultaDefault).ToList();
-                    }     
+                    if (sTipoPersona == "Fisica")
+                    {
+                        switch (sCampo)
+                        {
+                            case "Cédula":
+                                Expression<Func<Persona, bool>> consultaCedula = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.cedula.Contains(sFiltro));
+                                return unidad.genericDAL.Find(consultaCedula).ToList();
+                            case "Nombre Completo":
+                                Expression<Func<Persona, bool>> consultaNombre = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.nombreCompleto.Contains(sFiltro));
+                                return unidad.genericDAL.Find(consultaNombre).ToList();
+                            case "Correo Electrónico":
+                                Expression<Func<Persona, bool>> consultaCorreo = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.correo.Contains(sFiltro));
+                                return unidad.genericDAL.Find(consultaCorreo).ToList();
+                            default:
+                                Expression<Func<Persona, bool>> consultaDefault = (oPersona => oPersona.idTipo.Equals(iTipo));
+                                return unidad.genericDAL.Find(consultaDefault).ToList();
+                        }
+                    }
+                    else if (sTipoPersona == "Juridica")
+                    {
+                        switch (sCampo)
+                        {
+                            case "Cédula Jurídica":
+                                Expression<Func<Persona, bool>> consultaCedulaJuridica = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.cedula.Contains(sFiltro));
+                                return unidad.genericDAL.Find(consultaCedulaJuridica).ToList();
+                            case "Nombre Completo":
+                                Expression<Func<Persona, bool>> consultaNombre = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.nombreCompleto.Contains(sFiltro));
+                                return unidad.genericDAL.Find(consultaNombre).ToList();
+                            case "Correo Electrónico":
+                                Expression<Func<Persona, bool>> consultaCorreo = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.correo.Contains(sFiltro));
+                                return unidad.genericDAL.Find(consultaCorreo).ToList();
+                            case "Representante Legal":
+                                Expression<Func<Persona, bool>> consultaRepresentanteLegal = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.RepresentanteLegal.Contains(sFiltro));
+                                return unidad.genericDAL.Find(consultaRepresentanteLegal).ToList();
+                            case "Representante Social":
+                                Expression<Func<Persona, bool>> consultaRepresentanteSocial = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.RepresentanteSocial.Contains(sFiltro));
+                                return unidad.genericDAL.Find(consultaRepresentanteSocial).ToList();
+                            default:
+                                Expression<Func<Persona, bool>> consultaDefault = (oPersona => oPersona.idTipo.Equals(iTipo));
+                                return unidad.genericDAL.Find(consultaDefault).ToList();
+                        }
+                    }
+                    else
+                    {
+                        Expression<Func<Persona, bool>> consultaDefault = (oPersona => oPersona.idTipo.Equals(iTipo));
+                        return unidad.genericDAL.Find(consultaDefault).ToList();
+                    }
                 }
             }
             catch (Exception)

@@ -7,11 +7,13 @@ namespace SistemaControl.Models
 {
     public class HomeViewModel
     {
+        public string Username { get; set; }
+        public string Password { get; set; }
+
         public int numeroDocumentos { get; set; }
         public int numEntradas { get; set; }
         public int numSalidas { get; set; }
         public int numExpedientes { get; set; }
-
 
         public int numeroCasos { get; set; }
         public int numeroAdministrativos { get; set; }

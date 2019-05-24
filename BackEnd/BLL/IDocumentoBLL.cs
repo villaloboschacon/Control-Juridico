@@ -30,6 +30,11 @@ namespace BackEnd.BLL
         bool ArchivarDocumento(int iIdDocumento);
 
         ///<summary>
+        ///Recupera la lista de entradas filtrandolas por tipo. 
+        ///</summary>
+       // List<Documento> ConsultaEntradas(int iTipo);
+
+        ///<summary>
         ///Comprueba que el registro del numero del documento no este repetido.
         ///</summary>
         bool Comprobar(string numeroDocumento, string idDocumento,Boolean bNumero ,Boolean bStatus);
@@ -68,6 +73,11 @@ namespace BackEnd.BLL
         ///Recupera el numero de ingreso del documento.
         ///</summary>
         Nullable<long> GetNumeroIngreso();
+
+        ///<summary>
+        ///Recupera el numero de referencia del documento.
+        ///</summary>
+        Nullable<long> GetNumeroReferencia(int idDocumento);
 
         ///<summary>
         ///Genera el numero de ingreso para el documento.

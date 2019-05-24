@@ -12,23 +12,23 @@ namespace SistemaControl.Controllers
 {
     public class PersonaFisicaController : Controller
     {
-        private IPersonasBLL oPersonasBLL;
-        private ITablaGeneralBLL oTablaGeneralBLL;
+        private IPersonasBLL PersonasBLL;
+        private ITablaGeneralBLL TablaGeneralBLL;
 
         public ActionResult Search(string sSearch, int? iPage)
         {
             try
             {
-                oTablaGeneralBLL = new TablaGeneralBLLImpl();
-                oPersonasBLL = new PersonasBLLImpl();
+                TablaGeneralBLL = new TablaGeneralBLLImpl();
+                PersonasBLL = new PersonasBLLImpl();
             }
             catch (Exception)
             {
                 return RedirectToAction("Index", new { message = "error" });
             }
 
-            ViewBag.idPersona = new SelectList(oTablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
-            var aPersonas = oPersonasBLL.GetPersonas().AsQueryable();
+            ViewBag.idPersona = new SelectList(TablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
+            var aPersonas = PersonasBLL.GetPersonas().AsQueryable();
 
             if (!String.IsNullOrEmpty(sSearch))
             {
@@ -40,26 +40,26 @@ namespace SistemaControl.Controllers
 
             foreach (Persona oPersona in aPersonas)
             {
-                oPersona.TablaGeneral = oTablaGeneralBLL.GetTablaGeneral(oPersona.idTipo);
+                oPersona.TablaGeneral = TablaGeneralBLL.GetTablaGeneral(oPersona.idTipo);
             }
             PagedList<Persona> model = new PagedList<Persona>(aPersonas, iPageNumber, iPageSize);
             return View(model);
         }
 
-        public ActionResult Index(string sOption, string sSearch, int iPage = 1, int iPageSize = 4, string sMessage = "")
+        public ActionResult Index(string sOption, string sSearch, int page = 1, int pageSize = 4, string message = "")
         {
             try
             {
-                oTablaGeneralBLL = new TablaGeneralBLLImpl();
-                oPersonasBLL = new PersonasBLLImpl();
+                TablaGeneralBLL = new TablaGeneralBLLImpl();
+                PersonasBLL = new PersonasBLLImpl();
             }
             catch (Exception)
             {
                 return RedirectToAction("Index", new { message = "error" });
             }
-            if (!string.IsNullOrEmpty(sMessage))
+            if (!string.IsNullOrEmpty(message))
             {
-                TempData["message"] = sMessage;
+                TempData["message"] = message;
             }
             else
             {
@@ -69,43 +69,44 @@ namespace SistemaControl.Controllers
             {
                 ViewBag.search = sSearch;
                 ViewBag.option = sOption;
-                int iTipo = oTablaGeneralBLL.GetIdTablaGeneral("Persona", "Tipo", "Fisica");
-                var aPersonas = oPersonasBLL.Consulta(iTipo, sSearch, sOption);
-                ViewBag.idPersona = new SelectList(oTablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
+                int iTipo = TablaGeneralBLL.GetIdTablaGeneral("Persona", "Tipo", "Fisica");
+                var aPersonas = PersonasBLL.Consulta(iTipo, sSearch, sOption,"Fisica");
+                ViewBag.idPersona = new SelectList(TablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
                 foreach (Persona oPersona in aPersonas)
                 {
-                    oPersona.TablaGeneral = oTablaGeneralBLL.GetTablaGeneral(oPersona.idTipo); //TablaGeneral es el {get;set} para poder traer idTipo de tabla general
+                    oPersona.TablaGeneral = TablaGeneralBLL.GetTablaGeneral(oPersona.idTipo); //TablaGeneral es el {get;set} para poder traer idTipo de tabla general
                 }
-                PagedList<Persona> model = new PagedList<Persona>(aPersonas, iPage, iPageSize);
+                PagedList<Persona> model = new PagedList<Persona>(aPersonas, page, pageSize);
                 return View(model);
             }
             else
             {
-                ViewBag.idPersona = new SelectList(oTablaGeneralBLL.Consulta("Persona", "Tipo"), "idTablaGeneral", "descripcion");
-                int iTipo = oTablaGeneralBLL.GetIdTablaGeneral("Persona", "Tipo", "Fisica");
-                var aPersonas = oPersonasBLL.Consulta(iTipo);
+                ViewBag.idPersona = new SelectList(TablaGeneralBLL.Consulta("Persona", "Tipo"), "idTablaGeneral", "descripcion");
+                int iTipo = TablaGeneralBLL.GetIdTablaGeneral("Persona", "Tipo", "Fisica");
+                var aPersonas = PersonasBLL.Consulta(iTipo);
                 foreach (Persona oPersona in aPersonas)
                 {
-                    oPersona.TablaGeneral = oTablaGeneralBLL.GetTablaGeneral(oPersona.idTipo);
+                    oPersona.TablaGeneral = TablaGeneralBLL.GetTablaGeneral(oPersona.idTipo);
                 }
-                PagedList<Persona> model = new PagedList<Persona>(aPersonas, iPage, iPageSize);
+                PagedList<Persona> model = new PagedList<Persona>(aPersonas, page, pageSize);
                 return View(model);
             }
         }
+
         public ActionResult Crear()
         {
             try
             {
-                oTablaGeneralBLL = new TablaGeneralBLLImpl();
-                oPersonasBLL = new PersonasBLLImpl();
+                TablaGeneralBLL = new TablaGeneralBLLImpl();
+                PersonasBLL = new PersonasBLLImpl();
             }
             catch (Exception)
             {
                 return RedirectToAction("Index", new { message = "error" });
             }
             PersonaViewModel oPersonaViewModel = new PersonaViewModel();
-            ViewBag.idTipo = new SelectList(oTablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", 0);
-            ViewBag.tipoIdentificacion = new SelectList(oTablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", 0);
+            ViewBag.idTipo = new SelectList(TablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", 0);
+            ViewBag.tipoIdentificacion = new SelectList(TablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", 0);
             return PartialView("Crear", oPersonaViewModel);
         }
 
@@ -115,8 +116,8 @@ namespace SistemaControl.Controllers
         {
             try
             {
-                oTablaGeneralBLL = new TablaGeneralBLLImpl();
-                oPersonasBLL = new PersonasBLLImpl();
+                TablaGeneralBLL = new TablaGeneralBLLImpl();
+                PersonasBLL = new PersonasBLLImpl();
             }
             catch (Exception)
             {
@@ -124,8 +125,8 @@ namespace SistemaControl.Controllers
             }
             if (ModelState.IsValid)
             {
-                oPersonasBLL.Agregar(oPersona);
-                oPersonasBLL.SaveChanges();
+                PersonasBLL.Agregar(oPersona);
+                PersonasBLL.SaveChanges();
                 TempData["cedula"] = oPersona.cedula;
                 return RedirectToAction("Index", new { message = "success" });
             }
@@ -134,31 +135,31 @@ namespace SistemaControl.Controllers
 
 
 
-        public ActionResult Editar(int iId)
+        public ActionResult Editar(int id)
         {
             try
             {
-                oTablaGeneralBLL = new TablaGeneralBLLImpl();
-                oPersonasBLL = new PersonasBLLImpl();
+                TablaGeneralBLL = new TablaGeneralBLLImpl();
+                PersonasBLL = new PersonasBLLImpl();
             }
             catch (Exception)
             {
                 return RedirectToAction("Index", new { message = "error" });
             }
-            PersonaViewModel oPersonaViewModel = (PersonaViewModel)oPersonasBLL.GetPersona(iId);
-            ViewBag.idTipo = new SelectList(oTablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", oPersonaViewModel.idTipo);
-            ViewBag.tipoIdentificacion = new SelectList(oTablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", oPersonaViewModel.tipoIdentificacion);
+            PersonaViewModel oPersonaViewModel = (PersonaViewModel)PersonasBLL.GetPersona(id);
+            ViewBag.idTipo = new SelectList(TablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", oPersonaViewModel.idTipo);
+            ViewBag.tipoIdentificacion = new SelectList(TablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", oPersonaViewModel.tipoIdentificacion);
             return PartialView("Editar", oPersonaViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarPersona(Persona oPersona)
+        public ActionResult EditarPersona(Persona Persona)
         {
             try
             {
-                oTablaGeneralBLL = new TablaGeneralBLLImpl();
-                oPersonasBLL = new PersonasBLLImpl();
+                TablaGeneralBLL = new TablaGeneralBLLImpl();
+                PersonasBLL = new PersonasBLLImpl();
             }
             catch (Exception)
             {
@@ -166,12 +167,12 @@ namespace SistemaControl.Controllers
             }
             if (ModelState.IsValid)
             {
-                oPersonasBLL.Actualizar(oPersona);
-                oPersonasBLL.SaveChanges();
+                PersonasBLL.Actualizar(Persona);
+                PersonasBLL.SaveChanges();
                 return RedirectToAction("Index", new { message = "success" });
             }
-            ViewBag.idTipo = new SelectList(oTablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", oPersona.idTipo);
-            ViewBag.tipoIdentificacion = new SelectList(oTablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", oPersona.tipoIdentificacion);
+            ViewBag.idTipo = new SelectList(TablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", Persona.idTipo);
+            ViewBag.tipoIdentificacion = new SelectList(TablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", Persona.tipoIdentificacion);
             return RedirectToAction("Index", new { message = "error" });
         }
 
@@ -179,10 +180,10 @@ namespace SistemaControl.Controllers
         {
             try
             {
-                oPersonasBLL = new PersonasBLLImpl();
-                Persona oPersona = oPersonasBLL.GetPersona(iId);
-                oPersonasBLL.Eliminar(oPersona);
-                oPersonasBLL.SaveChanges();
+                PersonasBLL = new PersonasBLLImpl();
+                Persona oPersona = PersonasBLL.GetPersona(iId);
+                PersonasBLL.Eliminar(oPersona);
+                PersonasBLL.SaveChanges();
                 return RedirectToAction("Index", new { message = "success" });
             }
             catch (Exception)
@@ -190,18 +191,18 @@ namespace SistemaControl.Controllers
                 return RedirectToAction("Index", new { message = "error" });
             }
         }
-        public JsonResult ComprobarPersona(string oCedula, string sIdPersona)
+        public JsonResult ComprobarPersona(string cedula, string idPersona)
         {
             try
             {
-                oPersonasBLL = new PersonasBLLImpl();
+                PersonasBLL = new PersonasBLLImpl();
             }
             catch (Exception)
             {
                 return null;
             }
 
-            if (oPersonasBLL.Comprobar(oCedula, sIdPersona))
+            if (PersonasBLL.Comprobar(cedula, idPersona))
             {
                 return Json(true,"", JsonRequestBehavior.AllowGet);
             }
@@ -209,6 +210,48 @@ namespace SistemaControl.Controllers
             {            
                 return Json("Este número de identificación ya ha sido registrado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public ActionResult Detalles(int id)
+        {
+            try
+            {
+                TablaGeneralBLL = new TablaGeneralBLLImpl();
+                PersonasBLL = new PersonasBLLImpl();
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+            Persona persona = PersonasBLL.Get(id);
+            PersonaViewModel personaVista = (PersonaViewModel)persona;
+            ViewBag.idTipo = new SelectList(TablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", personaVista.idTipo);
+            ViewBag.tipoIdentificacion = new SelectList(TablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", personaVista.tipoIdentificacion);
+            return PartialView("Detalle", personaVista);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DetallesPersonas(Persona persona)
+        {
+            try
+            {
+                TablaGeneralBLL = new TablaGeneralBLLImpl();
+                PersonasBLL = new PersonasBLLImpl();
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+            if (ModelState.IsValid)
+            {
+                PersonasBLL.Actualizar(persona);
+                PersonasBLL.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.idTipo = new SelectList(TablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion", persona.idTipo);
+            ViewBag.tipoIdentificacion = new SelectList(TablaGeneralBLL.Consulta("Persona", "tipoIdentificacion"), "idTablaGeneral", "descripcion", persona.tipoIdentificacion);
+            return PartialView("Detalle", persona);
         }
     }
 }

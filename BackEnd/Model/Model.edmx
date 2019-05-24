@@ -141,6 +141,8 @@ warning 6002: The table/view 'SCJ_BD.dbo.CasoDocumento' does not have a primary 
           <Property Name="ubicacion" Type="varchar" MaxLength="500" />
           <Property Name="observacion" Type="varchar" MaxLength="750" />
           <Property Name="parte" Type="varchar" MaxLength="50" />
+          <Property Name="adjunto" Type="varbinary(max)" />
+          <Property Name="texto" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Personas">
           <Key>
@@ -554,6 +556,15 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
         <Function Name="sp_archivaDocumento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idDocumentoP" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_buscaPorAbogado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="abogado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaPorEstado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="estado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaPorPersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="persona" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="sp_ConsultaNumerodeIngreso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -567,8 +578,14 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
         </Function>
         <Function Name="sp_GeneraNumerodeIngreso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_GeneraNumerodeReferencia" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_getNumeroReferencia" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_getRolesForUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="userName" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_getTipoCaso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idCaso" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_getUsuarioCorreo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idUsuarioP" Type="int" Mode="In" />
@@ -581,6 +598,8 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_listaCasosAdministrativos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_listaCasosJudiciales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_listaEntradas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_ListaReferencias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idReferenciaB" Type="bigint" Mode="In" />
@@ -886,6 +905,8 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <NavigationProperty Name="TablaGeneral2" Relationship="Self.FK_Documento_TipoDocumento" FromRole="Documentos" ToRole="TablaGeneral" />
           <NavigationProperty Name="TablaGeneral3" Relationship="Self.FK_Documento_TipoOrigen" FromRole="Documentos" ToRole="TablaGeneral" />
           <NavigationProperty Name="Casos" Relationship="Self.CasoDocumento" FromRole="Documentos" ToRole="Casos" />
+          <Property Name="adjunto" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="texto" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Persona">
           <Key>
@@ -1425,6 +1446,23 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <Parameter Name="idDocumentoP" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_GeneraNumerodeReferencia" ReturnType="Collection(Int64)" />
+          <FunctionImport Name="sp_buscaPorAbogado" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)">
+          <Parameter Name="abogado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaPorPersona" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)">
+          <Parameter Name="persona" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_listaCasosAdministrativos" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)" />
+          <FunctionImport Name="sp_listaCasosJudiciales" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)" />
+          <FunctionImport Name="sp_buscaPorEstado" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)">
+          <Parameter Name="estado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_getNumeroReferencia" ReturnType="Collection(Int64)">
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_getTipoCaso" ReturnType="Collection(Int32)">
+            <Parameter Name="idCaso" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1510,6 +1548,66 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
           <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaPorAbogado_Result">
+          <Property Type="Int32" Name="idCaso" Nullable="false" />
+          <Property Type="String" Name="Persona" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="tipo" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="usuario" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="estado" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="tipoLitigante" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="numeroCaso" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="materia" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaPorPersona_Result">
+          <Property Type="Int32" Name="idCaso" Nullable="false" />
+          <Property Type="String" Name="Persona" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="tipo" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="usuario" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="estado" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="tipoLitigante" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="numeroCaso" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="materia" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+        </ComplexType>
+        <ComplexType Name="sp_listaCasosAdministrativos_Result">
+          <Property Type="Int32" Name="idCaso" Nullable="false" />
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idUsuario" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int32" Name="tipoLitigante" Nullable="false" />
+          <Property Type="String" Name="numeroCaso" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="materia" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+        </ComplexType>
+        <ComplexType Name="sp_listaCasosJudiciales_Result">
+          <Property Type="Int32" Name="idCaso" Nullable="false" />
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idUsuario" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int32" Name="tipoLitigante" Nullable="false" />
+          <Property Type="String" Name="numeroCaso" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="materia" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaPorEstado_Result">
+          <Property Type="Int32" Name="idCaso" Nullable="false" />
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idUsuario" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int32" Name="tipoLitigante" Nullable="false" />
+          <Property Type="String" Name="numeroCaso" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="materia" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1635,6 +1733,8 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <EntitySetMapping Name="Documentos">
             <EntityTypeMapping TypeName="SCJ_BD.Documento">
               <MappingFragment StoreEntitySet="Documentos">
+                <ScalarProperty Name="texto" ColumnName="texto" />
+                <ScalarProperty Name="adjunto" ColumnName="adjunto" />
                 <ScalarProperty Name="idDocumento" ColumnName="idDocumento" />
                 <ScalarProperty Name="idTipo" ColumnName="idTipo" />
                 <ScalarProperty Name="idOrigen" ColumnName="idOrigen" />
@@ -1761,6 +1861,18 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <FunctionImportMapping FunctionImportName="sp_archivaCaso" FunctionName="SCJ_BD.Store.sp_archivaCaso" />
           <FunctionImportMapping FunctionImportName="sp_archivaDocumento" FunctionName="SCJ_BD.Store.sp_archivaDocumento" />
           <FunctionImportMapping FunctionImportName="sp_GeneraNumerodeReferencia" FunctionName="SCJ_BD.Store.sp_GeneraNumerodeReferencia" />
+          <FunctionImportMapping FunctionImportName="sp_buscaPorAbogado" FunctionName="SCJ_BD.Store.sp_buscaPorAbogado">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaPorPersona" FunctionName="SCJ_BD.Store.sp_buscaPorPersona">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_listaCasosAdministrativos" FunctionName="SCJ_BD.Store.sp_listaCasosAdministrativos">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_listaCasosJudiciales" FunctionName="SCJ_BD.Store.sp_listaCasosJudiciales">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaPorEstado" FunctionName="SCJ_BD.Store.sp_buscaPorEstado">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_getNumeroReferencia" FunctionName="SCJ_BD.Store.sp_getNumeroReferencia" />
+          <FunctionImportMapping FunctionImportName="sp_getTipoCaso" FunctionName="SCJ_BD.Store.sp_getTipoCaso" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

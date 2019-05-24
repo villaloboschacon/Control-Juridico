@@ -17,5 +17,35 @@ namespace BackEnd.BLL
         bool Comprobar(string idCaso,string numeroCaso);
         string getCorreo(int idUsuario);
         bool archivaCaso(int idCaso);
+
+        ///<summary>
+        ///Busca Caso por Nombre de Persona
+        ///</summary>
+        List<Caso> buscaPorPersona(string nombrePersona);
+
+        ///<summary>
+        ///Busca Caso por Nombre de Abogado
+        ///</summary>
+        List<Caso> buscaPorAbogado(string nombreAbogado);
+
+        ///<summary>
+        ///Busca Caso por descripcion de estado
+        ///</summary>
+        List<Caso> buscaPorEstado(string estado);
+
+        ///<summary>
+        ///Recupera la lista de casos administrativos. 
+        ///</summary>
+        List<Caso> getCasosAdministrativos();
+
+        ///<summary>
+        ///Recupera la lista de casos juduciales. 
+        ///</summary>
+        List<Caso> getCasosJudiciales();
+
+        ///<summary>
+        ///Recupera el tipo caso
+        ///</summary>
+        int getTipoCaso(int idCaso);
     }
 }

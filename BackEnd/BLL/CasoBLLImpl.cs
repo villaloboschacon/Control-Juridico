@@ -111,17 +111,12 @@ namespace BackEnd.BLL
                     switch (sCampo)
                     {
                         case "Persona":
-                            int iFiltroConsulta = Int32.Parse(sFiltro);
-                            Expression<Func<Caso, bool>> consultaPersona = (oCaso => oCaso.idTipo.Equals(iTipo) && oCaso.Persona.Equals(iFiltroConsulta) && oCaso.idEstado != (iEstado));
-                            return unidad.genericDAL.Find(consultaPersona).ToList();
+                            
+                            return buscaPorPersona(sFiltro).ToList();
                         case "Abogado":
-                            int iFiltroAbogado = Int32.Parse(sFiltro);
-                            Expression<Func<Caso, bool>> consultaAbogado = (oCaso => oCaso.idTipo.Equals(iTipo) && oCaso.idUsuario.Equals(iFiltroAbogado) && oCaso.idEstado != (iEstado));
-                            return unidad.genericDAL.Find(consultaAbogado).ToList();
+                            return buscaPorAbogado(sFiltro).ToList();
                         case "Estado":
-                            int iFiltroEstado = Int32.Parse(sFiltro);
-                            Expression<Func<Caso, bool>> consultaEstado = (oCaso => oCaso.idTipo.Equals(iTipo) && oCaso.idEstado.Equals(iFiltroEstado) && oCaso.idEstado != (iEstado));
-                            return unidad.genericDAL.Find(consultaEstado).ToList();
+                            return buscaPorEstado(sFiltro).ToList();
                         case "Número de proceso":
                             Expression<Func<Caso, bool>> consultaNumeroProceso = (oCaso => oCaso.idTipo.Equals(iTipo) && oCaso.numeroCaso.Contains(sFiltro) && oCaso.idEstado != (iEstado));
                             return unidad.genericDAL.Find(consultaNumeroProceso).ToList();
@@ -135,6 +130,121 @@ namespace BackEnd.BLL
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        public List<Caso> getCasosJudiciales()
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_listaCasosJudiciales().ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Caso> getCasosAdministrativos()
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_listaCasosAdministrativos().ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Caso> buscaPorPersona(string nombrePersona)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaPorPersona(nombrePersona).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Caso> buscaPorAbogado(string nombreAbogado)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaPorAbogado(nombreAbogado).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Caso> buscaPorEstado(string estado)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaPorEstado(estado).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public int getTipoCaso(int idCaso)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    return (int)context.sp_getTipoCaso(idCaso).FirstOrDefault();
+                }
+            }
+            catch (Exception)
+            {
+                return -1;
             }
         }
     }

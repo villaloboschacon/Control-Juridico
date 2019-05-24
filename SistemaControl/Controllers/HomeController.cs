@@ -18,8 +18,9 @@ namespace SistemaControl.Controllers
         private IPersonasBLL personaBLL;
         private IDocumentoBLL documentoBLL;
         private IPersonasBLL personasBLL;
+
         [Authorize]
-        public ActionResult Index(int page = 1, int pageSize = 4)
+        public ActionResult Index(string user, int page = 1, int pageSize = 4)
         {
             try
             {
@@ -61,8 +62,9 @@ namespace SistemaControl.Controllers
             ViewBag.numeroFisicas = dashboard.numeroFisicas;
             ViewBag.numeroJuridicas = dashboard.numeroJuridicas;
 
-            string username = User.Identity.Name;
-            var casosSearch = casoBLL.Find(x => x.Usuario.nombre.Equals(username) && x.idTipo == 19 && x.idEstado != 95).ToList();
+            string username = "davidguzmanlml72@gmail.com";
+
+            var casosSearch = casoBLL.Find(x => x.Usuario.usuario1.Equals(username) && x.idTipo == 19 || x.idTipo == 20 && x.idEstado != 95).ToList();
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
             ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
             ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
@@ -79,6 +81,7 @@ namespace SistemaControl.Controllers
             PagedList<Caso> modelpage = new PagedList<Caso>(casosSearch, page, pageSize);
             return View("Index", modelpage);
         }
+
 
         [Authorize]
         public ActionResult About()

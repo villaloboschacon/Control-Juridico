@@ -1,111 +1,106 @@
 ﻿@model PagedList.IPagedList<BackEnd.Model.Persona>
+@using PagedList.Mvc;
 @{
-
     ViewBag.Title = "Index";
 }
+<!doctype html>
+<html lang="es">
+<head>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
-@using PagedList.Mvc;
-<a href="~/Views/PersonaFisica/Index.cshtml"></a>
+    <script src="https://cdn.ckeditor.com/4.11.4/standard-all/ckeditor.js"></script>
 
-<script src="~/Content/js/site.js"></script>
-<link href="~/Content/css/style.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    @*
+        MessageToast
+    *@
+    <script src="~/Content/Toast/toastr.js"></script>
+    <link href="~/Content/Toast/toastr.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="~/Content/Toast/toastrsample.js"></script>
 
-<script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="title">Personas Jurídicas</div>
+    <div class="container" style="margin-top:20px">
+        @using (Html.BeginForm("Index", "PersonaJuridica", FormMethod.Get))
+        {
+            <div class="widget" style="height:100px;">
+                <div class="title">
+                    <span class="form-inline">
+                        @{ List<SelectListItem> searchListItem = new List<SelectListItem>();
+                            searchListItem.Add(new SelectListItem { Text = "Cédula Jurídica", Value = "Cédula Jurídica" });
+                            searchListItem.Add(new SelectListItem { Text = "Nombre Completo", Value = "Nombre Completo" });
+                            searchListItem.Add(new SelectListItem { Text = "Representante Legal", Value = "Representante Legal" });
+                            searchListItem.Add(new SelectListItem { Text = "Representante Social", Value = "Representante Social" });
+                            searchListItem.Add(new SelectListItem { Text = "Correo Electrónico", Value = "Correo Electrónico" });
 
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-
-<script type="text/javascript" src="http://codeseven.github.com/toastr/toastr.js"></script>
-
-<link rel="stylesheet" type="text/css" href="http://codeseven.github.com/toastr/toastr.css">
-<link rel="stylesheet" type="text/css" href="http://codeseven.github.com/toastr/toastr-responsive.css">
-
-<script src="~/Content/Toast/toastrsample.js"></script>
-
-
-<div class="title">Personas Jurídicas</div>
-<div class="container" style="margin-top:20px">
-    @using (Html.BeginForm("Index", "PersonaJuridica", FormMethod.Get))
-    {
-        <div class="widget" style="height:100px;">
-            <div class="title">
-                <span class="form-inline">
-                    @{ List<SelectListItem> searchListItem = new List<SelectListItem>();
-                        searchListItem.Add(new SelectListItem { Text = "Cédula Jurídica", Value = "Cédula Jurídica" });
-                        searchListItem.Add(new SelectListItem { Text = "Nombre Completo", Value = "Nombre Completo" });
-                        searchListItem.Add(new SelectListItem { Text = "Representante Legal", Value = "Representante Legal" });
-                        searchListItem.Add(new SelectListItem { Text = "Representante Social", Value = "Representante Social" });
-                        searchListItem.Add(new SelectListItem { Text = "Correo Electrónico", Value = "Correo Electrónico" });
-
-                    }
-                    @Html.DropDownList("option", new SelectList(searchListItem, "Value", "Text"), "Opciones de Búsqueda", htmlAttributes: new { @class = "form-control", @style = "width:205px;", @onchange = "Limpiar()" })
-                    @Html.TextBox("search", "", new { @class = "form-control", autocomplete = "off" })
-                    <button type="submit" class="btn btn-default" value="Buscar" style="color:black; font-size:14px;">
-                        <i class="fa fa-search" aria-hidden="true"></i> Buscar
-                    </button>
-                </span>
+                        }
+                        @Html.DropDownList("sOption", new SelectList(searchListItem, "Value", "Text"), "Opciones de Búsqueda", htmlAttributes: new { @class = "form-control", @style = "width:205px;", @onchange = "Limpiar()", @id = "dropList" })
+                        @Html.TextBox("sSearch", "", new { @class = "form-control", autocomplete = "off" })
+                        <button id="buscarButton" type="submit" class="btn btn-default" value="Buscar" style="color:black; font-size:14px;"> <i class="fa fa-search" aria-hidden="true"></i> Buscar </button>
+                    </span>
+                </div>
             </div>
-        </div>
-    }
-
-    <table class="table table-bordered" id="table_personas">
-        <tr>
-            <th>
-                Cédula
-            </th>
-            <th>
-                Nombre Completo
-            </th>
-            <th>Representante legal</th>
-            <th>Representante social</th>
-            <th>Correo</th>
-
-        </tr>
-        @if (Model.Count() == 0)
-        {
-            <tr>
-                <td align="center" colspan="8">No se encontraron coincidencias</td>
-            </tr>
         }
-        else
-        {
-            foreach (var item in Model)
+
+        <table class="table table-bordered" id="table_personas">
+            <tr>
+                <th>
+                    Cédula
+                </th>
+                <th>
+                    Nombre Completo
+                </th>
+                <th>Representante legal</th>
+                <th>Representante social</th>
+                <th>Correo</th>
+
+            </tr>
+            @if (Model.Count() == 0)
             {
                 <tr>
-                    <td style="display:none;">
-                        @Html.DisplayFor(modelItem => item.idPersona)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.cedula)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.nombreCompleto)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RepresentanteLegal)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RepresentanteSocial)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.correo)
-                    </td>
-                    @*<td>
-                            @Html.DisplayFor(modelItem => item.observacion)
-                        </td>*@
+                    <td align="center" colspan="8">No se encontraron coincidencias</td>
                 </tr>
             }
-        }
-    </table>
-    <div>
-        <a href="#" onclick="Crear()" class="btnEdit" data-toggle="modal" data-target="#crearModal" id="btnEdit">Crear persona</a>
-        @*<a href="#" onclick="Reference()" class="btnEdit" data-toggle="modal" data-target="#referenciaModal" id="btnEdit">Ref documento</a>*@
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="display:none;">
+                            @Html.DisplayFor(modelItem => item.idPersona)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.cedula)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.nombreCompleto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RepresentanteLegal)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RepresentanteSocial)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.correo)
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.observacion)
+                            </td>*@
+                    </tr>
+                }
+            }
+        </table>
+        <div>
+            <a href="#" onclick="Crear()" class="btnEdit" data-toggle="modal" data-target="#crearModal" id="btnEdit">Crear persona</a>
+        </div>
+        <br />
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, sSearch = ViewBag.search, sOption = ViewBag.option, sSearchFecha = ViewBag.finalDate, pageReferencias = ViewBag.pageReferencias }))
+        <input type="hidden" id="idPersona" />
+        <br />
     </div>
-    <br />
 
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, search = ViewBag.search, option = ViewBag.option }))
     <div class="modal fade" id="modalArchivar">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -132,93 +127,61 @@
 
     </div>
 
+    <div id="editarModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editarModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+    </div>
+    <div id="crearModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crearModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+    </div>
+    <div id="detalleModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detalleModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
+    </div>
 
-    @*hidden field for storing current DocId*@
-    <input type="hidden" id="idPersona" />
-    <br />
+    <div id="contextMenu" class="dropdown clearfix">
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+            <li>
+                <a tabindex="-1" href="#" onclick="Details(getInd())" data-value="getInd()" data-toggle="modal" data-target="#detalleModal">Ver detalles</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a tabindex="-1" href="#" onclick="Edit(getInd())" data-value="getInd()" data-toggle="modal" data-target="#editarModal">Editar</a>
+            </li>
+            <li>
+                <a href="#" onclick="Confirmar(getInd())">Eliminar</a>
+            </li>
+        </ul>
+    </div>
+    <style>
+        #contextMenu {
+            position: absolute;
+            display: none;
+            background: lightblue;
+            z-index: 1000;
+        }
 
+        .wrap {
+            width: 90%;
+            display: block;
+            margin: 0 auto;
+        }
 
-</div>
-<div id="editarModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editarModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
-</div>
-<div id="crearModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crearModal" aria-hidden="true" style="position: fixed" data-keyboard="false" data-backdrop="static">
-</div>
+        table {
+            border: 1px solid rgba(221, 221, 221, 1);
+        }
 
+        tr:nth-child(even) {
+            background: #F5F5F5
+        }
 
-<div id="contextMenu" class="dropdown clearfix">
-    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
-        <li>
-            <a tabindex="-1" href="#" onclick="Details(getInd())" data-value="getInd()" data-toggle="modal" data-target="#detalleModal">Ver detalles</a>
-        </li>
-        <li class="divider"></li>
-        <li>
-            <a tabindex="-1" href="#" onclick="Edit(getInd())" data-value="getInd()" data-toggle="modal" data-target="#editarModal">Editar</a>
-        </li>
-        <li>
-            <a href="#" onclick="Confirmar(getInd())">Eliminar</a>
-        </li>
-    </ul>
-</div>
-<style>
-    #contextMenu {
-        position: absolute;
-        display: none;
-        background: lightblue;
-        z-index: 1000;
-    }
-
-    .wrap {
-        width: 90%;
-        display: block;
-        margin: 0 auto;
-    }
-
-    table {
-        border: 1px solid rgba(221, 221, 221, 1);
-    }
-
-    tr:nth-child(even) {
-        background: #F5F5F5
-    }
-
-    tr {
-        position: relative;
-    }
-
-        tr:hover {
-            background: #c9e8f7;
+        tr {
             position: relative;
         }
-</style>
 
-<script>
-        $(document).ready(function () {
-        if ('@TempData["message"]' == "success") {
-            toastr.options = {
-                "debug": false,
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 100,
-                "timeOut": 3000,
-                "extendedTimeOut": 1000
+            tr:hover {
+                background: #c9e8f7;
+                position: relative;
             }
+    </style>
 
-            var d = '@TempData["cedula"]';
-            toastr["success"](d, "Persona agregada exitosamente");
-        }
-        else if ('@TempData["message"]' == "error") {
-            toastr.options = {
-                "debug": false,
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 100,
-                "timeOut": 3000,
-                "extendedTimeOut": 1000
-            }
-            toastr["error"]("Error al crear persona.");
-        }
-        else { }
-    });
+    <script>
+
     var ind = 0;
     $(this).mousedown(function (e) {
         if (e.which == 2) {
@@ -235,8 +198,35 @@
     });
 
     function Limpiar() {
-        $('#search').val("")
+        $('#sSearch').val("")
     }
+
+   $(document).ready(function () {
+        if ('@TempData["message"]' == "success") {
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 3000,
+                "extendedTimeOut": 1000
+            }
+
+            var d = '@TempData["action"]';
+            toastr["success"](d, "Persona agregada exitosamente","exitosamente");
+        }
+        else if ('@TempData["message"]' == "error") {
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 3000,
+                "extendedTimeOut": 1000
+            }
+            toastr["error"]("Error al crear la Persona.");
+        }
+    });
 
     $('#table_personas').find('tr').click(function (e) {
         var rows = $('tr', table_personas);
@@ -309,7 +299,27 @@
         });
     }
 
-            var Confirmar = function (idPersona) {
+    function Details(idpersona) {
+        var url = '@Url.Action("Detalles")';
+        var myId = idpersona;
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            data: {
+                'id': idpersona
+            },
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#detalleModal").html(data);
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    }
+    var Confirmar = function (idPersona) {
 
         $("#idPersona").val(idPersona);
         $('#modalArchivar').modal('show');
@@ -336,4 +346,115 @@
         })
 
     }
-</script>
+    </script>
+
+    <script>
+        // Helper function to display messages below CKEditor.
+        function ShowMessage(msg) {
+            document.getElementById('eMessage').innerHTML = msg;
+        }
+        function InsertHTML() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.editor1;
+            var value = document.getElementById('htmlArea').value;
+            // Check the active editing mode.
+            if (editor.mode == 'wysiwyg') {
+                // Insert HTML code.
+                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-insertHtml
+                editor.insertHtml(value);
+            } else
+                alert('You must be in WYSIWYG mode!');
+        }
+        function InsertText() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.editor1;
+            var value = document.getElementById('txtArea').value;
+            // Check the active editing mode.
+            if (editor.mode == 'wysiwyg') {
+                // Insert as plain text.
+                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-insertText
+                editor.insertText(value);
+            } else
+                alert('You must be in WYSIWYG mode!');
+        }
+        function SetContents() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.editor1;
+            var value = document.getElementById('htmlArea').value;
+            // Set editor content (replace current content).
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-setData
+            editor.setData(value);
+        }
+        function GetContents() {
+            // Get the editor instance that you want to interact with.
+            //var editor = CKEDITOR.instances.editor1;
+            // Get editor content.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-getData
+            //alert(editor.getData());
+        }
+        function ExecuteCommand(commandName) {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.editor1;
+            // Check the active editing mode.
+            if (editor.mode == 'wysiwyg') {
+                // Execute the command.
+                // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-execCommand
+                editor.execCommand(commandName);
+            } else
+                alert('You must be in WYSIWYG mode!');
+        }
+        function CheckDirty() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.editor1;
+            // Checks whether the current editor content contains changes when compared
+            // to the content loaded into the editor at startup.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-checkDirty
+            alert(editor.checkDirty());
+        }
+        function ResetDirty() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.editor1;
+            // Resets the "dirty state" of the editor.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-resetDirty
+            editor.resetDirty();
+            alert('The "IsDirty" status was reset.');
+        }
+        function Focus() {
+            // Get the editor instance that you want to interact with.
+            var editor = CKEDITOR.instances.editor1;
+            // Focuses the editor.
+            // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-focus
+            editor.focus();
+        }
+    </script>
+    <script>
+        // Attaching event listeners to the global CKEDITOR object.
+        // The instanceReady event is fired when an instance of CKEditor has finished its initialization.
+        CKEDITOR.on('instanceReady', function (ev) {
+            ShowMessage('Editor instance <em>' + ev.editor.name + '</em> was loaded.');
+            // The editor is ready, so sample buttons can be displayed.
+            document.getElementById('eButtons').style.display = 'block';
+        });
+                    // Replace the <textarea id="editor1"> with a CKEditor instance.
+                    // A reference to the editor object is returned by CKEDITOR.replace() allowing you to work with editor instances.
+                    //var editor = CKEDITOR.replace('editor1', {
+                    //    height: 150
+                    //});
+                    // Attaching event listeners to CKEditor instances.
+                    // Refer to https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html for a list of all available events.
+                    //editor.on('focus', function (evt) {
+                    //    ShowMessage('Editor instance <em>' + this.name + '</em> <b>is focused</b>.');
+                    //});
+                    //editor.on('blur', function (evt) {
+                    //    ShowMessage('Editor instance <em>' + this.name + '</em> <b>lost focus</b>.');
+                    //});
+                    //// Helper variable to count the number of detected changes in CKEditor.
+                    //var changesNum = 0;
+                    //editor.on('change', function (evt) {
+                    //    ShowMessage('The number of changes in <em>' + this.name + '</em>: <b>' + ++changesNum + '</b>.');
+                    //});
+    </script>
+</body>
+
+</html>
+

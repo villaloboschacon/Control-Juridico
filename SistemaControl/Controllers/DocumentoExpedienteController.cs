@@ -142,6 +142,7 @@ namespace SistemaControl.Controllers
             }
             return PartialView("Crear", documento);
         }
+
         public ActionResult Crear()
         {
             try
@@ -161,6 +162,7 @@ namespace SistemaControl.Controllers
             ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion", null);
             return PartialView("Crear", documento);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditarDocumento(Documento documento)
@@ -184,6 +186,7 @@ namespace SistemaControl.Controllers
             return PartialView("Editar", documento);
 
         }
+
         public ActionResult Editar(int id)
         {
             try
@@ -200,7 +203,6 @@ namespace SistemaControl.Controllers
             DocumentoViewModel documentoVista = new DocumentoViewModel();
             documentoVista = (DocumentoViewModel)documento;
             documentoVista.fecha = documento.fecha;
-            documentoVista.parte = "";
             int iTipo = tablaGeneralBLL.GetIdTablaGeneral("Documentos", "tipo", "Oficio");
             ViewBag.numeroDocumento = new SelectList(aDocumentos = documentoBll.Consulta(iTipo, "", "", "", "OficioEntrada"), "idDocumento", "numeroDocumento", documentoVista.idDocumento);
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion", documentoVista.idTipo);
@@ -212,6 +214,7 @@ namespace SistemaControl.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public ActionResult DetallesDocumento(Documento documento)
         {
             try
@@ -232,6 +235,7 @@ namespace SistemaControl.Controllers
             return PartialView("Detalle", documento);
 
         }
+
         public ActionResult Detalles(int id)
         {
             try
@@ -269,6 +273,7 @@ namespace SistemaControl.Controllers
                 throw;
             }
         }
+
         public JsonResult ComprobarDocumento(string numeroDocumento, string idDocumento)
         {
             try
@@ -289,6 +294,7 @@ namespace SistemaControl.Controllers
             }
 
         }
+
         public JsonResult ComprobarIngreso(string numeroIngreso, string idDocumento)
         {
             try
@@ -309,6 +315,7 @@ namespace SistemaControl.Controllers
             }
 
         }
+
         public JsonResult Search(string name)
         {
             try
@@ -322,6 +329,7 @@ namespace SistemaControl.Controllers
             var resultado = documentoBll.Find(x => x.numeroDocumento.Contains(name)).Select(x => x.numeroDocumento).Take(11).ToList();
             return Json(resultado, JsonRequestBehavior.AllowGet);
         }
+
         public JsonResult GetTipoOrigen(int id)
         {
             try
