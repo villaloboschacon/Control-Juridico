@@ -57,17 +57,14 @@ namespace SistemaControl.Controllers
 
                         foreach (Caso caso in aCasos)
                         {
-                            caso.TablaGeneral = tablaGeneralBLL.Get(caso.idCaso);
-                            caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idPersona);
-                            caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.idTipo);
-                            //if (caso.idEstado.HasValue)
-                            //{
-                            //    int i = (int)(oDocumento.idEstado);
-                            //    oDocumento.TablaGeneral = tablaGeneralBLL.Get(i);
-                            //}
+                            caso.Persona = personaBLL.Get(caso.idPersona);
+                            caso.Usuario = usuarioBLL.Get(caso.idUsuario);
+                            caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
+                            caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
+                            caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
                         }
                     }
-                    PagedList<Caso> model = new PagedList<Caso>(aCasos, page, pageSize); 
+                    PagedList<Caso> model = new PagedList<Caso>(aCasos, page, pageSize);
                     return View(model);
                 }
                 catch (Exception)
@@ -77,49 +74,23 @@ namespace SistemaControl.Controllers
                 }
 
             }
-            //Busqueda cuando no pone la busqueda ni la opcion de busqueda
-            //Cuando se inicia el index
-            else if (String.IsNullOrEmpty(sOption) && String.IsNullOrEmpty(sSearch))
-            {
-                PagedList<Caso> model = new PagedList<Caso>(aCasos, page, pageSize); 
-                return View(model);
-            }
-            //Busqueda cuando no pone la opcion de busqueda pero si la busqueda
-            //Por defecto va a buscar en el numero de documento
             else
             {
-                try
+                aCasos = casoBLL.getCasosAdministrativos();
+                foreach (Caso caso in aCasos)
                 {
-                    ViewBag.search = sSearch;
-                    ViewBag.option = sOption;
-                    ViewBag.finalDate = sSearchFecha;
-                    if (String.IsNullOrEmpty(sSearch))
-                    {
-                        aCasos = casoBLL.Consulta(iTipo, sSearch, "");
-                    }
-                    else
-                    {
-                        aCasos = casoBLL.Consulta(iTipo, sSearch, "Número de Oficio");
-                    }
-                    foreach (Caso caso in aCasos)
-                    {
-                        caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idUsuario);
-                        caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.idTipo);
-                        caso.TablaGeneral = tablaGeneralBLL.Get(caso.tipoLitigante);
-                        caso.Persona = personaBLL.GetPersona(caso.idPersona);
-                        caso.Usuario = usuarioBLL.Get(caso.idUsuario);
-                    }
-                    PagedList<Caso> model = new PagedList<Caso>(aCasos, page, pageSize); 
-                    return View(model);
+                    caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idUsuario);
+                    caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.idTipo);
+                    caso.TablaGeneral = tablaGeneralBLL.Get(caso.tipoLitigante);
+                    caso.Persona = personaBLL.GetPersona(caso.idPersona);
+                    caso.Usuario = usuarioBLL.Get(caso.idUsuario);
                 }
-                catch (Exception)
-                {
-                    PagedList<Caso> model = new PagedList<Caso>(aCasos, page, pageSize);
-                    return View(model);
-                }
+                PagedList<Caso> model = new PagedList<Caso>(aCasos, page, pageSize);
+                return View(model);
+
             }
         }
-       
+
         public ActionResult Crear()
         {
             try
@@ -187,11 +158,11 @@ namespace SistemaControl.Controllers
             }
 
             CasoViewModel caso = (CasoViewModel)casoBLL.Get(id);
-            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion",caso.idTipo);
-            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion",caso.idEstado);
-            ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion",caso.tipoLitigante);
-            ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto",caso.idPersona);
-            ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre",caso.idUsuario);
+            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion", caso.idTipo);
+            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion", caso.idEstado);
+            ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion", caso.tipoLitigante);
+            ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto", caso.idPersona);
+            ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre", caso.idUsuario);
             return PartialView("Editar", caso);
         }
 
@@ -227,7 +198,7 @@ namespace SistemaControl.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Archivar(int id)
         {
-          try
+            try
             {
                 casoBLL = new CasoBLLImpl();
                 casoBLL.archivaCaso(id);
@@ -242,7 +213,7 @@ namespace SistemaControl.Controllers
         }
 
 
-        public JsonResult ComprobarCaso(string numeroCaso,string idCaso)
+        public JsonResult ComprobarCaso(string numeroCaso, string idCaso)
         {
             try
             {
@@ -252,7 +223,7 @@ namespace SistemaControl.Controllers
             {
 
             }
-            if (casoBLL.Comprobar(numeroCaso,idCaso))
+            if (casoBLL.Comprobar(numeroCaso, idCaso))
             {
                 return Json(true, JsonRequestBehavior.AllowGet);
             }

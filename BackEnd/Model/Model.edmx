@@ -556,14 +556,39 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
         <Function Name="sp_archivaDocumento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idDocumentoP" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_buscaPersonaPorCorreo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="correo" Type="varchar" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaPersonaPorIdentificacion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="cedula" Type="varchar" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaPersonaPorNombreCompleto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombreCompleto" Type="varchar" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaPersonaPorRepresentanteLegal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RepresentanteLegal" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaPersonaPorRepresentanteSocial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RepresentanteSocial" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="sp_buscaPorAbogado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="abogado" Type="varchar" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_buscaPorEstado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="estado" Type="varchar" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaPorNumeroDeProceso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="numeroDeProceso" Type="varchar" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_buscaPorPersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="persona" Type="varchar" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_ConsultaNumerodeIngreso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -601,6 +626,8 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
         <Function Name="sp_listaCasosAdministrativos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_listaCasosJudiciales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_listaEntradas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_listaPersonasAdministrativas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_listaPersonasJuridicas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_ListaReferencias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idReferenciaB" Type="bigint" Mode="In" />
         </Function>
@@ -1446,23 +1473,50 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <Parameter Name="idDocumentoP" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_GeneraNumerodeReferencia" ReturnType="Collection(Int64)" />
-          <FunctionImport Name="sp_buscaPorAbogado" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)">
-          <Parameter Name="abogado" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_buscaPorPersona" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)">
-          <Parameter Name="persona" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="sp_listaCasosAdministrativos" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)" />
           <FunctionImport Name="sp_listaCasosJudiciales" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)" />
-          <FunctionImport Name="sp_buscaPorEstado" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)">
-          <Parameter Name="estado" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="sp_getNumeroReferencia" ReturnType="Collection(Int64)">
           <Parameter Name="id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_getTipoCaso" ReturnType="Collection(Int32)">
-            <Parameter Name="idCaso" Mode="In" Type="Int32" />
+          <Parameter Name="idCaso" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_buscaPorAbogado" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)">
+            <Parameter Name="abogado" Mode="In" Type="String" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaPorEstado" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)">
+            <Parameter Name="estado" Mode="In" Type="String" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaPorNumeroDeProceso" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)">
+            <Parameter Name="numeroDeProceso" Mode="In" Type="String" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaPorPersona" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)">
+            <Parameter Name="persona" Mode="In" Type="String" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaPersonaPorCorreo" EntitySet="Personas" ReturnType="Collection(SCJ_BD.Persona)">
+            <Parameter Name="correo" Mode="In" Type="String" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaPersonaPorIdentificacion" EntitySet="Personas" ReturnType="Collection(SCJ_BD.Persona)">
+            <Parameter Name="cedula" Mode="In" Type="String" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaPersonaPorNombreCompleto" EntitySet="Personas" ReturnType="Collection(SCJ_BD.Persona)">
+            <Parameter Name="nombreCompleto" Mode="In" Type="String" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaPersonaPorRepresentanteLegal" EntitySet="Personas" ReturnType="Collection(SCJ_BD.Persona)">
+            <Parameter Name="RepresentanteLegal" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaPersonaPorRepresentanteSocial" EntitySet="Personas" ReturnType="Collection(SCJ_BD.Persona)">
+            <Parameter Name="RepresentanteSocial" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_listaPersonasAdministrativas" EntitySet="Personas" ReturnType="Collection(SCJ_BD.Persona)" />
+          <FunctionImport Name="sp_listaPersonasJuridicas" EntitySet="Personas" ReturnType="Collection(SCJ_BD.Persona)" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1608,6 +1662,131 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <Property Type="String" Name="materia" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
           <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaPorAbogado_Result1">
+          <Property Type="Int32" Name="idCaso" Nullable="false" />
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idUsuario" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int32" Name="tipoLitigante" Nullable="false" />
+          <Property Type="String" Name="numeroCaso" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="materia" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaPorEstado_Result1">
+          <Property Type="Int32" Name="idCaso" Nullable="false" />
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idUsuario" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int32" Name="tipoLitigante" Nullable="false" />
+          <Property Type="String" Name="numeroCaso" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="materia" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaPorNumeroDeProceso_Result">
+          <Property Type="Int32" Name="idCaso" Nullable="false" />
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idUsuario" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int32" Name="tipoLitigante" Nullable="false" />
+          <Property Type="String" Name="numeroCaso" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="materia" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaPorPersona_Result1">
+          <Property Type="Int32" Name="idCaso" Nullable="false" />
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idUsuario" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int32" Name="tipoLitigante" Nullable="false" />
+          <Property Type="String" Name="numeroCaso" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="materia" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaPersonaPorCorreo_Result">
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="String" Name="cedula" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="nombreCompleto" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteSocial" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteLegal" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="correo" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="Int32" Name="tipoIdentificacion" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaPersonaPorIdentificacion_Result">
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="String" Name="cedula" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="nombreCompleto" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteSocial" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteLegal" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="correo" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="Int32" Name="tipoIdentificacion" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaPersonaPorNombreCompleto_Result">
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="String" Name="cedula" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="nombreCompleto" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteSocial" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteLegal" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="correo" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="Int32" Name="tipoIdentificacion" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaPersonaPorRepresentanteLegal_Result">
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="String" Name="cedula" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="nombreCompleto" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteSocial" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteLegal" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="correo" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="Int32" Name="tipoIdentificacion" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaPersonaPorRepresentanteSocial_Result">
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="String" Name="cedula" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="nombreCompleto" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteSocial" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteLegal" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="correo" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="Int32" Name="tipoIdentificacion" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_listaPersonasAdministrativas_Result">
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="String" Name="cedula" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="nombreCompleto" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteSocial" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteLegal" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="correo" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="Int32" Name="tipoIdentificacion" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_listaPersonasJuridicas_Result">
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="String" Name="cedula" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="nombreCompleto" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteSocial" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="RepresentanteLegal" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="correo" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="Int32" Name="tipoIdentificacion" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1861,18 +2040,34 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <FunctionImportMapping FunctionImportName="sp_archivaCaso" FunctionName="SCJ_BD.Store.sp_archivaCaso" />
           <FunctionImportMapping FunctionImportName="sp_archivaDocumento" FunctionName="SCJ_BD.Store.sp_archivaDocumento" />
           <FunctionImportMapping FunctionImportName="sp_GeneraNumerodeReferencia" FunctionName="SCJ_BD.Store.sp_GeneraNumerodeReferencia" />
-          <FunctionImportMapping FunctionImportName="sp_buscaPorAbogado" FunctionName="SCJ_BD.Store.sp_buscaPorAbogado">
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_buscaPorPersona" FunctionName="SCJ_BD.Store.sp_buscaPorPersona">
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_listaCasosAdministrativos" FunctionName="SCJ_BD.Store.sp_listaCasosAdministrativos">
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_listaCasosJudiciales" FunctionName="SCJ_BD.Store.sp_listaCasosJudiciales">
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_buscaPorEstado" FunctionName="SCJ_BD.Store.sp_buscaPorEstado">
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_getNumeroReferencia" FunctionName="SCJ_BD.Store.sp_getNumeroReferencia" />
           <FunctionImportMapping FunctionImportName="sp_getTipoCaso" FunctionName="SCJ_BD.Store.sp_getTipoCaso" />
+          <FunctionImportMapping FunctionImportName="sp_buscaPorAbogado" FunctionName="SCJ_BD.Store.sp_buscaPorAbogado">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaPorEstado" FunctionName="SCJ_BD.Store.sp_buscaPorEstado">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaPorNumeroDeProceso" FunctionName="SCJ_BD.Store.sp_buscaPorNumeroDeProceso">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaPorPersona" FunctionName="SCJ_BD.Store.sp_buscaPorPersona">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaPersonaPorCorreo" FunctionName="SCJ_BD.Store.sp_buscaPersonaPorCorreo">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaPersonaPorIdentificacion" FunctionName="SCJ_BD.Store.sp_buscaPersonaPorIdentificacion">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaPersonaPorNombreCompleto" FunctionName="SCJ_BD.Store.sp_buscaPersonaPorNombreCompleto">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaPersonaPorRepresentanteLegal" FunctionName="SCJ_BD.Store.sp_buscaPersonaPorRepresentanteLegal">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaPersonaPorRepresentanteSocial" FunctionName="SCJ_BD.Store.sp_buscaPersonaPorRepresentanteSocial">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_listaPersonasAdministrativas" FunctionName="SCJ_BD.Store.sp_listaPersonasAdministrativas">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_listaPersonasJuridicas" FunctionName="SCJ_BD.Store.sp_listaPersonasJuridicas">
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

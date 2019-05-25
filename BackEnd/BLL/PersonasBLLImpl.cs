@@ -10,6 +10,7 @@ namespace BackEnd.BLL
     public class PersonasBLLImpl:BLLGenericoImpl<Persona>, IPersonasBLL
     {
         private UnidadDeTrabajo<Persona> unidad;
+        private SCJ_BDEntities context;
 
         public List<Persona> Consulta(int iTipo)
         {
@@ -27,58 +28,169 @@ namespace BackEnd.BLL
             }
         }
 
-        public List<Persona> Consulta(int iTipo, string sFiltro, string sCampo, string sTipoPersona)
+        public List<Persona> buscaPorIdentificacion(string cedula, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaPersonaPorIdentificacion(cedula, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Persona> buscaPorNombreCompleto(string nombre, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaPersonaPorNombreCompleto(nombre, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Persona> buscaPorRepresentanteSocial(string nombRepresentante)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaPersonaPorRepresentanteSocial(nombRepresentante).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Persona> buscaPorRepresentanteLegal(string nombRepresentante)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaPersonaPorRepresentanteLegal(nombRepresentante).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Persona> buscaPorCorreo(string correo, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaPersonaPorCorreo(correo, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Persona> listarPersonasAdministrativas()
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_listaPersonasAdministrativas().ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Persona> listarPersonasJudiciales()
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_listaPersonasJuridicas().ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Persona> Consulta(int iTipo, string sFiltro, string sCampo)
         {
             try
             {
                 using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
                 {
-                    if (sTipoPersona == "Fisica")
+
+                    switch (sCampo)
                     {
-                        switch (sCampo)
-                        {
-                            case "Cédula":
-                                Expression<Func<Persona, bool>> consultaCedula = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.cedula.Contains(sFiltro));
-                                return unidad.genericDAL.Find(consultaCedula).ToList();
-                            case "Nombre Completo":
-                                Expression<Func<Persona, bool>> consultaNombre = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.nombreCompleto.Contains(sFiltro));
-                                return unidad.genericDAL.Find(consultaNombre).ToList();
-                            case "Correo Electrónico":
-                                Expression<Func<Persona, bool>> consultaCorreo = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.correo.Contains(sFiltro));
-                                return unidad.genericDAL.Find(consultaCorreo).ToList();
-                            default:
-                                Expression<Func<Persona, bool>> consultaDefault = (oPersona => oPersona.idTipo.Equals(iTipo));
-                                return unidad.genericDAL.Find(consultaDefault).ToList();
-                        }
-                    }
-                    else if (sTipoPersona == "Juridica")
-                    {
-                        switch (sCampo)
-                        {
-                            case "Cédula Jurídica":
-                                Expression<Func<Persona, bool>> consultaCedulaJuridica = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.cedula.Contains(sFiltro));
-                                return unidad.genericDAL.Find(consultaCedulaJuridica).ToList();
-                            case "Nombre Completo":
-                                Expression<Func<Persona, bool>> consultaNombre = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.nombreCompleto.Contains(sFiltro));
-                                return unidad.genericDAL.Find(consultaNombre).ToList();
-                            case "Correo Electrónico":
-                                Expression<Func<Persona, bool>> consultaCorreo = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.correo.Contains(sFiltro));
-                                return unidad.genericDAL.Find(consultaCorreo).ToList();
-                            case "Representante Legal":
-                                Expression<Func<Persona, bool>> consultaRepresentanteLegal = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.RepresentanteLegal.Contains(sFiltro));
-                                return unidad.genericDAL.Find(consultaRepresentanteLegal).ToList();
-                            case "Representante Social":
-                                Expression<Func<Persona, bool>> consultaRepresentanteSocial = (oPersona => oPersona.idTipo.Equals(iTipo) && oPersona.RepresentanteSocial.Contains(sFiltro));
-                                return unidad.genericDAL.Find(consultaRepresentanteSocial).ToList();
-                            default:
-                                Expression<Func<Persona, bool>> consultaDefault = (oPersona => oPersona.idTipo.Equals(iTipo));
-                                return unidad.genericDAL.Find(consultaDefault).ToList();
-                        }
-                    }
-                    else
-                    {
-                        Expression<Func<Persona, bool>> consultaDefault = (oPersona => oPersona.idTipo.Equals(iTipo));
-                        return unidad.genericDAL.Find(consultaDefault).ToList();
+                        case "Cédula":
+                        case "Cédula Jurídica":
+                            return buscaPorIdentificacion(sFiltro, iTipo).ToList();
+                        case "Nombre Completo":
+                            return buscaPorNombreCompleto(sFiltro, iTipo).ToList();
+                        case "Correo Electrónico":
+                            return buscaPorCorreo(sFiltro, iTipo).ToList();
+                        case "Representante Legal":
+                            return buscaPorRepresentanteLegal(sFiltro).ToList();
+                        case "Representante Social":
+                            return buscaPorRepresentanteSocial(sFiltro).ToList();
+                        default:
+                            Expression<Func<Persona, bool>> consultaDefault = (oPersona => oPersona.idTipo.Equals(iTipo));
+                            return unidad.genericDAL.Find(consultaDefault).ToList();
                     }
                 }
             }
@@ -102,6 +214,7 @@ namespace BackEnd.BLL
                 return null;
             }
         }
+
         public Persona GetPersona(int iId)
         {
             try
@@ -116,6 +229,7 @@ namespace BackEnd.BLL
                 return null;
             }
         }
+
         public bool Comprobar(string sCedula, string sIdPersona)
         {
             try

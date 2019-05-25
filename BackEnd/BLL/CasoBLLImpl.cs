@@ -26,6 +26,7 @@ namespace BackEnd.BLL
         {
             return Remove(caso);
         }
+
         public bool SaveChanges()
         {
             using (unidad = new UnidadDeTrabajo<Caso>(new SCJ_BDEntities()))
@@ -35,7 +36,7 @@ namespace BackEnd.BLL
             }
         }
 
-        public bool Comprobar(string numeroCaso , string idCaso)
+        public bool Comprobar(string numeroCaso, string idCaso)
         {
             int idCasoint = 0;
 
@@ -111,20 +112,18 @@ namespace BackEnd.BLL
                     switch (sCampo)
                     {
                         case "Persona":
-                            
-                            return buscaPorPersona(sFiltro).ToList();
+                            return buscaPorPersona(sFiltro, iTipo).ToList();
                         case "Abogado":
-                            return buscaPorAbogado(sFiltro).ToList();
+                            return buscaPorAbogado(sFiltro, iTipo).ToList();
                         case "Estado":
-                            return buscaPorEstado(sFiltro).ToList();
+                            return buscaPorEstado(sFiltro, iTipo).ToList();
                         case "Número de proceso":
-                            Expression<Func<Caso, bool>> consultaNumeroProceso = (oCaso => oCaso.idTipo.Equals(iTipo) && oCaso.numeroCaso.Contains(sFiltro) && oCaso.idEstado != (iEstado));
-                            return unidad.genericDAL.Find(consultaNumeroProceso).ToList();
+                            return buscaPorNumeroDeProceso(sFiltro, iTipo).ToList();
                         default:
                             Expression<Func<Caso, bool>> consultaDefault = (oCaso => oCaso.idTipo.Equals(iTipo) && oCaso.idEstado != (iEstado) && oCaso.numeroCaso.Contains(sFiltro));
                             return unidad.genericDAL.Find(consultaDefault).ToList();
                     }
- 
+
                 }
             }
             catch (Exception)
@@ -173,13 +172,13 @@ namespace BackEnd.BLL
             }
         }
 
-        public List<Caso> buscaPorPersona(string nombrePersona)
+        public List<Caso> buscaPorPersona(string nombrePersona, int iTipo)
         {
             try
             {
                 using (context = new SCJ_BDEntities())
                 {
-                    var result = this.context.sp_buscaPorPersona(nombrePersona).ToList();
+                    var result = this.context.sp_buscaPorPersona(nombrePersona, iTipo).ToList();
                     if (result != null)
                     {
                         return result;
@@ -193,13 +192,13 @@ namespace BackEnd.BLL
             }
         }
 
-        public List<Caso> buscaPorAbogado(string nombreAbogado)
+        public List<Caso> buscaPorAbogado(string nombreAbogado, int iTipo)
         {
             try
             {
                 using (context = new SCJ_BDEntities())
                 {
-                    var result = this.context.sp_buscaPorAbogado(nombreAbogado).ToList();
+                    var result = this.context.sp_buscaPorAbogado(nombreAbogado, iTipo).ToList();
                     if (result != null)
                     {
                         return result;
@@ -213,13 +212,13 @@ namespace BackEnd.BLL
             }
         }
 
-        public List<Caso> buscaPorEstado(string estado)
+        public List<Caso> buscaPorEstado(string estado, int iTipo)
         {
             try
             {
                 using (context = new SCJ_BDEntities())
                 {
-                    var result = this.context.sp_buscaPorEstado(estado).ToList();
+                    var result = this.context.sp_buscaPorEstado(estado, iTipo).ToList();
                     if (result != null)
                     {
                         return result;
@@ -245,6 +244,26 @@ namespace BackEnd.BLL
             catch (Exception)
             {
                 return -1;
+            }
+        }
+
+        public List<Caso> buscaPorNumeroDeProceso(string numeroDeProceso, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaPorNumeroDeProceso(numeroDeProceso, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
     }

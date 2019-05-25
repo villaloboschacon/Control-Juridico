@@ -143,14 +143,14 @@ namespace SistemaControl.Controllers
                 try
                 {
                     MailMessage mail = new MailMessage();
-                   // mail.To.Add(email);
+                    // mail.To.Add(email);
                     mail.To.Add(correo);
                     mail.From = new MailAddress(correo);
                     mail.Subject = "Asignación de caso";
-       
-                    mail.Body= "El departamento de Servicios Juridicos de la Municipalidad de Alajuela te informa que se te ha asignado un nuevo caso. " +
+
+                    mail.Body = "El departamento de Servicios Juridicos de la Municipalidad de Alajuela te informa que se te ha asignado un nuevo caso. " +
                         "Ingresa al <a href=\"http://localhost:53772/CasoJudicial/Index?SOption=Número+de+proceso&sSearch="
-                        + caso.numeroCaso +"\">link</a> para ver la informacion relacionada a este.  ";
+                        + caso.numeroCaso + "\">link</a> para ver la informacion relacionada a este.  ";
 
 
                     mail.IsBodyHtml = true;
@@ -168,7 +168,7 @@ namespace SistemaControl.Controllers
                 {
                     //print("Exception in sendEmail:" + ex.Message);
                 }
-            
+
 
                 return RedirectToAction("Index");
             }
@@ -233,7 +233,7 @@ namespace SistemaControl.Controllers
                     mail.From = new MailAddress(correo);
                     mail.Subject = "Asignación de caso";
 
-                    mail.Body = "El departamento de Servicios Juridicos de la Municipalidad de Alajuela te informa que se te ha modificado la información del caso "+caso.numeroCaso+". " +
+                    mail.Body = "El departamento de Servicios Juridicos de la Municipalidad de Alajuela te informa que se te ha modificado la información del caso " + caso.numeroCaso + ". " +
                         "Ingresa al <a href=\"http://localhost:53772/CasoJudicial/Index?SOption=Número+de+proceso&sSearch="
                         + caso.numeroCaso + "\" > link</a> para ver la información actualizada de este.  ";
 
@@ -261,37 +261,6 @@ namespace SistemaControl.Controllers
             ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre", caso.idUsuario);
             return PartialView("Editar", (CasoViewModel)caso);
         }
-
-        
-
-        //public ActionResult Eliminar(int id)
-        //{
-        //    try
-        //    {
-        //        tablaGeneralBLL = new TablaGeneralBLLImpl();
-        //        casoBLL = new CasoBLLImpl();
-        //        personaBLL = new PersonasBLLImpl();
-        //        usuarioBLL = new UsuarioBLLImpl();
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //    }
-
-        //    Caso caso = casoBLL.Get(id);
-        //    if (ModelState.IsValid)
-        //    {
-        //        casoBLL.Eliminar(caso);
-        //        casoBLL.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion", caso.idTipo);
-        //    ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion", caso.idEstado);
-        //    ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion", caso.tipoLitigante);
-        //    ViewBag.idPersona = new SelectList(personaBLL.Consulta(1), "idPersona", "nombreCompleto", caso.idPersona);
-        //    ViewBag.idUsuario = new SelectList(usuarioBLL.Consulta(), "idUsuario", "nombre", caso.idUsuario);
-        //    return PartialView("Index", (CasoViewModel)caso);
-        //}
 
         [HttpPost, ValidateInput(false)]
         public ActionResult Archivar(int id)
@@ -323,10 +292,10 @@ namespace SistemaControl.Controllers
             return RedirectToAction("Index");
         }
 
-        public JsonResult ComprobarCaso(string numeroCaso,string idCaso)
+        public JsonResult ComprobarCaso(string numeroCaso, string idCaso)
         {
             casoBLL = new CasoBLLImpl();
-            if (casoBLL.Comprobar(numeroCaso,idCaso))
+            if (casoBLL.Comprobar(numeroCaso, idCaso))
             {
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
@@ -335,8 +304,6 @@ namespace SistemaControl.Controllers
                 return Json("El número de caso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
             }
         }
-
-
 
         [HttpPost]
         public JsonResult GetTipoPersona(int id)

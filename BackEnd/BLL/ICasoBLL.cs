@@ -12,26 +12,40 @@ namespace BackEnd.BLL
         bool Agregar(Caso caso);
         bool Modificar(Caso caso);
         bool Eliminar(Caso caso);
-        List<Caso> Consulta(int iTipo,string sSearch,string sCampo);
+        List<Caso> Consulta(int iTipo, string sSearch, string sCampo);
         bool SaveChanges();
-        bool Comprobar(string idCaso,string numeroCaso);
+        bool Comprobar(string idCaso, string numeroCaso);
+
+        ///<summary>
+        ///Obtiene el Correo del abogado para asignar el caso
+        ///</summary>
         string getCorreo(int idUsuario);
+
+        ///<summary>
+        ///Archiva el Caso seleccionado
+        ///</summary>
         bool archivaCaso(int idCaso);
 
         ///<summary>
-        ///Busca Caso por Nombre de Persona
+        ///Busca Caso Administrativo o Judicial por Nombre de Persona
         ///</summary>
-        List<Caso> buscaPorPersona(string nombrePersona);
+        List<Caso> buscaPorPersona(string nombrePersona, int iTipo);
 
         ///<summary>
-        ///Busca Caso por Nombre de Abogado
+        ///Busca Caso  Administrativo o Judicial por Nombre de Abogado
         ///</summary>
-        List<Caso> buscaPorAbogado(string nombreAbogado);
+        List<Caso> buscaPorAbogado(string nombreAbogado, int iTipo);
 
         ///<summary>
-        ///Busca Caso por descripcion de estado
+        ///Busca Caso  Administrativo o Judicial por descripcion de estado
         ///</summary>
-        List<Caso> buscaPorEstado(string estado);
+        List<Caso> buscaPorEstado(string estado, int iTipo);
+
+
+        ///<summary>
+        ///Busca Caso  Administrativo o Judicial por descripcion de estado
+        ///</summary>
+        List<Caso> buscaPorNumeroDeProceso(string numeroDeProceso, int iTipo);
 
         ///<summary>
         ///Recupera la lista de casos administrativos. 

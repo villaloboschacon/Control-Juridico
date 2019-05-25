@@ -269,42 +269,6 @@ namespace BackEnd.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("sp_GeneraNumerodeReferencia");
         }
     
-        public virtual ObjectResult<Caso> sp_buscaPorAbogado(string abogado)
-        {
-            var abogadoParameter = abogado != null ?
-                new ObjectParameter("abogado", abogado) :
-                new ObjectParameter("abogado", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorAbogado", abogadoParameter);
-        }
-    
-        public virtual ObjectResult<Caso> sp_buscaPorAbogado(string abogado, MergeOption mergeOption)
-        {
-            var abogadoParameter = abogado != null ?
-                new ObjectParameter("abogado", abogado) :
-                new ObjectParameter("abogado", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorAbogado", mergeOption, abogadoParameter);
-        }
-    
-        public virtual ObjectResult<Caso> sp_buscaPorPersona(string persona)
-        {
-            var personaParameter = persona != null ?
-                new ObjectParameter("persona", persona) :
-                new ObjectParameter("persona", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorPersona", personaParameter);
-        }
-    
-        public virtual ObjectResult<Caso> sp_buscaPorPersona(string persona, MergeOption mergeOption)
-        {
-            var personaParameter = persona != null ?
-                new ObjectParameter("persona", persona) :
-                new ObjectParameter("persona", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorPersona", mergeOption, personaParameter);
-        }
-    
         public virtual ObjectResult<Caso> sp_listaCasosAdministrativos()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_listaCasosAdministrativos");
@@ -325,24 +289,6 @@ namespace BackEnd.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_listaCasosJudiciales", mergeOption);
         }
     
-        public virtual ObjectResult<Caso> sp_buscaPorEstado(string estado)
-        {
-            var estadoParameter = estado != null ?
-                new ObjectParameter("estado", estado) :
-                new ObjectParameter("estado", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorEstado", estadoParameter);
-        }
-    
-        public virtual ObjectResult<Caso> sp_buscaPorEstado(string estado, MergeOption mergeOption)
-        {
-            var estadoParameter = estado != null ?
-                new ObjectParameter("estado", estado) :
-                new ObjectParameter("estado", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorEstado", mergeOption, estadoParameter);
-        }
-    
         public virtual ObjectResult<Nullable<long>> sp_getNumeroReferencia(Nullable<int> id)
         {
             var idParameter = id.HasValue ?
@@ -359,6 +305,244 @@ namespace BackEnd.Model
                 new ObjectParameter("idCaso", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_getTipoCaso", idCasoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaPorAbogado(string abogado, Nullable<int> idTipo)
+        {
+            var abogadoParameter = abogado != null ?
+                new ObjectParameter("abogado", abogado) :
+                new ObjectParameter("abogado", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorAbogado", abogadoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaPorAbogado(string abogado, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var abogadoParameter = abogado != null ?
+                new ObjectParameter("abogado", abogado) :
+                new ObjectParameter("abogado", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorAbogado", mergeOption, abogadoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaPorEstado(string estado, Nullable<int> idTipo)
+        {
+            var estadoParameter = estado != null ?
+                new ObjectParameter("estado", estado) :
+                new ObjectParameter("estado", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorEstado", estadoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaPorEstado(string estado, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var estadoParameter = estado != null ?
+                new ObjectParameter("estado", estado) :
+                new ObjectParameter("estado", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorEstado", mergeOption, estadoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaPorNumeroDeProceso(string numeroDeProceso, Nullable<int> idTipo)
+        {
+            var numeroDeProcesoParameter = numeroDeProceso != null ?
+                new ObjectParameter("numeroDeProceso", numeroDeProceso) :
+                new ObjectParameter("numeroDeProceso", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorNumeroDeProceso", numeroDeProcesoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaPorNumeroDeProceso(string numeroDeProceso, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var numeroDeProcesoParameter = numeroDeProceso != null ?
+                new ObjectParameter("numeroDeProceso", numeroDeProceso) :
+                new ObjectParameter("numeroDeProceso", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorNumeroDeProceso", mergeOption, numeroDeProcesoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaPorPersona(string persona, Nullable<int> idTipo)
+        {
+            var personaParameter = persona != null ?
+                new ObjectParameter("persona", persona) :
+                new ObjectParameter("persona", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorPersona", personaParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaPorPersona(string persona, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var personaParameter = persona != null ?
+                new ObjectParameter("persona", persona) :
+                new ObjectParameter("persona", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorPersona", mergeOption, personaParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Persona> sp_buscaPersonaPorCorreo(string correo, Nullable<int> idTipo)
+        {
+            var correoParameter = correo != null ?
+                new ObjectParameter("correo", correo) :
+                new ObjectParameter("correo", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_buscaPersonaPorCorreo", correoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Persona> sp_buscaPersonaPorCorreo(string correo, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var correoParameter = correo != null ?
+                new ObjectParameter("correo", correo) :
+                new ObjectParameter("correo", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_buscaPersonaPorCorreo", mergeOption, correoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Persona> sp_buscaPersonaPorIdentificacion(string cedula, Nullable<int> idTipo)
+        {
+            var cedulaParameter = cedula != null ?
+                new ObjectParameter("cedula", cedula) :
+                new ObjectParameter("cedula", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_buscaPersonaPorIdentificacion", cedulaParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Persona> sp_buscaPersonaPorIdentificacion(string cedula, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var cedulaParameter = cedula != null ?
+                new ObjectParameter("cedula", cedula) :
+                new ObjectParameter("cedula", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_buscaPersonaPorIdentificacion", mergeOption, cedulaParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Persona> sp_buscaPersonaPorNombreCompleto(string nombreCompleto, Nullable<int> idTipo)
+        {
+            var nombreCompletoParameter = nombreCompleto != null ?
+                new ObjectParameter("nombreCompleto", nombreCompleto) :
+                new ObjectParameter("nombreCompleto", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_buscaPersonaPorNombreCompleto", nombreCompletoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Persona> sp_buscaPersonaPorNombreCompleto(string nombreCompleto, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var nombreCompletoParameter = nombreCompleto != null ?
+                new ObjectParameter("nombreCompleto", nombreCompleto) :
+                new ObjectParameter("nombreCompleto", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_buscaPersonaPorNombreCompleto", mergeOption, nombreCompletoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Persona> sp_buscaPersonaPorRepresentanteLegal(string representanteLegal)
+        {
+            var representanteLegalParameter = representanteLegal != null ?
+                new ObjectParameter("RepresentanteLegal", representanteLegal) :
+                new ObjectParameter("RepresentanteLegal", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_buscaPersonaPorRepresentanteLegal", representanteLegalParameter);
+        }
+    
+        public virtual ObjectResult<Persona> sp_buscaPersonaPorRepresentanteLegal(string representanteLegal, MergeOption mergeOption)
+        {
+            var representanteLegalParameter = representanteLegal != null ?
+                new ObjectParameter("RepresentanteLegal", representanteLegal) :
+                new ObjectParameter("RepresentanteLegal", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_buscaPersonaPorRepresentanteLegal", mergeOption, representanteLegalParameter);
+        }
+    
+        public virtual ObjectResult<Persona> sp_buscaPersonaPorRepresentanteSocial(string representanteSocial)
+        {
+            var representanteSocialParameter = representanteSocial != null ?
+                new ObjectParameter("RepresentanteSocial", representanteSocial) :
+                new ObjectParameter("RepresentanteSocial", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_buscaPersonaPorRepresentanteSocial", representanteSocialParameter);
+        }
+    
+        public virtual ObjectResult<Persona> sp_buscaPersonaPorRepresentanteSocial(string representanteSocial, MergeOption mergeOption)
+        {
+            var representanteSocialParameter = representanteSocial != null ?
+                new ObjectParameter("RepresentanteSocial", representanteSocial) :
+                new ObjectParameter("RepresentanteSocial", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_buscaPersonaPorRepresentanteSocial", mergeOption, representanteSocialParameter);
+        }
+    
+        public virtual ObjectResult<Persona> sp_listaPersonasAdministrativas()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_listaPersonasAdministrativas");
+        }
+    
+        public virtual ObjectResult<Persona> sp_listaPersonasAdministrativas(MergeOption mergeOption)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_listaPersonasAdministrativas", mergeOption);
+        }
+    
+        public virtual ObjectResult<Persona> sp_listaPersonasJuridicas()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_listaPersonasJuridicas");
+        }
+    
+        public virtual ObjectResult<Persona> sp_listaPersonasJuridicas(MergeOption mergeOption)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_listaPersonasJuridicas", mergeOption);
         }
     }
 }
