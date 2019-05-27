@@ -120,7 +120,7 @@
 
 <script type="text/javascript">
 
-    $("#idTipo").change(function () {
+    @*$("#idTipo").change(function () {
         $("#idPersona").empty();
         $.ajax({
             type: 'POST',
@@ -139,7 +139,7 @@
             }
         });
         return false;
-    });
+    });*@
     $("#idTipo").change(function () {
         if ($('#idTipo').val() == "19") {
             $('#numeroCaso').val('N.I.');

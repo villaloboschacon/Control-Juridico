@@ -307,110 +307,6 @@ namespace BackEnd.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_getTipoCaso", idCasoParameter);
         }
     
-        public virtual ObjectResult<Caso> sp_buscaPorAbogado(string abogado, Nullable<int> idTipo)
-        {
-            var abogadoParameter = abogado != null ?
-                new ObjectParameter("abogado", abogado) :
-                new ObjectParameter("abogado", typeof(string));
-    
-            var idTipoParameter = idTipo.HasValue ?
-                new ObjectParameter("idTipo", idTipo) :
-                new ObjectParameter("idTipo", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorAbogado", abogadoParameter, idTipoParameter);
-        }
-    
-        public virtual ObjectResult<Caso> sp_buscaPorAbogado(string abogado, Nullable<int> idTipo, MergeOption mergeOption)
-        {
-            var abogadoParameter = abogado != null ?
-                new ObjectParameter("abogado", abogado) :
-                new ObjectParameter("abogado", typeof(string));
-    
-            var idTipoParameter = idTipo.HasValue ?
-                new ObjectParameter("idTipo", idTipo) :
-                new ObjectParameter("idTipo", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorAbogado", mergeOption, abogadoParameter, idTipoParameter);
-        }
-    
-        public virtual ObjectResult<Caso> sp_buscaPorEstado(string estado, Nullable<int> idTipo)
-        {
-            var estadoParameter = estado != null ?
-                new ObjectParameter("estado", estado) :
-                new ObjectParameter("estado", typeof(string));
-    
-            var idTipoParameter = idTipo.HasValue ?
-                new ObjectParameter("idTipo", idTipo) :
-                new ObjectParameter("idTipo", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorEstado", estadoParameter, idTipoParameter);
-        }
-    
-        public virtual ObjectResult<Caso> sp_buscaPorEstado(string estado, Nullable<int> idTipo, MergeOption mergeOption)
-        {
-            var estadoParameter = estado != null ?
-                new ObjectParameter("estado", estado) :
-                new ObjectParameter("estado", typeof(string));
-    
-            var idTipoParameter = idTipo.HasValue ?
-                new ObjectParameter("idTipo", idTipo) :
-                new ObjectParameter("idTipo", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorEstado", mergeOption, estadoParameter, idTipoParameter);
-        }
-    
-        public virtual ObjectResult<Caso> sp_buscaPorNumeroDeProceso(string numeroDeProceso, Nullable<int> idTipo)
-        {
-            var numeroDeProcesoParameter = numeroDeProceso != null ?
-                new ObjectParameter("numeroDeProceso", numeroDeProceso) :
-                new ObjectParameter("numeroDeProceso", typeof(string));
-    
-            var idTipoParameter = idTipo.HasValue ?
-                new ObjectParameter("idTipo", idTipo) :
-                new ObjectParameter("idTipo", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorNumeroDeProceso", numeroDeProcesoParameter, idTipoParameter);
-        }
-    
-        public virtual ObjectResult<Caso> sp_buscaPorNumeroDeProceso(string numeroDeProceso, Nullable<int> idTipo, MergeOption mergeOption)
-        {
-            var numeroDeProcesoParameter = numeroDeProceso != null ?
-                new ObjectParameter("numeroDeProceso", numeroDeProceso) :
-                new ObjectParameter("numeroDeProceso", typeof(string));
-    
-            var idTipoParameter = idTipo.HasValue ?
-                new ObjectParameter("idTipo", idTipo) :
-                new ObjectParameter("idTipo", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorNumeroDeProceso", mergeOption, numeroDeProcesoParameter, idTipoParameter);
-        }
-    
-        public virtual ObjectResult<Caso> sp_buscaPorPersona(string persona, Nullable<int> idTipo)
-        {
-            var personaParameter = persona != null ?
-                new ObjectParameter("persona", persona) :
-                new ObjectParameter("persona", typeof(string));
-    
-            var idTipoParameter = idTipo.HasValue ?
-                new ObjectParameter("idTipo", idTipo) :
-                new ObjectParameter("idTipo", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorPersona", personaParameter, idTipoParameter);
-        }
-    
-        public virtual ObjectResult<Caso> sp_buscaPorPersona(string persona, Nullable<int> idTipo, MergeOption mergeOption)
-        {
-            var personaParameter = persona != null ?
-                new ObjectParameter("persona", persona) :
-                new ObjectParameter("persona", typeof(string));
-    
-            var idTipoParameter = idTipo.HasValue ?
-                new ObjectParameter("idTipo", idTipo) :
-                new ObjectParameter("idTipo", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaPorPersona", mergeOption, personaParameter, idTipoParameter);
-        }
-    
         public virtual ObjectResult<Persona> sp_buscaPersonaPorCorreo(string correo, Nullable<int> idTipo)
         {
             var correoParameter = correo != null ?
@@ -543,6 +439,146 @@ namespace BackEnd.Model
         public virtual ObjectResult<Persona> sp_listaPersonasJuridicas(MergeOption mergeOption)
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_listaPersonasJuridicas", mergeOption);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaCasoPorAbogado(string abogado, Nullable<int> idTipo)
+        {
+            var abogadoParameter = abogado != null ?
+                new ObjectParameter("abogado", abogado) :
+                new ObjectParameter("abogado", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaCasoPorAbogado", abogadoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaCasoPorAbogado(string abogado, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var abogadoParameter = abogado != null ?
+                new ObjectParameter("abogado", abogado) :
+                new ObjectParameter("abogado", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaCasoPorAbogado", mergeOption, abogadoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaCasoPorEstado(string estado, Nullable<int> idTipo)
+        {
+            var estadoParameter = estado != null ?
+                new ObjectParameter("estado", estado) :
+                new ObjectParameter("estado", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaCasoPorEstado", estadoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaCasoPorEstado(string estado, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var estadoParameter = estado != null ?
+                new ObjectParameter("estado", estado) :
+                new ObjectParameter("estado", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaCasoPorEstado", mergeOption, estadoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaCasoPorNumeroDeProceso(string numeroDeProceso, Nullable<int> idTipo)
+        {
+            var numeroDeProcesoParameter = numeroDeProceso != null ?
+                new ObjectParameter("numeroDeProceso", numeroDeProceso) :
+                new ObjectParameter("numeroDeProceso", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaCasoPorNumeroDeProceso", numeroDeProcesoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaCasoPorNumeroDeProceso(string numeroDeProceso, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var numeroDeProcesoParameter = numeroDeProceso != null ?
+                new ObjectParameter("numeroDeProceso", numeroDeProceso) :
+                new ObjectParameter("numeroDeProceso", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaCasoPorNumeroDeProceso", mergeOption, numeroDeProcesoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaCasoPorPersona(string persona, Nullable<int> idTipo)
+        {
+            var personaParameter = persona != null ?
+                new ObjectParameter("persona", persona) :
+                new ObjectParameter("persona", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaCasoPorPersona", personaParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_buscaCasoPorPersona(string persona, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var personaParameter = persona != null ?
+                new ObjectParameter("persona", persona) :
+                new ObjectParameter("persona", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_buscaCasoPorPersona", mergeOption, personaParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_listaCasos(Nullable<int> idTipo)
+        {
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_listaCasos", idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Caso> sp_listaCasos(Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Caso>("sp_listaCasos", mergeOption, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Persona> sp_listaPersonas(Nullable<int> idTipo)
+        {
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_listaPersonas", idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Persona> sp_listaPersonas(Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_listaPersonas", mergeOption, idTipoParameter);
         }
     }
 }

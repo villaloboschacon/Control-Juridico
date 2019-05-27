@@ -120,50 +120,9 @@ namespace BackEnd.BLL
                         case "Número de proceso":
                             return buscaPorNumeroDeProceso(sFiltro, iTipo).ToList();
                         default:
-                            Expression<Func<Caso, bool>> consultaDefault = (oCaso => oCaso.idTipo.Equals(iTipo) && oCaso.idEstado != (iEstado) && oCaso.numeroCaso.Contains(sFiltro));
-                            return unidad.genericDAL.Find(consultaDefault).ToList();
+                            return getCasos(iTipo);
                     }
 
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        public List<Caso> getCasosJudiciales()
-        {
-            try
-            {
-                using (context = new SCJ_BDEntities())
-                {
-                    var result = this.context.sp_listaCasosJudiciales().ToList();
-                    if (result != null)
-                    {
-                        return result;
-                    }
-                    return null;
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        public List<Caso> getCasosAdministrativos()
-        {
-            try
-            {
-                using (context = new SCJ_BDEntities())
-                {
-                    var result = this.context.sp_listaCasosAdministrativos().ToList();
-                    if (result != null)
-                    {
-                        return result;
-                    }
-                    return null;
                 }
             }
             catch (Exception)
@@ -178,7 +137,7 @@ namespace BackEnd.BLL
             {
                 using (context = new SCJ_BDEntities())
                 {
-                    var result = this.context.sp_buscaPorPersona(nombrePersona, iTipo).ToList();
+                    var result = this.context.sp_buscaCasoPorPersona(nombrePersona, iTipo).ToList();
                     if (result != null)
                     {
                         return result;
@@ -198,7 +157,7 @@ namespace BackEnd.BLL
             {
                 using (context = new SCJ_BDEntities())
                 {
-                    var result = this.context.sp_buscaPorAbogado(nombreAbogado, iTipo).ToList();
+                    var result = this.context.sp_buscaCasoPorAbogado(nombreAbogado, iTipo).ToList();
                     if (result != null)
                     {
                         return result;
@@ -218,7 +177,7 @@ namespace BackEnd.BLL
             {
                 using (context = new SCJ_BDEntities())
                 {
-                    var result = this.context.sp_buscaPorEstado(estado, iTipo).ToList();
+                    var result = this.context.sp_buscaCasoPorEstado(estado, iTipo).ToList();
                     if (result != null)
                     {
                         return result;
@@ -253,7 +212,27 @@ namespace BackEnd.BLL
             {
                 using (context = new SCJ_BDEntities())
                 {
-                    var result = this.context.sp_buscaPorNumeroDeProceso(numeroDeProceso, iTipo).ToList();
+                    var result = this.context.sp_buscaCasoPorNumeroDeProceso(numeroDeProceso, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Caso> getCasos(int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_listaCasos(iTipo).ToList();
                     if (result != null)
                     {
                         return result;

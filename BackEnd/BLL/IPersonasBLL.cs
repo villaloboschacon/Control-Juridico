@@ -43,11 +43,6 @@ namespace BackEnd.BLL
         List<Persona> Consulta(int iTipo, string sFiltro, string sCampo);
 
         ///<summary>
-        ///Recupera la lista de todas las personas.  
-        ///</summary>
-        List<Persona> GetPersonas();
-
-        ///<summary>
         ///Recupera una persona desde el id.  
         ///</summary>
         Persona GetPersona(int iId);
@@ -78,13 +73,8 @@ namespace BackEnd.BLL
         List<Persona> buscaPorCorreo(string correo, int iTipo);
 
         ///<summary>
-        ///Lista todas las personas administrativas
+        ///Recupera la lista de personas fisicas o juridicas dependiendo del tipo. 
         ///</summary>
-        List<Persona> listarPersonasAdministrativas();
-
-        ///<summary>
-        ///Lista todas las personas judiciales
-        ///</summary>
-        List<Persona> listarPersonasJudiciales();
+        List<Persona> getPersonas(int iTipo);
     }
 }

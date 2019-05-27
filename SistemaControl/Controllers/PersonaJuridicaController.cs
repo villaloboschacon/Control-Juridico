@@ -15,7 +15,7 @@ namespace SistemaControl.Controllers
         private ITablaGeneralBLL TablaGeneralBll;
         List<Persona> aPersonas = new List<Persona>();
 
-        public ActionResult Index(string sOption, string sSearch, int page = 1, int pageSize = 4, string message = "")
+        public ActionResult Index(string sOption, string sSearch, int page = 1, int pageSize = 9, string message = "")
         {
             try
             {
@@ -63,8 +63,8 @@ namespace SistemaControl.Controllers
             }
             else
             {
-                ViewBag.idPersona = new SelectList(TablaGeneralBll.Consulta("Persona", "Tipo"), "idTablaGeneral", "descripcion");
-                var aPersonas = PersonasBll.listarPersonasJudiciales();
+                //ViewBag.idPersona = new SelectList(TablaGeneralBll.Consulta("Persona", "Tipo"), "idTablaGeneral", "descripcion");
+                aPersonas = PersonasBll.getPersonas(iTipo);
                 foreach (Persona oPersona in aPersonas)
                 {
                     oPersona.TablaGeneral = TablaGeneralBll.GetTablaGeneral(oPersona.idTipo);

@@ -128,46 +128,6 @@ namespace BackEnd.BLL
             }
         }
 
-        public List<Persona> listarPersonasAdministrativas()
-        {
-            try
-            {
-                using (context = new SCJ_BDEntities())
-                {
-                    var result = this.context.sp_listaPersonasAdministrativas().ToList();
-                    if (result != null)
-                    {
-                        return result;
-                    }
-                    return null;
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        public List<Persona> listarPersonasJudiciales()
-        {
-            try
-            {
-                using (context = new SCJ_BDEntities())
-                {
-                    var result = this.context.sp_listaPersonasJuridicas().ToList();
-                    if (result != null)
-                    {
-                        return result;
-                    }
-                    return null;
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
         public List<Persona> Consulta(int iTipo, string sFiltro, string sCampo)
         {
             try
@@ -189,24 +149,8 @@ namespace BackEnd.BLL
                         case "Representante Social":
                             return buscaPorRepresentanteSocial(sFiltro).ToList();
                         default:
-                            Expression<Func<Persona, bool>> consultaDefault = (oPersona => oPersona.idTipo.Equals(iTipo));
-                            return unidad.genericDAL.Find(consultaDefault).ToList();
+                            return getPersonas(iTipo);
                     }
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        public List<Persona> GetPersonas()
-        {
-            try
-            {
-                using (unidad = new UnidadDeTrabajo<Persona>(new SCJ_BDEntities()))
-                {
-                    return unidad.genericDAL.GetAll().ToList();
                 }
             }
             catch (Exception)
@@ -294,6 +238,26 @@ namespace BackEnd.BLL
         public bool Eliminar(Persona persona)
         {
             return Remove(persona);
+        }
+
+        public List<Persona> getPersonas(int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_listaPersonas(iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

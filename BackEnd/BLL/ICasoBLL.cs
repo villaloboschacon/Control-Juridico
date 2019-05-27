@@ -48,14 +48,9 @@ namespace BackEnd.BLL
         List<Caso> buscaPorNumeroDeProceso(string numeroDeProceso, int iTipo);
 
         ///<summary>
-        ///Recupera la lista de casos administrativos. 
+        ///Recupera la lista de casos administrativo o judicial dependiendo del tipo. 
         ///</summary>
-        List<Caso> getCasosAdministrativos();
-
-        ///<summary>
-        ///Recupera la lista de casos juduciales. 
-        ///</summary>
-        List<Caso> getCasosJudiciales();
+        List<Caso> getCasos(int iTipo);
 
         ///<summary>
         ///Recupera el tipo caso

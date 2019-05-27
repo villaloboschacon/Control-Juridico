@@ -19,7 +19,7 @@ namespace SistemaControl.Controllers
         private IUsuarioBLL usuarioBLL;
         private IPersonasBLL personaBLL;
 
-        public ActionResult Index(string sOption, string sSearch, int page = 1, int pageSize = 7, string message = "")
+        public ActionResult Index(string sOption, string sSearch, int page = 1, int pageSize = 9, string message = "")
         {
             try
             {
@@ -78,7 +78,7 @@ namespace SistemaControl.Controllers
             }
             else
             {
-                aCasos = casoBLL.getCasosJudiciales();
+                aCasos = casoBLL.getCasos(iTipo);
                 foreach (Caso caso in aCasos)
                 {
                     caso.Persona = personaBLL.Get(caso.idPersona);
@@ -333,7 +333,7 @@ namespace SistemaControl.Controllers
             {
                 ex = new Exception();
             }
-            return this.Json(new { Id = "idPersona", Reg = "Supermercado", Data = ViewBag.idPersona }, JsonRequestBehavior.AllowGet);
+            return this.Json(new { Id = "", Reg = "", Data = ViewBag.idPersona }, JsonRequestBehavior.AllowGet);
 
         }
 

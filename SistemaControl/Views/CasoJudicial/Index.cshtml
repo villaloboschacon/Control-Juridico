@@ -45,13 +45,10 @@
 
         <table class="table table-bordered" id="table_casos">
             <tr>
-                <th>
-                    Número de Proceso
-                </th>
+                <th>Número de Proceso</th>
                 <th>Abogado</th>
                 <th>Materia</th>
                 <th>Persona</th>
-                <th>Tipo de Proceso</th>
                 <th>Tipo de Litigio</th>
                 <th>Estado</th>
             </tr>
@@ -80,9 +77,6 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Persona.nombreCompleto)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TablaGeneral1.descripcion)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.TablaGeneral2.descripcion)

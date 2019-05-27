@@ -17,7 +17,7 @@ namespace SistemaControl.Controllers
         private IPersonasBLL personaBLL;
         List<Caso> aCasos = new List<Caso>();
 
-        public ActionResult Index(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 7, string message = "")
+        public ActionResult Index(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 9, string message = "")
         {
             try
             {
@@ -52,8 +52,7 @@ namespace SistemaControl.Controllers
                     ViewBag.option = sOption;
                     if (casoBLL.Consulta(iTipo, sSearch, sOption) != null)
                     {
-
-                        aCasos = casoBLL.Consulta(iTipo, sSearch, sOption);
+                        aCasos = casoBLL.getCasos(iTipo);
 
                         foreach (Caso caso in aCasos)
                         {
@@ -76,14 +75,19 @@ namespace SistemaControl.Controllers
             }
             else
             {
-                aCasos = casoBLL.getCasosAdministrativos();
+                aCasos = casoBLL.getCasos(iTipo);
                 foreach (Caso caso in aCasos)
                 {
-                    caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idUsuario);
-                    caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.idTipo);
-                    caso.TablaGeneral = tablaGeneralBLL.Get(caso.tipoLitigante);
-                    caso.Persona = personaBLL.GetPersona(caso.idPersona);
+                    caso.Persona = personaBLL.Get(caso.idPersona);
                     caso.Usuario = usuarioBLL.Get(caso.idUsuario);
+                    caso.TablaGeneral = tablaGeneralBLL.Get(caso.idEstado);
+                    caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idTipo);
+                    caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.tipoLitigante);
+                    //caso.TablaGeneral1 = tablaGeneralBLL.Get(caso.idUsuario);
+                    //caso.TablaGeneral2 = tablaGeneralBLL.Get(caso.idTipo);
+                    //caso.TablaGeneral = tablaGeneralBLL.Get(caso.tipoLitigante);
+                    //caso.Persona = personaBLL.GetPersona(caso.idPersona);
+                    //caso.Usuario = usuarioBLL.Get(caso.idUsuario);
                 }
                 PagedList<Caso> model = new PagedList<Caso>(aCasos, page, pageSize);
                 return View(model);

@@ -16,38 +16,8 @@ namespace SistemaControl.Controllers
         private ITablaGeneralBLL TablaGeneralBLL;
         List<Persona> aPersonas = new List<Persona>();
 
-        public ActionResult Search(string sSearch, int? iPage)
-        {
-            try
-            {
-                TablaGeneralBLL = new TablaGeneralBLLImpl();
-                PersonasBLL = new PersonasBLLImpl();
-            }
-            catch (Exception)
-            {
-                return RedirectToAction("Index", new { message = "error" });
-            }
 
-            ViewBag.idPersona = new SelectList(TablaGeneralBLL.Consulta("Persona", "tipo"), "idTablaGeneral", "descripcion");
-            var aPersonas = PersonasBLL.GetPersonas().AsQueryable();
-
-            if (!String.IsNullOrEmpty(sSearch))
-            {
-                aPersonas = aPersonas.Where(oPersona => oPersona.cedula.ToLower().Contains(sSearch.ToLower()));
-            }
-
-            int iPageSize = 4;
-            int iPageNumber = (iPage ?? 1);
-
-            foreach (Persona oPersona in aPersonas)
-            {
-                oPersona.TablaGeneral = TablaGeneralBLL.GetTablaGeneral(oPersona.idTipo);
-            }
-            PagedList<Persona> model = new PagedList<Persona>(aPersonas, iPageNumber, iPageSize);
-            return View(model);
-        }
-
-        public ActionResult Index(string sOption, string sSearch, int page = 1, int pageSize = 4, string message = "")
+        public ActionResult Index(string sOption, string sSearch, int page = 1, int pageSize = 9, string message = "")
         {
             try
             {
@@ -96,8 +66,8 @@ namespace SistemaControl.Controllers
             }
             else
             {
-                ViewBag.idPersona = new SelectList(TablaGeneralBLL.Consulta("Persona", "Tipo"), "idTablaGeneral", "descripcion");
-                var aPersonas = PersonasBLL.listarPersonasAdministrativas();
+                //ViewBag.idPersona = new SelectList(TablaGeneralBLL.Consulta("Persona", "Tipo"), "idTablaGeneral", "descripcion");
+                aPersonas = PersonasBLL.getPersonas(iTipo);
                 foreach (Persona oPersona in aPersonas)
                 {
                     oPersona.TablaGeneral = TablaGeneralBLL.GetTablaGeneral(oPersona.idTipo);

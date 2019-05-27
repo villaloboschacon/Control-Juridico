@@ -142,6 +142,18 @@
     <Compile Include="Model\Role.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\sp_buscaCasoPorAbogado_Result.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sp_buscaCasoPorEstado_Result.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sp_buscaCasoPorNumeroDeProceso_Result.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sp_buscaCasoPorPersona_Result.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\SP_BuscaPersonaNombre_Result.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -193,6 +205,9 @@
     <Compile Include="Model\sp_listaCasosJudiciales_Result.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\sp_listaCasos_Result.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\sp_listaEntradas_Result.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -200,6 +215,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\sp_listaPersonasJuridicas_Result.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sp_listaPersonas_Result.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\sp_ListaReferencias_Result.cs">
