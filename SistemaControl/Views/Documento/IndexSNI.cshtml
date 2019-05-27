@@ -1,7 +1,7 @@
 ﻿@model PagedList.IPagedList<BackEnd.Model.Documento>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "IndexSNI";
 }
 <!doctype html>
 <html lang="es">
@@ -20,10 +20,9 @@
 
 </head>
 <body>
-    <div class="title">Expedientes</div>
+    <div class="title">SNI</div>
     <div class="container" style="margin-top:20px">
-
-        @using (Html.BeginForm("Index", "DocumentoExpediente", FormMethod.Get))
+        @using (Html.BeginForm("IndexSNI", "Documento", FormMethod.Get))
         {
             <div class="widget" style="height:100px;">
                 <div class="title">
@@ -31,13 +30,6 @@
                         @{ List<SelectListItem> searchListItem = new List<SelectListItem>();
                             searchListItem.Add(new SelectListItem { Text = "Número de Oficio", Value = "Número de Oficio" });
                             searchListItem.Add(new SelectListItem { Text = "Número de Ingreso", Value = "Número de Ingreso" });
-                            if (Model.Count != 0)
-                            {
-                                if (Model.First().parte != null)
-                                {
-                                    searchListItem.Add(new SelectListItem { Text = "Parte", Value = "Parte" });
-                                }
-                            }
                             searchListItem.Add(new SelectListItem { Text = "Fecha", Value = "Fecha" });
                         }
                         @Html.DropDownList("sOption", new SelectList(searchListItem, "Value", "Text"), "Opciones de Búsqueda", htmlAttributes: new { @class = "form-control", @style = "width:205px;", @onchange = "Limpiar()", @id = "dropList" })
@@ -54,26 +46,15 @@
                     Número de oficio
                 </th>
                 <th>
-                    Número de Ingreso
-                </th>
-                <th>
                     Fecha
                 </th>
                 <th>
-                    Asunto
+                    Tipo de origen
                 </th>
-                @if (Model.Count != 0)
-                {
-                    if (Model.First().parte != null)
-                    {
-                        <th>
-                            Ubicación
-                        </th>
-                        <th>
-                            Parte
-                        </th>
-                    }
-                }
+                <th>
+                    Origen
+                </th>
+
                 <th>
                     Estado
                 </th>
@@ -86,38 +67,26 @@
             {
                 foreach (var item in Model)
                 {
-                <tr>
-                    <td style="display:none;">
-                        @Html.DisplayFor(modelItem => item.idDocumento)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.numeroDocumento)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.numeroIngreso)
-                    </td>
-                    <td>
-                        @Html.ValueFor(modelItem => item.fecha, "{0:dd/MM/yyyy}")
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TablaGeneral3.descripcion)
-                    </td>
-                    @if (Model.Count != 0)
-                    {
-                        if (Model.First().parte != null)
-                        {
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ubicacion)
+                    <tr>
+                            <td style="display:none;">
+                                @Html.DisplayFor(modelItem => item.idDocumento)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.parte)
+                                @Html.DisplayFor(modelItem => item.numeroDocumento)
                             </td>
-                        }
-                    }
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TablaGeneral.descripcion)
-                    </td>
-                </tr>
+                            <td>
+                                @Html.ValueFor(modelItem => item.fecha, "{0:dd/MM/yyyy}")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TablaGeneral3.descripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TablaGeneral1.descripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TablaGeneral.descripcion)
+                            </td>
+                        </tr>
                 }
             }
         </table>
@@ -125,10 +94,11 @@
             <a href="#" onclick="Crear()" data-toggle="modal" data-target="#crearModal" id="bCrear">Crear documento</a>
         </div>
         <br />
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, sSearch = ViewBag.search, sOption = ViewBag.option, sSearchFecha = ViewBag.finalDate }))
+        @Html.PagedListPager(Model, page => Url.Action("IndexSNI", new { page, pageSize = Model.PageSize, sSearch = ViewBag.search, sOption = ViewBag.option, sSearchFecha = ViewBag.finalDate, pageReferencias = ViewBag.pageReferencias }))
         <input type="hidden" id="idDocumento" />
         <br />
     </div>
+
 
     <div class="modal fade" id="modalArchivar">
         <div class="modal-dialog">
@@ -166,21 +136,25 @@
                 <a tabindex="-1" href="#" onclick="Details(getInd())" data-value="getInd()" data-toggle="modal" data-target="#detalleModal">Ver detalles</a>
             </li>
             <li class="divider"></li>
-            @*<li>
+            <li>
                 <a tabindex="-1" href="#" onclick="Reply(getInd())" data-value="getInd()" data-toggle="modal" data-target="#responderModal">Responder</a>
-            </li>*@
+            </li>
             <li>
                 <a tabindex="-1" href="#" onclick="Edit(getInd())" data-value="getInd()" data-toggle="modal" data-target="#editarModal">Editar</a>
             </li>
             <li>
                 <a href="#" onclick="Confirmar(getInd())">Archivar</a>
             </li>
-            @*<li>
+            <li>
                 <a href="#" onclick="Refe(getInd())">Referencias</a>
-            </li>*@
+            </li>
         </ul>
     </div>
     <style>
+        .modal-backdrop {
+            opacity: 0.2 !important;
+        }
+
         #contextMenu {
             position: absolute;
             display: none;
@@ -225,8 +199,8 @@
                 "extendedTimeOut": 1000
             }
 
-            var d = '@TempData["cedula"]';
-            toastr["success"](d, "Expediente agregado exitosamente");
+            var d = '@TempData["action"]';
+            toastr["success"](d, "Oficio agregado exitosamente","exitosamente");
         }
         else if ('@TempData["message"]' == "error") {
             toastr.options = {
@@ -271,12 +245,6 @@
         ind = rows.eq($(this).index()).find("td:first").text();
         return rows.eq($(this).index()).find("td:first").text();
     });
-        function isNullOrEmpty(data) {
-            if (data !== null && data !== '') {
-                return true;
-            }
-            return false;
-        }
     $vars = 0;
     $(function () {
         var $contextMenu = $("#contextMenu");
@@ -329,7 +297,6 @@
         }
     $('#table_documentos').click(function () {
             alert(this);
-
     });
 
     $('#sSearch').change(function () {
@@ -363,7 +330,14 @@
                 $('#buscarButton').prop('disabled', false);
             }
         }
-    });
+        });
+
+    function isNullOrEmpty(data) {
+        if (data !== null && data !== '') {
+            return true;
+        }
+        return false;
+    }
     function checkDates(searchFecha,search) {
         $('#buscarButton').prop('disabled', false);
 
@@ -416,83 +390,99 @@
     }
     function Edit(iddocumento) {
         var url = '@Url.Action("Editar")';
-        var myId = iddocumento;
-        $.ajax({
-            url: url,
-            datatype: "json",
-            type: "post",
-            data: {
-                'id': iddocumento
-            },
-            contenttype: 'application/json; charset=utf-8',
-            async: true,
-            success: function (data) {
-                $("#editarModal").html(data);
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
+        if (isNullOrEmpty(iddocumento)) {
+            $.ajax({
+                url: url,
+                datatype: "json",
+                type: "post",
+                data: {
+                    'id': iddocumento
+                },
+                contenttype: 'application/json; charset=utf-8',
+                async: true,
+                success: function (data) {
+                    $("#editarModal").html(data);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+        }
+        else {
+            $('#editarModal').modal('toggle');
+        }
     }
-        function Details(iddocumento) {
+    function Details(iddocumento) {
         var url = '@Url.Action("Detalles")';
-        var myId = iddocumento;
-        $.ajax({
-            url: url,
-            datatype: "json",
-            type: "post",
-            data: {
-                'id': iddocumento
-            },
-            contenttype: 'application/json; charset=utf-8',
-            async: true,
-            success: function (data) {
-                $("#detalleModal").html(data);
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
+        if (isNullOrEmpty(iddocumento)) {
+            var myId = iddocumento;
+            $.ajax({
+                url: url,
+                datatype: "json",
+                type: "post",
+                data: {
+                    'id': iddocumento
+                },
+                contenttype: 'application/json; charset=utf-8',
+                async: true,
+                success: function (data) {
+                    $("#detalleModal").html(data);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+        }
+        else {
+            $('#detalleModal').modal('toggle');
+        }
     }
     function Reply(iddocumento) {
         var url = '@Url.Action("Responder")';
-        var myId = iddocumento;
-        $.ajax({
-            url: url,
-            datatype: "json",
-            type: "post",
-            data: {
-                'id': iddocumento
-            },
-            contenttype: 'application/json; charset=utf-8',
-            async: true,
-            success: function (data) {
-                $("#responderModal").html(data);
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
+        if (isNullOrEmpty(iddocumento)) {
+            var myId = iddocumento;
+            $.ajax({
+                url: url,
+                datatype: "json",
+                type: "post",
+                data: {
+                    'id': iddocumento
+                },
+                contenttype: 'application/json; charset=utf-8',
+                async: true,
+                success: function (data) {
+                    $("#responderModal").html(data);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+
+        }
+        else {
+            $('#responderModal').modal('toggle');
+        }
     }
     function Reference(iddocumento) {
-        var url = '@Url.Action("IndexReferencias")';
-        var myId = iddocumento;
-        $.ajax({
-            url: url,
-            datatype: "json",
-            type: "post",
-            data: {
-                'id': iddocumento
-            },
-            contenttype: 'application/json; charset=utf-8',
-            async: true,
-            success: function (data) {
-                $("#referencia").html(data);
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
+        if (isNullOrEmpty(iddocumento)) {
+            var url = '@Url.Action("IndexReferencias")';
+            $.ajax({
+                url: url,
+                datatype: "json",
+                type: "post",
+                data: {
+                    'id': iddocumento
+                },
+                contenttype: 'application/json; charset=utf-8',
+                async: true,
+                success: function (data) {
+                    $("#referencia").html(data);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+        }
     }
     $(function () {
         $('body').on('click', '.modal-link', function (e) {
@@ -572,7 +562,7 @@
         });
     }
     </script>
-    @*<script>
+    <script>
         // Helper function to display messages below CKEditor.
         function ShowMessage(msg) {
             document.getElementById('eMessage').innerHTML = msg;
@@ -659,25 +649,25 @@
             // The editor is ready, so sample buttons can be displayed.
             document.getElementById('eButtons').style.display = 'block';
         });
-                    // Replace the <textarea id="editor1"> with a CKEditor instance.
-                    // A reference to the editor object is returned by CKEDITOR.replace() allowing you to work with editor instances.
-                    //var editor = CKEDITOR.replace('editor1', {
-                    //    height: 150
-                    //});
-                    // Attaching event listeners to CKEditor instances.
-                    // Refer to https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html for a list of all available events.
-                    //editor.on('focus', function (evt) {
-                    //    ShowMessage('Editor instance <em>' + this.name + '</em> <b>is focused</b>.');
-                    //});
-                    //editor.on('blur', function (evt) {
-                    //    ShowMessage('Editor instance <em>' + this.name + '</em> <b>lost focus</b>.');
-                    //});
-                    //// Helper variable to count the number of detected changes in CKEditor.
-                    //var changesNum = 0;
-                    //editor.on('change', function (evt) {
-                    //    ShowMessage('The number of changes in <em>' + this.name + '</em>: <b>' + ++changesNum + '</b>.');
-                    //});
-    </script>*@
-</body>
+                        // Replace the <textarea id="editor1"> with a CKEditor instance.
+                        // A reference to the editor object is returned by CKEDITOR.replace() allowing you to work with editor instances.
+                        //var editor = CKEDITOR.replace('editor1', {
+                        //    height: 150
+                        //});
+                        // Attaching event listeners to CKEditor instances.
+                        // Refer to https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html for a list of all available events.
+                        //editor.on('focus', function (evt) {
+                        //    ShowMessage('Editor instance <em>' + this.name + '</em> <b>is focused</b>.');
+                        //});
+                        //editor.on('blur', function (evt) {
+                        //    ShowMessage('Editor instance <em>' + this.name + '</em> <b>lost focus</b>.');
+                        //});
+                        //// Helper variable to count the number of detected changes in CKEditor.
+                        //var changesNum = 0;
+                        //editor.on('change', function (evt) {
+                        //    ShowMessage('The number of changes in <em>' + this.name + '</em>: <b>' + ++changesNum + '</b>.');
+                        //});
+    </script>
 
+</body>
 </html>

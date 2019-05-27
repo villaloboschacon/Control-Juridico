@@ -49,12 +49,8 @@
                     Fecha
                 </th>
                 <th>
-                    Tipo de origen
+                    Asunto
                 </th>
-                <th>
-                    Origen
-                </th>
-
                 <th>
                     Estado
                 </th>
@@ -78,10 +74,7 @@
                             @Html.ValueFor(modelItem => item.fecha, "{0:dd/MM/yyyy}")
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.TablaGeneral3.descripcion)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TablaGeneral1.descripcion)
+                            @Html.DisplayFor(modelItem => item.asunto)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.TablaGeneral.descripcion)

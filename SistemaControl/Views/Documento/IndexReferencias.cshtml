@@ -55,10 +55,7 @@
     </table>
     <div class="col-md-12">
         <div class="col-md-6" style="text-align:left">
-            <a href="Index" style="text-align:left">Volver</a>
-        </div>
-        <div class="col-md-6" style="text-align:right">
-            <a href="~/Documento/ReportesReferencias" style="text-align:right">Reporte</a>
+            <a href=@Url.Action("IndexSalidas") style="text-align:left">Volver</a>
         </div>
     </div>
     <br />
@@ -85,9 +82,6 @@
         </li>
         <li>
             <a tabindex="-1" href="#" onclick="Edit(getInd())" data-value="getInd()" data-toggle="modal" data-target="#editarModal">Editar</a>
-        </li>
-        <li>
-            <a tabindex="-1" href="#">Eliminar</a>
         </li>
     </ul>
 </div>

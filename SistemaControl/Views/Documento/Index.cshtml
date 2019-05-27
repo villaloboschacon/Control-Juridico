@@ -96,8 +96,13 @@
                 }
             }
         </table>
-        <div>
-            <a href="#" onclick="Crear()" data-toggle="modal" data-target="#crearModal" id="bCrear">Crear documento</a>
+        <div class="col-md-12">
+            <div style="text-align:left" class="col-md-6">
+                <a href="#" onclick="Crear()" data-toggle="modal" data-target="#crearModal" id="bCrear" >Crear documento</a>
+            </div>
+            <div style="text-align:right" class="col-md-6">
+                <a href="#" onclick="Emitir()" data-toggle="modal" data-target="#responderModal" id="bEmitir" >Emitir documento</a>
+            </div>
         </div>
         <br/>
         @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, sSearch = ViewBag.search, sOption = ViewBag.option, sSearchFecha = ViewBag.finalDate, pageReferencias=ViewBag.pageReferencias }))
@@ -156,6 +161,9 @@
         </ul>
     </div>
     <style>
+        .modal-backdrop {
+            opacity: 0.2 !important;
+        }
         #contextMenu {
             position: absolute;
             display: none;
@@ -256,11 +264,16 @@
             ind = ind.replace(/\s+/g, "");
             console.log(ind);
             $vars = ind;
-            $contextMenu.css({
-                display: "block",
-                left: e.pageX,
-                top: e.pageY
-            });
+            if (isNullOrEmpty(ind)) {
+                $contextMenu.css({
+                    display: "block",
+                    left: e.pageX,
+                    top: e.pageY
+                });
+            }
+            else {
+                $contextMenu.hide();
+            }
             return false;
         });
         $('html').click(function () {
@@ -293,7 +306,6 @@
         }
     $('#table_documentos').click(function () {
             alert(this);    
-
     });
 
     $('#sSearch').change(function () {
@@ -327,7 +339,14 @@
                 $('#buscarButton').prop('disabled', false);
             }
         }
-    });
+        });
+
+    function isNullOrEmpty(data) {
+        if (data !== null && data !== '') {
+            return true;
+        }
+        return false;
+    }
     function checkDates(searchFecha,search) {
         $('#buscarButton').prop('disabled', false);
 
@@ -377,86 +396,118 @@
                 alert('Error a la hora de abrir el modal.');
             }
         });
-    }
-    function Edit(iddocumento) {
-        var url = '@Url.Action("Editar")';
-        var myId = iddocumento;
+        }
+    function Emitir() {
+        var url = '@Url.Action("Emitir")';
         $.ajax({
             url: url,
             datatype: "json",
             type: "post",
-            data: {
-                'id': iddocumento
-            },
-            contenttype: 'application/json; charset=utf-8',
-            async: true,
-            success: function (data) {
-                $("#editarModal").html(data);
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
-    }
-    function Details(iddocumento) {
-        var url = '@Url.Action("Detalles")';
-        var myId = iddocumento;
-        $.ajax({
-            url: url,
-            datatype: "json",
-            type: "post",
-            data: {
-                'id': iddocumento
-            },
-            contenttype: 'application/json; charset=utf-8',
-            async: true,
-            success: function (data) {
-                $("#detalleModal").html(data);
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
-    }
-    function Reply(iddocumento) {
-        var url = '@Url.Action("Responder")';
-        var myId = iddocumento;
-        $.ajax({
-            url: url,
-            datatype: "json",
-            type: "post",
-            data: {
-                'id': iddocumento
-            },
             contenttype: 'application/json; charset=utf-8',
             async: true,
             success: function (data) {
                 $("#responderModal").html(data);
             },
             error: function (xhr) {
-                alert('error');
+                alert('Error a la hora de abrir el modal.');
             }
         });
     }
+    function Edit(iddocumento) {
+        var url = '@Url.Action("Editar")';
+        if (isNullOrEmpty(iddocumento)) {
+            $.ajax({
+                url: url,
+                datatype: "json",
+                type: "post",
+                data: {
+                    'id': iddocumento
+                },
+                contenttype: 'application/json; charset=utf-8',
+                async: true,
+                success: function (data) {
+                    $("#editarModal").html(data);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+        }
+        else {
+            $('#editarModal').modal('toggle');
+        }
+    }
+    function Details(iddocumento) {
+        var url = '@Url.Action("Detalles")';
+        if (isNullOrEmpty(iddocumento)) {
+            var myId = iddocumento;
+            $.ajax({
+                url: url,
+                datatype: "json",
+                type: "post",
+                data: {
+                    'id': iddocumento
+                },
+                contenttype: 'application/json; charset=utf-8',
+                async: true,
+                success: function (data) {
+                    $("#detalleModal").html(data);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+        }
+        else {
+            $('#detalleModal').modal('toggle');
+        }
+    }
+    function Reply(iddocumento) {
+        var url = '@Url.Action("Responder")';
+        if (isNullOrEmpty(iddocumento)) {
+            var myId = iddocumento;
+            $.ajax({
+                url: url,
+                datatype: "json",
+                type: "post",
+                data: {
+                    'id': iddocumento
+                },
+                contenttype: 'application/json; charset=utf-8',
+                async: true,
+                success: function (data) {
+                    $("#responderModal").html(data);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+
+        }
+        else {
+            $('#responderModal').modal('toggle');
+        }
+    }
     function Reference(iddocumento) {
-        var url = '@Url.Action("IndexReferencias")';
-        var myId = iddocumento;
-        $.ajax({
-            url: url,
-            datatype: "json",
-            type: "post",
-            data: {
-                'id': iddocumento
-            },
-            contenttype: 'application/json; charset=utf-8',
-            async: true,
-            success: function (data) {
-                $("#referencia").html(data);
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
+        if (isNullOrEmpty(iddocumento)) {
+            var url = '@Url.Action("IndexReferencias")';
+            $.ajax({
+                url: url,
+                datatype: "json",
+                type: "post",
+                data: {
+                    'id': iddocumento
+                },
+                contenttype: 'application/json; charset=utf-8',
+                async: true,
+                success: function (data) {
+                    $("#referencia").html(data);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+        }
     }
     $(function () {
         $('body').on('click', '.modal-link', function (e) {

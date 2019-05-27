@@ -225,7 +225,7 @@
       resize: true,
         colors: ["rgb(26, 179, 148)", "rgb(84, 205, 180)", "rgb(135, 214, 198)"],
       data: [
-        {label: "Procesos Activos", value: @ViewBag.numeroCasos},
+        @*{label: "Procesos Activos", value: @ViewBag.numeroCasos},*@
         {label: "Procesos Administrativos", value: @ViewBag.numeroAdministrativos},
         {label: "Procesos Judiciales", value: @ViewBag.numeroJudiciales}
       ],
@@ -240,7 +240,7 @@
       resize: true,
       colors: ["#1d3752", "#214d72", "#2c7695", "#50bfc3"],
       data: [
-        {label: "Documentos Activos", value: @ViewBag.numeroDocumentos},
+        @*{label: "Documentos Activos", value: @ViewBag.numeroDocumentos},*@
         {label: "Número de Entradas", value: @ViewBag.numEntradas},
         {label: "Número de Salidas", value: @ViewBag.numSalidas},
         {label: "Número de Expedientes", value:@ViewBag.numExpedientes}
@@ -257,7 +257,7 @@
       resize: true,
       colors: ["#2a484e", "#377375", "#a8d8cd"],
       data: [
-        {label: "Personas", value: @ViewBag.numeroPersonas},
+        @*{label: "Personas", value: @ViewBag.numeroPersonas},*@
           { label: "Personas Físicas", value: @ViewBag.numeroFisicas},
           { label: "Personas Jurídicas", value: @ViewBag.numeroJuridicas}
       ],

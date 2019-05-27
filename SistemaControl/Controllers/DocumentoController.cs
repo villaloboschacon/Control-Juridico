@@ -20,8 +20,7 @@ namespace SistemaControl.Controllers
         private ITablaGeneralBLL tablaGeneralBLL;
         List<Documento> aDocumentos = new List<Documento>();
 
-
-        public ActionResult Index(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 7, string message = "")
+        public ActionResult Index(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 9, string message = "")
         {
             try
             {
@@ -82,24 +81,118 @@ namespace SistemaControl.Controllers
             //Cuando se inicia el index
             else
             {
-               // ViewBag.idDocumento = new SelectList(tablaGeneralBLL.Consulta("Documentos", "Tipo"), "idTablaGeneral", "descripcion");
-                var aDocumentos = documentoBll.GetEntradas();
-                foreach (Documento oDocumento in aDocumentos)
+                try
                 {
-                    oDocumento.TablaGeneral1 = tablaGeneralBLL.Get(oDocumento.idOrigen);
-                    oDocumento.TablaGeneral2 = tablaGeneralBLL.Get(oDocumento.idTipo);
-                    oDocumento.TablaGeneral3 = tablaGeneralBLL.Get(oDocumento.tipoOrigen);
-                    if (oDocumento.idEstado.HasValue)
+                    var aDocumentos = documentoBll.GetEntradas();
+                    foreach (Documento oDocumento in aDocumentos)
                     {
-                        int i = (int)(oDocumento.idEstado);
-                        oDocumento.TablaGeneral = tablaGeneralBLL.Get(i);
+                        oDocumento.TablaGeneral1 = tablaGeneralBLL.Get(oDocumento.idOrigen);
+                        oDocumento.TablaGeneral2 = tablaGeneralBLL.Get(oDocumento.idTipo);
+                        oDocumento.TablaGeneral3 = tablaGeneralBLL.Get(oDocumento.tipoOrigen);
+                        if (oDocumento.idEstado.HasValue)
+                        {
+                            int i = (int)(oDocumento.idEstado);
+                            oDocumento.TablaGeneral = tablaGeneralBLL.Get(i);
+                        }
                     }
+                    PagedList<Documento> model = new PagedList<Documento>(aDocumentos, page, pageSize);
+                    return View(model);
                 }
-                PagedList<Documento> model = new PagedList<Documento>(aDocumentos, page, pageSize);
-                return View(model);
+                catch (Exception)
+                {
+                    PagedList<Documento> model = new PagedList<Documento>(new List<Documento>(), page, pageSize);
+                    return View(model);
+                }
             }
         }
+        public ActionResult IndexSNI(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 7, string message = "")
+        {
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                documentoBll = new DocumentoBLLImpl();
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", new { message = "error" });
+            }
 
+            List<Documento> aDocumentos = new List<Documento>();
+            int iTipo = tablaGeneralBLL.GetIdTablaGeneral("Documentos", "tipo", "SNI");
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                TempData["message"] = message;
+            }
+            else
+            {
+                TempData["message"] = "";
+            }
+            //Busqueda cuando se selecciona el tipo de busqueda y personaliza la busqueda
+            if (!String.IsNullOrEmpty(sOption) && !String.IsNullOrEmpty(sSearch))
+            {
+                //El ultimo valor es falso por que no tiene que tener numero de ingreso
+                try
+                {
+                    ViewBag.search = sSearch;
+                    ViewBag.option = sOption;
+                    ViewBag.finalDate = sSearchFecha;
+                    if (documentoBll.Consulta(iTipo, sSearch, sSearchFecha, sOption, "SNI") != null)
+                    {
+
+                        aDocumentos = documentoBll.Consulta(iTipo, sSearch, sSearchFecha, sOption, "SNI");
+
+                        foreach (Documento oDocumento in aDocumentos)
+                        {
+                            oDocumento.TablaGeneral1 = tablaGeneralBLL.Get(oDocumento.idOrigen);
+                            oDocumento.TablaGeneral2 = tablaGeneralBLL.Get(oDocumento.idTipo);
+                            oDocumento.TablaGeneral3 = tablaGeneralBLL.Get(oDocumento.tipoOrigen);
+                            if (oDocumento.idEstado.HasValue)
+                            {
+                                int i = (int)(oDocumento.idEstado);
+                                oDocumento.TablaGeneral = tablaGeneralBLL.Get(i);
+                            }
+                        }
+                    }
+                    PagedList<Documento> model = new PagedList<Documento>(aDocumentos, page, pageSize);
+                    return View(model);
+                }
+                catch (Exception)
+                {
+                    PagedList<Documento> model = new PagedList<Documento>(new List<Documento>(), page, pageSize);
+                    return View(model);
+                }
+
+            }
+            //Busqueda cuando no pone la busqueda ni la opcion de busqueda
+            //Cuando se inicia el index
+            else
+            {
+                try
+                {
+                    //Cambiar
+                    aDocumentos = documentoBll.GetEntradas();
+                    foreach (Documento oDocumento in aDocumentos)
+                    {
+                        oDocumento.TablaGeneral1 = tablaGeneralBLL.Get(oDocumento.idOrigen);
+                        oDocumento.TablaGeneral2 = tablaGeneralBLL.Get(oDocumento.idTipo);
+                        oDocumento.TablaGeneral3 = tablaGeneralBLL.Get(oDocumento.tipoOrigen);
+                        if (oDocumento.idEstado.HasValue)
+                        {
+                            int i = (int)(oDocumento.idEstado);
+                            oDocumento.TablaGeneral = tablaGeneralBLL.Get(i);
+                        }
+                    }
+                    PagedList<Documento> model = new PagedList<Documento>(aDocumentos, page, pageSize);
+                    return View(model);
+                }
+                catch (Exception)
+                {
+                    PagedList<Documento> model = new PagedList<Documento>(new List<Documento>(), page, pageSize);
+                    return View(model);
+                }
+            }
+        }
         public ActionResult IndexSalidas(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 7, string message = "")
         {
             try
@@ -109,7 +202,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return null;
+                return RedirectToAction("Index", new { message = "error" });
             }
 
             List<Documento> aDocumentos = new List<Documento>();
@@ -175,47 +268,6 @@ namespace SistemaControl.Controllers
                 PagedList<Documento> model = new PagedList<Documento>(aDocumentos, page, pageSize);
                 return View(model);
             }
-            //Busqueda cuando no pone la busqueda ni la opcion de busqueda
-            //Cuando se inicia el index
-            //else if (String.IsNullOrEmpty(sOption) && String.IsNullOrEmpty(sSearch))
-            //{
-            //    PagedList<Documento> model = new PagedList<Documento>(aDocumentos, page, pageSize);
-            //    return View(model);
-            //}
-            //else
-            //{
-            //    try
-            //    {
-            //        ViewBag.search = sSearch;
-            //        ViewBag.option = sOption;
-            //        if (String.IsNullOrEmpty(sSearch))
-            //        {
-            //            aDocumentos = documentoBll.Consulta(iTipo, sSearch, sSearchFecha, "", "OficioSalida");
-            //        }
-            //        else
-            //        {
-            //            aDocumentos = documentoBll.Consulta(iTipo, sSearch, sSearchFecha, "Número de Oficio", "OficioSalida");
-            //        }
-            //        foreach (Documento documento in aDocumentos)
-            //        {
-            //            documento.TablaGeneral1 = tablaGeneralBLL.Get(documento.idOrigen);
-            //            documento.TablaGeneral2 = tablaGeneralBLL.Get(documento.idTipo);
-            //            documento.TablaGeneral3 = tablaGeneralBLL.Get(documento.tipoOrigen);
-            //            if (documento.idEstado.HasValue)
-            //            {
-            //                int i = (int)(documento.idEstado);
-            //                documento.TablaGeneral = tablaGeneralBLL.Get(i);
-            //            }
-            //        }
-            //        PagedList<Documento> model = new PagedList<Documento>(aDocumentos, page, pageSize);
-            //        return View(model);
-            //    }
-            //    catch (Exception)
-            //    {
-            //        PagedList<Documento> model = new PagedList<Documento>(new List<Documento>(), page, pageSize);
-            //        return View(model);
-            //    }
-            //}
         }
 
         public ActionResult IndexReferencias(string option,int id, string search, int page = 1, int pageSize = 15,int pageReferencias=0)
@@ -227,7 +279,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return null;
+                return RedirectToAction("Index", new { message = "error" });
             }
 
             try
@@ -236,7 +288,6 @@ namespace SistemaControl.Controllers
                 ViewBag.page = page;
                 ViewBag.id = id;
                 ViewBag.idReferencia = documentoBll.GetDocumento(id).numeroDocumento;
-
 
                 Documento documento = documentoBll.GetDocumento(id);
                 if (documento.idReferencia != null)
@@ -273,7 +324,6 @@ namespace SistemaControl.Controllers
             }
             PagedList<Documento> model = new PagedList<Documento>(aDocumentos, page, pageSize);
             return View(model);
-
         }
 
         [HttpPost]
@@ -292,66 +342,67 @@ namespace SistemaControl.Controllers
             }
             if (ModelState.IsValid)
             {
-                //documento.idReferencia = documento.idDocumento;
                 documento.idReferencia = documentoBll.GeneraNumeroReferencia();
                 documentoBll.Agregar(documento);
                 documentoBll.SaveChanges();
-                //Crea el html del texto recibido en el modal
-                string path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + documento.numeroDocumento+".html";
-                using (FileStream fs = new FileStream(path, FileMode.Create))
+                if (documento.idTipo != tablaGeneralBLL.GetIdTablaGeneral("Documentos", "tipo", "SNI"))
                 {
-                    using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
+
+                    //Crea el html del texto recibido en el modal
+                    string path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + documento.numeroDocumento+".html";
+                    using (FileStream fs = new FileStream(path, FileMode.Create))
                     {
-                        w.WriteLine(documento.texto);
+                        using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
+                        {
+                            w.WriteLine(documento.texto);
+                        }
+                    }
+                    //Carga el html de la direccion de path
+                    Spire.Doc.Document document = new Spire.Doc.Document();
+                    document.LoadFromFile(path, FileFormat.Html, XHTMLValidationType.None);
+
+                    //Lo almacena en la misma ubicacion con formato Docx
+                    string ContentDocx = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + documento.numeroDocumento + "1.docx";
+                    document.SaveToFile(ContentDocx, FileFormat.Docx);
+
+                    //Carga el template
+                    string templateDocument = AppDomain.CurrentDomain.BaseDirectory + "Content\\template.docx";
+                    var templateOficio = DocX.Load(templateDocument);
+
+                    //reemplaza los numeros adentro del documento
+                    templateOficio.ReplaceText("[numeroOficio]", documento.numeroDocumento, false);
+                    templateOficio.ReplaceText("[numeroIngreso]", documento.numeroIngreso, false);
+
+                    //carga e inserta el documento que se convirtio de html to docx y lo guarda
+                    var docxHtml = DocX.Load(ContentDocx);
+                    templateOficio.InsertDocument(docxHtml, true);
+
+                    //lo almacena en el escritorio
+                    path = path.Remove(path.Length - 5);
+                    path += ".docx";
+                    templateOficio.SaveAs(path);
+
+                    //Recupera el docx que genera y crea un PDF
+                    document.LoadFromFile(path, FileFormat.PDF, XHTMLValidationType.None);
+                    path = path.Remove(path.Length - 5);
+                    path += ".pdf";
+                    document.SaveToFile(path, FileFormat.PDF);
+                    //Launch Document  
+                   // System.Diagnostics.Process.Start(path);
+                    try
+                    {
+                        path = path.Remove(path.Length - 4);
+                        path += ".html";
+                        System.IO.File.Delete(path);
+                        path = path.Remove(path.Length - 5);
+                        path += "1.docx";
+                        System.IO.File.Delete(path);
+                    }
+                    catch (Exception)
+                    {
+                        return RedirectToAction("Index", new { message = "error" });
                     }
                 }
-                //Carga el html de la direccion de path
-                Spire.Doc.Document document = new Spire.Doc.Document();
-                document.LoadFromFile(path, FileFormat.Html, XHTMLValidationType.None);
-
-                //Lo almacena en la misma ubicacion con formato Docx
-                string ContentDocx = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + documento.numeroDocumento + "1.docx";
-                document.SaveToFile(ContentDocx, FileFormat.Docx);
-
-                //Carga el template
-                string templateDocument = AppDomain.CurrentDomain.BaseDirectory + "Content\\template.docx";
-                var templateOficio = DocX.Load(templateDocument);
-
-                //reemplaza los numeros adentro del documento
-                templateOficio.ReplaceText("[numeroOficio]", documento.numeroDocumento, false);
-                templateOficio.ReplaceText("[numeroIngreso]", documento.numeroIngreso, false);
-
-                //carga e inserta el documento que se convirtio de html to docx y lo guarda
-                var docxHtml = DocX.Load(ContentDocx);
-                templateOficio.InsertDocument(docxHtml, true);
-
-                //lo almacena en el escritorio
-                path = path.Remove(path.Length - 5);
-                path += ".docx";
-                templateOficio.SaveAs(path);
-
-                //Recupera el docx que genera y crea un PDF
-                document.LoadFromFile(path, FileFormat.PDF, XHTMLValidationType.None);
-                path = path.Remove(path.Length - 5);
-                path += ".pdf";
-                document.SaveToFile(path, FileFormat.PDF);
-                //Launch Document  
-               // System.Diagnostics.Process.Start(path);
-                try
-                {
-                    path = path.Remove(path.Length - 4);
-                    path += ".html";
-                    System.IO.File.Delete(path);
-                    path = path.Remove(path.Length - 5);
-                    path += "1.docx";
-                    System.IO.File.Delete(path);
-                }
-                catch (Exception ex)
-                {
-
-                }
-                documento.texto = " ";
-
                 TempData["DocumentoId"] = documento.numeroDocumento;
                 return RedirectToAction("Index",new { message = "success" });
             }
@@ -367,7 +418,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
             DocumentoViewModel documento = new DocumentoViewModel();
             documento.texto = "";
@@ -375,7 +426,7 @@ namespace SistemaControl.Controllers
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion", 0);
             ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion", 0);
             ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion", 0);
-            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion", null);
+            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion", 0);
             return PartialView("Crear",documento);
         }
 
@@ -390,7 +441,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
             if (ModelState.IsValid)
             {
@@ -418,8 +469,8 @@ namespace SistemaControl.Controllers
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion", 0);
             ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion", 0);
             ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion", 0);
-            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion", null);
-            return PartialView("Crear", documento);
+            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion", 0);
+            return PartialView("Responder", documento);
         }
 
         [HttpPost]
@@ -442,7 +493,6 @@ namespace SistemaControl.Controllers
                 return RedirectToAction("Index", new { message = "success" });
             }
             return RedirectToAction("Index", new { message = "error" });
-
         }
 
         public ActionResult Detalles(int id)
@@ -454,7 +504,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
             Documento documento = documentoBll.GetDocumento(id);
             DocumentoViewModel documentoVista = (DocumentoViewModel)documento;
@@ -463,7 +513,6 @@ namespace SistemaControl.Controllers
             ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion", documentoVista.idOrigen);
             ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion", documentoVista.idEstado);
             return PartialView("Detalle", documentoVista);
-
         }
 
         [HttpPost]
@@ -477,11 +526,16 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
             if (ModelState.IsValid)
             {
                 documento.idReferencia = documentoBll.GetNumeroReferencia(documento.idDocumento);
+                documento.idTipo = documentoBll.Get(documento.idDocumento).idTipo;
+                documento.tipoOrigen = documentoBll.Get(documento.idDocumento).tipoOrigen;
+                documento.idOrigen = documentoBll.Get(documento.idDocumento).idOrigen;
+                documento.numeroDocumento = documentoBll.Get(documento.idDocumento).numeroDocumento;
+                documento.numeroIngreso = documentoBll.Get(documento.idDocumento).numeroIngreso;
                 documentoBll.Actualizar(documento);
                 documentoBll.SaveChanges();
                 if(documento.numeroIngreso == null)
@@ -493,29 +547,7 @@ namespace SistemaControl.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion", documento.idTipo);
-            ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion", documento.tipoOrigen);
-            ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion", documento.idOrigen);
-            ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion", documento.idEstado);
-            return PartialView("Editar", documento);
-            //try
-            //{
-            //    tablaGeneralBLL = new TablaGeneralBLLImpl();
-            //    documentoBll = new DocumentoBLLImpl();
-            //}
-            //catch (Exception)
-            //{
-            //    return View();
-            //}
-            //if (ModelState.IsValid)
-            //{
-            //    documentoBll.Actualizar(documento);
-            //    documentoBll.SaveChanges();
-            //    TempData["DocumentoId"] = documento.numeroDocumento;
-            //    TempData["action"] = "editado";
-            //    return RedirectToAction("Index", new { message = "success" });
-            //}
-            //return RedirectToAction("Index", new { message = "error" });
+            return RedirectToAction("Index", new { message = "error" });
         }
 
         public ActionResult Editar(int id)
@@ -527,19 +559,17 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
 
             Documento documento = documentoBll.Get(id);
-            DocumentoViewModel documentoVista = new DocumentoViewModel();
-            documentoVista = (DocumentoViewModel)documento;
+            DocumentoViewModel documentoVista = (DocumentoViewModel)documento;
             documentoVista.fecha = documento.fecha;
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion", documentoVista.idTipo);
             ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion", documentoVista.tipoOrigen);
             ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion", documentoVista.idOrigen);
             ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion", documentoVista.idEstado);
             return PartialView("Editar", documentoVista);
-
         }
 
         [HttpPost]
@@ -553,7 +583,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
             if (ModelState.IsValid)
             {
@@ -574,7 +604,7 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
             DocumentoViewModel documentoVista = new DocumentoViewModel();
 
@@ -592,13 +622,13 @@ namespace SistemaControl.Controllers
             {
                 documentoVista.idReferencia = documentoBll.GetDocumento(id).idReferencia;
             }
-            documentoVista.numeroVinculado = documentoBll.GetDocumento(id).numeroDocumento;
+
+            documentoVista.numeroVinculado = documentoBll.GetReferencias((int)documentoVista.idReferencia).Where(oDcumento => oDcumento.numeroIngreso != null).First().numeroDocumento; 
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion", documentoVista.idTipo);
             ViewBag.tipoOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipoOrigen"), "idTablaGeneral", "descripcion", documentoVista.tipoOrigen);
             ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion", documentoVista.idOrigen);
             ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Documentos", "estado"), "idTablaGeneral", "descripcion", documentoVista.idEstado);
             return PartialView("Responder", documentoVista);
-
         }
 
         [HttpPost, ValidateInput(false)]
@@ -617,113 +647,47 @@ namespace SistemaControl.Controllers
             }
         }
 
-        public ActionResult TablaDocumentos(string option, string search, string currentFilter, string sortOrder,int salent, int? page)
+        public ActionResult Referencias(string option, string search, string currentFilter, string sortOrder, int? page)
         {
             try
             {
-                tablaGeneralBLL = new TablaGeneralBLLImpl();
-                documentoBll = new DocumentoBLLImpl();
+                if (page == null)
+                {
+                    page = 1;
+                }
+                List<Documento> listaDocumentos = new List<Documento>();
+                PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, page.Value, 4);
+                return PartialView("Referencias", model);
             }
             catch (Exception)
             {
-                return View();
+                return RedirectToAction("Index", new { message = "error" });
             }
-            List<Documento> listaDocumentos;
-            if (salent == 1)
-            {
-                listaDocumentos = documentoBll.GetEntradas();
-            }
-            else
-            {
-                listaDocumentos = documentoBll.GetSalidas();
-            }
-            foreach (Documento documento in listaDocumentos)
-            {
-                tablaGeneralBLL = new TablaGeneralBLLImpl();
-                documento.TablaGeneral = tablaGeneralBLL.Get(documento.idOrigen);
-                documento.TablaGeneral3 = tablaGeneralBLL.Get(documento.tipoOrigen);
-                documento.TablaGeneral2 = tablaGeneralBLL.Get(documento.idOrigen);
-                if (documento.idEstado.HasValue)
-                {
-                    int i = (int)(documento.idEstado);
-                    documento.TablaGeneral1 = tablaGeneralBLL.Get(i);
-                }
-            }
-            ViewBag.CurrentSort = sortOrder;
-
-            if (search != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                search = currentFilter;
-            }
-
-            ViewBag.CurrentFilter = search;
-
-            int pageSize = 4;
-            int pageNumber = (page ?? 1);
-            ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Documentos", "tipo"), "idTablaGeneral", "descripcion");
-            ViewBag.NumeroOficio = String.IsNullOrEmpty(sortOrder) ? "numerodocdes" : "";
-            ViewBag.Ingreso = sortOrder == "Ingreso" ? "IngresoDes" : "Ingreso";
-            ViewBag.FechaDeIngreso = sortOrder == "Fecha" ? "FechaDes" : "Fecha";
-            var documentos = from s in documentoBll.Find(x => search == null && x.idTipo == 3 || x.idTipo == 23) select s;
-
-            switch (sortOrder)
-            {
-                case "numerodocdes":
-                    documentos = documentos.OrderByDescending(s => s.numeroDocumento);
-                    break;
-                case "Fecha":
-                    documentos = documentos.OrderBy(s => s.fecha);
-                    break;
-                case "FechaDes":
-                    documentos = documentos.OrderByDescending(s => s.fecha);
-                    break;
-                case "Ingreso":
-                    documentos = documentos.OrderBy(s => s.numeroIngreso);
-                    break;
-                case "IngresoDes":
-                    documentos = documentos.OrderByDescending(s => s.numeroIngreso);
-                    break;
-                default:
-                    documentos = documentos.OrderBy(s => s.numeroDocumento);
-                    break;
-            }
-
-            PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, pageNumber, pageSize);
-            return View(model);
-        }
-
-        public ActionResult Referencias(string option, string search, string currentFilter, string sortOrder, int? page)
-        {
-            if (page == null)
-            {
-                page = 1;
-            }
-            List<Documento> listaDocumentos = new List<Documento>();
-            PagedList<Documento> model = new PagedList<Documento>(listaDocumentos, page.Value, 4);
-            return PartialView("Referencias", model);
-            //return PartialView("Referencias",);
         }
 
         public string getNumeroDocumento()
         {
-            string numeroDocumento = (documentoBll.GetNumeroIngreso() + 1).ToString();
-            if (numeroDocumento.Length == 1)
+            try
             {
-                numeroDocumento = "000" + numeroDocumento;
+                string numeroDocumento = (documentoBll.GetNumeroIngreso() + 1).ToString();
+                if (numeroDocumento.Length == 1)
+                {
+                    numeroDocumento = "000" + numeroDocumento;
+                }
+                else if (numeroDocumento.Length == 2)
+                {
+                    numeroDocumento = "00" + numeroDocumento;
+                }
+                else
+                {
+                    numeroDocumento = "0" + numeroDocumento;
+                }
+                return "MA-" + "PSJ-" + numeroDocumento + "-" + DateTime.Now.Year.ToString();
             }
-            else if (numeroDocumento.Length == 2)
+            catch (Exception)
             {
-                numeroDocumento = "00" + numeroDocumento;
+                return null;
             }
-            else
-            {
-                numeroDocumento = "0" + numeroDocumento;
-            }
-            return "MA-" + "PSJ-" + numeroDocumento + "-" + DateTime.Now.Year.ToString();
         }
 
         public JsonResult ComprobarDocumento(string numeroDocumento, string idDocumento)
@@ -731,33 +695,32 @@ namespace SistemaControl.Controllers
             try
             {
                 documentoBll = new DocumentoBLLImpl();
+                if (idDocumento == "0")
+                {
+                    if (documentoBll.Comprobar(numeroDocumento, idDocumento, true, true))
+                    {
+                        return Json(true, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    if (documentoBll.Comprobar(numeroDocumento, idDocumento, true, false))
+                    {
+                        return Json(true, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                    }
+                }
             }
             catch (Exception)
             {
                 return null;
-            }
-            //Editar documento-numero documento
-            if (idDocumento == "0")
-            {
-                if (documentoBll.Comprobar(numeroDocumento, idDocumento, true, true))
-                {
-                    return Json(true, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
-                }
-            }
-            else
-            {
-                if (documentoBll.Comprobar(numeroDocumento, idDocumento, true, false))
-                {
-                    return Json(true, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
-                }
             }
         }
 
@@ -766,47 +729,51 @@ namespace SistemaControl.Controllers
             try
             {
                 documentoBll = new DocumentoBLLImpl();
+                if (idDocumento == "0")
+                {
+                    if (documentoBll.Comprobar(numeroIngreso, idDocumento, false, true))
+                    {
+                        return Json(true, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    if (documentoBll.Comprobar(numeroIngreso, idDocumento, false, false))
+                    {
+                        return Json(true, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                    }
+                }
             }
             catch (Exception)
             {
                 return null;
             }
-            if (idDocumento == "0")
-            {
-                if (documentoBll.Comprobar(numeroIngreso, idDocumento, false, true))
-                {
-                    return Json(true, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
-                }
-            }
-            else
-            {
-                if (documentoBll.Comprobar(numeroIngreso, idDocumento, false, false))
-                {
-                    return Json(true, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    return Json("El número de ingreso no se encuentra disponible o ya se encuentra ocupado.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
-                }
-            }
-
         }
 
         public JsonResult ComprobarDropdownList(string id)
         {
-            if (id != "")
+            try
             {
-                return Json(true, JsonRequestBehavior.AllowGet);
+                if (id != "")
+                {
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("Debe seleccionar una opción válida.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                }
             }
-            else
+            catch (Exception)
             {
-                //ModelState.AddModelError("idTipo", "Last Name is required.");
-                //return Json(new { success = false, errors = "Debe seleccionar una opción válida.\n Por favor inténtelo de nuevo." }, JsonRequestBehavior.AllowGet);
-                return Json("Debe seleccionar una opción válida.\n Por favor inténtelo de nuevo.", JsonRequestBehavior.AllowGet);
+                return null;
             }
         }
 
@@ -815,13 +782,13 @@ namespace SistemaControl.Controllers
             try
             {
                 documentoBll = new DocumentoBLLImpl();
+                var resultado = documentoBll.Find(x => x.numeroDocumento.Contains(name)).Select(x => x.numeroDocumento).Take(11).ToList();
+                return Json(resultado, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
             {
                 return null;
             }
-            var resultado = documentoBll.Find(x => x.numeroDocumento.Contains(name)).Select(x => x.numeroDocumento).Take(11).ToList();
-            return Json(resultado, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetTipoOrigen(int id)
@@ -842,15 +809,35 @@ namespace SistemaControl.Controllers
                         ViewBag.idOrigen = new SelectList(tablaGeneralBLL.Consulta("Documentos", "idOrigen"), "idTablaGeneral", "descripcion");
                         break;
                 }
+                return this.Json(new { Data = ViewBag.idOrigen }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
             {
-                
+                return null;
             }
-            return this.Json(new { Id = "idOrigen",Reg="OIJ" ,Data = ViewBag.idOrigen }, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetNomenclatura(int idOrigen, int tipoOrigen)
+        {
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                documentoBll = new DocumentoBLLImpl();
 
-       
-
+                string sIdOrigen = tablaGeneralBLL.GetTablaGeneral(idOrigen).nomenclatura;
+                if (tablaGeneralBLL.GetTablaGeneral(tipoOrigen).descripcion == "Departamento Interno")
+                {
+                    return Json(new { data = tablaGeneralBLL.GetTablaGeneral(idOrigen).nomenclatura + "-" },JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    
+                    return Json(new { data = "SSISCT-" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

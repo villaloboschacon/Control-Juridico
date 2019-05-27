@@ -7849,7 +7849,6 @@
     <Content Include="Views\CasoJudicial\Editar.cshtml" />
     <Content Include="Views\DocumentoExpediente\Crear.cshtml" />
     <Content Include="Views\Documento\Referencias.cshtml" />
-    <Content Include="Views\Documento\TablaDocumentos.cshtml" />
     <Content Include="Views\DocumentoExpediente\Editar.cshtml" />
     <Content Include="Views\DocumentoExpediente\Detalle.cshtml" />
     <Content Include="Views\PersonaJuridica\Crear.cshtml" />
@@ -7862,6 +7861,7 @@
     <Content Include="Views\CasoJudicial\Detalle.cshtml" />
     <Content Include="Views\PersonaFisica\Detalle.cshtml" />
     <Content Include="Views\PersonaJuridica\Detalle.cshtml" />
+    <Content Include="Views\Documento\IndexSNI.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

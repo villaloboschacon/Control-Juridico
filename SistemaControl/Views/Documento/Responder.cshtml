@@ -7,7 +7,16 @@
 <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <span class="modal-title" id="replyModal">Respuesta a:</span>
+            @if (Model.numeroVinculado != null)
+            {
+                <span class="modal-title" id="replyModal">Respuesta a:</span>
+
+            }
+            else
+            {
+                <span class="modal-title" id="replyModal">Emitir oficio</span>
+            }
+
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -20,13 +29,16 @@
                 <div class="form-horizontal" id="parent">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.HiddenFor(model => model.idDocumento)
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.numeroVinculado, "Documento Vinculado:", htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.numeroVinculado, new { htmlAttributes = new { @class = "form-control", @readonly = "@readonly" } })
-                            @Html.ValidationMessageFor(model => model.numeroVinculado, "", new { @class = "text-danger" })
+                    @if (Model.numeroVinculado != null)
+                    {
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.numeroVinculado, "Documento Vinculado:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.numeroVinculado, new { htmlAttributes = new { @class = "form-control", @readonly = "@readonly" } })
+                                @Html.ValidationMessageFor(model => model.numeroVinculado, "", new { @class = "text-danger" })
+                            </div>
                         </div>
-                    </div>
+                    }
                     <div id="novisible">
                         <div class="form-group">
                             @Html.LabelFor(model => model.idTipo, "Tipo de Documento:", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -83,7 +95,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.asunto, "Asunto:", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.asunto, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.asunto, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.asunto, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -91,16 +103,8 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.descripcion, "Descripción:", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.ubicacion, "Ubicación:", htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.ubicacion, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -114,11 +118,32 @@
                 </div>
                     <div class="modal-footer">
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Responder documento" class="btn btn-default" />
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        </div>
+                            @if (Model.numeroVinculado != null)
+                            {
+                                <input type="submit" value="Responder documento" class="btn btn-default" />
+                            }
+                            else
+                            {
+                                <input type="submit" value="Emitir documento" class="btn btn-default" />
+                            }
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
                     </div>
                 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </div>
         </div>
     </div>

@@ -1,61 +1,25 @@
 ﻿@model SistemaControl.Models.DocumentoViewModel
-<!doctype html>
-<html lang="es">
 
+@{ 
+    @DateTime.Now.Year
+}
+<!doctype html>
 <head>
-    <meta charset="utf-8">
-    <meta name="robots">
-    <title>Crear Documento</title>
-    <script src="https://code.jquery.com/jquery-3.4.1.js"
-            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
     <script src="https://cdn.ckeditor.com/4.11.4/standard-all/ckeditor.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    @*
+        MessageToast
+    *@
+    <script src="~/Content/Toast/toastr.js"></script>
+    <link href="~/Content/Toast/toastr.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="~/Content/Toast/toastrsample.js"></script>
 
-    <style>
-        .modal-open.ui-datepicker {
-            margin: 5px auto 0;
-            font: 12pt Arial, sans-serif;
-        }
-
-            .modal-open .ui-datepicker table {
-                width: 100%;
-                background-color: white;
-            }
-
-        .modal-open .ui-datepicker-header {
-            background: #35475e;
-            color: #ffffff;
-            font-family: sans-serif;
-            border-width: 1px 0 0 0;
-            border-style: solid;
-            border-color: #111;
-        }
-
-        .modal-open .ui-datepicker-title {
-            text-align: center;
-            font-size: 15px;
-        }
-
-        .modal-open .ui-datepicker-prev {
-            float: left;
-            cursor: pointer;
-            background-position: center -30px;
-        }
-
-        .modal-open .ui-datepicker-next {
-            float: right;
-            cursor: pointer;
-        }
-
-        .modal-open .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
-            width: 49%;
-            color: black;
-            font-family: sans-serif;
-        }
-    </style>
 </head>
+<html lang="es">
 
 <body>
     <div class="modal-dialog" role="document">
@@ -104,14 +68,14 @@
                             <div class="form-group" id="partes">
                                 @Html.LabelFor(model => model.parte, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.parte, new { htmlAttributes = new { @class = "form-control", placeholder = "EXP-AD-NOMBREDELAPERSONA-2018", autocomplete = "off", style = "text-transform: uppercase;" } })
+                                    @Html.EditorFor(model => model.parte, new { htmlAttributes = new { @class = "form-control", placeholder = "EXP-AD-NOMBREDELAPERSONA-" + @DateTime.Now.Year , autocomplete = "off", style = "text-transform: uppercase;" } })
                                     @Html.ValidationMessageFor(model => model.parte, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group" id="numerosDocumentos">
                                 @Html.LabelFor(model => model.numeroDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { @class = "form-control", @id = "numeroDocumento" } })
+                                    @Html.EditorFor(model => model.numeroDocumento, new { htmlAttributes = new { @class = "form-control", @id = "numeroDocumento", autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.numeroDocumento, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -119,11 +83,10 @@
                             <div class="form-group" id="numerosIngresos">
                                 @Html.LabelFor(model => model.numeroIngreso, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.numeroIngreso, new { htmlAttributes = new { @class = "form-control", placeholder = "N.I.####-2018", autocomplete = "off" } })
+                                    @Html.EditorFor(model => model.numeroIngreso, new { htmlAttributes = new { @class = "form-control", placeholder = "N.I.####-"+ @DateTime.Now.Year, autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.numeroIngreso, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-
 
                             <div class="form-group" id="idEstados">
                                 @Html.LabelFor(model => model.idEstado, "Estado", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -148,6 +111,7 @@
                                     @Html.ValidationMessageFor(model => model.ubicacion, "", new { @class = "text-danger" })
                                 </div>
                             </div>
+
                             <div class="form-group" id="asuntos">
                                 @Html.LabelFor(model => model.asunto, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
@@ -171,6 +135,7 @@
                                     @Html.ValidationMessageFor(model => model.observacion, "", new { @class = "text-danger" })
                                 </div>
                             </div>
+
                             <div class="form-group" id="textoCheck">
                                 @Html.LabelFor(model => model.check, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
@@ -178,7 +143,8 @@
                                     @Html.ValidationMessageFor(model => model.check, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                            <div class="form-group" id="textoDocumento">
+
+                            <div class="form-group" id="textoDocumento" style="display:none">
                                 @Html.LabelFor(model => model.texto, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.TextAreaFor(model => model.texto, new { @id = "texto", @name = "editor1" })
@@ -187,13 +153,13 @@
                                 </div>
                             </div>
 
-
                             <div class="form-group" id="file">
                                 <label class="control-label col-md-2">Adjuntar archivos:</label>
                                 <div class="col-md-10">
                                     <input class="form-control" type="file" name="elementName" multiple="multiple" />
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="modal-footer">
@@ -224,7 +190,6 @@
                 // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-insertHtml
                 editor.insertHtml(value);
             } else
-                alert('You must be in WYSIWYG mode!');
         }
         function InsertText() {
             // Get the editor instance that you want to interact with.
@@ -236,7 +201,6 @@
                 // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-insertText
                 editor.insertText(value);
             } else
-                alert('You must be in WYSIWYG mode!');
         }
         function SetContents() {
             // Get the editor instance that you want to interact with.
@@ -272,7 +236,6 @@
                 // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-execCommand
                 editor.execCommand(commandName);
             } else
-                alert('You must be in WYSIWYG mode!');
         }
         function CheckDirty() {
             // Get the editor instance that you want to interact with.
@@ -280,7 +243,7 @@
             // Checks whether the current editor content contains changes when compared
             // to the content loaded into the editor at startup.
             // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-checkDirty
-            alert(editor.checkDirty());
+           
         }
         function ResetDirty() {
             // Get the editor instance that you want to interact with.
@@ -288,7 +251,7 @@
             // Resets the "dirty state" of the editor.
             // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-resetDirty
             editor.resetDirty();
-            alert('The "IsDirty" status was reset.');
+          
         }
         function Focus() {
             // Get the editor instance that you want to interact with.
@@ -326,21 +289,24 @@
         });
     </script>
     <script type="text/javascript">
-    //Variables.
-    var nomneclatura = "";
+     var nomenclatura = "";
 
     $(document).ready(function ()
     {
         $("#numeroDocumento").attr('maxlength', '19');
         $("#numeroIngreso").attr('maxlength', '13');
-        changeIdOrigen($("#tipoOrigen").val(), $("#idOrigen").val());
-        hideexpediente();
         $("#numerosIngresos").hide();
         $("#CrearBoton").hide();
         $("#origenes").hide();
         $("#tipoOrigenes").hide();  
         $("#textoDocumento").hide();
+        $("#partes").hide();
         $("#textoCheck").hide();
+        if ($("#check").val() == 1) {
+            $("#textoDocumento").show();
+        } else {
+            $("#textoDocumento").hide();
+        }
         hideall();
     });
     CKEDITOR.instances.texto.on('change', function () {
@@ -348,7 +314,7 @@
     });
 
     $("#check").change(function () {
-        if ($("#check").val() == 1) {
+        if ($("#check").val() == 1) { 
             $("#textoDocumento").show(200);
         } else {
             $("#textoDocumento").hide(200);
@@ -393,7 +359,19 @@
             $('#tipoOrigenes').show(200);
         }
     });
-    $("#tipoOrigen").change(function () {
+        $("#tipoOrigen").change(function () {
+            if ($("#idOrigen").val() == "") {
+                hideall();
+                hideexpediente();
+                $("#numerosIngresos").hide(200);
+            }
+            else {
+                hideall();
+                hideexpediente();
+                $("#idOrigen").val(0);
+                $("#numerosIngresos").hide(200);
+
+            }
         if ($("#tipoOrigen").val() == "") {
             hideall();
             hideexpediente();
@@ -408,25 +386,32 @@
         }
     });
     $("#idOrigen").change(function () {
-        if ($("#idOrigen").val() == "") {
+        if ($("#idOrigen").val() == "")
+        {
             hideall();
             hideexpediente();
             $("#check").val(0);
             $("#CrearBoton").hide(200);
             $("#numerosIngresos").hide(200);
         }
-        else {
-            showall();
+        else
+        {  
             var valIdTipo = $("#idTipo").val();
-            if (valIdTipo == 3) {
+            if (valIdTipo == 3)
+            {
                 showoficio();
                 $("#numerosIngresos").show(200);
+                showall();
             }
-            else if (valIdTipo == 23) {
+            else if (valIdTipo == 23)
+            {
                 showoficiosin();
+                showall();
             }
-            else {
+            else
+            {
                 showexpediente();
+                showall();
                 $("#numerosIngresos").show(200);
             }
             $("#CrearBoton").show(200);
@@ -447,6 +432,7 @@
             $("#partes").hide(200);
             $("#ubicaciones").hide(200);
             $("#textoCheck").hide(200);
+            $("#textoDocumento").hide(200);
         }
         else {
             $("#Expediente").show(200);
@@ -457,9 +443,12 @@
     }
     function showoficiosin() {
         hideexpediente();
+        $("#textoCheck").hide(200);
+        $("#textoDocumento").hide(200);
         $("#numerosIngresos").hide(200);
     }
     function hideall() {
+        $("#textoDocumento").hide(200);
         $("#ubicaciones").hide(200);
         $("#numerosDocumentos").hide(200);
         $("#idEstados").hide(200);
@@ -468,11 +457,10 @@
         $("#descripciones").hide(200);
         $("#observaciones").hide(200);
         $("#file").hide(200);
-        $("#textoDocumento").hide(200);
         $("#textoCheck").hide(200);
+
     }
     function showall() {
-        $("#ubicaciones").show(200);
         $("#numerosDocumentos").show(200);
         $("#idEstados").show(200);
         $("#fechas").show(200);
@@ -480,7 +468,6 @@
         $("#descripciones").show(200);
         $("#observaciones").show(200);
         $("#file").show(200);
-        $("#textoDocumento").show(200);
         $("#textoCheck").show(200);
     }
     $("#fecha").keydown(function () {
@@ -488,15 +475,11 @@
         }
     );
     $("#parte").keydown(function (e) {
-        //109+189
         var reg = /EXP-AD-[a-zA-ZñÑ0-9]+-20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])$/;
         var regPrev = /EXP-AD-[a-zA-ZñÑ0-9]+-/;
         var part = $('#parte').val();
-        console.log(e.keyCode);
-        console.log(e.key);
         if (reg.test(part)) {
             if (e.key == 'Backspace') {
-                console.log('Mas.');
                 $('#parte').val(part.slice(0, -6));
                 event.preventDefault();
             }
@@ -514,8 +497,7 @@
                 }
             }
             if (regPrev.test(part + e.key)) {
-                console.log(123);
-                $('#parte').val(part + e.key + '2019');
+                $('#parte').val(part + e.key + @DateTime.Now.Year);
                 event.preventDefault();
             }
         }
@@ -534,11 +516,10 @@
                     $("#idOrigen").append('<option value="">Seleccione una opción.</option>');
                     $.each(another, function (i, state) {
                         $("#idOrigen").append('<option value="' + state.Value + '">' + state.Text + '</option>');
-                        onChangeId();
-                    });
+                    });           
                 },
                 error: function (ex) {
-                    alert('Seleccione una opción válida.' + ex);
+
                 }
             }
             );
@@ -546,164 +527,31 @@
         }
     });
     //Actualiza la variable nomenclatura
-    function changeIdOrigen(tipoOrigen, idOrigen) {
-        if (tipoOrigen == "5") {
-            switch (idOrigen) {
-                case "10": nomenclatura = "PSI-";
-                    break;
-                case "11": nomenclatura = "PRH-";
-                    break;
-                case "24": nomenclatura = "AAM-";
-                    break;
-                case "25": nomenclatura = "SAAM-";
-                    break;
-                case "26": nomenclatura = "AAAA-";
-                    break;
-                case "27": nomenclatura = "SAT-";
-                    break;
-                case "28": nomenclatura = "A-";
-                    break;
-                case "29": nomenclatura = "AAP-";
-                    break;
-                case "30": nomenclatura = "AAPRT-";
-                    break;
-                case "31": nomenclatura = "AAS-";
-                    break;
-                case "32": nomenclatura = "PAM-";
-                    break;
-                case "33": nomenclatura = "ALCM-";
-                    break;
-                case "34": nomenclatura = "AAI-";
-                    break;
-                case "35": nomenclatura = "AI-";
-                    break;
-                case "36": nomenclatura = "ABI-";
-                    break;
-                case "37": nomenclatura = "ABM-";
-                    break;
-                case "38": nomenclatura = "ACE-";
-                    break;
-                case "39": nomenclatura = "ACM-";
-                    break;
-                case "40": nomenclatura = "CMEA-";
-                    break;
-                case "41": nomenclatura = "PCD-";
-                    break;
-                case "42": nomenclatura = "CM-";
-                    break;
-                case "43": nomenclatura = "SC-";
-                    break;
-                case "44": nomenclatura = "AAAACC-";
-                    break;
-                case "45": nomenclatura = "PCS-";
-                    break;
-                case "46": nomenclatura = "ACC-";
-                    break;
-                case "47": nomenclatura = "PCFU-";
-                    break;
-                case "48": nomenclatura = "SCI-";
-                    break;
-                case "49": nomenclatura = "SCP-";
-                    break;
-                case "50": nomenclatura = "ADM-";
-                    break;
-                case "51": nomenclatura = "AD-";
-                    break;
-                case "52": nomenclatura = "SDC-";
-                    break;
-                case "53": nomenclatura = "ADCDR-";
-                    break;
-                case "54": nomenclatura = "PDO-";
-                    break;
-                case "55": nomenclatura = "PDS-";
-                    break;
-                case "56": nomenclatura = "PDSCEC-";
-                    break;
-                case "57": nomenclatura = "DGP-";
-                    break;
-                case "58": nomenclatura = "SGA-";
-                    break;
-                case "59": nomenclatura = "AGC-";
-                    break;
-                case "60": nomenclatura = "AGIRS-";
-                    break;
-                case "61": nomenclatura = "SGV-";
-                    break;
-                case "62": nomenclatura = "PH-";
-                    break;
-                case "63": nomenclatura = "PHM-";
-                    break;
-                case "64": nomenclatura = "AIM-";
-                    break;
-                case "65": nomenclatura = "SIS-";
-                    break;
-                case "66": nomenclatura = "AJCA-";
-                    break;
-                case "67": nomenclatura = "ALV-";
-                    break;
-                case "68": nomenclatura = "AMPZV-";
-                    break;
-                case "69": nomenclatura = "AM-";
-                    break;
-                case "70": nomenclatura = "SOIP-";
-                    break;
-                case "71": nomenclatura = "AOM-";
-                    break;
-                case "72": nomenclatura = "APC-";
-                    break;
-                case "73": nomenclatura = "AP-";
-                    break;
-                case "74": nomenclatura = "PPCI-";
-                    break;
-                case "75": nomenclatura = "PP-";
-                    break;
-                case "76": nomenclatura = "SPU-";
-                    break;
-                case "77": nomenclatura = "APG-";
-                    break;
-                case "78": nomenclatura = "PRE-";
-                    break;
-                case "79": nomenclatura = "SP-";
-                    break;
-                case "80": nomenclatura = "SO-";
-                    break;
-                case "81": nomenclatura = "SM-";
-                    break;
-                case "82": nomenclatura = "PSMCV-";
-                    break;
-                case "83": nomenclatura = "SPSA-";
-                    break;
-                case "84": nomenclatura = "SSA-";
-                    break;
-                case "85": nomenclatura = "PSJ-";
-                    break;
-                case "86": nomenclatura = "SSISC-";
-                    break;
-                case "87": nomenclatura = "SSISCT-";
-                    break;
-                case "88": nomenclatura = "TM-";
-                    break;
-                case "89": nomenclatura = "ST-";
-                    break;
-                case "90": nomenclatura = "VA-";
-                    break;
-                default: nomenclatura = "PMM-";
-                    break;
+        function changeIdOrigen(tipoOrigen, idOrigen) {
+            if (isNullOrEmpty(tipoOrigen) && isNullOrEmpty(idOrigen)) {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetNomenclatura")',
+                    dataType: 'json',
+                    data: { idOrigen: idOrigen, tipoOrigen: tipoOrigen },
+                    success: function (origins) {
+                        var date = new Date();
+                        nomenclatura = origins.data;
+                        $('#numeroDocumento').attr('placeholder', 'MA-' + nomenclatura + '####-' + new Date().getFullYear());
+                    },
+                    error: function (ex) {
+                        nomenclatura = "basura"
+                    }
+                });
             }
-        }
-        else {
-            nomenclatura = "PMM-";
-        }
+            else {
+                $("#myModal").modal("toggle")
+            }
     }
     $("#idOrigen").change(function () {
-        onChangeId();
-    });
-    //Limpia el campo del numero de documento y pone el placeholder dependiento del origen.
-    function onChangeId() {
-        changeIdOrigen($("#tipoOrigen").val(), $("#idOrigen").val());
         $('#numeroDocumento').val('');
-        $('#numeroDocumento').attr('placeholder', 'MA-' + nomenclatura + '####-2019');
-    };
+        changeIdOrigen($("#tipoOrigen").val(), $("#idOrigen").val());
+    });
     //Cuando se pone el click escribe la nomenclatura
     $("#parte").click(function () {
         $('#parte').val('EXP-AD-');
@@ -723,12 +571,8 @@
         var reg = /(MA-[a-zñA-ZÑ]{1,6}-[0-9]{4}-\b20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])\b)$/;
         var regPrev = /(MA-[a-zñA-ZÑ]{1,6}-[0-9]{4})/;
         var numDoc = $('#numeroDocumento').val();
-        console.log(e.keyCode);
-        console.log(e.key);
-        if (reg.test(numDoc)) {
-            console.log('Entró.');
+        if (reg.test(numDoc)) {    
             if (e.key == 'Backspace') {
-                console.log('Mas.');
                 $('#numeroDocumento').val(numDoc.slice(0, -6));
                 event.preventDefault();
             }
@@ -746,8 +590,7 @@
                 }
             }
             if (regPrev.test(numDoc + e.key)) {
-                console.log(123);
-                $('#numeroDocumento').val(numDoc + e.key + '-2019');
+                $('#numeroDocumento').val(numDoc + e.key + '-'+ new Date().getFullYear());
                 event.preventDefault();
             }
         }
@@ -767,10 +610,7 @@
         var reg = /(N.I.[0-9]{4}-\b20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])\b)$/;
         var regPrev = /N.I.[0-9]{4}/;
         var numDoc = $('#numeroIngreso').val();
-        console.log(e.keyCode);
-        console.log(e.key);
         if (reg.test(numDoc)) {
-            console.log('Entró.');
             if (e.key == 'Backspace') {
                 $('#numeroIngreso').val(numDoc.slice(0, -6));
                 event.preventDefault();
@@ -789,8 +629,7 @@
                 }
             }
             if (regPrev.test(numDoc + e.key)) {
-                console.log(123);
-                $('#numeroIngreso').val(numDoc + e.key + '-2019');
+                $('#numeroIngreso').val(numDoc + e.key + '-'+ @DateTime.Now.Year);
                 event.preventDefault();
             }
         }

@@ -20,7 +20,7 @@ namespace SistemaControl.Controllers
         private IPersonasBLL personasBLL;
 
         [Authorize]
-        public ActionResult Index(string user, int page = 1, int pageSize = 4)
+        public ActionResult Index(string user, int page = 1, int pageSize = 7)
         {
             try
             {
@@ -36,9 +36,12 @@ namespace SistemaControl.Controllers
                 return View();
             }
             HomeViewModel dashboard = new HomeViewModel();
-            dashboard.numeroCasos = casoBLL.Find(x => x.idEstado != 95).Count;
-            dashboard.numeroAdministrativos = casoBLL.Find(x => x.idTipo == 19 && x.idEstado != 95).Count;
-            dashboard.numeroJudiciales = casoBLL.Find(x => x.idTipo == 20 && x.idEstado != 95).Count;
+            int iTipoAdministrativo = tablaGeneralBLL.GetIdTablaGeneral("Casos", "tipo", "Administrativo");
+            int iTipoJudicial = tablaGeneralBLL.GetIdTablaGeneral("Casos", "tipo", "Judicial");
+            dashboard.numeroAdministrativos = casoBLL.Consulta(iTipoAdministrativo, User.Identity.Name, "Abogado").Count();
+            dashboard.numeroJudiciales = casoBLL.Consulta(iTipoJudicial, User.Identity.Name, "Abogado").Count();
+            dashboard.numeroCasos = dashboard.numeroJudiciales + dashboard.numeroAdministrativos;
+
 
             dashboard.numeroDocumentos = documentoBLL.Find(x => x.idEstado != 9).Count;
             dashboard.numEntradas = documentoBLL.Find(x => x.idTipo == 3 && x.idEstado != 9 && x.idOrigen != 85).Count;
@@ -61,10 +64,8 @@ namespace SistemaControl.Controllers
             ViewBag.numeroPersonas = dashboard.numeroPersonas;
             ViewBag.numeroFisicas = dashboard.numeroFisicas;
             ViewBag.numeroJuridicas = dashboard.numeroJuridicas;
-
-            string username = "davidguzmanlml72@gmail.com";
-
-            var casosSearch = casoBLL.Find(x => x.Usuario.usuario1.Equals(username) && x.idTipo == 19 || x.idTipo == 20 && x.idEstado != 95).ToList();
+           
+            var casosSearch = casoBLL.Find(x => x.Usuario.nombre.Equals(User.Identity.Name) && (x.idTipo == 19 || x.idTipo == 20) && x.idEstado != 95).ToList();
             ViewBag.idTipo = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipo"), "idTablaGeneral", "descripcion");
             ViewBag.idEstado = new SelectList(tablaGeneralBLL.Consulta("Casos", "estado"), "idTablaGeneral", "descripcion");
             ViewBag.TipoLitigante = new SelectList(tablaGeneralBLL.Consulta("Casos", "tipoLitigio"), "idTablaGeneral", "descripcion");
