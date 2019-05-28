@@ -162,26 +162,6 @@ namespace BackEnd.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("sp_getRolesForUser", userNameParameter);
         }
     
-        public virtual ObjectResult<Documento> sp_listaEntradas()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaEntradas");
-        }
-    
-        public virtual ObjectResult<Documento> sp_listaEntradas(MergeOption mergeOption)
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaEntradas", mergeOption);
-        }
-    
-        public virtual ObjectResult<Documento> sp_listaSalidas()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaSalidas");
-        }
-    
-        public virtual ObjectResult<Documento> sp_listaSalidas(MergeOption mergeOption)
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaSalidas", mergeOption);
-        }
-    
         public virtual ObjectResult<Nullable<long>> sp_ConsultaNumerodeIngreso()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("sp_ConsultaNumerodeIngreso");
@@ -579,6 +559,396 @@ namespace BackEnd.Model
                 new ObjectParameter("idTipo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Persona>("sp_listaPersonas", mergeOption, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_listaDocumentos(Nullable<int> idTipo)
+        {
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaDocumentos", idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_listaDocumentos(Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaDocumentos", mergeOption, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_listaEmitidos(Nullable<int> idTipo)
+        {
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaEmitidos", idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_listaEmitidos(Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaEmitidos", mergeOption, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_listaExpedientes(Nullable<int> idTipo)
+        {
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaExpedientes", idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_listaExpedientes(Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaExpedientes", mergeOption, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_listaSNI(Nullable<int> idTipo)
+        {
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaSNI", idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_listaSNI(Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_listaSNI", mergeOption, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaDocumentosPorNumeroDeIngreso(string numeroIngreso, Nullable<int> idTipo)
+        {
+            var numeroIngresoParameter = numeroIngreso != null ?
+                new ObjectParameter("numeroIngreso", numeroIngreso) :
+                new ObjectParameter("numeroIngreso", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaDocumentosPorNumeroDeIngreso", numeroIngresoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaDocumentosPorNumeroDeIngreso(string numeroIngreso, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var numeroIngresoParameter = numeroIngreso != null ?
+                new ObjectParameter("numeroIngreso", numeroIngreso) :
+                new ObjectParameter("numeroIngreso", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaDocumentosPorNumeroDeIngreso", mergeOption, numeroIngresoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaDocumentosPorNumeroDeOficio(string numeroOficio, Nullable<int> idTipo)
+        {
+            var numeroOficioParameter = numeroOficio != null ?
+                new ObjectParameter("numeroOficio", numeroOficio) :
+                new ObjectParameter("numeroOficio", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaDocumentosPorNumeroDeOficio", numeroOficioParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaDocumentosPorNumeroDeOficio(string numeroOficio, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var numeroOficioParameter = numeroOficio != null ?
+                new ObjectParameter("numeroOficio", numeroOficio) :
+                new ObjectParameter("numeroOficio", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaDocumentosPorNumeroDeOficio", mergeOption, numeroOficioParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaDocumentosPorRangoDeFechas(Nullable<System.DateTime> fecha, Nullable<System.DateTime> fechaFinal, Nullable<int> idTipo)
+        {
+            var fechaParameter = fecha.HasValue ?
+                new ObjectParameter("fecha", fecha) :
+                new ObjectParameter("fecha", typeof(System.DateTime));
+    
+            var fechaFinalParameter = fechaFinal.HasValue ?
+                new ObjectParameter("fechaFinal", fechaFinal) :
+                new ObjectParameter("fechaFinal", typeof(System.DateTime));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaDocumentosPorRangoDeFechas", fechaParameter, fechaFinalParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaDocumentosPorRangoDeFechas(Nullable<System.DateTime> fecha, Nullable<System.DateTime> fechaFinal, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var fechaParameter = fecha.HasValue ?
+                new ObjectParameter("fecha", fecha) :
+                new ObjectParameter("fecha", typeof(System.DateTime));
+    
+            var fechaFinalParameter = fechaFinal.HasValue ?
+                new ObjectParameter("fechaFinal", fechaFinal) :
+                new ObjectParameter("fechaFinal", typeof(System.DateTime));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaDocumentosPorRangoDeFechas", mergeOption, fechaParameter, fechaFinalParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaEmitidosPorNumeroDeOficio(string numeroOficio, Nullable<int> idTipo)
+        {
+            var numeroOficioParameter = numeroOficio != null ?
+                new ObjectParameter("numeroOficio", numeroOficio) :
+                new ObjectParameter("numeroOficio", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaEmitidosPorNumeroDeOficio", numeroOficioParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaEmitidosPorNumeroDeOficio(string numeroOficio, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var numeroOficioParameter = numeroOficio != null ?
+                new ObjectParameter("numeroOficio", numeroOficio) :
+                new ObjectParameter("numeroOficio", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaEmitidosPorNumeroDeOficio", mergeOption, numeroOficioParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaEmitidosPorRangoDeFechas(Nullable<System.DateTime> fecha, Nullable<System.DateTime> fechaFinal, Nullable<int> idTipo)
+        {
+            var fechaParameter = fecha.HasValue ?
+                new ObjectParameter("fecha", fecha) :
+                new ObjectParameter("fecha", typeof(System.DateTime));
+    
+            var fechaFinalParameter = fechaFinal.HasValue ?
+                new ObjectParameter("fechaFinal", fechaFinal) :
+                new ObjectParameter("fechaFinal", typeof(System.DateTime));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaEmitidosPorRangoDeFechas", fechaParameter, fechaFinalParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaEmitidosPorRangoDeFechas(Nullable<System.DateTime> fecha, Nullable<System.DateTime> fechaFinal, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var fechaParameter = fecha.HasValue ?
+                new ObjectParameter("fecha", fecha) :
+                new ObjectParameter("fecha", typeof(System.DateTime));
+    
+            var fechaFinalParameter = fechaFinal.HasValue ?
+                new ObjectParameter("fechaFinal", fechaFinal) :
+                new ObjectParameter("fechaFinal", typeof(System.DateTime));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaEmitidosPorRangoDeFechas", mergeOption, fechaParameter, fechaFinalParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaExpedientePorNumeroDeIngreso(string numeroIngreso, Nullable<int> idTipo)
+        {
+            var numeroIngresoParameter = numeroIngreso != null ?
+                new ObjectParameter("numeroIngreso", numeroIngreso) :
+                new ObjectParameter("numeroIngreso", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaExpedientePorNumeroDeIngreso", numeroIngresoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaExpedientePorNumeroDeIngreso(string numeroIngreso, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var numeroIngresoParameter = numeroIngreso != null ?
+                new ObjectParameter("numeroIngreso", numeroIngreso) :
+                new ObjectParameter("numeroIngreso", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaExpedientePorNumeroDeIngreso", mergeOption, numeroIngresoParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaExpedientePorNumeroDeOficio(string numeroOficio, Nullable<int> idTipo)
+        {
+            var numeroOficioParameter = numeroOficio != null ?
+                new ObjectParameter("numeroOficio", numeroOficio) :
+                new ObjectParameter("numeroOficio", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaExpedientePorNumeroDeOficio", numeroOficioParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaExpedientePorNumeroDeOficio(string numeroOficio, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var numeroOficioParameter = numeroOficio != null ?
+                new ObjectParameter("numeroOficio", numeroOficio) :
+                new ObjectParameter("numeroOficio", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaExpedientePorNumeroDeOficio", mergeOption, numeroOficioParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaExpedientePorParte(string parte, Nullable<int> idTipo)
+        {
+            var parteParameter = parte != null ?
+                new ObjectParameter("parte", parte) :
+                new ObjectParameter("parte", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaExpedientePorParte", parteParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaExpedientePorParte(string parte, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var parteParameter = parte != null ?
+                new ObjectParameter("parte", parte) :
+                new ObjectParameter("parte", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaExpedientePorParte", mergeOption, parteParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaExpedientePorRangoDeFechas(Nullable<System.DateTime> fecha, Nullable<System.DateTime> fechaFinal, Nullable<int> idTipo)
+        {
+            var fechaParameter = fecha.HasValue ?
+                new ObjectParameter("fecha", fecha) :
+                new ObjectParameter("fecha", typeof(System.DateTime));
+    
+            var fechaFinalParameter = fechaFinal.HasValue ?
+                new ObjectParameter("fechaFinal", fechaFinal) :
+                new ObjectParameter("fechaFinal", typeof(System.DateTime));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaExpedientePorRangoDeFechas", fechaParameter, fechaFinalParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaExpedientePorRangoDeFechas(Nullable<System.DateTime> fecha, Nullable<System.DateTime> fechaFinal, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var fechaParameter = fecha.HasValue ?
+                new ObjectParameter("fecha", fecha) :
+                new ObjectParameter("fecha", typeof(System.DateTime));
+    
+            var fechaFinalParameter = fechaFinal.HasValue ?
+                new ObjectParameter("fechaFinal", fechaFinal) :
+                new ObjectParameter("fechaFinal", typeof(System.DateTime));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaExpedientePorRangoDeFechas", mergeOption, fechaParameter, fechaFinalParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaSNIPorNumeroDeOficio(string numeroOficio, Nullable<int> idTipo)
+        {
+            var numeroOficioParameter = numeroOficio != null ?
+                new ObjectParameter("numeroOficio", numeroOficio) :
+                new ObjectParameter("numeroOficio", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaSNIPorNumeroDeOficio", numeroOficioParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaSNIPorNumeroDeOficio(string numeroOficio, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var numeroOficioParameter = numeroOficio != null ?
+                new ObjectParameter("numeroOficio", numeroOficio) :
+                new ObjectParameter("numeroOficio", typeof(string));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaSNIPorNumeroDeOficio", mergeOption, numeroOficioParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaSNIPorRangoDeFechas(Nullable<System.DateTime> fecha, Nullable<System.DateTime> fechaFinal, Nullable<int> idTipo)
+        {
+            var fechaParameter = fecha.HasValue ?
+                new ObjectParameter("fecha", fecha) :
+                new ObjectParameter("fecha", typeof(System.DateTime));
+    
+            var fechaFinalParameter = fechaFinal.HasValue ?
+                new ObjectParameter("fechaFinal", fechaFinal) :
+                new ObjectParameter("fechaFinal", typeof(System.DateTime));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaSNIPorRangoDeFechas", fechaParameter, fechaFinalParameter, idTipoParameter);
+        }
+    
+        public virtual ObjectResult<Documento> sp_buscaSNIPorRangoDeFechas(Nullable<System.DateTime> fecha, Nullable<System.DateTime> fechaFinal, Nullable<int> idTipo, MergeOption mergeOption)
+        {
+            var fechaParameter = fecha.HasValue ?
+                new ObjectParameter("fecha", fecha) :
+                new ObjectParameter("fecha", typeof(System.DateTime));
+    
+            var fechaFinalParameter = fechaFinal.HasValue ?
+                new ObjectParameter("fechaFinal", fechaFinal) :
+                new ObjectParameter("fechaFinal", typeof(System.DateTime));
+    
+            var idTipoParameter = idTipo.HasValue ?
+                new ObjectParameter("idTipo", idTipo) :
+                new ObjectParameter("idTipo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Documento>("sp_buscaSNIPorRangoDeFechas", mergeOption, fechaParameter, fechaFinalParameter, idTipoParameter);
         }
     }
 }

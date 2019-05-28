@@ -29,7 +29,6 @@
                     <span class="form-inline">
                         @{ List<SelectListItem> searchListItem = new List<SelectListItem>();
                             searchListItem.Add(new SelectListItem { Text = "Número de Oficio", Value = "Número de Oficio" });
-                            searchListItem.Add(new SelectListItem { Text = "Número de Ingreso", Value = "Número de Ingreso" });
                             searchListItem.Add(new SelectListItem { Text = "Fecha", Value = "Fecha" });
                         }
                         @Html.DropDownList("sOption", new SelectList(searchListItem, "Value", "Text"), "Opciones de Búsqueda", htmlAttributes: new { @class = "form-control", @style = "width:205px;", @onchange = "Limpiar()", @id = "dropList" })

@@ -52,12 +52,22 @@ namespace BackEnd.BLL
         ///<summary>
         ///Recupera la lista de documentos de salida. 
         ///</summary>
-        List<Documento> GetSalidas();
+        List<Documento> GetSalidas(int iTipo);
 
         ///<summary>
         ///Recupera la lista de documentos de entradas. 
         ///</summary>
-        List<Documento> GetEntradas();
+        List<Documento> GetEntradas(int iTipo);
+
+        ///<summary>
+        ///Recupera la lista de documentos SNI. 
+        ///</summary>
+        List<Documento> GetDocumentosSNI(int iTipo);
+
+        ///<summary>
+        ///Recupera la lista de Expedientes.
+        ///</summary>
+        List<Documento> GetExpedientes(int iTipo);
 
         ///<summary>
         ///Recupera la lista de documentos asociados a un numero de referencia. 
@@ -93,5 +103,63 @@ namespace BackEnd.BLL
         ///Recupera la nomenclatura acorde al nombre del departamento.
         ///</summary>
         string GetNomenclatura(string sNombreDepartamento);
+
+        ///<summary>
+        ///Busca Entrada por numero de oficio
+        ///</summary>
+        List<Documento> buscaEntradaPorNumeroDeOficio(string numeroDeOficio, int iTipo);
+
+        ///<summary>
+        ///Busca Salida por numero de oficio
+        ///</summary>
+        List<Documento> buscaSalidaPorNumeroDeOficio(string numeroDeOficio, int iTipo);
+
+        ///<summary>
+        ///Busca SNI por numero de oficio
+        ///</summary>
+        List<Documento> buscaSNIPorNumeroDeOficio(string numeroDeOficio, int iTipo);
+
+        ///<summary>
+        ///Busca Expediente por numero de oficio
+        ///</summary>
+        List<Documento> buscaExpedientePorNumeroDeOficio(string numeroDeOficio, int iTipo);
+
+        ///<summary>
+        ///Busca Entrada por numero de ingreso
+        ///</summary>
+        List<Documento> buscaEntradaPorNumeroDeIngreso(string numeroDeIngreso, int iTipo);
+
+        ///<summary>
+        ///Busca Expedientes por numero de inreso
+        ///</summary>
+        List<Documento> buscaExpedientePorNumeroDeIngreso(string numeroDeIngreso, int iTipo);
+
+        ///<summary>
+        ///Busca Entrada por Rango de fechas
+        ///</summary>
+        List<Documento> buscaEntradaPorRangoDeFechas(DateTime fechaInicio, DateTime fechaFinal, int iTipo);
+
+        ///<summary>
+        ///Busca Salida por Rango de fechas
+        ///</summary>
+        List<Documento> buscaSalidaPorRangoDeFechas(DateTime fechaInicio, DateTime fechaFinal, int iTipo);
+
+        ///<summary>
+        ///Busca SNI por numero Rango de fechas
+        ///</summary>
+        List<Documento> buscaSNIPorRangoDeFechas(DateTime fechaInicio, DateTime fechaFinal, int iTipo);
+
+        ///<summary>
+        ///Busca Expediente por Rango de fechas
+        ///</summary>
+        List<Documento> buscaExpedientePorRangoDeFechas(DateTime fechaInicio, DateTime fechaFinal, int iTipo);
+
+        ///<summary>
+        ///Busca Expediente por parte
+        ///</summary>
+        List<Documento> buscaExpedientePorParte(String parte, int iTipo);
+
+
     }
+
 }

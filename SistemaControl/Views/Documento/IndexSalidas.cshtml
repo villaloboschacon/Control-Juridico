@@ -83,8 +83,13 @@
                 }
             }
         </table>
-        <div>
-            <a href="#" onclick="Crear()" data-toggle="modal" data-target="#crearModal" id="bCrear">Crear documento</a>
+        <div class="col-md-12">
+            <div style="text-align:left" class="col-md-6">
+                <a href="#" onclick="Crear()" data-toggle="modal" data-target="#crearModal" id="bCrear">Crear documento</a>
+            </div>
+            <div style="text-align:right" class="col-md-6">
+                <a href="#" onclick="Emitir()" data-toggle="modal" data-target="#responderModal" id="bEmitir">Emitir documento</a>
+            </div>
         </div>
         <br />
         @Html.PagedListPager(Model, page => Url.Action("IndexSalidas", new { page, pageSize = Model.PageSize, sSearch = ViewBag.search, sOption = ViewBag.option, sSearchFecha = ViewBag.finalDate, pageReferencias = ViewBag.pageReferencias }))
@@ -484,6 +489,23 @@
                 location.reload();
             }
         })
+    }
+    
+        function Emitir() {
+        var url = '@Url.Action("Emitir")';
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#responderModal").html(data);
+            },
+            error: function (xhr) {
+                alert('Error a la hora de abrir el modal.');
+            }
+        });
     }
     function Ref(iddocumento) {
         var url = '@Url.Action("IndexReferencias")';

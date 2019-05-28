@@ -83,7 +83,7 @@ namespace SistemaControl.Controllers
             {
                 try
                 {
-                    var aDocumentos = documentoBll.GetEntradas();
+                    var aDocumentos = documentoBll.GetEntradas(iTipo);
                     foreach (Documento oDocumento in aDocumentos)
                     {
                         oDocumento.TablaGeneral1 = tablaGeneralBLL.Get(oDocumento.idOrigen);
@@ -105,7 +105,8 @@ namespace SistemaControl.Controllers
                 }
             }
         }
-        public ActionResult IndexSNI(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 7, string message = "")
+
+        public ActionResult IndexSNI(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 9, string message = "")
         {
             try
             {
@@ -171,7 +172,7 @@ namespace SistemaControl.Controllers
                 try
                 {
                     //Cambiar
-                    aDocumentos = documentoBll.GetEntradas();
+                    aDocumentos = documentoBll.GetDocumentosSNI(iTipo);
                     foreach (Documento oDocumento in aDocumentos)
                     {
                         oDocumento.TablaGeneral1 = tablaGeneralBLL.Get(oDocumento.idOrigen);
@@ -193,7 +194,8 @@ namespace SistemaControl.Controllers
                 }
             }
         }
-        public ActionResult IndexSalidas(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 7, string message = "")
+
+        public ActionResult IndexSalidas(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 9, string message = "")
         {
             try
             {
@@ -253,7 +255,7 @@ namespace SistemaControl.Controllers
             }
             else
             {
-                aDocumentos = documentoBll.GetSalidas();
+                aDocumentos = documentoBll.GetSalidas(iTipo);
                 foreach (Documento oDocumento in aDocumentos)
                 {
                     oDocumento.TablaGeneral1 = tablaGeneralBLL.Get(oDocumento.idOrigen);
@@ -270,7 +272,7 @@ namespace SistemaControl.Controllers
             }
         }
 
-        public ActionResult IndexReferencias(string option,int id, string search, int page = 1, int pageSize = 15,int pageReferencias=0)
+        public ActionResult IndexReferencias(string option,int id, string search, int page = 1, int pageSize = 12,int pageReferencias=0)
         {
             try
             {
@@ -342,7 +344,10 @@ namespace SistemaControl.Controllers
             }
             if (ModelState.IsValid)
             {
-                documento.idReferencia = documentoBll.GeneraNumeroReferencia();
+                if (documento.idTipo != tablaGeneralBLL.GetIdTablaGeneral("Documentos", "tipo", "SNI") && documento.idTipo != tablaGeneralBLL.GetIdTablaGeneral("Documentos", "tipo", "Expediente"))
+                {
+                    documento.idReferencia = documentoBll.GeneraNumeroReferencia();
+                }
                 documentoBll.Agregar(documento);
                 documentoBll.SaveChanges();
                 if (documento.idTipo != tablaGeneralBLL.GetIdTablaGeneral("Documentos", "tipo", "SNI"))
@@ -441,15 +446,15 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("Index", new { message = "error" });
+                return RedirectToAction("IndexSalidas", new { message = "error" });
             }
             if (ModelState.IsValid)
             {
                 documentoBll.Agregar(documento);
                 documentoBll.SaveChanges();
-                return RedirectToAction("Index", new { message = "success" });
+                return RedirectToAction("IndexSalidas", new { message = "success" });
             }
-            return RedirectToAction("Index", new { message = "error" });
+            return RedirectToAction("IndexSalidas", new { message = "error" });
         }
 
         public ActionResult Emitir()
@@ -583,16 +588,16 @@ namespace SistemaControl.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("Index", new { message = "error" });
+                return RedirectToAction("IndexSalidas", new { message = "error" });
             }
             if (ModelState.IsValid)
             {
                 documentoBll.Agregar(documento);
                 documentoBll.GeneraNumeroIngreso();
                 documentoBll.SaveChanges();
-                return RedirectToAction("Index", new { message = "success" });
+                return RedirectToAction("IndexSalidas", new { message = "success" });
             }
-            return RedirectToAction("Index", new { message = "error" });
+            return RedirectToAction("IndexSalidas", new { message = "error" });
         }
 
         public ActionResult Responder(int id)
@@ -816,6 +821,7 @@ namespace SistemaControl.Controllers
                 return null;
             }
         }
+
         public JsonResult GetNomenclatura(int idOrigen, int tipoOrigen)
         {
             try

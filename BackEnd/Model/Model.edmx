@@ -572,6 +572,45 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <Parameter Name="persona" Type="varchar" Mode="In" />
           <Parameter Name="idTipo" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_buscaDocumentosPorNumeroDeIngreso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="numeroIngreso" Type="varchar" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaDocumentosPorNumeroDeOficio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="numeroOficio" Type="varchar" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaDocumentosPorRangoDeFechas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fecha" Type="date" Mode="In" />
+          <Parameter Name="fechaFinal" Type="date" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaEmitidosPorNumeroDeOficio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="numeroOficio" Type="varchar" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaEmitidosPorRangoDeFechas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fecha" Type="date" Mode="In" />
+          <Parameter Name="fechaFinal" Type="date" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaExpedientePorNumeroDeIngreso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="numeroIngreso" Type="varchar" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaExpedientePorNumeroDeOficio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="numeroOficio" Type="varchar" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaExpedientePorParte" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="parte" Type="varchar" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaExpedientePorRangoDeFechas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fecha" Type="date" Mode="In" />
+          <Parameter Name="fechaFinal" Type="date" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_buscaPersonaPorCorreo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="correo" Type="varchar" Mode="In" />
           <Parameter Name="idTipo" Type="int" Mode="In" />
@@ -589,6 +628,15 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
         </Function>
         <Function Name="sp_buscaPersonaPorRepresentanteSocial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RepresentanteSocial" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaSNIPorNumeroDeOficio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="numeroOficio" Type="varchar" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_buscaSNIPorRangoDeFechas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fecha" Type="date" Mode="In" />
+          <Parameter Name="fechaFinal" Type="date" Mode="In" />
+          <Parameter Name="idTipo" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_ConsultaNumerodeIngreso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -628,7 +676,16 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
         </Function>
         <Function Name="sp_listaCasosAdministrativos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_listaCasosJudiciales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_listaDocumentos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_listaEmitidos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_listaEntradas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_listaExpedientes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_listaPersonas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idTipo" Type="int" Mode="In" />
         </Function>
@@ -637,7 +694,12 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
         <Function Name="sp_ListaReferencias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idReferenciaB" Type="bigint" Mode="In" />
         </Function>
-        <Function Name="sp_listaSalidas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_listaSalidas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_listaSNI" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idTipo" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
@@ -1452,8 +1514,6 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <FunctionImport Name="sp_getRolesForUser" ReturnType="Collection(String)">
           <Parameter Name="userName" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="sp_listaEntradas" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)" />
-          <FunctionImport Name="sp_listaSalidas" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)" />
           <FunctionImport Name="sp_ConsultaNumerodeIngreso" ReturnType="Collection(Int64)" />
           <FunctionImport Name="getNomenclatura" ReturnType="Collection(String)">
           <Parameter Name="nombre" Mode="In" Type="String" />
@@ -1524,9 +1584,69 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
             <Parameter Name="idTipo" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_listaCasos" EntitySet="Casos" ReturnType="Collection(SCJ_BD.Caso)">
-            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          <Parameter Name="idTipo" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_listaPersonas" EntitySet="Personas" ReturnType="Collection(SCJ_BD.Persona)">
+          <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_listaDocumentos" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+          <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_listaEmitidos" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+          <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_listaExpedientes" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+          <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_listaSNI" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+          <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaDocumentosPorNumeroDeIngreso" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+            <Parameter Name="numeroIngreso" Mode="In" Type="String" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaDocumentosPorNumeroDeOficio" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+            <Parameter Name="numeroOficio" Mode="In" Type="String" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaDocumentosPorRangoDeFechas" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+            <Parameter Name="fecha" Mode="In" Type="DateTime" />
+            <Parameter Name="fechaFinal" Mode="In" Type="DateTime" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaEmitidosPorNumeroDeOficio" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+            <Parameter Name="numeroOficio" Mode="In" Type="String" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaEmitidosPorRangoDeFechas" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+            <Parameter Name="fecha" Mode="In" Type="DateTime" />
+            <Parameter Name="fechaFinal" Mode="In" Type="DateTime" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaExpedientePorNumeroDeIngreso" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+            <Parameter Name="numeroIngreso" Mode="In" Type="String" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaExpedientePorNumeroDeOficio" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+            <Parameter Name="numeroOficio" Mode="In" Type="String" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaExpedientePorParte" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+            <Parameter Name="parte" Mode="In" Type="String" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaExpedientePorRangoDeFechas" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+            <Parameter Name="fecha" Mode="In" Type="DateTime" />
+            <Parameter Name="fechaFinal" Mode="In" Type="DateTime" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaSNIPorNumeroDeOficio" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+            <Parameter Name="numeroOficio" Mode="In" Type="String" />
+            <Parameter Name="idTipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_buscaSNIPorRangoDeFechas" EntitySet="Documentos" ReturnType="Collection(SCJ_BD.Documento)">
+            <Parameter Name="fecha" Mode="In" Type="DateTime" />
+            <Parameter Name="fechaFinal" Mode="In" Type="DateTime" />
             <Parameter Name="idTipo" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
@@ -1871,6 +1991,274 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
           <Property Type="Int32" Name="tipoIdentificacion" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="sp_listaDocumentos_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_listaEmitidos_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+          <Property Type="Binary" Name="adjunto" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_listaExpedientes_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_listaSNI_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+          <Property Type="Binary" Name="adjunto" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaDocumentosPorNumeroDeIngreso_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+          <Property Type="Binary" Name="adjunto" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaDocumentosPorNumeroDeOficio_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+          <Property Type="Binary" Name="adjunto" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaDocumentosPorRangoDeFechas_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+          <Property Type="Binary" Name="adjunto" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaEmitidosPorNumeroDeOficio_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+          <Property Type="Binary" Name="adjunto" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaEmitidosPorRangoDeFechas_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+          <Property Type="Binary" Name="adjunto" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaExpedientePorNumeroDeIngreso_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+          <Property Type="Binary" Name="adjunto" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaExpedientePorNumeroDeOficio_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+          <Property Type="Binary" Name="adjunto" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaExpedientePorParte_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+          <Property Type="Binary" Name="adjunto" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaExpedientePorRangoDeFechas_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+          <Property Type="Binary" Name="adjunto" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaSNIPorNumeroDeOficio_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+          <Property Type="Binary" Name="adjunto" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_buscaSNIPorRangoDeFechas_Result">
+          <Property Type="Int32" Name="idDocumento" Nullable="false" />
+          <Property Type="Int32" Name="idTipo" Nullable="false" />
+          <Property Type="Int32" Name="idOrigen" Nullable="false" />
+          <Property Type="Int32" Name="tipoOrigen" Nullable="false" />
+          <Property Type="Int32" Name="idEstado" Nullable="false" />
+          <Property Type="Int64" Name="idReferencia" Nullable="true" />
+          <Property Type="String" Name="numeroDocumento" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="numeroIngreso" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+          <Property Type="String" Name="asunto" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="descripcion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="ubicacion" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="observacion" Nullable="true" MaxLength="750" />
+          <Property Type="String" Name="parte" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="texto" Nullable="true" />
+          <Property Type="Binary" Name="adjunto" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2110,10 +2498,6 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="SCJ_BD.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="SCJ_BD.Store.sp_upgraddiagrams" />
           <FunctionImportMapping FunctionImportName="sp_getRolesForUser" FunctionName="SCJ_BD.Store.sp_getRolesForUser" />
-          <FunctionImportMapping FunctionImportName="sp_listaEntradas" FunctionName="SCJ_BD.Store.sp_listaEntradas">
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_listaSalidas" FunctionName="SCJ_BD.Store.sp_listaSalidas">
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_ConsultaNumerodeIngreso" FunctionName="SCJ_BD.Store.sp_ConsultaNumerodeIngreso" />
           <FunctionImportMapping FunctionImportName="getNomenclatura" FunctionName="SCJ_BD.Store.getNomenclatura" />
           <FunctionImportMapping FunctionImportName="sp_GeneraNumerodeIngreso" FunctionName="SCJ_BD.Store.sp_GeneraNumerodeIngreso" />
@@ -2154,6 +2538,36 @@ warning 6002: The table/view 'SCJ_BD.dbo.UsuarioRol' does not have a primary key
           <FunctionImportMapping FunctionImportName="sp_listaCasos" FunctionName="SCJ_BD.Store.sp_listaCasos">
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_listaPersonas" FunctionName="SCJ_BD.Store.sp_listaPersonas">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_listaDocumentos" FunctionName="SCJ_BD.Store.sp_listaDocumentos">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_listaEmitidos" FunctionName="SCJ_BD.Store.sp_listaEmitidos">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_listaExpedientes" FunctionName="SCJ_BD.Store.sp_listaExpedientes">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_listaSNI" FunctionName="SCJ_BD.Store.sp_listaSNI">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaDocumentosPorNumeroDeIngreso" FunctionName="SCJ_BD.Store.sp_buscaDocumentosPorNumeroDeIngreso">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaDocumentosPorNumeroDeOficio" FunctionName="SCJ_BD.Store.sp_buscaDocumentosPorNumeroDeOficio">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaDocumentosPorRangoDeFechas" FunctionName="SCJ_BD.Store.sp_buscaDocumentosPorRangoDeFechas">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaEmitidosPorNumeroDeOficio" FunctionName="SCJ_BD.Store.sp_buscaEmitidosPorNumeroDeOficio">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaEmitidosPorRangoDeFechas" FunctionName="SCJ_BD.Store.sp_buscaEmitidosPorRangoDeFechas">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaExpedientePorNumeroDeIngreso" FunctionName="SCJ_BD.Store.sp_buscaExpedientePorNumeroDeIngreso">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaExpedientePorNumeroDeOficio" FunctionName="SCJ_BD.Store.sp_buscaExpedientePorNumeroDeOficio">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaExpedientePorParte" FunctionName="SCJ_BD.Store.sp_buscaExpedientePorParte">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaExpedientePorRangoDeFechas" FunctionName="SCJ_BD.Store.sp_buscaExpedientePorRangoDeFechas">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaSNIPorNumeroDeOficio" FunctionName="SCJ_BD.Store.sp_buscaSNIPorNumeroDeOficio">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_buscaSNIPorRangoDeFechas" FunctionName="SCJ_BD.Store.sp_buscaSNIPorRangoDeFechas">
           </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>

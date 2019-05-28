@@ -16,7 +16,7 @@ namespace SistemaControl.Controllers
         private ITablaGeneralBLL tablaGeneralBLL;
         List<Documento> aDocumentos = new List<Documento>();
 
-        public ActionResult Index(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 7, string message = "")
+        public ActionResult Index(string sOption, string sSearch, string sSearchFecha, int page = 1, int pageSize = 9, string message = "")
         {
             try
             {
@@ -74,30 +74,11 @@ namespace SistemaControl.Controllers
                 }
 
             }
-            //Busqueda cuando no pone la busqueda ni la opcion de busqueda
-            //Cuando se inicia el index
-            else if (String.IsNullOrEmpty(sOption) && String.IsNullOrEmpty(sSearch))
-            {
-                PagedList<Documento> model = new PagedList<Documento>(aDocumentos, page, pageSize);
-                return View(model);
-            }
-            //Busqueda cuando no pone la opcion de busqueda pero si la busqueda
-            //Por defecto va a buscar en el numero de documento
             else
             {
                 try
                 {
-                    ViewBag.search = sSearch;
-                    ViewBag.option = sOption;
-                    ViewBag.finalDate = sSearchFecha;
-                    if (String.IsNullOrEmpty(sSearch))
-                    {
-                        aDocumentos = documentoBll.Consulta(iTipo, sSearch, sSearchFecha, "", "Expediente");
-                    }
-                    else
-                    {
-                        aDocumentos = documentoBll.Consulta(iTipo, sSearch, sSearchFecha, "Número de Oficio", "Expediente");
-                    }
+                    var aDocumentos = documentoBll.GetExpedientes(iTipo);
                     foreach (Documento documento in aDocumentos)
                     {
                         documento.TablaGeneral1 = tablaGeneralBLL.Get(documento.idOrigen);

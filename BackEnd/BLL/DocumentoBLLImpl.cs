@@ -49,9 +49,6 @@ namespace BackEnd.BLL
                 return false;
             }
         }
-
-
-
        
         public List<Documento> Consulta(int iTipo, string sFiltro, string sFechaFinal, string sCampo, string sTipoDocumento)
         {
@@ -66,19 +63,23 @@ namespace BackEnd.BLL
                         switch (sCampo)
                         {
                             case "Número de Oficio":
-                                Expression<Func<Documento, bool>> consultaNumeroOficio = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroDocumento.Contains(sFiltro) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso != null);
-                                return unidad.genericDAL.Find(consultaNumeroOficio).ToList();
+                                return buscaEntradaPorNumeroDeOficio(sFiltro, iTipo);
+                                //Expression<Func<Documento, bool>> consultaNumeroOficio = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroDocumento.Contains(sFiltro) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso != null);
+                                //return unidad.genericDAL.Find(consultaNumeroOficio).ToList();
                             case "Número de Ingreso":
-                                Expression<Func<Documento, bool>> consultaNumeroIngreso = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroIngreso.Contains(sFiltro) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso != null);
-                                return unidad.genericDAL.Find(consultaNumeroIngreso).ToList();
+                                return buscaEntradaPorNumeroDeIngreso(sFiltro, iTipo);
+                            //Expression<Func<Documento, bool>> consultaNumeroIngreso = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroIngreso.Contains(sFiltro) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso != null);
+                            //return unidad.genericDAL.Find(consultaNumeroIngreso).ToList();
                             case "Fecha":
                                 DateTime date = Convert.ToDateTime(sFiltro);
                                 DateTime dateFinal = Convert.ToDateTime(sFechaFinal);
-                                Expression<Func<Documento, bool>> consultaFecha = (oDocumento => oDocumento.idTipo.Equals(iTipo) && (oDocumento.fecha >= date && oDocumento.fecha <= dateFinal) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso != null);
-                                return unidad.genericDAL.Find(consultaFecha).ToList();
+                                return buscaEntradaPorRangoDeFechas(date, dateFinal, iTipo);
+                                //Expression<Func<Documento, bool>> consultaFecha = (oDocumento => oDocumento.idTipo.Equals(iTipo) && (oDocumento.fecha >= date && oDocumento.fecha <= dateFinal) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso != null);
+                                //return unidad.genericDAL.Find(consultaFecha).ToList();
                             default:
-                                Expression<Func<Documento, bool>> consultaDefault = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso != null);
-                                return unidad.genericDAL.Find(consultaDefault).ToList();
+                                return GetEntradas(iTipo);
+                                //Expression<Func<Documento, bool>> consultaDefault = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso != null);
+                                //return unidad.genericDAL.Find(consultaDefault).ToList();
                         }
                     }
                     else if(sTipoDocumento == "OficioSalida")
@@ -86,19 +87,19 @@ namespace BackEnd.BLL
                         switch (sCampo)
                         {
                             case "Número de Oficio":
-                                Expression<Func<Documento, bool>> consultaNumeroOficio = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroDocumento.Contains(sFiltro) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso == null);
-                                return unidad.genericDAL.Find(consultaNumeroOficio).ToList();
-                            case "Número de Ingreso":
-                                Expression<Func<Documento, bool>> consultaNumeroIngreso = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroIngreso.Contains(sFiltro) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso == null);
-                                return unidad.genericDAL.Find(consultaNumeroIngreso).ToList();
+                                return buscaSalidaPorNumeroDeOficio(sFiltro, iTipo);
+                                //Expression<Func<Documento, bool>> consultaNumeroOficio = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroDocumento.Contains(sFiltro) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso == null);
+                                //return unidad.genericDAL.Find(consultaNumeroOficio).ToList();
                             case "Fecha":
                                 DateTime date = Convert.ToDateTime(sFiltro);
                                 DateTime dateFinal = Convert.ToDateTime(sFechaFinal);
-                                Expression<Func<Documento, bool>> consultaFecha = (oDocumento => oDocumento.idTipo.Equals(iTipo) && (oDocumento.fecha >= date && oDocumento.fecha <= dateFinal) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso == null);
-                                return unidad.genericDAL.Find(consultaFecha).ToList();
+                                return buscaSalidaPorRangoDeFechas(date, dateFinal, iTipo);
+                                //Expression<Func<Documento, bool>> consultaFecha = (oDocumento => oDocumento.idTipo.Equals(iTipo) && (oDocumento.fecha >= date && oDocumento.fecha <= dateFinal) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso == null);
+                                //return unidad.genericDAL.Find(consultaFecha).ToList();
                             default:
-                                Expression<Func<Documento, bool>> consultaDefault = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso == null);
-                                return unidad.genericDAL.Find(consultaDefault).ToList();
+                                return GetSalidas(iTipo);
+                                //Expression<Func<Documento, bool>> consultaDefault = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.idEstado != (iEstado) && oDocumento.numeroIngreso == null);
+                                //return unidad.genericDAL.Find(consultaDefault).ToList();
                         }
                     }
                     else if (sTipoDocumento == "Expediente")
@@ -106,22 +107,27 @@ namespace BackEnd.BLL
                         switch (sCampo)
                         {
                             case "Número de Oficio":
-                                Expression<Func<Documento, bool>> consultaNumeroOficio = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroDocumento.Contains(sFiltro) && oDocumento.idEstado != (iEstado));
-                                return unidad.genericDAL.Find(consultaNumeroOficio).ToList();
+                                return buscaExpedientePorNumeroDeOficio(sFiltro, iTipo);
+                            //Expression<Func<Documento, bool>> consultaNumeroOficio = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroDocumento.Contains(sFiltro) && oDocumento.idEstado != (iEstado));
+                            //return unidad.genericDAL.Find(consultaNumeroOficio).ToList();
                             case "Número de Ingreso":
-                                Expression<Func<Documento, bool>> consultaNumeroIngreso = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroIngreso.Contains(sFiltro) && oDocumento.idEstado != (iEstado) );
-                                return unidad.genericDAL.Find(consultaNumeroIngreso).ToList();
+                                return buscaExpedientePorNumeroDeIngreso(sFiltro, iTipo);
+                            ////Expression<Func<Documento, bool>> consultaNumeroIngreso = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroIngreso.Contains(sFiltro) && oDocumento.idEstado != (iEstado) );
+                            ////return unidad.genericDAL.Find(consultaNumeroIngreso).ToList();
                             case "Parte":
-                                Expression<Func<Documento, bool>> consultaParte = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.parte.Contains(sFiltro) && oDocumento.idEstado != (iEstado));
-                                return unidad.genericDAL.Find(consultaParte).ToList();
+                                return buscaExpedientePorParte(sFiltro, iTipo);
+                            //Expression<Func<Documento, bool>> consultaParte = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.parte.Contains(sFiltro) && oDocumento.idEstado != (iEstado));
+                            //return unidad.genericDAL.Find(consultaParte).ToList();
                             case "Fecha":
                                 DateTime date = Convert.ToDateTime(sFiltro);
                                 DateTime dateFinal = Convert.ToDateTime(sFechaFinal);
-                                Expression<Func<Documento, bool>> consultaFecha = (oDocumento => oDocumento.idTipo.Equals(iTipo) && (oDocumento.fecha >= date && oDocumento.fecha <= dateFinal) && oDocumento.idEstado != (iEstado));
-                                return unidad.genericDAL.Find(consultaFecha).ToList();
+                                return buscaExpedientePorRangoDeFechas(date, dateFinal, iTipo);
+                                //Expression<Func<Documento, bool>> consultaFecha = (oDocumento => oDocumento.idTipo.Equals(iTipo) && (oDocumento.fecha >= date && oDocumento.fecha <= dateFinal) && oDocumento.idEstado != (iEstado));
+                                //return unidad.genericDAL.Find(consultaFecha).ToList();
                             default:
-                                Expression<Func<Documento, bool>> consultaDefault = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.idEstado != (iEstado));
-                                return unidad.genericDAL.Find(consultaDefault).ToList();
+                                return GetExpedientes(iTipo);
+                                //Expression<Func<Documento, bool>> consultaDefault = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.idEstado != (iEstado));
+                                //return unidad.genericDAL.Find(consultaDefault).ToList();
                         }
                     }
                     else if(sTipoDocumento == "SNI")
@@ -129,19 +135,19 @@ namespace BackEnd.BLL
                         switch (sCampo)
                         {
                             case "Número de Oficio":
-                                Expression<Func<Documento, bool>> consultaNumeroOficio = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroDocumento.Contains(sFiltro) && oDocumento.idEstado != (iEstado));
-                                return unidad.genericDAL.Find(consultaNumeroOficio).ToList();
-                            case "Número de Ingreso":
-                                Expression<Func<Documento, bool>> consultaNumeroIngreso = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroIngreso.Contains(sFiltro) && oDocumento.idEstado != (iEstado));
-                                return unidad.genericDAL.Find(consultaNumeroIngreso).ToList();
+                                return buscaSNIPorNumeroDeOficio(sFiltro, iTipo);
+                            //Expression<Func<Documento, bool>> consultaNumeroOficio = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.numeroDocumento.Contains(sFiltro) && oDocumento.idEstado != (iEstado));
+                            //return unidad.genericDAL.Find(consultaNumeroOficio).ToList();
                             case "Fecha":
                                 DateTime date = Convert.ToDateTime(sFiltro);
                                 DateTime dateFinal = Convert.ToDateTime(sFechaFinal);
-                                Expression<Func<Documento, bool>> consultaFecha = (oDocumento => oDocumento.idTipo.Equals(iTipo) && (oDocumento.fecha >= date && oDocumento.fecha <= dateFinal) && oDocumento.idEstado != (iEstado));
-                                return unidad.genericDAL.Find(consultaFecha).ToList();
+                                return buscaSalidaPorRangoDeFechas(date, dateFinal, iTipo);
+                                //Expression<Func<Documento, bool>> consultaFecha = (oDocumento => oDocumento.idTipo.Equals(iTipo) && (oDocumento.fecha >= date && oDocumento.fecha <= dateFinal) && oDocumento.idEstado != (iEstado));
+                                //return unidad.genericDAL.Find(consultaFecha).ToList();
                             default:
-                                Expression<Func<Documento, bool>> consultaDefault = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.idEstado != (iEstado));
-                                return unidad.genericDAL.Find(consultaDefault).ToList();
+                                return GetDocumentosSNI(iTipo);
+                                //Expression<Func<Documento, bool>> consultaDefault = (oDocumento => oDocumento.idTipo.Equals(iTipo) && oDocumento.idEstado != (iEstado));
+                                //return unidad.genericDAL.Find(consultaDefault).ToList();
                         }
                     }
                     else
@@ -156,7 +162,6 @@ namespace BackEnd.BLL
                 return null;
             }
         }
-
 
         public bool ArchivarDocumento(int iIdDocumento)
         {
@@ -173,7 +178,7 @@ namespace BackEnd.BLL
                 return false;
             }
         }
-        //Revisar codigo.
+ 
         public bool Comprobar(string sNumeroDocumento, string sIdDocumento, Boolean bNumero,Boolean bStatus)
         {
             try
@@ -274,47 +279,6 @@ namespace BackEnd.BLL
             }
         }
 
-
-        public List<Documento> GetSalidas()
-        {
-            try
-            {
-                using (context = new SCJ_BDEntities())
-                {
-                    var result = this.context.sp_listaSalidas().ToList();
-                    if (result != null)
-                    {
-                        return result;
-                    }
-                    return null;
-                }
-            }
-            catch (Exception)
-            { 
-                return null;
-            }
-        }
-
-        public List<Documento> GetEntradas()
-        {
-            try
-            {
-                using (context = new SCJ_BDEntities())
-                {
-                    var result = this.context.sp_listaEntradas().ToList();
-                    if (result != null)
-                    {
-                        return result;
-                    }
-                    return null;
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
         public List<Documento> GetReferencias(long? referencia)
         {
             try
@@ -412,6 +376,306 @@ namespace BackEnd.BLL
                 using (context = new SCJ_BDEntities())
                 {
                     return context.sp_getNumeroReferencia(idDocumento).FirstOrDefault();
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Documento> GetSalidas(int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_listaEmitidos(iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Documento> GetEntradas(int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_listaDocumentos(iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Documento> GetDocumentosSNI(int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_listaSNI(iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Documento> GetExpedientes(int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_listaExpedientes(iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Documento> buscaEntradaPorNumeroDeOficio(string numeroDeOficio, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaDocumentosPorNumeroDeOficio(numeroDeOficio, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Documento> buscaSalidaPorNumeroDeOficio(string numeroDeOficio, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaEmitidosPorNumeroDeOficio(numeroDeOficio, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Documento> buscaSNIPorNumeroDeOficio(string numeroDeOficio, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaSNIPorNumeroDeOficio(numeroDeOficio, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            };
+        }
+
+        public List<Documento> buscaExpedientePorNumeroDeOficio(string numeroDeOficio, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaExpedientePorNumeroDeOficio(numeroDeOficio, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Documento> buscaEntradaPorNumeroDeIngreso(string numeroDeIngreso, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaDocumentosPorNumeroDeIngreso(numeroDeIngreso, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Documento> buscaExpedientePorNumeroDeIngreso(string numeroDeIngreso, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaExpedientePorNumeroDeIngreso(numeroDeIngreso, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Documento> buscaEntradaPorRangoDeFechas(DateTime fechaInicio, DateTime fechaFinal, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaDocumentosPorRangoDeFechas(fechaInicio,fechaFinal, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Documento> buscaSalidaPorRangoDeFechas(DateTime fechaInicio, DateTime fechaFinal, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaEmitidosPorRangoDeFechas(fechaInicio,fechaFinal, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Documento> buscaSNIPorRangoDeFechas(DateTime fechaInicio, DateTime fechaFinal, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaSNIPorRangoDeFechas(fechaInicio,fechaFinal, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Documento> buscaExpedientePorRangoDeFechas(DateTime fechaInicio, DateTime fechaFinal, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaExpedientePorRangoDeFechas(fechaInicio,fechaFinal, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Documento> buscaExpedientePorParte(string parte, int iTipo)
+        {
+            try
+            {
+                using (context = new SCJ_BDEntities())
+                {
+                    var result = this.context.sp_buscaExpedientePorParte(parte, iTipo).ToList();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return null;
                 }
             }
             catch (Exception)

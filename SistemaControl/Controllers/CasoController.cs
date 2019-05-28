@@ -52,7 +52,7 @@ namespace SistemaControl.Controllers
                     ViewBag.option = sOption;
                     if (casoBLL.Consulta(iTipo, sSearch, sOption) != null)
                     {
-                        aCasos = casoBLL.getCasos(iTipo);
+                        aCasos = casoBLL.Consulta(iTipo,sSearch,sOption);
 
                         foreach (Caso caso in aCasos)
                         {
