@@ -162,10 +162,9 @@ namespace SistemaControl.Controllers
                 documentoBll.GeneraNumeroIngreso();
                 documentoBll.Actualizar(documento);
                 documentoBll.SaveChanges();
-                return RedirectToAction("Index", new { message = "success" });
+                return RedirectToAction("Index", new { message = "successEdit" });
             }
-            return PartialView("Editar", documento);
-
+            return RedirectToAction("Index", new { message = "error" });
         }
 
         public ActionResult Editar(int id)
@@ -337,6 +336,28 @@ namespace SistemaControl.Controllers
             return this.Json(new { Id = "idOrigen", Reg = "OIJ", Data = ViewBag.idOrigen }, JsonRequestBehavior.AllowGet);
 
         }
+        public JsonResult GetNomenclatura(int idOrigen, int tipoOrigen)
+        {
+            try
+            {
+                tablaGeneralBLL = new TablaGeneralBLLImpl();
+                documentoBll = new DocumentoBLLImpl();
 
+                string sIdOrigen = tablaGeneralBLL.GetTablaGeneral(idOrigen).nomenclatura;
+                if (tablaGeneralBLL.GetTablaGeneral(tipoOrigen).descripcion == "Departamento Interno")
+                {
+                    return Json(new { data = tablaGeneralBLL.GetTablaGeneral(idOrigen).nomenclatura + "-" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+
+                    return Json(new { data = "SSISCT-" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

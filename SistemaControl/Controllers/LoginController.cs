@@ -189,7 +189,7 @@ namespace SistemaControl.Controllers
                 }
                 catch (Exception)
                 {
-                    return View();
+                    return RedirectToAction("Index", "Home");
                 }
                 if (usuarioBLL.getUsuario(model.Username) == null)
                 {

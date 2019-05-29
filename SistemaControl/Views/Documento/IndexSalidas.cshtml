@@ -248,11 +248,16 @@
             ind = ind.replace(/\s+/g, "");
             console.log(ind);
             $vars = ind;
-            $contextMenu.css({
-                display: "block",
-                left: e.pageX,
-                top: e.pageY
-            });
+            if (isNullOrEmpty(ind)) {
+                $contextMenu.css({
+                    display: "block",
+                    left: e.pageX,
+                    top: e.pageY
+                });
+            }
+            else {
+                $contextMenu.hide();
+            }
             return false;
         });
         $('html').click(function () {
@@ -283,11 +288,16 @@
             document.getElementById('sSearch').type = 'text';
         }
         }
-    $('#table_documentos').click(function () {
-            alert(this);
+    //$('#table_documentos').click(function () {
+    //        alert(this);
 
-    });
-
+    //});
+        function isNullOrEmpty(data) {
+            if (data !== null && data !== '') {
+                return true;
+            }
+            return false;
+        }
     $('#sSearch').change(function () {
         var searchFecha = $('#sSearchFecha').val();
         var search = $('#sSearch').val();

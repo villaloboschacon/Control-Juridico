@@ -19,7 +19,6 @@ namespace SistemaControl.Controllers
         private IDocumentoBLL documentoBLL;
         private IPersonasBLL personasBLL;
 
-        [Authorize]
         public ActionResult Index(string user, int page = 1, int pageSize = 7)
         {
             try
@@ -84,21 +83,18 @@ namespace SistemaControl.Controllers
         }
 
 
-        [Authorize]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
         }
-        [Authorize]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
 
             return View();
         }
-        [Authorize]
         public ActionResult Ayuda()
         {
             ViewBag.Message = "Your help page.";

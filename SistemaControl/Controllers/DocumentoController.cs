@@ -226,6 +226,7 @@ namespace SistemaControl.Controllers
                 {
                     ViewBag.search = sSearch;
                     ViewBag.option = sOption;
+                    ViewBag.finalDate = sSearchFecha;
                     if (documentoBll.Consulta(iTipo, sSearch, sSearchFecha, sOption, "OficioSalida") != null)
                     {
 
@@ -407,9 +408,28 @@ namespace SistemaControl.Controllers
                     {
                         return RedirectToAction("Index", new { message = "error" });
                     }
+                    
                 }
                 TempData["DocumentoId"] = documento.numeroDocumento;
-                return RedirectToAction("Index",new { message = "success" });
+
+                int iTipoOficio = tablaGeneralBLL.GetIdTablaGeneral("Documentos", "tipo", "Oficio");
+                int iTipoExpendiente = tablaGeneralBLL.GetIdTablaGeneral("Documentos", "tipo", "Expediente");
+                int iTipoSIN = tablaGeneralBLL.GetIdTablaGeneral("Documentos", "tipo", "SNI");
+                if (documento.idTipo == iTipoOficio)
+                {
+                    return RedirectToAction("Index","Documento",new { message = "success" });
+                }
+                else if (documento.idTipo == iTipoExpendiente)
+                {
+                    return RedirectToAction("Index", "DocumentoExpediente", new { message = "success" });
+                }
+                else if (documento.idTipo == iTipoSIN)
+                {
+                    return RedirectToAction("IndexSNI", "Documento", new { message = "success" });
+                }
+                else
+                {
+                }
             }
             return RedirectToAction("Index", new { message = "error" });
         }
@@ -545,11 +565,11 @@ namespace SistemaControl.Controllers
                 documentoBll.SaveChanges();
                 if(documento.numeroIngreso == null)
                 {
-                    return RedirectToAction("IndexSalidas");
+                    return RedirectToAction("IndexSalidas", new { message = "successEdit" });
                 }
                 else
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", new { message = "successEdit" });
                 }
             }
             return RedirectToAction("Index", new { message = "error" });
@@ -595,7 +615,7 @@ namespace SistemaControl.Controllers
                 documentoBll.Agregar(documento);
                 documentoBll.GeneraNumeroIngreso();
                 documentoBll.SaveChanges();
-                return RedirectToAction("IndexSalidas", new { message = "success" });
+                return RedirectToAction("IndexSalidas", new { message = "successReply" });
             }
             return RedirectToAction("IndexSalidas", new { message = "error" });
         }
@@ -644,7 +664,7 @@ namespace SistemaControl.Controllers
                 documentoBll = new DocumentoBLLImpl();
                 documentoBll.ArchivarDocumento(id);
                 documentoBll.SaveChanges();
-                return RedirectToAction("Index", new { message = "success" });
+                return RedirectToAction("Index", new { message = "successArchive" });
             }
             catch (Exception)
             {

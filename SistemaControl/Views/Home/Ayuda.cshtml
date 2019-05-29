@@ -1,55 +1,292 @@
-﻿@{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿
+<section class="content-header" style="text-align:center;">
+    <h1>
+        Preguntas Frecuentes
+        <small>SCJ</small>
+    </h1>
+</section>
 
-<!DOCTYPE html>
+<div class="container" style="margin-top:20px">
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <script src="~/Content/js/script.js"></script>
-    <link href="@Url.Content("~/Content/css/style.css")" rel="stylesheet" type="text/css" />
-    <link rel="shortcut icon" type="image/png" href="~/Content/img/icon.ico" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#tab_1-1" data-toggle="tab" aria-expanded="true">Documentos</a>
+                    </li>
+                    <li>
+                        <a href="#tab_2-2" data-toggle="tab" aria-expanded="false">Procesos</a>
+                    </li>
+                    <li>
+                        <a href="#tab_3-2" data-toggle="tab" aria-expanded="false">Personas</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1-1">
+                        <div class="box box-solid">
+                            <div class="box-group" id="accordion">
+                                <div class="panel box box-primary">
+                                    <div class="box-header with-border" style="text-align:center;">
+                                        <h4 class="box-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true">
+                                                ¿Cómo crear Documentos?
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in" aria-expanded="true">
+                                        <div class="box-body">
+                                            Se tiene que ingresar al <strong>Módulo de Documentos</strong> > <strong>Tipo de Documento</strong> (Entradas, Salidas, Expedientes).
+                                            Debajo de cada tabla se encuentra un Link con la palabra "Crear Documento", al presionarlo el sistema mostrará el formulario correspondiente.<br />
+                                            <small>Nota adicional: Dependiento del <strong>Tipo de Documento</strong> el formulario cambiará</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel box box-primary">
+                                    <div class="box-header with-border" style="text-align:center;">
+                                        <h4 class="box-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" class="collapsed">
+                                                ¿Cómo editar Documentos y ver la información de los documentos?
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false">
+                                        <div class="box-body">
+                                            Se tiene que el ingresar al <strong>Módulo de Documentos</strong> > <strong>Tipo de Documento</strong> (Entradas, Salidas, Expedientes).
+                                            Al presionar Click Derecho sobre el Documento de interés, el Sistema desplegará varias opciones entre ellas se encuentra:
+                                            <strong>Ver Detalles</strong> y <strong>Editar</strong>. Al presionarlo, el sistema muestra un formulario con la información del Documento.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel box box-primary">
+                                    <div class="box-header with-border" style="text-align:center;">
+                                        <h4 class="box-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" class="collapsed">
+                                                ¿Cómo buscar Documentos?
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseThree" class="panel-collapse collapse" aria-expanded="false">
+                                        <div class="box-body">
+                                            Se tiene que el ingresar al <strong>Módulo de Documentos</strong> > <strong>Tipo de Documento</strong> (Entradas, Salidas, Expedientes).
+                                            En la parte superior de cada tabla se encuentra un buscador, con un filtro y espacio de texto.
+                                            El usuario debe seleccionar un filtro y digitar la información que desea consultar. El sistema actualizará la tabla con la información consultada por el usuario.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel box box-primary">
+                                    <div class="box-header with-border" style="text-align:center;">
+                                        <h4 class="box-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" class="collapsed">
+                                                ¿Cómo responder una Entrada?
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseFour" class="panel-collapse collapse" aria-expanded="false">
+                                        <div class="box-body">
+                                            Se tiene que el ingresar al <strong>Módulo de Documentos</strong>: Entradas.
+                                            El usuario debe presionar Click Derecho sobre el Documento de Entrada (un oficio) al cual le generará una respuesta,
+                                            el sistema desplegará varias opciones entre ellas se encuentra: <strong>Responder</strong>
+                                            El sistema mostrará el formulario para poder responder el documento, cabe destacar que se generará el número de oficio del
+                                            Departamento de Servicios Jurídicos automáticamente.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel box box-primary">
+                                    <div class="box-header with-border" style="text-align:center;">
+                                        <h4 class="box-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" class="collapsed">
+                                                ¿Cómo ver las referencias de una Entrada?
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseFive" class="panel-collapse collapse" aria-expanded="false">
+                                        <div class="box-body">
+                                            Se tiene que el ingresar al <strong>Módulo de Documentos</strong>: Entradas.
+                                            El usuario debe presionar Click Derecho sobre el Documento de Entrada (un oficio) a consultar, el sistema desplegará varias opciones entre ellas se encuentra: <strong>Referencias</strong>
+                                            al presionar esta opción, el sistema mostrará una tabla con el Oficio al cual se le generaron las preguntas, junto con todos los
+                                            Documentos de Salida vinculados.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel box box-primary">
+                                    <div class="box-header with-border" style="text-align:center;">
+                                        <h4 class="box-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" class="collapsed">
+                                                Información extra sobre Documentos
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseSix" class="panel-collapse collapse" aria-expanded="false">
+                                        <div class="box-body">
+                                            <ul>
+                                                <li>Para la módulo de Documentos existen 3 tipos de Documentos: Entradas y Salidas (Oficios), Expendientes Administrativos y SNI.</li>
+                                                <li>
+                                                    Formatos:
+                                                    <ul>
+                                                        <li><strong>Número de Oficio</strong>: MA-Departamento-####-Año Actual</li>
+                                                        <li><strong>Número de Ingreso</strong>: N.I.####-Año Actual</li>
+                                                        <li><strong>Parte</strong>: EXP-AD-Nombre de la Persona-Año Actual</li>
+                                                    </ul>
+                                                </li>
+                                                <li>
+                                                    Para generar un oficio pequeño de manera automática, se debe seleccionar <strong>¿Desea escribir el oficio?</strong> dentro del formulario de Salida
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>@*TAB PARA documentos*@
+                    <div class="tab-pane" id="tab_2-2">
+                        <div class="box box-solid">
+                            <div class="box-group" id="accordion">
+                                <div class="panel box box-success">
+                                    <div class="box-header with-border" style="text-align:center;">
+                                        <h4 class="box-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="true">
+                                                ¿Cómo Crear Procesos?
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseSeven" class="panel-collapse collapse in" aria-expanded="true">
+                                        <div class="box-body">
+                                            Se debe de ingresar al <strong>Módulo de Procesos</strong> > <strong>Tipo de Procesos</strong> (Administrativos o Judiciales).
+                                            Debajo de cada tabla se encuentra un Link con el nombre "Crear Proceso"
+                                            Al presionarlo el sistema mostrará el formulario de procesos.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel box box-success">
+                                    <div class="box-header with-border" style="text-align:center;">
+                                        <h4>
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="false" class="collapsed">
+                                                ¿Cómo Editar y Consultar la información de un Proceso?
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseEight" class="panel-collapse collapse" aria-expanded="false">
+                                        <div class="box-body">
+                                            Se debe de ingresar al <strong>Módulo de Procesos</strong> > <strong>Tipo de Proceso</strong> (Administrativos o Judiciales).
+                                            Al presionar Click Derecho sobre el Proceso de interés, el Sistema desplegará varias opciones, entre ellas se encuentra:
+                                            <strong>Ver Detalles</strong> y <strong>Editar</strong>. Al presionar alguna de estas dos opciones,
+                                            el sistema mostrará un formulario con la información del Proceso.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel box box-success">
+                                    <div class="box-header with-border" style="text-align:center;">
+                                        <h4 class="box-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseNine" aria-expanded="false" class="collapsed">
+                                                ¿Cómo buscar un Proceso?
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseNine" class="panel-collapse collapse" aria-expanded="false">
+                                        <div class="box-body">
+                                            Se debe de ingresar al <strong>Módulo de Procesos</strong> > <strong>Tipo de Proceso</strong> (Administrativos o Judiciales).
+                                            En la parte superior de cada tabla se encuentra un buscador, con un filtro y espacio de texto.
+                                            El usuario debe seleccionar un filtro y digitar la información que desea consultar. El sistema actualizará la tabla con la información consultada por el usuario.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel box box-success">
+                                    <div class="box-header with-border" style="text-align:center;">
+                                        <h4 class="box-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTen" aria-expanded="false" class="collapsed">
+                                                ¿Cómo archivar un Proceso?
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTen" class="panel-collapse collapse" aria-expanded="false">
+                                        <div class="box-body">
+                                            Se debe de ingresar al <strong>Módulo de Procesos</strong> > <strong>Tipo de Proceso</strong> (Administrativos o Judiciales).
+                                            Presionar Click Derecho, sobre el proceso a archivar, el sistema mostrará varias opciones, entre ellas se encuentra: <strong>Archivar</strong>.
+                                            Al presionarlo, el sistema preguntará si desea continuar con la acción: <strong>Cancelar</strong> o <strong>Continuar</strong>.
+                                            El sistema actualizará la tabla con la información. <br />
+                                            <small>Nota: El sistema no muestra Procesos Archivados</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel box box-success">
+                                    <div class="box-header with-border" style="text-align:center;">
+                                        <h4 class="box-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseEleven" aria-expanded="false" class="collapsed">
+                                                ¿Cómo asigno un Proceso?
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseEleven" class="panel-collapse collapse" aria-expanded="false">
+                                        <div class="box-body">
+                                            Se debe de ingresar al <strong>Módulo de Procesos</strong> > <strong>Tipo de Proceso</strong> (Administrativos o Judiciales).
+                                            Debajo de cada se encuentre un Link con el nombre "Crear Proceso".
+                                            Al presionarlo el sistema mostrará el formulario de procesos. En el campo del formulario se muestra la lista de <strong>Abogados</strong>
+                                            Al seleccionar un abogado, se está realizando la asignación del proceso. </br>
+                                            <small>Nota: El sistema le mandará un correo electrónico al usuario, informándole la asigancación del caso</small>.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> @*TAB PARA PROCESOS*@
 
-    <title>Index</title>
-</head>
-<body>
-    <div class="title" align="center"> Centro de Ayuda</div>
-
-    <div class="widgettablet">
-        
-            <table class="table">
-                <tr class="title">
-                        <th>Preguntas</th>
-                        <th>Informacion</th>
-                </tr>
-
-                <tr>
-                    <td>¿Cómo agregar un Oficio?</td>
-                    <td><a href="#">Video</a> | <a href="#">Instrucciones</a> </td>
-                </tr>
-
-                <tr>
-                    <td>¿Cómo agregar un Expediente?</td>
-                    <td><a href="#">Video</a> | <a href="#">Instrucciones</a> </td>
-
-                </tr>
-                <tr>
-                    <td>¿Cómo agregar un Persona?</td>
-                    <td><a href="#">Video</a> | <a href="#">Instrucciones</a> </td>
-                </tr>
-                <tr>
-                    <td>¿Cómo agregar un Proceso?</td>
-                    <td><a href="#">Video</a> | <a href="#">Instrucciones</a> </td>
-
-                </tr>
-            </table>
-       
-
-        <a href="@Url.Action("About","MasterPage")">Acerca de SCJ </a>
-
+                    <div class="tab-pane" id="tab_3-2">
+                        <div class="box box-solid">
+                            <div class="box-group" id="accordion">
+                                <div class="panel box box-info">
+                                    <div class="box-header with-border" style="text-align:center;">
+                                        <h4 class="box-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwelve" aria-expanded="true">
+                                                ¿Cómo crear una Persona?
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwelve" class="panel-collapse collapse in" aria-expanded="true">
+                                        <div class="box-body">
+                                            Se debe de ingresar al <strong>Módulo de Personas</strong> > <strong>Tipo de Personas</strong> (Físicas o Jurídicas).
+                                            Debajo de cada tabla se encuentra un Link con la palabra "Crear Personas", al presionarlo el sistema mostrará el formulario correspondiente.<br />
+                                            <small>Nota adicional: Dependiento del <strong>Tipo de Persona</strong> el formulario cambiará</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel box box-info">
+                                    <div class="box-header with-border" style="text-align:center;">
+                                        <h4 class="box-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThirteen" aria-expanded="false" class="collapsed">
+                                                ¿Cómo editar y ver la información de las Personas?
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseThirteen" class="panel-collapse collapse" aria-expanded="false">
+                                        <div class="box-body">
+                                            Se debe de ingresar al <strong>Módulo de Personas</strong> > <strong>Tipo de Personas</strong> (Físicas o Jurídicas).
+                                            Al presionar Click Derecho sobre la Persona de interés, el Sistema desplegará varias opciones entre ellas se encuentra:
+                                            <strong>Ver Detalles</strong> y <strong>Editar</strong>. Al presionarlo, el sistema muestra un formulario con la información de la Persona.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel box box-info">
+                                    <div class="box-header with-border" style="text-align:center;">
+                                        <h4 class="box-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFourteen" aria-expanded="false" class="collapsed">
+                                                ¿Cómo buscar Personas?
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseFourteen" class="panel-collapse collapse" aria-expanded="false">
+                                        <div class="box-body">
+                                            Se debe de ingresar al <strong>Módulo de Personas</strong> > <strong>Tipo de Personas</strong> (Físicas o Jurídicas).
+                                            En la parte superior de cada tabla se encuentra un buscador, con un filtro y espacio de texto.
+                                            El usuario debe seleccionar un filtro y digitar la información que desea consultar. El sistema actualizará la tabla con la información consultada por el usuario.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> @*TAB PARA PERSONAS*@
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+</div>

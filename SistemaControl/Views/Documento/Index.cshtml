@@ -198,6 +198,7 @@
     <script>
 
     $(document).ready(function () {
+
         if ('@TempData["message"]' == "success") {
             toastr.options = {
                 "debug": false,
@@ -207,11 +208,10 @@
                 "timeOut": 3000,
                 "extendedTimeOut": 1000
             }
-
-            var d = '@TempData["action"]';
-            toastr["success"](d, "Oficio agregado exitosamente","exitosamente");
+            var d = '@TempData["cedula"]';
+            toastr["success"](d, "Documento agregado exitosamente");
         }
-        else if ('@TempData["message"]' == "error") {
+        else if ('@TempData["message"]' == "successEdit") {
             toastr.options = {
                 "debug": false,
                 "onclick": null,
@@ -220,9 +220,34 @@
                 "timeOut": 3000,
                 "extendedTimeOut": 1000
             }
-            toastr["error"]("Error al crear el documento.");
+            var d = '@TempData["cedula"]';
+            toastr["success"](d,"Documento editado exitosamente");
+        }
+        else if ('@TempData["message"]' == "successReply") {
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 3000,
+                "extendedTimeOut": 1000
+            }
+            var d = '@TempData["cedula"]';
+            toastr["success"](d,"Documento respondido exitosamente");
+        }
+        else if ('@TempData["message"]' == "successArchive") {
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 3000,
+                "extendedTimeOut": 1000
+            }
+            toastr["error"]("Documento archivado exitosamente");
         }
         else { }
+
         $('#sSearchFecha').hide();
         if ($('#dropList').val() === "Fecha") {
             $('#sSearchFecha').show();
@@ -398,7 +423,7 @@
         });
         }
     function Emitir() {
-        var url = '@Url.Action("Emitir")';
+        var url = '@Url.Action("Emitir","Documento")';
         $.ajax({
             url: url,
             datatype: "json",

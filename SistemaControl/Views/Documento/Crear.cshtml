@@ -1,6 +1,6 @@
 ﻿@model SistemaControl.Models.DocumentoViewModel
 
-@{ 
+@{
     @DateTime.Now.Year
 }
 <!doctype html>
@@ -68,7 +68,7 @@
                             <div class="form-group" id="partes">
                                 @Html.LabelFor(model => model.parte, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.parte, new { htmlAttributes = new { @class = "form-control", placeholder = "EXP-AD-NOMBREDELAPERSONA-" + @DateTime.Now.Year , autocomplete = "off", style = "text-transform: uppercase;" } })
+                                    @Html.EditorFor(model => model.parte, new { htmlAttributes = new { @class = "form-control", placeholder = "EXP-AD-NOMBREDELAPERSONA-" + @DateTime.Now.Year, autocomplete = "off", style = "text-transform: uppercase;" } })
                                     @Html.ValidationMessageFor(model => model.parte, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                             <div class="form-group" id="numerosIngresos">
                                 @Html.LabelFor(model => model.numeroIngreso, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.numeroIngreso, new { htmlAttributes = new { @class = "form-control", placeholder = "N.I.####-"+ @DateTime.Now.Year, autocomplete = "off" } })
+                                    @Html.EditorFor(model => model.numeroIngreso, new { htmlAttributes = new { @class = "form-control", placeholder = "N.I.####-" + @DateTime.Now.Year, autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.numeroIngreso, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -139,7 +139,7 @@
                             <div class="form-group" id="textoCheck">
                                 @Html.LabelFor(model => model.check, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.DropDownListFor(model => model.check, new[] { new SelectListItem { Text = "Seleccione un opción.", Value = "0" },new SelectListItem { Text = "Si", Value = "1" }, new SelectListItem { Text = "No", Value = "2" } }, new { @class = "form-control" })
+                                    @Html.DropDownListFor(model => model.check, new[] { new SelectListItem { Text = "Seleccione un opción.", Value = "0" }, new SelectListItem { Text = "Si", Value = "1" }, new SelectListItem { Text = "No", Value = "2" } }, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.check, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -243,7 +243,7 @@
             // Checks whether the current editor content contains changes when compared
             // to the content loaded into the editor at startup.
             // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-checkDirty
-           
+
         }
         function ResetDirty() {
             // Get the editor instance that you want to interact with.
@@ -251,7 +251,7 @@
             // Resets the "dirty state" of the editor.
             // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-resetDirty
             editor.resetDirty();
-          
+
         }
         function Focus() {
             // Get the editor instance that you want to interact with.
@@ -298,7 +298,7 @@
         $("#numerosIngresos").hide();
         $("#CrearBoton").hide();
         $("#origenes").hide();
-        $("#tipoOrigenes").hide();  
+        $("#tipoOrigenes").hide();
         $("#textoDocumento").hide();
         $("#partes").hide();
         $("#textoCheck").hide();
@@ -314,7 +314,7 @@
     });
 
     $("#check").change(function () {
-        if ($("#check").val() == 1) { 
+        if ($("#check").val() == 1) {
             $("#textoDocumento").show(200);
         } else {
             $("#textoDocumento").hide(200);
@@ -395,7 +395,7 @@
             $("#numerosIngresos").hide(200);
         }
         else
-        {  
+        {
             var valIdTipo = $("#idTipo").val();
             if (valIdTipo == 3)
             {
@@ -516,7 +516,7 @@
                     $("#idOrigen").append('<option value="">Seleccione una opción.</option>');
                     $.each(another, function (i, state) {
                         $("#idOrigen").append('<option value="' + state.Value + '">' + state.Text + '</option>');
-                    });           
+                    });
                 },
                 error: function (ex) {
 
@@ -571,7 +571,7 @@
         var reg = /(MA-[a-zñA-ZÑ]{1,6}-[0-9]{4}-\b20(1[8-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])\b)$/;
         var regPrev = /(MA-[a-zñA-ZÑ]{1,6}-[0-9]{4})/;
         var numDoc = $('#numeroDocumento').val();
-        if (reg.test(numDoc)) {    
+        if (reg.test(numDoc)) {
             if (e.key == 'Backspace') {
                 $('#numeroDocumento').val(numDoc.slice(0, -6));
                 event.preventDefault();

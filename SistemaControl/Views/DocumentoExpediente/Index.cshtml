@@ -86,44 +86,51 @@
             {
                 foreach (var item in Model)
                 {
-                <tr>
-                    <td style="display:none;">
-                        @Html.DisplayFor(modelItem => item.idDocumento)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.numeroDocumento)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.numeroIngreso)
-                    </td>
-                    <td>
-                        @Html.ValueFor(modelItem => item.fecha, "{0:dd/MM/yyyy}")
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TablaGeneral3.descripcion)
-                    </td>
-                    @if (Model.Count != 0)
-                    {
-                        if (Model.First().parte != null)
+                    <tr>
+                        <td style="display:none;">
+                            @Html.DisplayFor(modelItem => item.idDocumento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.numeroDocumento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.numeroIngreso)
+                        </td>
+                        <td>
+                            @Html.ValueFor(modelItem => item.fecha, "{0:dd/MM/yyyy}")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TablaGeneral3.descripcion)
+                        </td>
+                        @if (Model.Count != 0)
                         {
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ubicacion)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.parte)
-                            </td>
+                            if (Model.First().parte != null)
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ubicacion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.parte)
+                                </td>
+                            }
                         }
-                    }
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TablaGeneral.descripcion)
-                    </td>
-                </tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TablaGeneral.descripcion)
+                        </td>
+                    </tr>
                 }
             }
         </table>
-        <div>
-            <a href="#" onclick="Crear()" data-toggle="modal" data-target="#crearModal" id="bCrear">Crear documento</a>
+
+        <div class="col-md-12">
+            <div style="text-align:left" class="col-md-6">
+                <a href="#" onclick="Crear()" data-toggle="modal" data-target="#crearModal" id="bCrear">Crear documento</a>
+            </div>
+            <div style="text-align:right" class="col-md-6">
+                <a href="#" onclick="Emitir()" data-toggle="modal" data-target="#responderModal" id="bEmitir">Emitir documento</a>
+            </div>
         </div>
+
         <br />
         @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, sSearch = ViewBag.search, sOption = ViewBag.option, sSearchFecha = ViewBag.finalDate }))
         <input type="hidden" id="idDocumento" />
@@ -224,11 +231,10 @@
                 "timeOut": 3000,
                 "extendedTimeOut": 1000
             }
-
             var d = '@TempData["cedula"]';
             toastr["success"](d, "Expediente agregado exitosamente");
         }
-        else if ('@TempData["message"]' == "error") {
+        else if ('@TempData["message"]' == "successEdit") {
             toastr.options = {
                 "debug": false,
                 "onclick": null,
@@ -237,9 +243,34 @@
                 "timeOut": 3000,
                 "extendedTimeOut": 1000
             }
-            toastr["error"]("Error al crear el documento.");
+            var d = '@TempData["cedula"]';
+            toastr["success"](d,"Expediente editado exitosamente");
+        }
+        else if ('@TempData["message"]' == "successReply") {
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 3000,
+                "extendedTimeOut": 1000
+            }
+            var d = '@TempData["cedula"]';
+            toastr["success"](d,"Expediente respondido exitosamente");
+        }
+        else if ('@TempData["message"]' == "successArchive") {
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 3000,
+                "extendedTimeOut": 1000
+            }
+            toastr["error"]("Expediente archivado exitosamente");
         }
         else { }
+
         $('#sSearchFecha').hide();
         if ($('#dropList').val() === "Fecha") {
             $('#sSearchFecha').show();
@@ -303,7 +334,22 @@
             $contextMenu.hide();
         });
     });
-
+    function Emitir() {
+        var url = '@Url.Action("Emitir","Documento")';
+        $.ajax({
+            url: url,
+            datatype: "json",
+            type: "post",
+            contenttype: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                $("#responderModal").html(data);
+            },
+            error: function (xhr) {
+                alert('Error a la hora de abrir el modal.');
+            }
+        });
+    }
     function getInd() {
         console.log($vars);
         return $vars;
@@ -493,7 +539,28 @@
                 alert('error');
             }
         });
+        }
+
+
+                function changeIdOrigen(tipoOrigen, idOrigen) {
+            if (isNullOrEmpty(tipoOrigen) && isNullOrEmpty(idOrigen)) {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetNomenclatura")',
+                    dataType: 'json',
+                    data: { idOrigen: idOrigen, tipoOrigen: tipoOrigen },
+                    success: function (origins) {
+                        var date = new Date();
+                        nomenclatura = origins.data;
+                        $('#numeroDocumento').attr('placeholder', 'MA-' + nomenclatura + '####-' + new Date().getFullYear());
+                    },
+                    error: function (ex) {
+                        nomenclatura = "basura"
+                    }
+                });
+            }
     }
+
     $(function () {
         $('body').on('click', '.modal-link', function (e) {
             e.preventDefault();
@@ -572,10 +639,10 @@
         });
     }
     </script>
-    @*<script>
+    <script>
         // Helper function to display messages below CKEditor.
         function ShowMessage(msg) {
-            document.getElementById('eMessage').innerHTML = msg;
+            //document.getElementById('eMessage').innerHTML = msg;
         }
         function InsertHTML() {
             // Get the editor instance that you want to interact with.
@@ -655,9 +722,9 @@
         // Attaching event listeners to the global CKEDITOR object.
         // The instanceReady event is fired when an instance of CKEditor has finished its initialization.
         CKEDITOR.on('instanceReady', function (ev) {
-            ShowMessage('Editor instance <em>' + ev.editor.name + '</em> was loaded.');
+            //ShowMessage('Editor instance <em>' + ev.editor.name + '</em> was loaded.');
             // The editor is ready, so sample buttons can be displayed.
-            document.getElementById('eButtons').style.display = 'block';
+           // document.getElementById('eButtons').style.display = 'block';
         });
                     // Replace the <textarea id="editor1"> with a CKEditor instance.
                     // A reference to the editor object is returned by CKEDITOR.replace() allowing you to work with editor instances.
@@ -677,7 +744,7 @@
                     //editor.on('change', function (evt) {
                     //    ShowMessage('The number of changes in <em>' + this.name + '</em>: <b>' + ++changesNum + '</b>.');
                     //});
-    </script>*@
+    </script>   
 </body>
 
 </html>
